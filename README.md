@@ -1,3 +1,4 @@
+Lila + Loraine (aka, Lone Gunmen)
 # Project: VideoStoreAPI
 
 The overall goal of this project is to create a system that a video store (remember those?) could use to track their inventory of rental videos and their collection of customers.
@@ -18,7 +19,7 @@ We will use [NodeJS](https://nodejs.org/en/) to construct a RESTful API. The goa
 - `registered_at`: When the customer first visited the store
 - The customer's physical address, composed of:
   - `address`
-  - `city` 
+  - `city`
   - `state`
   - `postal_code`
 - `phone`: Primary contact phone number
