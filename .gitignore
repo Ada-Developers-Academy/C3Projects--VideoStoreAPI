@@ -1,1 +1,4 @@
 .DS_Store
+
+# Let package.json handle dependencies
+/node_modules
