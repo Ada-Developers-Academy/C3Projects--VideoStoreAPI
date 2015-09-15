@@ -1,4 +1,4 @@
-# Project: VideoStoreAPI
+# Project: VideoStoreAPI - Katie & Victoria
 
 The overall goal of this project is to create a system that a video store (remember those?) could use to track their inventory of rental videos and their collection of customers.
 
@@ -18,7 +18,7 @@ We will use [NodeJS](https://nodejs.org/en/) to construct a RESTful API. The goa
 - `registered_at`: When the customer first visited the store
 - The customer's physical address, composed of:
   - `address`
-  - `city` 
+  - `city`
   - `state`
   - `postal_code`
 - `phone`: Primary contact phone number
@@ -91,4 +91,3 @@ The API you build should have the following capabilities. The schema of your dat
 - All endpoints must be tested.
 - We will use [Mocha](https://mochajs.org/) for tests.
 - There isn't a coverage requirement for this project, beyond demonstrating that every endpoint is covered by some manner of tests.
-
