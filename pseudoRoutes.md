@@ -22,7 +22,7 @@ GET '/customers/:id'
   - see resources card on Trello for image of architecture
 - need to provide: customer id
 
-## Movies
+##Movies
 
 GET '/movies'
 - returns an object of all movie objects
