@@ -60,21 +60,19 @@ db.serialize(function() {
   customerStatement.finalize();
 
   // ***********
-  db.serialize(function() {
-    rentalSeeds.forEach(function(rental) {
-      rentalStatement.run(
-        rental.id,
-        rental.movie_title,
-        rental.customer_id,
-        rental.returned,
-        rental.check_out_date,
-        rental.return_date
-      );
-    });
+  rentalSeeds.forEach(function(rental) {
+    rentalStatement.run(
+      rental.id,
+      rental.movie_title,
+      rental.customer_id,
+      rental.returned,
+      rental.check_out_date,
+      rental.return_date
+    );
+  });
 
-    // stop using the prepared statement
-    rentalStatement.finalize();
-
+  // stop using the prepared statement
+  rentalStatement.finalize();
 });
 
 db.close();
