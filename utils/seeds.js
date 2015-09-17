@@ -13,10 +13,15 @@ var movieStatement = db.prepare(
    VALUES (?, ?, ?, ?);"
 );
 
+var customerStatement = db.prepare(
+  "INSERT INTO customers( \
+    id, name, registered_at, address, city, state, \
+    postal_code, phone, account_credit) \
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);"
+);
+
 db.serialize(function() {
-  // loop them movies
   movieSeeds.forEach(function(movie) {
-    // insert each one into the db
     movieStatement.run(
       movie.title,
       movie.overview,
@@ -27,6 +32,23 @@ db.serialize(function() {
 
   // stop using the prepared statement
   movieStatement.finalize();
+
+  customerSeeds.forEach(function(customer) {
+    customerStatement.run(
+      customer.id,
+      customer.name,
+      customer.registered_at,
+      customer.address,
+      customer.city,
+      customer.state,
+      customer.postal_code,
+      customer.phone,
+      customer.account_credit
+    );
+  });
+
+  // stop using the prepared statement
+  customerStatement.finalize();
 });
 
 db.close();
