@@ -8,23 +8,25 @@ var sqlite3 = require('sqlite3').verbose(),
 // node will parse json files for you if you require them!
 var movies = require('./movies');
 var movie_statement = db.prepare(
-  "INSERT INTO movies(title, overview, release_date, inventory) \
-  VALUES (?, ?, ?, ?);"
+  "INSERT INTO movies(title, overview, release_date, inventory, num_available) \
+  VALUES (?, ?, ?, ?, ?);"
 );
 
 db.serialize(function() {
   // loop through movies
   for(var i = 0; i < movies.length; i++) {
-    var movie = movies[i]
+    var movie = movies[i];
     // insert each one into the db
     movie_statement.run(
       movie.title,
       movie.overview,
       movie.release_date,
+      movie.inventory,
       movie.inventory
     );
   }
-})
+  movie_statement.finalize();
+});
 
 var customers = require('./customers');
 var customer_statement = db.prepare(
@@ -35,7 +37,7 @@ var customer_statement = db.prepare(
 db.serialize(function() {
   // loop through customers
   for(var i = 0; i < customers.length; i++) {
-    var customer = customers[i]
+    var customer = customers[i];
     // insert each one into the db
     customer_statement.run(
       customer.name,
@@ -48,7 +50,8 @@ db.serialize(function() {
       customer.account_credit
     );
   }
-})
+  customer_statement.finalize();
+});
 
 // close db
 db.close();

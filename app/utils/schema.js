@@ -9,7 +9,8 @@ var movie_fields = [
   ['title', 'text'],
   ['overview', 'text'],
   ['release_date', 'text'],
-  ['inventory', 'integer']
+  ['inventory', 'integer'],
+  ['num_available', 'integer']
 ];
 
 var customer_table = "customers";
