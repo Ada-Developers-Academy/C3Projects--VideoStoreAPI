@@ -8,7 +8,8 @@ var movie_fields = [
   ['title', 'text'],
   ['overview', 'text'],
   ['release_date', 'text'],
-  ['inventory', 'integer']
+  ['inventory', 'integer'],
+  ['copies_available', 'integer']
 ];
 
 var customer_fields = [
@@ -21,7 +22,6 @@ var customer_fields = [
   ['phone', 'text'],
   ['account_credit', 'integer']
 ];
-
 
 var rental_fields = [
   ['checkout_date', 'text'],
