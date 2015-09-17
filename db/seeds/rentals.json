@@ -1,0 +1,72 @@
+[
+  {
+    "movie_title": "Jaws",
+    "customer_id": 90,
+    "returned": 1,
+    "check_out_date": "Tue, 15 Sep 2015 06:45:23 -0700",
+    "return_date": "Fri, 18 Sep 2015 06:45:23 -0700"
+  },
+  {
+    "movie_title": "Alien",
+    "customer_id": 2,
+    "returned": 1,
+    "check_out_date": "Tue, 15 Sep 2015 18:08:23 -0700",
+    "return_date": "Wed, 16 Sep 2015 07:00:10 -0700"
+  },
+  {
+    "movie_title": "The Silence of the Lambs",
+    "customer_id": 184,
+    "returned": 0,
+    "check_out_date": "Wed, 16 Sep 2015 07:00:10 -0700",
+    "return_date": ""
+  },
+  {
+    "movie_title": "High Noon",
+    "customer_id": 57,
+    "returned": 0,
+    "check_out_date": "Thu, 17 Sep 2015 12:00:00 -0700",
+    "return_date": ""
+  },
+  {
+    "movie_title": "Titanic",
+    "customer_id": 200,
+    "returned": 0,
+    "check_out_date": "Wed, 16 Sep 2015 11:11:10 -0700",
+    "return_date": ""
+  },
+  {
+    "movie_title": "Alien",
+    "customer_id": 60,
+    "returned": 0,
+    "check_out_date": "Thu, 17 Sep 2015 14:00:10 -0700",
+    "return_date": ""
+  },
+  {
+    "movie_title": "The Birds",
+    "customer_id": 200,
+    "returned": 1,
+    "check_out_date": "Wed, 16 Sep 2015 18:53:10 -0700",
+    "return_date": "Sat, 19 Sep 2015 17:45:43 -0700"
+  },
+  {
+    "movie_title": "Bullitt",
+    "customer_id": 200,
+    "returned": 1,
+    "check_out_date": "Wed, 16 Sep 2015 18:53:10 -0700",
+    "return_date": "Sat, 19 Sep 2015 17:45:43 -0700"
+  },
+  {
+    "movie_title": "Butch Cassidy and the Sundance Kid",
+    "customer_id": 86,
+    "returned": 1,
+    "check_out_date": "Sat, 12 Sep 2015 12:08:43 -0700",
+    "return_date": "Sat, 19 Sep 2015 07:40:12 -0700"
+  },
+  {
+    "movie_title": "The Treasure of the Sierra Madre",
+    "customer_id": 42,
+    "returned": 1,
+    "check_out_date": "Fri, 18 Sep 2015 08:24:12 -0700",
+    "return_date": "Sat, 19 Sep 2015 08:31:40 -0700"
+  }
+]
