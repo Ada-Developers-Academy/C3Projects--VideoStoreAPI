@@ -10,7 +10,7 @@ var movie_fields = [
   ['release_date', 'text'],
   ['inventory_total', 'integer'],
   ['inventory_avail', 'integer']
-]
+];
 
 var customer_fields = [
   ['name', 'text'],
@@ -21,7 +21,7 @@ var customer_fields = [
   ['postal_code', 'text'],
   ['phone', 'text'],
   ['account_credit', 'text']
-]
+];
 
 var rental_fields = [
   ['customer_id', 'integer'],
@@ -29,7 +29,7 @@ var rental_fields = [
   ['checkout_date', 'text'],
   ['due_date', 'text'],
   ['return_date', 'text']
-]
+];
 
 db.serialize(function() {
   // drop existing tables
@@ -41,6 +41,7 @@ db.serialize(function() {
   db.run("CREATE TABLE movies (id INTEGER PRIMARY KEY);");
   db.run("CREATE TABLE customers (id INTEGER PRIMARY KEY);");
   db.run("CREATE TABLE rentals (id INTEGER PRIMARY KEY);");
+
 
   // add columns to movies tables
   for(var i = 0; i < movie_fields.length; i++) {
@@ -69,4 +70,3 @@ db.serialize(function() {
 });
 
 db.close();
-
