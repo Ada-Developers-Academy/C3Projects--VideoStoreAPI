@@ -118,7 +118,7 @@ The API you build should have the following capabilities. The schema of your dat
     - get "/" within moviesController
     - data from movies db
 - sort movies (by title or release date) and return offset by some amount
-    - get "/title/:title", "/released/:date"
+    - get "/title/start=:num1&return=:num2, "/released/:date"
     - pagination/:limiting_num?
     - data from movies db
 - given title, list current and previous check out
