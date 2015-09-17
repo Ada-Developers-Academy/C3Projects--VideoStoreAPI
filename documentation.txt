@@ -1,0 +1,68 @@
+### Customers
+GET '/customers'
+  // => [{<customer>}, {<customer>}] <-- includes customer attributes
+  // OPTIONAL
+    // ?&n=12&p=2&sort=_____&status=_____
+      // status options: overdue
+      // sort options: name, registered_at, postal_code
+  - See a list of customers with overdue movies
+  - Retrive a subset of customers
+    - Given a sort column, return _n_ customer records, offset by _p_ records (this will be used to create "pages" of customers)
+      - Sort columns are
+        - `name`
+        - `registered_at`
+        - `postal_code`
+GET 'customers/:id/movies'
+  - Given a customers `id`...
+    - List the movies they _currently_ have checked out
+      + include rental id
+    - List the movies a customer has checked out in the past
+      + include rental id
+      - ordered by check out date
+      - includes return date
+
+### Movies
+GET '/movies'
+  // => [{<movie>}, {<movie>}] <-- includes movie attributes
+  // OPTIONAL
+  // ?&n=12&p=2&sort=_____
+    // sort options: title, release_date
+  - Retrieve a list of all movies
+  - Retrieve a subset of movies
+    - Given a sort column, return _n_ movie records, offset by _p_ records (this will be used to create "pages" of movies)
+      - Sort columns are
+        - `title`
+        - `release_date`
+GET 'movies/:title/customers'
+  // => {<movie>} <-- title is REQUIRED TO BE unique
+  // ?&status=____&sort=_____
+    // status options: current, past
+    // sort options: id, name, checkout_date
+  - Given a movies `title`...
+    + include rental ids
+    - Get a list of customers that have _currently_ checked out a copy of the film
+    - See a list of customers that have _currently_ checked out any of the movie''s inventory
+
+    - Get a list of customers that have checked out a copy _in the past_
+      - ordered by customer `id`
+      - ordered by customer `name`
+      - ordered by check out date
+
+GET '/movies/:title'
+  // => {<movie>} <-- title is REQUIRED TO BE unique
+  - Look a movie up by title to see
+    - its synopsis
+    - release date
+    - and inventory total
+    - Know if a movie has any inventory available to rent (num avail, num checked out, which/whatever)
+
+### Rental
+- Given a customer''s `id` and a movie''s `title` ...
+POST '/rentals/new'
+  // in the body, include customer/movie details
+  - "check out" one of the movies inventory to the customer
+    - Establish a return date
+    - Charge the customers account (cost up to you)
+PATCH '/rentals/:id/edit'
+  - "check in" one of customers rentals
+    - return the movie to its inventory
