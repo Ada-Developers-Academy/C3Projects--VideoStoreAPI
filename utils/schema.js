@@ -22,14 +22,33 @@ var customer_fields = [
   ['account_credit', 'integer']
 ];
 
+
+// var rental_fields = [
+//   ['checkout_date', 'text'],
+//   ['return_date', 'text'],
+//   ['return_status', 'integer'],
+//   ['cost', 'integer']
+//   ['']
+// ]
+  // sqlite does no have a separate boolean class, using values 0 and 1 for true and false
+
 db.serialize(function() {
   // drop existing tables
   db.run("DROP TABLE IF EXISTS movies;");
+  db.run("DROP TABLE IF EXISTS movie_copies;");
   db.run("DROP TABLE IF EXISTS customers;");
 
   // create fresh versions of those tables
   db.run("CREATE TABLE movies (id INTEGER PRIMARY KEY);");
   db.run("CREATE TABLE customers (id INTEGER PRIMARY KEY);");
+
+  // movie copies table with foreign keys
+  db.run("CREATE TABLE movie_copies( \
+    id INTEGER PRIMARY KEY, \
+    movie_id INTEGER, \
+    FOREIGN KEY (movie_id) REFERENCES movies(id) \
+    );");
+
   // add columns that I need to those tables
   for(var i = 0; i < movie_fields.length; i++) {
     var name = movie_fields[i][0],
