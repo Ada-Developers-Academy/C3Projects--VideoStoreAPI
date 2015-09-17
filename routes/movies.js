@@ -17,5 +17,8 @@ router.get('/group_movies', function(req, res, next) {
   // return res.status(200).json({ id: req.params.id })
 });
 
+// one movies/title/customers will return customer info
+// another movie/title will return movie info
+
 
 module.exports = router;

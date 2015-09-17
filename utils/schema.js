@@ -25,4 +25,32 @@ db.serialize(function() {
   }
 });
 
+
+var customer_fields = [
+  ['name', 'text'],
+  ['registered_at', 'text'],
+  ['address', 'text'],
+  ['city', 'text'],
+  ['state', 'text'],
+  ['postal_code', 'text'],
+  ['phone', 'text'],
+  ['account_credit', 'real']
+]
+
+db.serialize(function() {
+  // drop existing tables
+  db.run("DROP TABLE IF EXISTS customers;");
+  // create fresh versions of tables
+  db.run("CREATE TABLE customers (id INTEGER PRIMARY KEY);");
+  // add columns we need to tables
+  for (var i = 0; i < customer_fields.length; i++) {
+    var name = customer_fields[i][0],
+        type = customer_fields[i][1];
+
+    db.run("ALTER TABLE customers ADD COLUMN " + name + " " + type + ";");
+  }
+});
+
 db.close();
+
+
