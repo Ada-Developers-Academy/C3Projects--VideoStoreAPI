@@ -6,6 +6,7 @@ var sqlite3 = require("sqlite3").verbose(),
 
 var movieSeeds = require("../db/movies");
 var customerSeeds = require("../db/customers");
+var rentalSeeds = require("../db/rentals");
 
 // prepare the statement
 var movieStatement = db.prepare(
@@ -20,6 +21,13 @@ var customerStatement = db.prepare(
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);"
 );
 
+var rentalStatement = db.prepare(
+  "INSERT INTO rentals(id, movie_title, customer_id, returned, check_out_date, return_date) \
+   VALUES (?, ?, ?, ?, ?, ?);"
+);
+
+// ***************************************************
+
 db.serialize(function() {
   movieSeeds.forEach(function(movie) {
     movieStatement.run(
@@ -33,6 +41,7 @@ db.serialize(function() {
   // stop using the prepared statement
   movieStatement.finalize();
 
+  // ***********
   customerSeeds.forEach(function(customer) {
     customerStatement.run(
       customer.id,
@@ -49,6 +58,23 @@ db.serialize(function() {
 
   // stop using the prepared statement
   customerStatement.finalize();
+
+  // ***********
+  db.serialize(function() {
+    rentalSeeds.forEach(function(rental) {
+      rentalStatement.run(
+        rental.id,
+        rental.movie_title,
+        rental.customer_id,
+        rental.returned,
+        rental.check_out_date,
+        rental.return_date
+      );
+    });
+
+    // stop using the prepared statement
+    rentalStatement.finalize();
+
 });
 
 db.close();
