@@ -11,11 +11,11 @@ router.get('/customers/current/:title', function(req, res, next) {
  return rentals_exports.rentalsController.customers_current(req, res);
 });
 
-router.get('/checkout/:title/:customer_id', function(req, res, next) {
+router.put('/checkout/:title/:customer_id', function(req, res, next) {
  return rentals_exports.rentalsController.checkout(req, res);
 });
 
-router.get('/checkin/:title/:customer_id', function(req, res, next) {
+router.put('/checkin/:title/:customer_id', function(req, res, next) {
  return rentals_exports.rentalsController.checkin(req, res);
 });
 
