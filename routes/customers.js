@@ -9,9 +9,10 @@ var sqlite3 = require('sqlite3').verbose(),
 /* GET list of movies */
 router.get('/', function(req, res, next) {
   // run a SQL statement to retrieve the data
-  db.all("SELECT title, overview, release_date, inventory FROM movies;", function(err, rows) {
+  db.all("SELECT name, registered_at, address, city, state, \
+  postal_code, phone, account_credit FROM customers;", function(err, rows) {
     // serve that data as json at that endpoint
-    res.status(200).json({ movies: rows });
+    res.status(200).json({ customers: rows });
 
     db.close();
   });
