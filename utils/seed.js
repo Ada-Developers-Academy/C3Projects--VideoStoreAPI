@@ -18,7 +18,7 @@ var sqlite3 = require('sqlite3').verbose(),
 
   var rentals = require('./rentals');
   var rentals_statement = db.prepare(
-    "INSERT INTO rentals(checkout_date, due_date, return_date, overdue, movie_id, customer_id) \
+    "INSERT INTO rentals(checkout_date, due_date, return_date, overdue, movie_title, customer_id) \
     VALUES (?, ?, ?, ?, ?, ?);"
   );
 
@@ -42,7 +42,7 @@ var sqlite3 = require('sqlite3').verbose(),
         rental.due_date,
         rental.return_date,
         rental.overdue,
-        rental.movie_id,
+        rental.movie_title,
         rental.customer_id
       );
     }

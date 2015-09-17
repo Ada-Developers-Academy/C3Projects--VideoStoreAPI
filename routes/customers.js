@@ -7,15 +7,15 @@ router.get('/', function(req, res, next) {
   return customers_exports.customersController.index(req, res);
 });
 
-router.get('/name/:query', function(req, res, next) {
+router.get('/name/start=:num1&return=:num2', function(req, res, next) {
   return customers_exports.customersController.name(req, res);
 });
 
-router.get('/registered/:query', function(req, res, next) {
+router.get('/registered/start=:num1&return=:num2', function(req, res, next) {
   return customers_exports.customersController.registered(req, res);
 });
 
-router.get('/postal/:query', function(req, res, next) {
+router.get('/postal/start=:num1&return=:num2', function(req, res, next) {
   return customers_exports.customersController.postal(req, res);
 });
 
