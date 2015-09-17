@@ -8,4 +8,10 @@ router.get('/', function(req, res, next) {
   return movies_exports.moviesController.movies(req, res);
 });
 
+/* GET */
+router.get('/:title', function(req, res, next) {
+  // res.render('movies', { title: 'Express' });
+  return movies_exports.moviesController.movies_by_title(req, res);
+});
+
 module.exports = router;
