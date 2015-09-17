@@ -50,11 +50,12 @@ Rental
   - info on availability: boolean
   - object with list of customers that currently have that movie checked out
 
-### POST '/rental' (checkout)
+### POST '/rental/checkout/:customer_id/:movie_id' (checkout)
 - creates a record of rental movie object
 
-### PUT '/rental' (checkin)
+### PUT '/rental/checkin/:customer_id/:movie_id' (checkin)
 - updates rental record, returned: to true
+
 
 ```javascript
 var movies = [
