@@ -1,4 +1,4 @@
-"require strict"
+"require strict";
 
 var assert = require("assert");
 
