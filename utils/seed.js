@@ -6,8 +6,14 @@ var sqlite3 = require('sqlite3').verbose(),
 
 var movies = require('./movies');
 var movie_statement = db.prepare(
-  "INSERT INTO movies(title, overview, inventory, release_date) \
-  VALUES(?, ?, ?, ?);"
+  "INSERT INTO movies (title, overview, inventory, release_date) \
+  VALUES (?, ?, ?, ?);"
+);
+
+var customers = require('./customers');
+var customer_statement = db.prepare(
+  "INSERT INTO customers (name, registered_at, address, city, state, \
+  postal_code, phone, account_credit) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
 );
 
 db.serialize(function() {
@@ -17,11 +23,31 @@ db.serialize(function() {
 
     // insert each one into the db
     movie_statement.run(
-      movie.title, movie.overview, movie.inventory, movie.release_date
+      movie.title, 
+      movie.overview, 
+      movie.inventory, 
+      movie.release_date
     );
   }
 
   movie_statement.finalize();
+
+  for (var i = 0; i < customers.length; i++) {
+    var customer = customers[i];
+
+    customer_statement.run(
+      customer.name, 
+      customer.registered_at, 
+      customer.address,
+      customer.city, 
+      customer.state,
+      customer.postal_code, 
+      customer.phone,
+      customer.account_credit * 100 // convert for storage as integer
+    );
+  }
+
+  customer_statement.finalize();
 });
 
 db.close();
