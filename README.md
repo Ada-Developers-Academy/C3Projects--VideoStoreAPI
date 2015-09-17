@@ -91,3 +91,53 @@ The API you build should have the following capabilities. The schema of your dat
 - All endpoints must be tested.
 - We will use [Mocha](https://mochajs.org/) for tests.
 - There isn't a coverage requirement for this project, beyond demonstrating that every endpoint is covered by some manner of tests.
+
+
+#Endpoints
+### HTTP verbs
+- data needs
+- create app
+- seed db
+​
+### Customers
+- all Customers
+    - get "/" within customersController
+    - data from customers db
+- sort customers (by name, registered, or postal) and return offset by some amount
+    - get "/name/:name", "/registered/:registered", "/postal/:postal"
+    - pagination/:limiting_num??
+    - data from customers db
+- for given customer, list currently checked out and checkout history w/ checkout date and return date
+    - get "/:id/current"
+    - get "/:id/history"
+    - data from joint rental db (make this?)
+        - where "in-date" is null => currently "checked_out"
+​
+### Movies
+- all Movies
+    - get "/" within moviesController
+    - data from movies db
+- sort movies (by title or release date) and return offset by some amount
+    - get "/title/:title", "/released/:date"
+    - pagination/:limiting_num?
+    - data from movies db
+- given title, list current and previous check out
+    - "/:title/current" => return customers
+    - "/:title/history" sort by customer "/id", "/name", and checkout "/date" => return customers
+    - hit all 3 db tables
+​
+### Rentals
+- get "/rental/:title"
+    - data from movies and rentals db (inventory - checkout == true)
+- get "/rental/:title/customers"
+    - data from customers and rentals db (checkout == true)
+- post "/rental/checkout/:title/:customer_id"
+    - new rental record w/ due_date (Date.now + 3 days)
+    - new rental_cost (-2)
+    - patch customer db (account_credit - rental_cost)
+    - checkout_date == Date.now
+- patch "/rental/checkin/:title/:customer_id"
+    - patch rental db checkout_out == false
+- get "/rental/overdue"
+    - data from rentals and customers db => return customers
+    - w
