@@ -23,6 +23,31 @@ db.serialize(function() {
   }
   movie_statement.finalize();
 });
+
+
+var customers = require('../customers');
+var customer_statement = db.prepare(
+  "INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_credit) \
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
+);
+
+db.serialize(function() {
+  for(var i = 0; i < customers.length; i++) {
+    var customer = customers[i];
+
+    customer_statement.run(
+      customer.name,
+      customer.registered_at,
+      customer.address,
+      customer.city,
+      customer.state,
+      customer.postal_code,
+      customer.phone,
+      customer.account_credit
+    );
+  }
+  customer_statement.finalize();
+});
 // loop them movies
 // insert each into db
 // go home
