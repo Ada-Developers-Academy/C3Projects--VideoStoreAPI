@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-// var movies = require('./routes/movies');
+var movies = require('./routes/movies');
 // var customers = require('./routes/customers');
 // var rentals = require('./routes/rentals');
 var zomg = require('./routes/zomg');
@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use('/movies', movies);
+app.use('/movies', movies);
 // app.use('/customers', customers);
 // app.use('/rentals', rentals);
 app.use('/zomg', zomg);
