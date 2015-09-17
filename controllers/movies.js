@@ -1,5 +1,6 @@
 "use strict";
 
+
 exports.moviesController = {
   index: function index(req,res) {
     var results = {
