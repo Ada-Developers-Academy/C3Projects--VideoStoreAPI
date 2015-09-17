@@ -22,7 +22,8 @@ db.serialize(function() {
   for(var i = 0; i < movie_fields.length; i++) {
     var name = movie_fields[i][0],
         type = movie_fields[i][1];
-
+        console.log(name);
+        console.log(type);
     // ALTER TABLE movies ADD COLUMN title text;
     db.run("ALTER TABLE movies ADD COLUMN " + name + " " + type + ";");
   }
