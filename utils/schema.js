@@ -27,7 +27,7 @@ var sqlite3 = require('sqlite3').verbose(),
     ['due_date', 'text'],
     ['return_date', 'text'],
     ['overdue', 'integer'],
-    ['movie_id', 'integer'],
+    ['movie_title', 'text'],
     ['customer_id', 'integer']
   ]
 
@@ -61,5 +61,5 @@ var sqlite3 = require('sqlite3').verbose(),
       db.run("ALTER TABLE customers ADD COLUMN " + name + " " + type + ";");
     }
   });
-  
+
   db.close();
