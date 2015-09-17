@@ -27,8 +27,8 @@ var customerFields = [
 
 var rentalFields = [
   // ['id', 'integer'], // primary key
-  // ['movie_title', 'text'],  // foreign key
-  // ['customer_id', 'integer'], // foreign key
+  ['movie_title', 'text'],  // foreign key
+  ['customer_id', 'integer'], // foreign key
   ['returned', 'integer'],  // 0 = false, 1 = true
   ['check_out_date', 'text'],
   ['return_date', 'text']
@@ -38,12 +38,12 @@ db.serialize(function() {
   // drop existing stale tables
   db.run('DROP TABLE IF EXISTS movies;');
   db.run('DROP TABLE IF EXISTS customers;');
-  // db.run('DROP TABLE IF EXISTS rentals;');
+  db.run('DROP TABLE IF EXISTS rentals;');
 
   // create fresh tables with primary keys
   db.run('CREATE TABLE movies (title TEXT PRIMARY KEY);');
   db.run('CREATE TABLE customers (id INTEGER PRIMARY KEY);');
-  // db.run('CREATE TABLE rentals (id INTEGER PRIMARY KEY), FOREIGN KEY (customer_id) REFERENCES customer(id);');
+  db.run('CREATE TABLE rentals (id INTEGER PRIMARY KEY);');
   // add foreign keys to rentals table
   // db.run('ALTER TABLE rentals ADD COLUMN movie_title TEXT FOREIGN KEY;');
   // db.run('ALTER TABLE rentals ADD COLUMN customer_id INTEGER FOREIGN KEY;');
@@ -77,17 +77,17 @@ db.serialize(function() {
     );
   });
 
-  // // create rental table
-  // rentalFields.forEach(function(field) {
-  //   var fieldName = field[0];
-  //   var fieldType = field[1];
-  //
-  //   db.run(
-  //     'ALTER TABLE rentals ADD COLUMN '
-  //     + fieldName
-  //     + ' '
-  //     + fieldType
-  //     + ';'
-  //   );
-  // });
+  // create rental table
+  rentalFields.forEach(function(field) {
+    var fieldName = field[0];
+    var fieldType = field[1];
+
+    db.run(
+      'ALTER TABLE rentals ADD COLUMN '
+      + fieldName
+      + ' '
+      + fieldType
+      + ';'
+    );
+  });
 })
