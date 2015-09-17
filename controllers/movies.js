@@ -11,6 +11,10 @@ exports.moviesController = {
   /*
   GET /movies
 
+  Get /movies/:id(synopsis, inventory, release_date)
+
+  GET /movies/:title/inventory
+
   GET /movies/title?n=XXX&p=XXX
 
   GET /movies/release_date?n=XXX&p=XXX
