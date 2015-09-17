@@ -25,6 +25,14 @@ var customer_fields = [
   ['account_credit', 'float'],
 ];
 
+var rental_table = "rentals";
+var rental_fields = [
+  ['return_date', 'text'],
+  ['movie_id', 'integer'],
+  ['customer_id', 'integer'],
+  ['checked_out', 'boolean']
+];
+
 function create_table(table_name, table_fields)  {
   db.serialize(function() {
     // drop existing tables
@@ -43,7 +51,18 @@ function create_table(table_name, table_fields)  {
   });
 }
 
+function create_rentals_table(table_name)  {
+  db.serialize(function() {
+    // drop existing tables
+    db.run("DROP TABLE IF EXISTS " + table_name + ";");
+
+    // create fresh version of table with id as primary key
+    db.run("CREATE TABLE rentals (id INTEGER PRIMARY KEY, return_date text, movie_id integer, customer_id integer, checked_out boolean, FOREIGN KEY(movie_id) REFERENCES movie(id), FOREIGN KEY(customer_id) REFERENCES customer(id));");
+  });
+}
+
 create_table(movie_table, movie_fields);
 create_table(customer_table, customer_fields);
+create_rentals_table(rental_table);
 
 db.close();
