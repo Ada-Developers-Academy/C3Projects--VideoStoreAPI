@@ -51,6 +51,27 @@ db.serialize(function() {
   }
 });
 
+var rental_fields = [
+  ['movie_id', 'integer'],
+  ['customer_id', 'integer'],
+  ['returned_date', 'text'],
+  ['checked_out', 'integer']
+]
+
+db.serialize(function() {
+  // drop existing tables
+  db.run("DROP TABLE IF EXISTS rentals;");
+  // create fresh versions of tables
+  db.run("CREATE TABLE rentals (id INTEGER PRIMARY KEY);");
+  // add columns we need to tables
+  for (var i = 0; i < rental_fields.length; i++) {
+    var name = rental_fields[i][0],
+        type = rental_fields[i][1];
+
+    db.run("ALTER TABLE rentals ADD COLUMN " + name + " " + type + ";");
+  }
+});
+
 db.close();
 
 

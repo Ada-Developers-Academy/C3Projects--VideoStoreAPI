@@ -48,7 +48,9 @@ db.serialize(function() {
   }
   customer_statement.finalize();
 });
-// loop them movies
-// insert each into db
-// go home
+
+// INSERT INTO rentals(customer_id, movie_id, returned_date, checked_out) VALUES (2, 3, 'tomorrow', 1);
+
+// SELECT "movies".* FROM "movies" INNER JOIN "rentals" ON "movies"."id" = "rentals"."movie_id" WHERE "rentals"."movie_id" = 3;
+
 db.close();
