@@ -5,18 +5,16 @@ var router = express.Router();
 var sqlite3 = require('sqlite3').verbose(),
     db_env = process.env.DB || 'development',
     db = new sqlite3.Database('db/' + db_env + '.db');
-// run a SQL statement to retrieve the data
-
-// serve that data as json at that endpoint
 
 /* GET list of movies */
 router.get('/', function(req, res, next) {
+  // run a SQL statement to retrieve the data
   db.all("SELECT title FROM movies;", function(err, rows) {
-    rows.forEach(function(row) {
-      console.log(row.title);
-    })
+    // serve that data as json at that endpoint
+    res.status(200).json({ movies: rows });
+
+    db.close();
   });
-  return res.status(200).json({ message: "all the movies!" });
 });
 
 module.exports = router;
