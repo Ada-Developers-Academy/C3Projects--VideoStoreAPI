@@ -19,9 +19,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Are we going to use this??
+// register root routes
 var routes = require('./routes/index');
 app.use('/', routes);
 
+// register movies routes
 var movie_routes = require('./routes/movies');
 app.use('/movies', movie_routes);
 
