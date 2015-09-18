@@ -15,4 +15,8 @@ router.get('/date/:date', function(req, res, next) {
   return customer_exports.customersController.customers_by_register_date(req, res);
 });
 
+router.get('/zipcode/:zipcode', function(req, res, next) {
+  return customer_exports.customersController.customers_by_postal_code(req, res);
+});
+
 module.exports = router;
