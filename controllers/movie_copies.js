@@ -4,6 +4,10 @@ var sqlite3 = require('sqlite3').verbose(),
     db_env  = process.env.DB || 'development',
     db;
 
+    function addPercents(variable) {
+      var percented = "%" + variable + "%";
+      return percented;
+    }
 
 exports.movie_copiesController = {
   copies: function(req, res) {
