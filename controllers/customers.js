@@ -2,17 +2,21 @@
 
 // var sqlite3 = require('sqlite3').verbose();
 // var db = require('../db/development.db');
-var db = new sqlite3.Database('../db/development.db');
+// var db = new sqlite3.Database('../db/development.db');
+var sqlite3 = require('sqlite3').verbose(),
+  db_env = process.env.DB || 'development',
+  db = new sqlite3.Database('../db/' + db_env + '.db');
+
 
 exports.customersController = {
   index: function index(req,res) {
-    var results = {
-      // db.all("SELECT * FROM customers", function(err, rows) {
-      //         rows.forEach(function (row) {
-      //             console.log(row.name);
-      //         })
-      //     });
-      // db.close();
+    // var results = {
+    //   db.each("SELECT * FROM customers", function(err, rows) {
+    //           rows.forEach(function (row) {
+    //               console.log(row.name);
+    //           })
+    //       });
+    //   db.close();
       // all customers
     }
   return res.status(200).json(results);
