@@ -4,7 +4,7 @@ var customer_exports = require('../controllers/customers');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  return customer_exports.customersController.index(req, res);
 });
 
 module.exports = router;
