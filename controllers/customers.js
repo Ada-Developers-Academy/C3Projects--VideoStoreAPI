@@ -10,7 +10,7 @@ exports.customersController = {
     // loop
     var results = {
       customers: []
-    }
+    };
 
     return res.status(200).json(results);
   },
