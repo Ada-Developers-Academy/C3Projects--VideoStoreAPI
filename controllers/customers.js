@@ -4,10 +4,11 @@ var Database = require('../database'); // Node module; Pulling in db object we m
 
 var customersController = {
 
+  // maybe move the var db = ... out here?
+
   all_customers: function(req, callback) {
     var statement = "SELECT * FROM customers";
     var db = new Database('db/development.db');
-    // pull things out of the req (like order_by, etc.)
 
     db.query(statement, function(err, result) {
 
@@ -20,21 +21,18 @@ var customersController = {
 
   },
 
-  // customer: function(req, res) {
-  //   var results = {
-  //     id: ,
-  //     name: ,
-  //     registered_at: ,
-  //     address: ,
-  //     city: ,
-  //     state: ,
-  //     postal_code:,
-  //     phone: ,
-  //     account_credit:
-  //   };
+  customer: function(req, callback) {
+    var statement = "SELECT * FROM customers WHERE id = " + req.params.id + ";";
+    var db = new Database('db/development.db');
 
-  //   return res.status(200).json(results);
-  // }
+    db.query(statement, function(err, result) {
+
+      var json_result = {
+        customer: result[0]
+      };
+      callback(err, json_result);
+    });
+  }
 };
 
-module.exports = customersController
+module.exports = customersController;

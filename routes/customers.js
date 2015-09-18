@@ -7,7 +7,8 @@ var customersController = require('../controllers/customers');
 // "/customers "
 router.get('/', function(req, res, next) {
   // res = express' response object (how it responds to the GET request)
-  var return_data = customersController.all_customers(req, function(err, result) {
+
+  customersController.all_customers(req, function(err, result) {
     
     if (err) {
       res.status(500).json(err);
@@ -20,8 +21,17 @@ router.get('/', function(req, res, next) {
 });
 
 // "/customers/{:id}"
-// router.get('/:id', function(req, res, next) {
-//   return customersController.customer(req, res);
-// });
+router.get('/:id', function(req, res, next) {
+  customersController.customer(req, function(err, result) {
+    
+    if (err) {
+      res.status(500).json(err);
+    } else { 
+      res.status(200).json(result);
+    };
+
+  })
+
+});
 
 module.exports = router;
