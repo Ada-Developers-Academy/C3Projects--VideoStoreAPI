@@ -27,9 +27,7 @@ var rental_fields = [
   ['check_out', 'text'],
   ['check_in', 'text'],
   ['due_date', 'text'],
-  ['overdue', 'integer'], // 0 for false 1 for true
-  ['customer_id', 'integer'],
-  ['movie_id', 'integer']
+  ['overdue', 'integer', 'DEFAULT 0'] // 0 for false 1 for true
 ]
 
 // I want these to work somewhat how rake db:reset works, so I need to do three things:
@@ -44,31 +42,38 @@ db.serialize(function() {
   // 2. create fresh versions of those tables
   db.run("CREATE TABLE movies (id INTEGER PRIMARY KEY);");
   db.run("CREATE TABLE customers (id INTEGER PRIMARY KEY);");
-  db.run("CREATE TABLE rentals (id INTEGER PRIMARY KEY);");
+  db.run("CREATE TABLE rentals (id INTEGER PRIMARY KEY, \
+          customer_id INTEGER, \
+          movie_id INTEGER, \
+          FOREIGN KEY (customer_id) REFERENCES customer(id), \
+          FOREIGN KEY (movie_id) REFERENCES movie(id));");
 
   // 3. add the columns to those tables
   // CREATE MOVIES TABLE COLUMNS
   for(var i = 0; i < movie_fields.length; i++) {
-    var name = movie_fields[i][0],
-        type = movie_fields[i][1];
+    var movie_name = movie_fields[i][0],
+        movie_type = movie_fields[i][1];
 
-    db.run("ALTER TABLE movies ADD COLUMN " + name + " " + type + ";");
+    db.run("ALTER TABLE movies ADD COLUMN " + movie_name + " " + movie_type + ";");
   }
 
   // CREATE CUSTOMERS TABLE COLUMNS
-  for(var i = 0; i < customer_fields.length; i++) {
-    var name = customer_fields[i][0],
-        type = customer_fields[i][1];
+  for(var l = 0; l < customer_fields.length; l++) {
+    var customer_name = customer_fields[l][0],
+        customer_type = customer_fields[l][1];
 
-    db.run("ALTER TABLE customers ADD COLUMN " + name + " " + type + ";");
+    db.run("ALTER TABLE customers ADD COLUMN " + customer_name + " " + customer_type + ";");
   }
 
   // CREATE RENTALS TABLE COLUMNS
-  for(var i = 0; i < rental_fields.length; i++) {
-    var name = rental_fields[i][0],
-        type = rental_fields[i][1];
+  for(var k = 0; k < rental_fields.length; k++) {
+    var rental_name = rental_fields[k][0],
+        rental_type = rental_fields[k][1];
+        default_value = (rental_fields[k][2] === undefined) ? "" : rental_fields[k][2];
 
-    db.run("ALTER TABLE rentals ADD COLUMN " + name + " " + type + ";");
+
+    db.run("ALTER TABLE rentals ADD COLUMN " +
+            rental_name + " " + rental_type + " " + default_value + ";");
   }
 });
 
