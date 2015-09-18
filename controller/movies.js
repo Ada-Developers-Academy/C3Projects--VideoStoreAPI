@@ -22,6 +22,5 @@ exports.moviesController = {
     db.all(statement, function(err, rows) {
       res.status(200).json(rows);
     });
-
   }
 }
