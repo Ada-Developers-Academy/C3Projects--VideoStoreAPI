@@ -57,5 +57,4 @@ module.exports = {
     });
   }
 
-  // get resources/:sort_by/:number/:offset
 }
