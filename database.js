@@ -15,10 +15,12 @@ StoreDatabase.prototype = {
       db.all(statement, function(err, res) {
         // we only get a callback if it's successful
         if (callback) { callback(res); }
+
+        db.close();
       });
+    
     });
 
-    db.close();
   }
 };
 
