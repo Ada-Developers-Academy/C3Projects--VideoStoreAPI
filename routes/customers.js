@@ -5,7 +5,6 @@ var customer_exports = require('../controllers/customers');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  //return list of all customers
   return customer_exports.customersController.index(req, res);
 });
 
