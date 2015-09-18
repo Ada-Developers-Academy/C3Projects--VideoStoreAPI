@@ -16,6 +16,12 @@ var customer_statement = db.prepare( // we will use this statement later
   VALUES( ?, ?, ?, ?, ?, ?, ?, ?);"
 );
 
+var rentals = require('./rentals'); // requires in movies.json file
+var rental_statement = db.prepare( // we will use this statement later
+  "INSERT INTO RENTALS(check_out, check_in, due_date, overdue, customer_id, movie_id) \
+  VALUES( ?, ?, ?, ?, ?, ?);"
+);
+
 db.serialize(function() {
   // loop through movies
   for(var i = 0; i < movies.length; i++) {
@@ -48,8 +54,24 @@ db.serialize(function() {
     );
   }
 
+  // loop through rentals
+  for(var j = 0; j < rentals.length; j++) {
+    var rental = rentals[j];
+
+    // insert each rental into the db
+    rental_statement.run(
+      rental.check_out,
+      rental.check_in,
+      rental.due_date,
+      rental.overdue,
+      rental.customer_id,
+      rental.movie_id
+    );
+  }
+
   movie_statement.finalize();
   customer_statement.finalize();
+  rental_statement.finalize();
 })
 
 db.close();

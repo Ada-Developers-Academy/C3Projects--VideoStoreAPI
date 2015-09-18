@@ -27,7 +27,7 @@ var rental_fields = [
   ['check_out', 'text'],
   ['check_in', 'text'],
   ['due_date', 'text'],
-  ['overdue', 'boolean'],
+  ['overdue', 'integer'], // 0 for false 1 for true
   ['customer_id', 'integer'],
   ['movie_id', 'integer']
 ]
