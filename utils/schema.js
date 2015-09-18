@@ -14,7 +14,7 @@ var movie_fields = [
 
 var customer_fields = [
   ['name', 'text'],
-  ['registered_at', 'text'],
+  ['registered_at', 'integer'],
   ['address', 'text'],
   ['city', 'text'],
   ['state', 'text'],

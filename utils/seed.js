@@ -42,10 +42,19 @@ db.serialize(function() {
     var customer = customers[j];
     // this will format dates in sqlite to read year/month/day for easier sorting
     var dateObj = new Date(customer.registered_at);
-    var month = dateObj.getUTCMonth() + 1; //months from 1-12
-    var day = dateObj.getUTCDate();
-    var year = dateObj.getUTCFullYear();
-    var formatted_date = newdate = year + month + day;
+    var month = (dateObj.getUTCMonth() + 1).toString(); //months from 1-12
+    var day = (dateObj.getUTCDate()).toString();
+    var year = (dateObj.getUTCFullYear()).toString();
+
+    if (month.length == 1) { // This will ensure month is two digits
+      month = "0" + month;
+    }
+
+    if (day.length == 1) { // This will ensure day is two digits
+      day = "0" + day;
+    }
+
+    var formatted_date = parseInt(year + month + day);
 
     // insert each customer into the db
     customer_statement.run(
