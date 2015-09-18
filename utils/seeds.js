@@ -10,10 +10,17 @@ var movie_statement = db.prepare(
   VALUES (?, ?, ?, ?, ?);"
 );
 
+var movie_copies_statement = db.prepare(
+  "INSERT INTO movie_copies(movie_id) \
+  VALUES (?);"
+);
+
 var customers = require('../customers');
 var customers_statement = db.prepare(
   "INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_credit) \
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?);")
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+
+
 
 db.serialize(function() {
   // loop them movies
@@ -30,6 +37,20 @@ db.serialize(function() {
     );
   }
   movie_statement.finalize();
+
+  // loop them movies FOR COPIES
+  for (var i = 0; i < movies.length; i++) {
+    var movie = movies[i]; // this needs to be from db, not json seed
+    var num_copies = movie.inventory;
+
+    for (var j = 0; j < num_copies; j++) {
+      console.log(movie);
+      movie_copies_statement.run(
+        i+1
+      );
+    }
+  }
+  movie_copies_statement.finalize();
 
   for (var i = 0; i < customers.length; i++) {
     var customer = customers[i];
