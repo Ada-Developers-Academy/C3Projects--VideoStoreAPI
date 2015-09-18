@@ -12,4 +12,9 @@ router.get('/:sort_by/:results_per_page/:page_number', function(req, res, next) 
   return movies_exports.moviesController.sort_pages(req, res);
 });
 
+// '/movies/:title'
+router.get('/:title', function(req, res, next) {
+  return movies_exports.moviesController.search_title(req, res);
+});
+
 module.exports = router;
