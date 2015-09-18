@@ -23,4 +23,46 @@ module.exports = {
       db.close();
     });
   },
+
+  create: function(data, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    var keys = Object.keys(data);
+    var key_pairs = [];
+    var values = [];
+
+    for (var i = 0; i < keys.length; i++) {
+      values.push(data[keys[i]]);
+      key_pairs.push('?');
+    }
+
+    var statement = "INSERT INTO " + this.table_name + " (" + keys.join(',') + ") " + "VALUES(" + key_pairs.join(',') + ");";
+
+    db.run(statement, values, function(err) {
+      callback(err, { inserted_id: this.lastID, changed: this.changes });
+      db.close();
+    });
+  },
+
+  save: function(data, callback) {
+    if (data.id) {
+      var db = new sqlite3.Database('db/' + db_env + '.db');
+      var keys = Object.keys(data);
+      var key_pairs = [];
+      var values = [];
+
+      for (var i = 0; i < keys.length; i++) {
+        values.push(data[keys[i]]);
+        key_pairs.push(keys[i] + "=? ");
+      }
+
+      var statement = "UPDATE " + this.table_name + " SET " + key_pairs.join(',') + " WHERE id=" + data.id;
+
+      db.run(statement, values, function(err) {
+        callback(err, { inserted_id: this.lastID, changed: this.changed });
+        db.close();
+      });
+    } else {
+      callback({ err: "Missing key", message: "Can't save without an id; use `create`" });
+    }
+  }
 }
