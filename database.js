@@ -15,7 +15,6 @@ Database.prototype = {
       db.all(statement, function(err, res) {
         // error handling looks like -> if (err) { };
         if (callback) { callback(res); }
-        return res;
       });
     });
 
