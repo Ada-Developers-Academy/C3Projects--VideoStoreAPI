@@ -3,24 +3,25 @@
 // var sqlite3 = require('sqlite3').verbose();
 // var db = require('../db/development.db');
 // var db = new sqlite3.Database('../db/development.db');
-var sqlite3 = require('sqlite3').verbose(),
-  db_env = process.env.DB || 'development',
-  db = new sqlite3.Database('../db/' + db_env + '.db');
 
+var sqlite3 = require('sqlite3').verbose(),
+  db_env = process.env.DB || 'development';
 
 exports.customersController = {
-  index: function index(req,res) {
-    // var results = {
-    //   db.each("SELECT * FROM customers", function(err, rows) {
-    //           rows.forEach(function (row) {
-    //               console.log(row.name);
-    //           })
-    //       });
-    //   db.close();
+
+  index: function index(req, res, callback) {
+    var db = new sqlite3.Database('./db/' + db_env + '.db');
+    var statement = "SELECT * from customers;";
+    var all_customers = []
+        db.all(statement, function(err, rows) {
+          rows.forEach(function (row) {
+            all_customers.push(row);
+          });
+          db.close();
+          return res.status(200).json(all_customers);
+        });
       // all customers
-    }
-  return res.status(200).json(results);
-},
+  },
 name: function name(req,res) {
   var results = {
     // sorted by name somehow
