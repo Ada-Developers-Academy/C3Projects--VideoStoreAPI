@@ -11,11 +11,13 @@ StoreDatabase.prototype = {
     var db = new sqlite3.Database(this.path); // creates a connection to the db
 
     db.serialize(function() {
-      db.all(statement, function(err, res) { // statement == some SQL string
-        if (callback) { callback(res); } // we only get a callback if it's successful
+      // statement == some SQL string
+      db.all(statement, function(err, res) {
+        // we only get a callback if it's successful
+        if (callback) { callback(res); }
       });
     });
-  
+
     db.close();
   }
 };
