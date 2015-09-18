@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "nodemon ./bin/www",
+    "db:schema" : "node ./utils/schema",
+    "db:seed" : "node ./utils/seed",
+    "db:setup" : "npm run db:schema; npm run db:seed"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
