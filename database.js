@@ -1,14 +1,11 @@
 "use-strict";
 var sqlite3 = require('sqlite3').verbose();
-
-function Database(path) { // this creates our database class
-  this.path = path;
-}
+var db_env = process.env.DB || 'development';
 
 // Here we will define our instance methods
-Database.prototype = {
+module.exports = {
   query: function(statement, callback) {
-    var db = new sqlite3.Database(this.path);
+    var db = new sqlite3.Database('db/' + db_env + '.db');
 
     db.serialize(function() {
       // below: this is the callback pattern...parameters(ERRORS, RESULT)
@@ -21,10 +18,16 @@ Database.prototype = {
     db.close();
   },
 
+  all: function(callback) {
+
+    this.query("SELECT * FROM " + this.table_name + ";", function(res) {
+      callback(res);
+    });
+  },
+
   test: function() {
     return "yay, it works!";
   }
 }
 
 // We want to export the Database into the overall node structure
-module.exports = Database;

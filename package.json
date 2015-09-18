@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "start": "node ./bin/www",
     "db:schema" : "node ./utils/schema",
     "db:seed" : "node ./utils/seed",
     "db:setup" : "npm run db:schema; npm run db:seed"
