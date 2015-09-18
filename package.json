@@ -1,13 +1,13 @@
 {
-  "name": "app",
+  "name": "VideoStoreAPI",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
     "test": "clear; DB=test mocha --recursive",
-    "db:schema": "node ./utils/schema",
-    "db:seed": "node ./utils/seed",
-    "db:setup": "npm run db:schema; npm run db:seed"
+    "schema": "node ./utils/schema",
+    "seed": "node ./utils/seed",
+    "setup": "npm run schema; npm run seed"
   },
   "dependencies": {
     "body-parser": "~1.13.2",

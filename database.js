@@ -7,13 +7,14 @@ function Database(path) {
 }
 
 Database.prototype = {
-  query: function() {
+  find_all: function(callback) {
     var db = new sqlite3.Database(this.path);
+    var statement = "SELECT * FROM " + this.table_name + ";";
 
-    db.serialize(function() {
-      var movies = db.run("SELECT * FROM movies;");
-    });
-    db.close();
+    db.all(statement, function(err, res) {
+      if (callback) callback(err, res);
+      db.close();
+   });
   }
 }
 
