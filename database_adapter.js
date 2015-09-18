@@ -17,7 +17,7 @@ module.exports = {
   // get returns one record, making this emulate Active Record's find_by
   find_by: function(column, value, callback) {
     var db        = new sqlite3.Database('db/' + db_env + '.db');
-    var statement = "SELECT * FROM " + this.table_name + " WHERE " + column + " = ?";
+    var statement = "SELECT * FROM " + this.table_name + " WHERE " + column + " LIKE ?";
 
     db.get(statement, value, function(err, res) {
       if (callback) { callback(err, res); }
