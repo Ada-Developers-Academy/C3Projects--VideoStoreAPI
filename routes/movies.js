@@ -18,4 +18,17 @@ router.get('/:title', function(req, res, next) {
   });
 });
 
+router.get(':sort_by/:limit/:offset', function(req, res, next) {
+  var queries = [];
+  queries.push(req.params.limit);
+  queries.push(req.params.offset);
+  var column = req.params.sorty_by
+
+  console.log(queries);
+
+  movie.limit(column, queries, function(err, rows) {
+    res.status(200).json({ movies: rows} );
+  });
+});
+
 module.exports = router;

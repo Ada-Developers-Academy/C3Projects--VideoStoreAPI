@@ -43,6 +43,20 @@ module.exports = {
       if (callback) { callback(err, res); }
       db.close();
     });
+  },
+
+  limit: function(column, queries, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    var limit = queries[0];
+    var offset = queries[1];
+
+    var statement = "SELECT * FROM " + this.table_name + " ORDER BY " + column + " LIMIT " + limit + " OFFSET " + offset;
+    console.log(statement);
+
+    db.all(statement, values, function(err, res) {
+      if (callback) { callback(err, res); }
+      db.close();
+    });
   }
 
   // get resources/:sort_by/:number/:offset
