@@ -8,8 +8,14 @@ var customersController = require('../controllers/customers');
 router.get('/', function(req, res, next) {
   // res = express' response object (how it responds to the GET request)
   var return_data = customersController.all_customers(req, function(err, result) {
-    res.send(200).json(result);
-  })
+    
+    if (err) {
+      res.status(500).json(err);
+    } else { 
+      res.status(200).json(result);
+    };
+
+  });
 
 });
 

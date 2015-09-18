@@ -6,17 +6,16 @@ var customersController = {
 
   all_customers: function(req, callback) {
     var statement = "SELECT * FROM customers";
+    var db = new Database('db/development.db');
     // pull things out of the req (like order_by, etc.)
 
-    var customers = Database.query(statement, function(res) {
-      // prepare json object
+    db.query(statement, function(err, result) {
 
-      // loop
-      var results = {
-        customers: []
-      }
+      var json_results = {
+        customers: result
+      };
 
-      callback(customers);
+      callback(err, json_results);
     });
 
   },

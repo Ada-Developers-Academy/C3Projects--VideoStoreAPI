@@ -14,7 +14,7 @@ StoreDatabase.prototype = {
       // statement == some SQL string
       db.all(statement, function(err, result) {
         // we only get a callback if it's successful
-        if (callback) { callback(result); }
+        if (callback) { callback(err, result); }
 
         db.close();
       });
