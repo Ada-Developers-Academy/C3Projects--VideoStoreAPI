@@ -20,7 +20,10 @@ var customers_statement = db.prepare(
   "INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_credit) \
   VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
 
-
+var rental_statement = db.prepare(
+  "INSERT INTO rentals(checkout_date, return_date, return_status, cost, movie_id, customer_id \
+  VALUES (?, ?, ?, ?, ?, ?);"
+);
 
 db.serialize(function() {
   // loop them movies
@@ -68,6 +71,17 @@ db.serialize(function() {
   }
 
   customers_statement.finalize();
+
+  rental_statement.run(
+    "2015-09-18",
+    "2015-09-26",
+    0, // return_status (0 for false (checked out) 1 for true (returned))
+    5, // cost
+    2, // movie_id
+    6  // customer_id
+    );
+  rental_statement.finalize();
+
 });
 
 
