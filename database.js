@@ -4,11 +4,7 @@ var sqlite3 = require("sqlite3").verbose(),
     db_env = process.env.DB || 'development';
 
 module.exports = {
-  hello: function() {
-    var hi = "Hello!";
-    return hi;
-  },
-  everything: function(callback){
+  all: function(callback){
     var db = new sqlite3.Database('db/' + db_env + '.db');
     var statement = "SELECT * FROM " + this.table_name + ";";
 
