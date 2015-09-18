@@ -70,8 +70,8 @@ db.serialize(function() {
   }
 
   // loop through rentals
-  for(var j = 0; j < rentals.length; j++) {
-    var rental = rentals[j];
+  for(var k = 0; k < rentals.length; k++) {
+    var rental = rentals[k];
 
     // insert each rental into the db
     rental_statement.run(
@@ -87,6 +87,6 @@ db.serialize(function() {
   movie_statement.finalize();
   customer_statement.finalize();
   rental_statement.finalize();
-})
+});
 
 db.close();
