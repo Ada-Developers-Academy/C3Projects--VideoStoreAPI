@@ -10,4 +10,12 @@ router.get('/', function(req, res, next) {
   });
 });
 
+router.get('/:title', function(req, res, next) {
+  var title = req.params.title;
+
+  movie.find_by('title', title, function(err, row) {
+    res.status(200).json({ movie: row} );
+  });
+});
+
 module.exports = router;
