@@ -14,8 +14,14 @@ module.exports = {
     });
   },
 
-  test: function() {
-    console.log("Yay");
+  find_subset: function(column, limit, offset, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    var statement = "SELECT * FROM " + this.table_name + " ORDER BY " + column + " LIMIT " + limit + " OFFSET " + offset + ";";
+
+    db.all(statement, function(err, record) {
+      if (callback) callback(err, record);
+      db.close();
+    });
   },
 
   find_by: function(column, value, callback) {
