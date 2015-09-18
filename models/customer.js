@@ -1,9 +1,9 @@
 "use strict";
 
-function Movie() {
-  this.table_name = "movies";
+function Customer() {
+  this.table_name = "customers";
 }
 
-Movie.prototype = require('../database');
+Customer.prototype = require('../database');
 
-module.exports = Movie
+module.exports = Customer

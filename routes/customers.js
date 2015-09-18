@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
-var customer_exports = require('../models/customers');
+var customer_exports = require('../controllers/customers');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   //return list of all customers
-  // return customer_exports.customerController.index(req, res);
+  return customer_exports.customersController.index(req, res);
 });
 
 router.get('/one_customer', function(req, res, next) {
