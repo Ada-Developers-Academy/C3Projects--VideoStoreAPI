@@ -42,8 +42,8 @@ The API you build should have the following capabilities. The schema of your dat
 - There is not an authentication requirement for this project; assume all users interacting with the API are video store employees.
 
 ### Customers
-- Retrive a list of all customers
-- Retrive a subset of customers
+- Retrieve a list of all customers
+- Retrieve a subset of customers
   - Given a sort column, return _n_ customer records, offset by _p_ records (this will be used to create "pages" of customers)
   - Sort columns are
     - `name`

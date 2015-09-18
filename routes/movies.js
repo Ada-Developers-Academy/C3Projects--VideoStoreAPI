@@ -7,19 +7,23 @@ router.get('/', function(req, res, next) {
   movie_exports.moviesController.getAllMovies(res);
 });
 
+// GET /movies/:id(synopsis, inventory, release_date)
 router.get('/id/:id', function(req, res, next) {
   movie_exports.moviesController.getMovieById(req.params.id, res);
 });
 
+// GET /movies/:title/inventory
+router.get('/title/:title/inventory', function(req, res, next){
+  movie_exports.moviesController.getMovieByTitleInventory(req.params.title, res);
+});
+
+// GET /movies/title/:title
 router.get('/title/:title', function(req, res, next) {
   movie_exports.moviesController.getMovieByTitle(req.params.title, res);
 });
 
+
 /*
-
-Get /movies/:id(synopsis, inventory, release_date)
-
-GET /movies/:title/inventory
 
 GET /movies/title?n=XXX&p=XXX
 

@@ -16,15 +16,15 @@ exports.moviesController = {
     });
   },
 
-  // GET /movies/id/:id
-  getMovieById: function(id, res) {
-    db.all("SELECT title, overview, release_date, inventory FROM movies WHERE id=?", id, function(err, rows) {
-      if (err != null) {
-        console.log(err);
-      }
-      res.status(200).json(rows);
-    });
-  },
+    // Get /movies/id/:id(synopsis, inventory, release_date)
+  // getMovieById: function(id, res) {
+  //   db.all("SELECT title, overview, release_date, inventory FROM movies WHERE id=?", id, function(err, rows) {
+  //     if (err != null) {
+  //       console.log(err);
+  //     }
+  //     res.status(200).json(rows);
+  //   });
+  // },
 
   // GET /movies/title/:title
   getMovieByTitle: function(title, res) {
@@ -34,13 +34,18 @@ exports.moviesController = {
       }
       res.status(200).json(rows);
     });
+  },
+
+  // GET /movies/title/:title/:inventory
+  getMovieByTitleInventory: function(title, res) {
+    db.all("SELECT title, inventory FROM movies WHERE title LIKE ?", title, function(err, rows) {
+      if (err != null) {
+        console.log(err);
+      }
+      res.status(200).json(rows);
+    });
   }
-
   /*
-
-  Get /movies/:id(synopsis, inventory, release_date)
-
-  GET /movies/:title/inventory
 
   GET /movies/title?n=XXX&p=XXX
 
