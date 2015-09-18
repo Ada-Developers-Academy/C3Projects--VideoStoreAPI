@@ -25,9 +25,9 @@ module.exports = {
     });
   },
 
-  test: function() {
-    return "yay, it works!";
-  }
+ registered_at_sort: function(sort_type, records_per_page, offset, callback) {
+   this.query("SELECT * FROM " + this.table_name + " ORDER BY " + sort_type + " LIMIT " + records_per_page + " OFFSET " + offset + ";");
+ }
 }
 
 // We want to export the Database into the overall node structure
