@@ -11,4 +11,8 @@ router.get('/names/:name', function(req, res, next) {
   return customer_exports.customersController.customers_by_name(req, res);
 });
 
+router.get('/date/:date', function(req, res, next) {
+  return customer_exports.customersController.customers_by_register_date(req, res);
+});
+
 module.exports = router;

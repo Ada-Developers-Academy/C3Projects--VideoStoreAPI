@@ -23,4 +23,14 @@ exports.customersController = {
 
   },
 
+  customers_by_register_date: function(req, res) {
+    db = new sqlite3.Database('db/' + db_env + '.db');
+    var date = req.params.date;
+    db.get("SELECT * FROM customers WHERE registered_at LIKE ?;", date, function(err, the_date) {
+      db.close();
+      return res.status(200).json(the_date);
+    });
+
+  },
+
 };
