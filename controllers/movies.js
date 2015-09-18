@@ -1,15 +1,42 @@
 "use strict";
 
+var sqlite3 = require('sqlite3').verbose();
+var db_env = process.env.DB || 'development';
+var db = new sqlite3.Database('db/' + db_env + '.db');
+
 exports.moviesController = {
-  zomg: function getZomg(req, res) {
-    var results = {
-      zomg: "it works!"
-    }
-    return res.status(200).json(results);
+
+  // GET /movies
+  getAllMovies: function(res) {
+    db.all("SELECT title, overview, release_date, inventory FROM movies", function(err, rows) {
+      if (err != null) {
+        console.log(err);
+      }
+      res.status(200).json(rows);
+    });
+  },
+
+  // GET /movies/id/:id
+  getMovieById: function(id, res) {
+    db.all("SELECT title, overview, release_date, inventory FROM movies WHERE id=?", id, function(err, rows) {
+      if (err != null) {
+        console.log(err);
+      }
+      res.status(200).json(rows);
+    });
+  },
+
+  // GET /movies/title/:title
+  getMovieByTitle: function(title, res) {
+    db.all("SELECT title, overview, release_date, inventory FROM movies WHERE title LIKE ?", title, function(err, rows) {
+      if (err != null) {
+        console.log(err);
+      }
+      res.status(200).json(rows);
+    });
   }
 
   /*
-  GET /movies
 
   Get /movies/:id(synopsis, inventory, release_date)
 
