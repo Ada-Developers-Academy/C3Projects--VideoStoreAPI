@@ -5,11 +5,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var movies       = require('./routes/movies');
-var movie_copies = require('./routes/movie_copies')
-var customers    = require('./routes/customers');
-var rentals      = require('./routes/rentals');
-var zomg         = require('./routes/zomg');
+var movies = require('./routes/movies');
+var movie_copies = require('./routes/movie_copies');
+var customers = require('./routes/customers');
+var rentals = require('./routes/rentals');
+var zomg = require('./routes/zomg');
 
 var app = express();
 

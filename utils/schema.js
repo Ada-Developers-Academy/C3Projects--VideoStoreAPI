@@ -27,7 +27,8 @@ var rental_fields = [
   ['checkout_date', 'text'],
   ['return_date', 'text'],
   ['return_status', 'integer'],
-  ['cost', 'integer']
+  ['cost', 'integer'],
+  ['title', 'text']
 ];
   // sqlite does no have a separate boolean class, using values 0 and 1 for true and false
 
@@ -51,9 +52,9 @@ db.serialize(function() {
 
   db.run("CREATE TABLE rentals( \
     id INTEGER PRIMARY KEY, \
-    movie_id INTEGER, \
+    movie_copy_id INTEGER, \
     customer_id INTEGER, \
-    FOREIGN KEY (movie_id) REFERENCES movies(id), \
+    FOREIGN KEY (movie_copy_id) REFERENCES movie_copies(id), \
     FOREIGN KEY (customer_id) REFERENCES customers(id) \
     );");
 

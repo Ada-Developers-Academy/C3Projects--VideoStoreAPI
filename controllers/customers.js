@@ -18,6 +18,19 @@ exports.customersController = {
     });
   },
 
+  customers_current_movies: function(req, res) {
+    db = new sqlite3.Database('db/' + db_env + '.db');
+    var id = req.params.id;
+    console.log("customer id " + id);
+    db.all("SELECT title FROM rentals WHERE customer_id=?", id, function(err, the_movies) {
+      if (err) {
+        console.log(err);
+      }
+      db.close();
+      return res.status(200).json(the_movies);
+    });
+  },
+
   customers_by_name: function(req, res) {
     db = new sqlite3.Database('db/' + db_env + '.db');
     var name = req.params.name;
