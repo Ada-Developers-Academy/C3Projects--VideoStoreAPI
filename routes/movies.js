@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
+var movies_exports = require('../controller/movies');
 
-/* GET home page. */
+// route is '/movies'
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  return movies_exports.moviesController.all_movies(req, res);
 });
 
 module.exports = router;
