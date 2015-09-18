@@ -7,5 +7,8 @@ router.get('/', function(req, res, next) {
   return movies_exports.moviesController.index(req, res);
 });
 
+router.get('/:column/:n/:p', function(req, res, next) {
+  return movies_exports.moviesController.by_column(req, res);
+});
 
 module.exports = router;
