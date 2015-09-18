@@ -22,9 +22,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 var zomgRoutes = require('./routes/zomgRoutes');
 app.use('/', zomgRoutes);
 app.use('/zomg', zomgRoutes);
+app.use('/all', zomgRoutes);
 
 var users = require('./routes/users');
 app.use('/users', users);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

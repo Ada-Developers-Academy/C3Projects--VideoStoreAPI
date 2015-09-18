@@ -14,4 +14,9 @@ router.get('/zomg', function(req, res, next) {
   return zomgExports.zomgController.itWorks(req, res)
 });
 
+/* GET all customers. */
+router.get('/all', function(req, res, next) {
+  return zomgExports.zomgController.all(req, res)
+});
+
 module.exports = router;
