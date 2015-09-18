@@ -1,12 +1,20 @@
 "use strict";
 
+var sqlite3 = require('sqlite3').verbose(),
+  db_env = process.env.DB || 'development';
 
 exports.moviesController = {
-  index: function index(req,res) {
-    var results = {
-      // all movies
-    }
-  return res.status(200).json(results);
+  index: function index(req, res, callback) {
+    var db = new sqlite3.Database('./db/' + db_env + '.db');
+    var statement = "SELECT * from movies;";
+    var results = [];
+      db.all(statement, function(err, rows) {
+        rows.forEach(function (row) {
+          results.push(row);
+        });
+        db.close();
+        return res.status(200).json(results);
+      });
   },
 
   title: function title(req,res) {
