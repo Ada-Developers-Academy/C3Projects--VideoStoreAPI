@@ -12,9 +12,9 @@ exports.moviesController = {
   },
 
   movies_by_title: function(req, res) {
-    var title = req.params.title;
+    var title = req.params.title.toLowerCase();
     console.log(title);
-    db.get("SELECT * FROM movies WHERE title='" + title + "';", function(err, the_title) {
+    db.get("SELECT * FROM movies WHERE title LIKE '" + title + "';", function(err, the_title) {
       console.log(typeof title);
       return res.status(200).json(the_title);
 
