@@ -18,6 +18,17 @@ router.get('/:id', function(req, res, next) {
   });
 });
 
+router.get('/:sort_by/:limit/:offset', function(req, res, next) {
+  var queries = [];
+  queries.push(req.params.limit);
+  queries.push(req.params.offset);
+  var column = req.params.sort_by;
+
+  customer.subset(column, queries, function(err, rows) {
+    res.status(200).json({ customers: rows} );
+  });
+});
+
 // DEBUGGER ROUTE
 
 // router.get('/:city', function(req, res, next) {
