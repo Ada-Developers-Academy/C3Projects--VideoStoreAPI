@@ -47,34 +47,22 @@ exports.moviesController = {
       });
   },
 
-  checkedout: function checkedout(req,res) {
-    var results = {
-      // for a movie, all customers w/ it checked out
-    }
-  return res.status(200).json(results);
-  },
+  movie_available: function movie_available(req,res) {
+    var db = new sqlite3.Database('./db/' + db_env + '.db'),
+      results = [],
+      title = req.params.title,
+      titleish = '%' + title + '%',
+      statement = "SELECT movies.title, movies.overview, movies.inventory FROM movies, rentals WHERE movies.title=rentals.movie_title AND movies.title LIKE ? AND rentals.return_date IS NULL;";
 
-  title_history: function title_history(req,res) {
-    var results = {
-      // for a movie, all customers w/ that movie previously checked out
-      // sorted by check out date
-    }
-  return res.status(200).json(results);
-  },
-
-  id_history: function id_history(req,res) {
-    var results = {
-      // for a movie, all customers w/ that movie previously checked out
-      // sorted by
-    }
-  return res.status(200).json(results);
-  },
-
-  name_history: function name_history(req,res) {
-    var results = {
-      // for a movie, all customers w/ that movie previously checked out
-      // sorted by
-    }
-  return res.status(200).json(results);
+      db.all(statement, [titleish], function(err, rows) {
+        var rented = rows.length,
+            movie = rows[0],
+            available = movie.inventory - rented;
+            console.log(movie);
+        results.push(movie, {'Available': available});
+    
+        db.close();
+        return res.status(200).json(results);
+      });
   }
 }
