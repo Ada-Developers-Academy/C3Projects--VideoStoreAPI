@@ -7,9 +7,8 @@ var bodyParser = require('body-parser');
 
 // establish our routes based on route files
 var routes = require('./routes/index');
-var users = require('./routes/users');
 var movies = require('./routes/movies');
-// var customers = require('./routes/customers');
+var customers = require('./routes/customers');
 // var rentals = require('./routes/rentals');
 
 
@@ -29,9 +28,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Establishes our routes
 app.use('/', routes);
-app.use('/users', users);
+app.use('/customers', customers);
 app.use('/movies', movies);
-// app.use('/customers', customers);
 // app.use('/rentals', rentals);
 
 
