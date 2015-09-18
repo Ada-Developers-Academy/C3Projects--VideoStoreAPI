@@ -1,14 +1,17 @@
 "use strict";
 
 var sqlite3 = require('sqlite3').verbose(),
-    db_env = process.env.DB || 'development';
+  db_env = process.env.DB || 'development',
+  db_path = 'db/' + db_env + '.db';
 
-function Database(path) {
-  this.path = path;
-};
+function Database() {};
+
+Database.prototype.dbPath = function dbPath() {
+  return db_path;
+}
 
 Database.prototype.create = function create(data, callback) {
-  var db = new sqlite3.Database('db/' + db_env + '.db');
+  var db = new sqlite3.Database(this.dbPath());
   var keys = Object.keys(data);
   var questionMarks  = [];
   var values = [];
@@ -18,7 +21,7 @@ Database.prototype.create = function create(data, callback) {
     questionMarks.push("?");
   }
 
-  var statement = "INSERT INTO movies (" + keys.join(", ") + ") VALUES (" + questionMarks.join(", ") + ");";
+  var statement = "INSERT INTO " + this.tableName + " (" + keys.join(", ") + ") VALUES (" + questionMarks.join(", ") + ");";
 
   db.run(statement, values, function(err) {
     callback(err, { insertedID: this.lastID, changed: this.changes });
