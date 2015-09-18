@@ -31,7 +31,7 @@ var data = [
     name: 'rentals',
     fields: [
       'checkout_date TEXT NOT NULL DEFAULT CURRENT_DATE',
-      'return_date TEXT NOT NULL',
+      'return_date TEXT',
       'movie_title TEXT NOT NULL',
       'customer_id INTEGER NOT NULL',
       'FOREIGN KEY(movie_title) REFERENCES movies(title)',
