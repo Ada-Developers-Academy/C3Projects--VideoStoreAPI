@@ -40,11 +40,17 @@ db.serialize(function() {
   // loop through customers
   for(var j = 0; j < customers.length; j++) {
     var customer = customers[j];
+    // this will format dates in sqlite to read year/month/day for easier sorting
+    var dateObj = new Date(customer.registered_at);
+    var month = dateObj.getUTCMonth() + 1; //months from 1-12
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+    var formatted_date = newdate = year + month + day;
 
     // insert each customer into the db
     customer_statement.run(
       customer.name,
-      customer.registered_at,
+      formatted_date,
       customer.address,
       customer.city,
       customer.state,
