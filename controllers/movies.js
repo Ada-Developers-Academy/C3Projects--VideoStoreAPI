@@ -23,7 +23,7 @@ exports.moviesController = {
     db = new sqlite3.Database('db/' + db_env + '.db');
     var title = req.params.title.toLowerCase();
     title = addPercents(title);
-    db.get("SELECT * FROM movies WHERE title LIKE ?;", title, function(err, the_title) {
+    db.all("SELECT * FROM movies WHERE title LIKE ?;", title, function(err, the_title) {
       db.close();
       return res.status(200).json(the_title);
     });
@@ -35,7 +35,7 @@ exports.moviesController = {
   //   var title = req.params.title.toLowerCase();,
   //       order = req.params.order.toLowerCase();
 
-  //   db.get("SELECT * FROM movies ORDER BY " + title "LIKE ?;", title, function(err, the_title) {
+  //   db.all("SELECT * FROM movies ORDER BY " + title "LIKE ?;", title, function(err, the_title) {
   //     db.close();
   //     return res.status(200).json(the_title);
   //   });
@@ -46,7 +46,7 @@ exports.moviesController = {
     db = new sqlite3.Database('db/' + db_env + '.db');
     var release = req.params.release_date;
     release = addPercents(release);
-    db.get("SELECT * FROM movies WHERE release_date ?;", release, function(err, the_date) {
+    db.all("SELECT * FROM movies WHERE release_date ?;", release, function(err, the_date) {
       db.close();
       return res.status(200).json(the_date);
     });
