@@ -19,9 +19,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// NOTE: Do we even need this…?
-// var routes = require('./routes/index');
-// app.use('/', routes);
+var routes = require('./routes/index');
+app.use('/', routes);
 
 var customers = require('./routes/customers');
 app.use('/customers', customers);

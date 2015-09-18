@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+// Project Baseline Requirement
+router.get('/zomg', function(req, res, next) {
+  res.json('it works!');
 });
 
 module.exports = router;
