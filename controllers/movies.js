@@ -18,17 +18,33 @@ exports.moviesController = {
   },
 
   title: function title(req,res) {
-    var results = {
-      // all movies sorted by title
-    }
-  return res.status(200).json(results);
+    var db = new sqlite3.Database('./db/' + db_env + '.db');
+    var results = [];
+    var records = req.params.records,
+        offset = req.params.offset;
+    var statement = "SELECT * FROM movies ORDER BY title LIMIT ? OFFSET ? ;";
+      db.all(statement, [records, offset], function(err, rows) {
+        rows.forEach(function (row) {
+          results.push(row);
+        });
+        db.close();
+        return res.status(200).json(results);
+      });
   },
 
   released: function released(req,res) {
-    var results = {
-      // all movies by release date
-    }
-  return res.status(200).json(results);
+    var db = new sqlite3.Database('./db/' + db_env + '.db');
+    var results = [];
+    var records = req.params.records,
+        offset = req.params.offset;
+    var statement = "SELECT * FROM movies ORDER BY release_date DESC LIMIT ? OFFSET ? ;";
+      db.all(statement, [records, offset], function(err, rows) {
+        rows.forEach(function (row) {
+          results.push(row);
+        });
+        db.close();
+        return res.status(200).json(results);
+      });
   },
 
   checkedout: function checkedout(req,res) {

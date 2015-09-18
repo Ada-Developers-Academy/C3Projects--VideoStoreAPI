@@ -7,12 +7,12 @@ router.get('/', function(req, res, next) {
   return movies_exports.moviesController.index(req, res);
 });
 // sort by movie title
-router.get('/title/:query', function(req, res, next) {
+router.get('/title/:records/:offset', function(req, res, next) {
   return movies_exports.moviesController.title(req, res);
 });
 
 // sort by movie release date
-router.get('/released/:query', function(req, res, next) {
+router.get('/released/:records/:offset', function(req, res, next) {
   return movies_exports.moviesController.released(req, res);
 });
 
