@@ -15,8 +15,8 @@ exports.customersController = {
 
   customers_by_name: function(req, res) {
     db = new sqlite3.Database('db/' + db_env + '.db');
-    var name = req.params.name.toLowerCase();
-    db.get("SELECT * FROM customers WHERE name LIKE %?%;", name, function(err, the_name) {
+    var name = req.params.name;
+    db.get("SELECT * FROM customers WHERE name LIKE ?;", name, function(err, the_name) {
       db.close();
       return res.status(200).json(the_name);
     });
