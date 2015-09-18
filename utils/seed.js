@@ -75,14 +75,14 @@ db.serialize(function seedData() {
     statement.finalize();
   });
 
-  // // THIS HAS PROBLEMS. It tries to execute the callbacks asynchronously, and it has problems because the DB is locked. It only makes ~7 of the 10 rentals before the error.
   // db.serialize(function seedRentals() {
   //   var numRentals = 10;
-  //   db.each('SELECT * FROM movies LIMIT ' + numRentals + ';', createRental);
+  //   db.all('SELECT * FROM movies LIMIT ' + numRentals + ';', createRentals);
   // });
 });
 
-// function createRental(err, movie) {
+// // TODO: come back to this! It would be nice to import the dates. Until then, we'll use the other one.
+// function createRentals(err, movies) {
 //   if (err) { console.log('You suck :P'); return; }
 
 //   var db = new sqlite3.Database('db/' + db_env + '.db');
@@ -93,7 +93,10 @@ db.serialize(function seedData() {
 //       VALUES (?, ?);'
 //     );
 
-//     statement.run(movie.title, 1);
+//     for (var i = 0; i < movies.length; i++) {
+//       var movie = movies[i];
+//       statement.run(movie.title, i);
+//     }
 
 //     statement.finalize();
 
