@@ -8,7 +8,10 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/zomg', function(req, res, next){
-  return movie_exports.moviesController.zomg(req, res);
+  var results = {
+    zomg: "it works!"
+  };
+  res.status(200).json(results);
 });
 
 module.exports = router;
