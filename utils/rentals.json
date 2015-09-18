@@ -1,0 +1,38 @@
+[
+  {
+    "customer_id": "1",
+    "movie_id": "1",
+    "return_date": "Fri, 18 Aug 2015 07:00:00 -0700",
+    "checkout_date": "Wed, 14 Aug 2015 10:00:00 -0700",
+    "due_date": "Wed, 21 Aug 2015 10:00:00 -0700"
+  },
+  {
+    "customer_id": "1",
+    "movie_id": "2",
+    "return_date": "",
+    "checkout_date": "Wed, 22 Jul 2015 10:00:00 -0700",
+    "due_date": "Wed, 29 Jul 2015 10:00:00 -0700"
+  },
+  {
+    "customer_id": "2",
+    "movie_id": "1",
+    "return_date": "",
+    "checkout_date": "Tue, 7 Sep 2015 10:00:00 -0700",
+    "due_date": "Tue, 14 Sep 2015 10:00:00 -0700"
+  },
+  {
+    "customer_id": "2",
+    "movie_id": "3",
+    "return_date": "Tue, 7 Sep 2015 10:00:00 -0700",
+    "checkout_date": "Tue, 1 Sep 2015 10:00:00 -0700",
+    "due_date": "Tue, 8 Sep 2015 10:00:00 -0700"
+  },
+  {
+    "customer_id": "3",
+    "movie_id": "2",
+    "return_date": "",
+    "checkout_date": "Fri, 18 Sep 2015 10:00:00 -0700",
+    "due_date": "Fri, 25 Sep 2015 10:00:00 -0700"
+  }
+
+]

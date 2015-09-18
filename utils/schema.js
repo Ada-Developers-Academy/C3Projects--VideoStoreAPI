@@ -23,6 +23,7 @@ db.serialize(function() {
   }
 });
 
+
 var customer_fields = [
   ['name', 'text'],
   ['registered_at', 'text'],
@@ -46,6 +47,7 @@ db.serialize(function() {
   }
 });
 
+
 var rental_fields = [
   ['customer_id', 'integer'],
   ['movie_id', 'integer'],
@@ -62,7 +64,7 @@ db.serialize(function() {
     var name = rental_fields[i][0];
     var type = rental_fields[i][1];
 
-    db.run("ALTER TABLE customers ADD COLUMN " + name + " " + type + ";");
+    db.run("ALTER TABLE rentals ADD COLUMN " + name + " " + type + ";");
   }
 });
 
