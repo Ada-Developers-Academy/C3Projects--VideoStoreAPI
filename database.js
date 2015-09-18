@@ -14,6 +14,9 @@ module.exports = {
     });
   },
 
+  test: function() {
+    console.log("Yay");
+  },
 
   find_by: function(column, value, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
