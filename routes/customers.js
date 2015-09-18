@@ -1,17 +1,21 @@
 var express = require('express');
 var router = express.Router();
-var customer_exports = require('../controllers/customers');
+var customersController = require('../controllers/customers');
 
 /* GET customers listing. */
 
 // "/customers "
 router.get('/', function(req, res, next) {
-  return customer_exports.customersController.customers(req, res);
+  // res = express' response object (how it responds to the GET request)
+  var return_data = customersController.all_customers(req, function(err, result) {
+    res.send(200).json(result);
+  })
+
 });
 
 // "/customers/{:id}"
-router.get('/:id', function(req, res, next) {
-  return customer_exports.customersController.customer(req, res);
-});
+// router.get('/:id', function(req, res, next) {
+//   return customersController.customer(req, res);
+// });
 
 module.exports = router;

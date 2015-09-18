@@ -12,13 +12,15 @@ StoreDatabase.prototype = {
 
     db.serialize(function() {
       // statement == some SQL string
-      db.all(statement, function(err, res) {
+      db.all(statement, function(err, result) {
         // we only get a callback if it's successful
-        if (callback) { callback(res); }
+        if (callback) { callback(result); }
+
+        db.close();
       });
+    
     });
 
-    db.close();
   }
 };
 
