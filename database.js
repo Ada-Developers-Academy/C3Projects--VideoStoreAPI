@@ -1,6 +1,6 @@
 "use strict";
 
-var sqlite3 = require("sqlite3").verbose();
+var sqlite3 = require("sqlite3").verbose(),
   db_env = process.env.DB || 'development';
 
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
       if (callback) callback(err, res);
       db.close();
     });
-  }
+  },
 
   create_rental: function(data, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
