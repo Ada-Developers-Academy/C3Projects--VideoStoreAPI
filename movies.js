@@ -7,7 +7,6 @@ function Movie() {}
 Movie.prototype = {
   all: function(callback) {
     var db = new Database('./db/development.db');
-    var movies;
 
     db.query("SELECT * FROM movies;", function(res) {
       callback(res);
