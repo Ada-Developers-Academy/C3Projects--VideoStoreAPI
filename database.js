@@ -8,8 +8,8 @@ module.exports = {
     var db = new sqlite3.Database('db/' + db_env + '.db');
     var statement = "SELECT * FROM " + this.table_name + ";";
 
-     db.all(statement, function(err, res) {
-      if (callback) callback(err, res);
+     db.all(statement, function(err, record) {
+      if (callback) callback(err, record);
       db.close();
     });
   },
