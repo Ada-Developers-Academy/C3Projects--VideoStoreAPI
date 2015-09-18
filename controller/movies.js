@@ -14,18 +14,14 @@ exports.moviesController = {
 
   // '/movies/:sort_by/:results_per_page/:page_number'
   sort_pages: function(req, res) {
-    if (req.params.sort_by == "title") {
-      db.all("SELECT * FROM movies ORDER BY title ASC;", function(err, rows) {
-        res.status(200).json(rows);
-      });
-    }
+    var statement = "SELECT * FROM movies ORDER BY " + req.params.sort_by + " ASC "
+                    + "LIMIT " + req.params.results_per_page
+                    + " OFFSET " + ((req.params.page_number - 1) * req.params.results_per_page)
+                    + ";";
 
-    if (req.params.sort_by == "release_date") {
-      console.log(req.params.sort_by);
-      db.all("SELECT * FROM movies ORDER BY release_date ASC;", function(err, rows) {
-        res.status(200).json(rows);
-      });
-    }
+    db.all(statement, function(err, rows) {
+      res.status(200).json(rows);
+    });
 
   }
 }
