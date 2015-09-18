@@ -28,6 +28,7 @@ app.use('/movies', movies);
 app.use('/movies/:column/:n/:p', movies);
 app.use('/customers', customers);
 app.use('/customers/:column/:n/:p', customers);
+app.use('/customers/checkout/:id/:title', customers);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
