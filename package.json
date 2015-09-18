@@ -3,7 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "nodemon ./bin/www",
+    "test": "clear; DB=test mocha --recursive",
+    "db:schema": "node ./utils/schema",
+    "db:seeds": "node ./utils/seeds",
+    "db:reset": "npm run db:schema; npm run db:seeds"
   },
   "dependencies": {
     "body-parser": "~1.13.2",

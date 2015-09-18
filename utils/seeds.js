@@ -4,9 +4,9 @@ var sqlite3 = require("sqlite3").verbose(),
   dbEnv = process.env.DB || "development",
   db = new sqlite3.Database("db/" + dbEnv + ".db");
 
-var movieSeeds = require("../db/movies");
-var customerSeeds = require("../db/customers");
-var rentalSeeds = require("../db/rentals");
+var movieSeeds = require("../db/seeds/movies");
+var customerSeeds = require("../db/seeds/customers");
+var rentalSeeds = require("../db/seeds/rentals");
 
 // prepare the statement
 var movieStatement = db.prepare(
