@@ -45,15 +45,13 @@ module.exports = {
     });
   },
 
-  limit: function(column, queries, callback) {
+  subset: function(column, queries, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
-    var limit = queries[0];
-    var offset = queries[1];
 
-    var statement = "SELECT * FROM " + this.table_name + " ORDER BY " + column + " LIMIT " + limit + " OFFSET " + offset;
+    var statement = "SELECT * FROM " + this.table_name + " ORDER BY " + column + " LIMIT ? OFFSET ?";
     console.log(statement);
 
-    db.all(statement, values, function(err, res) {
+    db.all(statement, queries, function(err, res) {
       if (callback) { callback(err, res); }
       db.close();
     });
