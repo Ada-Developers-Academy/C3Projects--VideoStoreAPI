@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "DB=test mocha --recursive"
+    "test": "DB=test mocha --recursive",
+    "test_schema": "DB=test node ./utils/schema.js"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
