@@ -24,8 +24,6 @@ router.get('/:sort_by/:limit/:offset', function(req, res, next) {
   queries.push(req.params.offset);
   var column = req.params.sort_by;
 
-  console.log(queries);
-
   movie.subset(column, queries, function(err, rows) {
     res.status(200).json({ movies: rows} );
   });
