@@ -1,19 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
-// open a connection to the db
-var sqlite3 = require('sqlite3').verbose(),
-    db_env = process.env.DB || 'development',
-    db = new sqlite3.Database('db/' + db_env + '.db');
+var Movie = require('../models/movie'),
+    movie = new Movie();
 
-/* GET list of movies */
 router.get('/', function(req, res, next) {
-  // run a SQL statement to retrieve the data
-  db.all("SELECT title, overview, release_date, inventory FROM movies;", function(err, rows) {
-    // serve that data as json at that endpoint
+  movie.find_all(function(err, rows) {
     res.status(200).json({ movies: rows });
-
-    db.close();
   });
 });
 
