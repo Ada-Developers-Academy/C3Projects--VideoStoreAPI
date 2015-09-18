@@ -3,6 +3,7 @@
 var sqlite3 = require('sqlite3').verbose();
 var db_env = process.env.DB || 'development';
 var db = new sqlite3.Database('db/' + db_env + '.db');
+var Movie = require('../models/movies');
 
 exports.moviesController = {
 
@@ -44,12 +45,21 @@ exports.moviesController = {
       }
       res.status(200).json(rows);
     });
+  },
+
+  // GET /movies/release_date?n=XXX&p=XXX
+  getMovieByReleaseDate: function(title, res) {
+    db.all("SELECT title, release_date FROM movies ORDER BY release_date DESC", title, function(err, rows) {
+      if (err != null) {
+        console.log(err);
+      }
+      res.status(200).json(rows);
+    });
   }
   /*
 
   GET /movies/title?n=XXX&p=XXX
 
-  GET /movies/release_date?n=XXX&p=XXX
 
   GET /movies/:title/checked_out_current
 

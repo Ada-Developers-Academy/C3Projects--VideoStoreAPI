@@ -22,12 +22,16 @@ router.get('/title/:title', function(req, res, next) {
   movie_exports.moviesController.getMovieByTitle(req.params.title, res);
 });
 
+// GET /movies/release_date?n=XXX&p=XXX
+router.get('/release_date', function(req, res, next){
+  movie_exports.moviesController.getMovieByReleaseDate(req.params.title, res);
+})
+
 
 /*
 
 GET /movies/title?n=XXX&p=XXX
 
-GET /movies/release_date?n=XXX&p=XXX
 
 GET /movies/:title/checked_out_current
 
