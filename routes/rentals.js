@@ -6,3 +6,6 @@ var rentals_exports = require('../controllers/rentals');
 router.get('/', function(req, res, next) {
   return rentals_exports.rentalsController.rentals(req, res);
 });
+
+module.exports = router;
+

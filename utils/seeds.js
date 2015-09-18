@@ -21,7 +21,7 @@ var customers_statement = db.prepare(
   VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
 
 var rental_statement = db.prepare(
-  "INSERT INTO rentals(checkout_date, return_date, return_status, cost, movie_id, customer_id \
+  "INSERT INTO rentals(movie_id, customer_id, checkout_date, return_date, return_status, cost) \
   VALUES (?, ?, ?, ?, ?, ?);"
 );
 
@@ -47,7 +47,6 @@ db.serialize(function() {
     var num_copies = movie.inventory;
 
     for (var j = 0; j < num_copies; j++) {
-      console.log(movie);
       movie_copies_statement.run(
         i+1
       );
@@ -73,12 +72,12 @@ db.serialize(function() {
   customers_statement.finalize();
 
   rental_statement.run(
+    2, // movie_id
+    6,  // customer_id
     "2015-09-18",
     "2015-09-26",
     0, // return_status (0 for false (checked out) 1 for true (returned))
-    5, // cost
-    2, // movie_id
-    6  // customer_id
+    5 // cost
     );
   rental_statement.finalize();
 

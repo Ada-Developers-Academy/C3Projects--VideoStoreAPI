@@ -23,6 +23,4 @@ router.get('/release/:release_date', function(req, res, next) {
   return movies_exports.moviesController.movies_by_release(req, res);
 });
 
-
-
 module.exports = router;
