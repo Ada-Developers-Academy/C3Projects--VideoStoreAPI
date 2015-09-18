@@ -2,7 +2,7 @@
 
 var express = require('express');
 var router = express.Router();
-var zomgExports = require("../controllers/zomgController");
+var zomgController = require("../controllers/zomgController");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -11,12 +11,12 @@ router.get('/', function(req, res, next) {
 
 /* GET zomg page. */
 router.get('/zomg', function(req, res, next) {
-  return zomgExports.zomgController.itWorks(req, res)
+  return zomgController.itWorks(req, res)
 });
 
 /* GET all customers. */
 router.get('/all', function(req, res, next) {
-  return zomgExports.zomgController.all(req, res)
+  return zomgController.all_customers(req, res)
 });
 
 module.exports = router;
