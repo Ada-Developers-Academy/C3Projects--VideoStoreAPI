@@ -118,27 +118,43 @@ __Response__
 
     {
       "movies": [
-
+        {
+          "id": 1,
+          "title": "Psycho",
+          "overview": "When larcenous real estate clerk Marion Crane goes on the lam with a wad of cash and hopes of starting a new life, she ends up at the notorious Bates Motel, where manager Norman Bates cares for his housebound mother. The place seems quirky, but fine… until Marion decides to take a shower.",
+          "release_date": "1960-06-16",
+          "inventory_total": 8,
+          "inventory_avail": 8
+        },
+        {
+          "id": 2,
+          "title": "Jaws",
+          "overview": "An insatiable great white shark terrorizes the townspeople of Amity Island, The police chief, an oceanographer and a grizzled shark hunter seek to destroy the bloodthirsty beast.",
+          "release_date": "1975-06-19",
+          "inventory_total": 6,
+          "inventory_avail": 6
+        },
+        …
       ]
     }
 
 ***
 
 __Endpoint__  
-`GET ./movies/{:title}`  
+`GET ./movie/{:title}`  
 Returns movies that match the title query.
+E.g. ".movie/jaws", "./movie/north%20by%20northwest"
 
 __Request Parameters__  
 
-| Path Parameter     | Value          |
-| :------------------| :------------- |
+| Path Parameter     | Value                    |
+| :------------------| :------------------------|
 | `title`            |  The title of the movie. |
 
 __Response__
 
     {
-      "movies" : [
-        {
+      "movies" : {
           "title": "The Night of the Hunter",
           "overview": "Harry Powell marries and murders widows for their money, believing he is helping God do away with women who arouse men's carnal instincts. Arrested for auto theft, he shares a cell with condemned killer Ben Harper and tries to get him to reveal the whereabouts of the $10,000 he stole. Only Ben's nine-year-old son, John, and four-year-old daughter, Pearl, know the money is in Pearl's doll; and they have sworn to their father to keep this secret. After Ben is executed, Preacher goes to Cresap's Landing to court Ben's widow, Willa. When he overwhelms her with his Scripture quoting, sermons, and hymns, she agrees to marry him. On their wedding night, he tells her they will never have sex because it is sinful.",
           "release_date": "1955-07-26",
@@ -150,7 +166,7 @@ __Response__
 ***
 
 __Endpoint__  
-`GET /movies/{:title}/customers`
+`GET /movie/{:title}/customers`
 default is sorting by id
 
 __Request Parameters__  
