@@ -8,15 +8,29 @@ function Rental() {
 }
 
 // Rental.prototype = require('../database');
-Rental = {
+Rental.prototype = {
   check_out: function(id, title, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
-    var daysOffset = 7;
-    var return_date = new Date(Date.now() + (daysOffset * 24 * 60 * 60 * 1000));
-    var movie_id = "SELECT id FROM movies WHERE title =" + title + " ;";
-    var statement = "INSERT INTO " + this.table_name + "(return_date, movie_id, customer_id, checked_out) " + "VALUES (" + return_date  + ", " + movie_id + ", " + id + "'true'); ";
+    var rental_duration_days = 7;
+    var return_date = new Date(Date.now() + (rental_duration_days * 24 * 60 * 60 * 1000));
+    // var movie_id = "SELECT id FROM movies WHERE title = '" + title + "';";
+
+    // have to actually *run* the sqlite3 query and get result... above doesn't do that...
+    // not sure if this works either. Seems to return a db connection object...WIP
+    var movie_id = db.get("SELECT id FROM movies WHERE title = '" + title + "';");
+
+    var statement = "INSERT INTO " + this.table_name + " (return_date, movie_id, customer_id, checked_out) " + "VALUES (" + return_date  + ", " + movie_id + ", " + id + ", 'true'); ";
+
+    db.run(statement, function(err) {
+      callback(err, { inserted_id: this.lastID, changed: this.changes });
+      db.close();
+    });
+    //
+    // db.all(statement, function(err, res) {
+    //   if (callback) callback(err, res);
+    //   db.close();
+    // });
   }
 };
-
 
 module.exports = Rental;

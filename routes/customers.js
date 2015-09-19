@@ -7,12 +7,9 @@ router.get('/', function(req, res, next) {
   return customers_exports.customersController.index(req, res);
 });
 
+/* GET /customers/:column/:n/:p */
 router.get('/:column/:n/:p', function(req, res, next) {
   return customers_exports.customersController.by_column(req, res);
-});
-
-router.post('/checkout/:id/:title', function(req, res, next) {
-  return customers_exports.customersController.check_out(req, res);
 });
 
 module.exports = router;
