@@ -12,12 +12,14 @@ exports.customersController = {
     })
   },
 
-  subset: function subset(req, res, column) {
+  subset: function subset(req, res, column, pageNumber) {
 
     var customer = new Customer();
 
-    customer.find_subset(column, 5, 0, function(err, record) {
-      res.status(200).json({ subset_customers: record });
+    var offset = pageNumber * 50;
+
+    customer.find_subset(column, 50, offset, function(err, record) {
+      res.status(200).json({ customer_subset: record });
     })
   }
 }
