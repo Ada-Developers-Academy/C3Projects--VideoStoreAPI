@@ -19,7 +19,8 @@ var moviesController = {
   },
 
   movie: function(req, callback) {
-    var statement = "SELECT * FROM movies WHERE id = " + req.params.id + ";";
+    var title = req.params.title
+    var statement = "SELECT * FROM movies WHERE title LIKE '" + title + "';";
     var db = new Database('db/development.db');
 
     db.query(statement, function(err, result) {
