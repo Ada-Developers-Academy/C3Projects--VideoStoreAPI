@@ -5,7 +5,8 @@ var Database = require('../database'); // Node module; Pulling in db object we m
 var moviesController = {
   // maybe move the var db = ... out here?
   all_movies: function(req, callback) {
-    var statement = "SELECT * FROM movies;";
+    var column = req.query.order_by ? req.query.order_by : "id";
+    var statement = "SELECT * FROM movies ORDER BY " + column + " ASC;";
     var db = new Database('db/development.db');
 
     db.query(statement, function(err, result) {
