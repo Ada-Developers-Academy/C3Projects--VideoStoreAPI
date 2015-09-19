@@ -13,10 +13,9 @@ router.get('/one_customer', function(req, res, next) {
   //return customer_exports.customerController.one_customer(req, res);
 });
 
-router.get('/:column', function(req, res, next) {
-  // return subsets of customers, might be three different endpoints
-  // return res.status(200).json({ id: req.params.id })
-  return customer_exports.customersController.subset(req, res, req.params.column);
+// customers/name/1
+router.get('/:column/:number', function(req, res, next) {
+  return customer_exports.customersController.subset(req, res, req.params.column, req.params.number);
 });
 
 module.exports = router;
