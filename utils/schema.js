@@ -11,21 +11,6 @@ var movie_fields = [
   ['inventory', 'integer']
 ]
 
-db.serialize(function() {
-  // drop existing tables
-  db.run("DROP TABLE IF EXISTS movies;");
-  // create fresh versions of tables
-  db.run("CREATE TABLE movies (id INTEGER PRIMARY KEY);");
-  // add columns we need to tables
-  for (var i = 0; i < movie_fields.length; i++) {
-    var name = movie_fields[i][0],
-        type = movie_fields[i][1];
-
-    db.run("ALTER TABLE movies ADD COLUMN " + name + " " + type + ";");
-  }
-});
-
-
 var customer_fields = [
   ['name', 'text'],
   ['registered_at', 'text'],
@@ -37,20 +22,6 @@ var customer_fields = [
   ['account_credit', 'real']
 ]
 
-db.serialize(function() {
-  // drop existing tables
-  db.run("DROP TABLE IF EXISTS customers;");
-  // create fresh versions of tables
-  db.run("CREATE TABLE customers (id INTEGER PRIMARY KEY);");
-  // add columns we need to tables
-  for (var i = 0; i < customer_fields.length; i++) {
-    var name = customer_fields[i][0],
-        type = customer_fields[i][1];
-
-    db.run("ALTER TABLE customers ADD COLUMN " + name + " " + type + ";");
-  }
-});
-
 var rental_fields = [
   ['movie_id', 'integer'],
   ['customer_id', 'integer'],
@@ -58,20 +29,30 @@ var rental_fields = [
   ['checked_out', 'integer']
 ]
 
-db.serialize(function() {
-  // drop existing tables
-  db.run("DROP TABLE IF EXISTS rentals;");
-  // create fresh versions of tables
-  db.run("CREATE TABLE rentals (id INTEGER PRIMARY KEY);");
-  // add columns we need to tables
-  for (var i = 0; i < rental_fields.length; i++) {
-    var name = rental_fields[i][0],
-        type = rental_fields[i][1];
+function set_tables(table, table_fields) {
+  db.serialize(function() {
+    // drop existing tables
+    db.run("DROP TABLE IF EXISTS " + table + ";");
+    // create fresh versions of tables
+    db.run("CREATE TABLE " + table + " (id INTEGER PRIMARY KEY);");
+    // add columns we need to tables
+    for (var i = 0; i < table_fields.length; i++) {
+      var name = table_fields[i][0],
+          type = table_fields[i][1];
 
-    db.run("ALTER TABLE rentals ADD COLUMN " + name + " " + type + ";");
-  }
-});
+      db.run("ALTER TABLE " + table + " ADD COLUMN " + name + " " + type + ";");
+    }
+  });
+}
+
+set_tables(" movies ", movie_fields);
+set_tables(" customers ", customer_fields);
+set_tables(" rentals ", rental_fields);
 
 db.close();
+
+
+
+
 
 
