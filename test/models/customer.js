@@ -16,10 +16,10 @@ describe("Customer", function() {
         INSERT INTO customers (name, registered_at, address, city, state, \
         postal_code, phone, account_credit) \
         VALUES ('Dana Scully', 'Wed, 16 Apr 2014 21:40:20 -0700', \
-            'P.O. Box 887, 4257 Lorem Rd.', 'Columbus', 'Ohio', '43201', \
-            '(371) 627-1105', 1234), \
+          'P.O. Box 887, 4257 Lorem Rd.', 'Columbus', 'Ohio', '43201', \
+          '(371) 627-1105', 1234), \
         ('Fox Mulder', 'Fri, 10 Jul 2015 15:23:06 -0700', '152-525 Odio St.', \
-            'Seattle', 'Washington', '98109', '(206) 329-4928', 293); \
+          'Seattle', 'Washington', '98109', '(206) 329-4928', 293); \
         COMMIT;"
         , function(err) {
           db_cleaner.close();
@@ -34,6 +34,14 @@ describe("Customer", function() {
   })
 
   describe("instance methods", function() {
+    it("can find all customers", function(done){
+      customer.find_all(function(err, res){
+        assert.equal(err, undefined);
+        assert.equal(res.length, 2);
+        done();
+      });
+    });
+
     it("can find a customer by id", function(done){
       customer.find_by("id", 1, function(err, res) {
         assert.equal(err, undefined);
@@ -42,16 +50,6 @@ describe("Customer", function() {
         done();
       })
     })
-
-    // it("can find a customer by title", function(done) {
-    //   customer.find_by("title", "Jaws", function(err, res) {
-    //     assert.equal(err, undefined);
-    //     assert(res instanceof Array);
-    //     assert.equal(res.length, 1);
-    //     assert.equal(res[0].title, 'Jaws');
-    //     done();
-    //   })
-    // })
 
     // it("can save changes to a customer", function(done) {
     //   customer.find_by("title", "Jaws", function(err, res) {
