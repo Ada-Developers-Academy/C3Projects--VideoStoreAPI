@@ -6,6 +6,7 @@ var sqlite3 = require('sqlite3').verbose();
 
 describe('Movie', function() {
   var movie;
+  var numSeeded = 2;
   var expectedPath = "db/test.db";
 
   beforeEach(function(done) {
@@ -33,7 +34,7 @@ describe('Movie', function() {
 
       movie.create(data, function(err, res) {
         assert.equal(err, undefined);
-        assert.equal(res.insertedID, 3);
+        assert.equal(res.insertedID, numSeeded + 1);
         assert.equal(res.changed, 1);
         done();
       });
