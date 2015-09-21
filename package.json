@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
+    "test": "clear; DB=test mocha --recursive",
     "db:schema": "node ./utils/schema",
     "db:seed": "node ./utils/seeds",
-    "db:reset": "npm run db:schema; npm run db:seed",
-    "test": "clear; DB=test mocha --recursive"
+    "db:reset": "npm run db:schema; npm run db:seed"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
