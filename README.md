@@ -74,7 +74,7 @@ The API you build should have the following capabilities. The schema of your dat
     - ordered by check out date
 
 ### Rental
-- Know if a movie has any inventory available to rent
+- Know if a movie has available inventory to rent (diff than total inventory)
 - See a list of customers that have _currently_ checked out any of the movie's inventory
 - Given a customer's `id` and a movie's `title` ...
   - "check out" one of the movie's inventory to the customer
