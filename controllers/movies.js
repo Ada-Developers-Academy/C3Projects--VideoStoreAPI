@@ -21,5 +21,14 @@ exports.moviesController = {
     movie.find_subset(column, 50, offset, function(err, record) {
       res.status(200).json({ movie_subset: record });
     })
+  },
+
+  current_rentals: function current_rentals(req, res, movie_title) {
+
+    var movie = new Movie();
+
+    movie.movie_current_customers(movie_title, function(err, record) {
+      res.status(200).json({ movie_current_customers: record });
+    })
   }
 }
