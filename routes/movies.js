@@ -18,4 +18,8 @@ router.get('/:title', function(req, res, next) {
   return movie_exports.moviesController.movie_info(req, res);
 });
 
+router.get('/:title/current_customers', function(req, res, next) {
+  return movie_exports.moviesController.current_customers(req, res);
+})
+
 module.exports = router;
