@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "test": "clear; DB=test mocha --recursive"
+    "test": "DB=test mocha --recursive",
+    "db:schema": "node ./utils/schema",
+    "db:seed": "node ./utils/seed",
+    "db:setup": "npm run db:schema; npm run db:seed"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -16,5 +19,8 @@
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0",
     "sqlite3": "^3.1.0"
+  },
+  "devDependencies": {
+    "should": "^7.1.0"
   }
 }

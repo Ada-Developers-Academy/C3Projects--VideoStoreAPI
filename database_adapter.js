@@ -49,12 +49,47 @@ module.exports = {
     var db = new sqlite3.Database('db/' + db_env + '.db');
 
     var statement = "SELECT * FROM " + this.table_name + " ORDER BY " + column + " LIMIT ? OFFSET ?";
-    console.log(statement);
 
     db.all(statement, queries, function(err, res) {
       if (callback) { callback(err, res); }
       db.close();
     });
-  }
+  },
 
+  // Example route:
+  // customers/create/:name/:registered_at/:address/:city/:state/:postal_code/:phone
+  create: function(columns, values, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    var column_names = columns.join(', ');
+    var question_marks =  Array(columns.length + 1).join('?').split('').join(', ');
+
+    var statement = "INSERT INTO " + this.table_name + " (" + column_names + ") \
+    VALUES (" + question_marks + ");";
+
+    db.run(statement, values, function(err, res) {
+      if (callback) { callback(err, { inserted_id: this.lastID }); }
+      db.close();
+    });
+  },
+
+  // Example route:
+  // customers/update/:id?name=name&city=city&state=state
+  update: function(id, columns, values, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    // "column1 = ?, column2 = ?, column3 = ?"
+    var columnsQueries = [];
+
+    for (var i = 0; i < columns.length; i++) {
+      columnsQueries.push(columns[i] + " = ?");
+    };
+
+    var update_statement = columnsQueries.join(', ');
+
+    var statement = "UPDATE " + this.table_name + " SET " + update_statement + "WHERE id = " + id + ";";
+
+    db.run(statement, values, function(err, res) {
+      if (callback) { callback(err, { changes: this.changes }); }
+      db.close();
+    });
+  }
 }
