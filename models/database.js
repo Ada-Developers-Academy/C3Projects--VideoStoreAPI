@@ -34,4 +34,17 @@ Database.prototype.create = function create(data, callback) {
   });
 }
 
+Database.prototype.all = function all(callback) {
+  var db = this.openDB();
+  var statement = 'SELECT * FROM ' + this.tableName + ';';
+
+  db.all(statement, function(err, rows) {
+    if (err) { console.log('PLBBT!'); }
+
+    callback(err, rows);
+    db.close();
+    statement.finalize();
+  });
+}
+
 module.exports = Database;
