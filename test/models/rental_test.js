@@ -7,6 +7,14 @@ var sqlite3 = require('sqlite3').verbose();
 describe('Rental', function() {
   var rental;
   var expectedPath = "db/test.db";
+  var validRentalData = function validRentalData() {
+    return {
+      checkout_date: '2014-12-16',
+      return_date: '',
+      movie_title: 'The Great Escape',
+      customer_id: 15
+    };
+  };
 
   beforeEach(function(done) {
     rental = new Rental();
@@ -24,12 +32,7 @@ describe('Rental', function() {
 
   describe('#create', function() {
     it('creates a new rental record', function(done) {
-      var data = {
-       checkout_date: '2014-12-16',
-       return_date: '',
-       movie_title: 'The Great Escape',
-       customer_id: 15
-     }
+      var data = validRentalDate();
 
       rental.create(data, function(err, res) {
         assert.equal(err, undefined);
