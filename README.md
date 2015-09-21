@@ -2,26 +2,28 @@
 
 ## Notes
 ### Endpoints
-GET "/customers"
+** ADD PAGINATION **
+
+**DONE** GET "/customers"
 // for routes below, will need to return results offset by page number
-GET "/customers/:name" // will be dynamic
-GET "/customers/:registered_at"
-GET "/customers/:postal_code"
+**DONE** GET "/customers/:name" // will be dynamic
+**DONE** GET "/customers/:registered_at"
+**DONE** GET "/customers/:postal_code"
 
-GET "/customers/:id/current_movies"
-GET "/customers/:id/past_movies" // order by checkout date, include return date
+**DONE** GET "/customers/:id/current_movies"
+**DONE** GET "/customers/:id/past_movies" // order by checkout date, include return date
 
-GET "/movies"
+**DONE** GET "/movies"
 // for routes below, will need to return results offset by page number
 GET "/movies/:title" // will be dynamic
 GET "/movies/:release_date"
 
 // for routes below, will need to pass an ordering parameter to order by customer id, name, or checkout date
-GET "/movies/:title/current_customers/:order"
+**DONE-ISH** GET "/movies/:title/current_customers/:order"
 GET "/movies/:title/past_customers/:order"
 
 // normalize database or join everything???
-GET "/movies/:title"
+**DONE** GET "/movies/:title"
   // includes synopsis, release date, inventory total, rentable boolean, list of customers that have it currently checkout out ...?
 
 POST "/rental/:customer_id/:movie_title"
