@@ -11,7 +11,6 @@ describe('Movie', function() {
 
   beforeEach(function(done) {
     movie = new Movie();
-
     resetMoviesTable(done);
   });
 
