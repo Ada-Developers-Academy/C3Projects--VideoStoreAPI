@@ -19,11 +19,9 @@ module.exports = {
   all_customers: function(request, response) {
     var db = new sqlite3.Database("db/" + dbEnv + ".db");
     var customers = new customerTable();
-    // var result = customers.all(1);
-    console.log("customers.limit: " + customers.limit);
 
     // prepare statement
-    var pageNumber = 3;
+    var pageNumber = request.params.page; // we still need to handle for page 1
     var offset = (pageNumber - 1) * customers.limit;
     var statement = "SELECT * FROM customers LIMIT " + customers.limit +
       " OFFSET " + offset + ";";
@@ -70,9 +68,7 @@ module.exports = {
         console.log(err); // error handling
         return;
       }
-      console.log('results before map are: ' + results[0].registered_at);
       results = convertRegisteredAt(results);
-      console.log('results after map are: ' + results[0].registered_at);
 
       return response.status(200).json(results);
     });
