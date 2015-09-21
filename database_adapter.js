@@ -56,15 +56,15 @@ module.exports = {
     });
   },
 
+  // Example route:
   // customers/create/:name/:registered_at/:address/:city/:state/:postal_code/:phone
   create: function(columns, values, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
     var column_names = columns.join(', ');
     var question_marks =  Array(columns.length + 1).join('?').split('').join(', ');
 
-    var statement = "INSERT INTO " + this.table_name + " (" + column_names + ") VALUES (" + question_marks + ");";
-
-    console.log(statement);
+    var statement = "INSERT INTO " + this.table_name + " (" + column_names + ") \
+    VALUES (" + question_marks + ");";
 
     db.run(statement, values, function(err, res) {
       if (callback) { callback(err, { inserted_id: this.lastID }); }
