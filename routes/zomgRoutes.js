@@ -15,10 +15,30 @@ router.get('/zomg', function(req, res, next) {
 });
 
 /* GET all customers sorted by registration. */
-router.get("/all/registered/:page", function(req, res, next) {
+router.get("/all/:sort/:page", function(req, res, next) {
+  var sort = req.params.sort;
+  console.log("req.params.page " + req.params.page);
+
+  switch (sort) {
+    case "registered":
+      return zomgController.registered_at(req, res);
+      break;
+    case "name":
+    case "zip":
+      console.log("these sort methods are not yet supported: name, zip");
+      break;
+    default: // all
+      return zomgController.all_customers(req, res);
+      break;
+  }
+});
+
+/* GET all customers sorted by registration. */
+router.get("/all/registered", function(req, res, next) {
   console.log("req.params.page " + req.params.page);
   return zomgController.registered_at(req, res);
 });
+
 
 /* GET all customers. */
 router.get('/all', function(req, res, next) {

@@ -34,7 +34,7 @@ db.serialize(function() {
       movie.title,
       movie.overview,
       movie.inventory,
-      movie.release_date
+      Date.parse(movie.release_date)
     );
   });
 
@@ -46,7 +46,7 @@ db.serialize(function() {
     customerStatement.run(
       customer.id,
       customer.name,
-      customer.registered_at,
+      Date.parse(customer.registered_at),
       customer.address,
       customer.city,
       customer.state,
@@ -66,8 +66,8 @@ db.serialize(function() {
       rental.movie_title,
       rental.customer_id,
       rental.returned,
-      rental.check_out_date,
-      rental.return_date
+      Date.parse(rental.check_out_date),
+      Date.parse(rental.return_date)
     );
   });
 

@@ -41,11 +41,26 @@ module.exports = {
   },
 
   registered_at: function(request, response) {
+    function convertRegisteredAt(arrayOfCustomers) {
+      arrayOfCustomers = arrayOfCustomers.map(function(customer) {
+        var registration = Number(customer.registered_at);
+        var dateOfRegistration = new Date(registration);
+        var humanReadableDate = dateOfRegistration.toDateString();
+        var humanReadableTime = dateOfRegistration.toTimeString();
+
+        customer.registered_at = humanReadableDate + " " + humanReadableTime;
+
+        return customer;
+      });
+
+      return arrayOfCustomers;
+    }
+
     var db = new sqlite3.Database("db/" + dbEnv + ".db");
     var customers = new customerTable();
 
     // prepare statement
-    var pageNumber = request.params.page;
+    var pageNumber = request.params.page; // we still need to handle for page 1
     var offset = (pageNumber - 1) * customers.limit;
     var statement = "SELECT * FROM customers ORDER BY (registered_at) LIMIT "
       + customers.limit + " OFFSET " + offset + ";";
@@ -55,7 +70,10 @@ module.exports = {
         console.log(err); // error handling
         return;
       }
-      console.log('results are: ' + results);
+      console.log('results before map are: ' + results[0].registered_at);
+      results = convertRegisteredAt(results);
+      console.log('results after map are: ' + results[0].registered_at);
+
       return response.status(200).json(results);
     });
 
