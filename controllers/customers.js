@@ -33,7 +33,7 @@ exports.customersController = {
 
   // GET /customers/by_name?n=XXX&p=XXX
   showByName: function(req, res) {
-    sortBy("registered_at", req, res);
+    sortBy("name", req, res);
   },
 
   // GET /customers/by_registered_at?n=XXX&p=XXX
