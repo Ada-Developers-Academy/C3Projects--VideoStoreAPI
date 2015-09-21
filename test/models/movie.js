@@ -34,21 +34,29 @@ describe("Movie", function() {
       movie.find_by("id", 1, function(err, res) {
         assert.equal(err, undefined);
         assert(res instanceof Object);
-        // assert.equal(res.length, 1);
         assert.equal(res.id, 1);
         done();
       })
     })
 
-    // it("can find a movie by title", function(done) {
-    //   movie.find_by("title", "Jaws", function(err, res) {
-    //     assert.equal(err, undefined);
-    //     assert(res instanceof Array);
-    //     assert.equal(res.length, 1);
-    //     assert.equal(res[0].title, 'Jaws');
-    //     done();
-    //   })
-    // })
+    it("can find a movie by title", function(done) {
+      movie.find_by("title", "Jaws", function(err, res) {
+        assert.equal(err, undefined);
+        assert(res instanceof Object);
+        assert.equal(res.title, 'Jaws');
+        done();
+      })
+    })
+
+    it("can find all movies where a column has a particular value", function(done) {
+      movie.where(["title"], ["Jaws"], function(err, res) {
+        assert.equal(err, undefined);
+        assert(res instanceof Object); // Why is this breaking?
+        assert.equal(res.length, 1);
+        assert.equal(res[0].title, "Jaws");
+        done();
+      })
+    })
 
     // it("can save changes to a movie", function(done) {
     //   movie.find_by("title", "Jaws", function(err, res) {
