@@ -6,7 +6,15 @@ var moviesController = {
   // maybe move the var db = ... out here?
   all_movies: function(req, callback) {
     var column = req.query.order_by ? req.query.order_by : "id";
-    var statement = "SELECT * FROM movies ORDER BY " + column + " ASC;";
+    
+    if (req.query.number && req.query.page) {
+      var limit = req.query.number;
+      var offset = req.query.page * limit - limit;
+      var statement = "SELECT * FROM movies ORDER BY " + column + " ASC LIMIT " + limit + " OFFSET " + offset + ";";
+    } else {
+      var statement = "SELECT * FROM movies ORDER BY " + column + " ASC;";
+    }
+    
     var db = new Database('db/development.db');
 
     db.query(statement, function(err, result) {
