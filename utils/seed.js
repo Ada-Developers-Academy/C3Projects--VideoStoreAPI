@@ -18,7 +18,7 @@ var customer_statement = db.prepare( // we will use this statement later
 
 var rentals = require('./rentals'); // requires in movies.json file
 var rental_statement = db.prepare( // we will use this statement later
-  "INSERT INTO RENTALS(check_out, check_in, due_date, overdue, customer_id, movie_id) \
+  "INSERT INTO RENTALS(check_out, check_in, due_date, overdue, customer_id, movie_title) \
   VALUES( ?, ?, ?, ?, ?, ?);"
 );
 
@@ -88,7 +88,7 @@ db.serialize(function() {
       rental.due_date,
       rental.overdue,
       rental.customer_id,
-      rental.movie_id
+      rental.movie_title
     );
   }
 
