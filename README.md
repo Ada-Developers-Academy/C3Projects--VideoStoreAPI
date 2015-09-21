@@ -26,11 +26,11 @@
 **DONE** GET "/movies/:title"
   // includes synopsis, release date, inventory total, rentable boolean, list of customers that have it currently checkout out ...?
 
-POST "/rental/:customer_id/:movie_title"
+POST "/rentals/:customer_id/:movie_title"
   // create association, checkout date, return date, charge account, returned boolean
 PATCH "/checkin/:customer_id/:movie_title"
   // modify returned boolean
-GET "/rental/overdue"
+**DONE** GET "/rentals/overdue"
 
 ---
 The overall goal of this project is to create a system that a video store (remember those?) could use to track their inventory of rental videos and their collection of customers.

@@ -7,5 +7,8 @@ router.get('/', function(req, res, next) {
   return rentals_exports.rentalsController.rentals(req, res);
 });
 
-module.exports = router;
+router.get('/overdue', function(req, res, next) {
+  return rentals_exports.rentalsController.overdue_rentals(req, res);
+});
 
+module.exports = router;
