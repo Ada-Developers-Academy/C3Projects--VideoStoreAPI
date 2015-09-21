@@ -2,7 +2,7 @@
 
 var sqlite3 = require('sqlite3').verbose();
 // verbose gives useful stack traces
-var dbEnv = process.env.DB || 'development';
+var dbEnv = process.env.DB || 'development' || 'test';
 var db = new sqlite3.Database('db/' + dbEnv + '.db');
 
 // put column names and data types into array
