@@ -40,5 +40,13 @@ exports.customersController = {
     customer.current_rentals(id, function(current_rentals) {
       return res.status(200).json(current_rentals);
     });
+  },
+
+  past_rentals: function past_rentals(req, res) {
+    var id = req.params.id;
+
+    customer.past_rentals(id, function(past_rentals) {
+      return res.status(200).json(past_rentals);
+    });
   }
 }

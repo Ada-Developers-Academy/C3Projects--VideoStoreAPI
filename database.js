@@ -39,7 +39,14 @@ module.exports = {
 
   current_rentals: function(id, callback) {
     // list of current rentals out based on customer id
-    this.query("SELECT * FROM rentals WHERE customer_id=" + id + " AND check_in IS null;", function(res) {
+    this.query("SELECT * FROM rentals WHERE customer_id=" + id + " AND check_in IS NULL;", function(res) {
+      callback(res);
+    });
+  },
+
+  past_rentals: function(id, callback) {
+    // list of past rentals based on customer id
+    this.query("SELECT * FROM rentals WHERE customer_id=" + id + " AND check_in IS NOT NULL ORDER BY check_out" + ";", function(res) {
       callback(res);
     });
   },
