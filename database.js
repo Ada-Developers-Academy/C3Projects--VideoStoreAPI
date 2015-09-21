@@ -70,7 +70,7 @@ module.exports = {
                 WHERE customers.id=rentals.customer_id \
                 AND rentals.movie_title LIKE '%" + movie_title + "%' \
                 AND rentals.check_in IS NOT NULL \
-                ORDER BY customers." + sort_type + ";", function(res) {
+                ORDER BY " + sort_type + ";", function(res) {
       callback(res);
     });
   }

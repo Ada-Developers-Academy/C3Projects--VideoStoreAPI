@@ -34,4 +34,8 @@ router.get('/:title/past_customers/customer_name_sort', function(req, res, next)
   return movie_exports.moviesController.past_customers_name_sort(req, res);
 });
 
+router.get('/:title/past_customers/checkout_date_sort', function(req, res, next) {
+  return movie_exports.moviesController.past_customers_checkout_date_sort(req, res);
+});
+
 module.exports = router;

@@ -55,7 +55,7 @@ exports.moviesController = {
 
   past_customers_id_sort: function past_customers_id_sort(req, res) {
     var movie_title = req.params.title;
-    var sort_type = "id";
+    var sort_type = "customers.id";
 
     movie.past_customers_sort(movie_title, sort_type, function(past_customers_sorted_by_id) {
       return res.status(200).json(past_customers_sorted_by_id);
@@ -64,10 +64,19 @@ exports.moviesController = {
 
   past_customers_name_sort: function past_customers_name_sort(req, res) {
     var movie_title = req.params.title;
-    var sort_type = "name";
+    var sort_type = "customers.name";
 
     movie.past_customers_sort(movie_title, sort_type, function(past_customers_sorted_by_name) {
       return res.status(200).json(past_customers_sorted_by_name);
+    });
+  },
+
+  past_customers_checkout_date_sort: function past_customers_checkout_date_sort(req, res) {
+    var movie_title = req.params.title;
+    var sort_type = "rentals.check_out";
+
+    movie.past_customers_sort(movie_title, sort_type, function(past_customers_sorted_by_checkout_date) {
+      return res.status(200).json(past_customers_sorted_by_checkout_date);
     });
   }
 }
