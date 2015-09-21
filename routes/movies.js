@@ -24,22 +24,23 @@ router.get('/title/:title', function(req, res, next) {
 
 // GET /movies/release_date?n=XXX&p=XXX
 router.get('/release_date', function(req, res, next){
-  movie_exports.moviesController.getMovieByReleaseDate(req.params.title, res);
+  movie_exports.moviesController.getMoviesByReleaseDate(req.query.n, req.query.p, res);
 })
 
+// GET /movies/title?n=XXX&p=XXX
+router.get('/title', function(req, res, next){
+  movie_exports.moviesController.getMoviesByTitle(req.query.n, req.query.p, res);
+});
 
-/*
+// GET /movies/title/:title/checked_out_current
+router.get('/title/:title/checked_out_current', function(req, res, next){
+  movie_exports.moviesController.getCheckedOutCustomersByTitle(req.params.title, res);
+});
 
-GET /movies/title?n=XXX&p=XXX
-
-
-GET /movies/:title/checked_out_current
-
-GET /movies/:title/checked_out_history?ordered_by=XXX
-  // ordered_by
-    // - id
-    // - name
-    // - check out date
-*/
+// GET /movies/:title/checked_out_history?ordered_by=XXX
+// ordered_by id, name, check out date
+router.get('/title/:title/checked_out_history', function(req, res, next){
+  movie_exports.moviesController.getCheckedOutHistoryByTitle(req.params.title, req.query.ordered_by, res);
+});
 
 module.exports = router;
