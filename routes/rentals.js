@@ -13,10 +13,21 @@ router.post('/checkout/:customer_id/:movie_id', function(req, res, next) {
   // Add check for if there is an available movie for checkout:
   // query db to count # of rentals with that movie id
   // TODO: check only returned = false
+
+  // countCheckoutMovies = function()
+  // compareWithInventory
+  // respondToCall
+  // -> either send error message or execute checkout based on answer
+
+  // 
+
   var movie_id = req.params.movie_id;
-  var rented_movies_count = movie.where(['id', 'returned'], [movie_id, 'false'], function(err, rows) {
-    rows.length;
-  });
+
+  var rented_movies = function(next) { 
+    movie.where(['id', 'returned'], [movie_id, 'false'], function(err, rows) {
+      next(rows);
+    }); 
+  }
 
   // check movie record to get inventory
   var relevant_movie = movie.find_by('id', movie_id, function(err, row) {
@@ -48,6 +59,8 @@ router.post('/checkout/:customer_id/:movie_id', function(req, res, next) {
       res.status(200).json(res);
     });
   }
+
+  async.series([rented_movies, ])
 });
 
 module.exports = router;
