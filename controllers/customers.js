@@ -24,7 +24,12 @@ exports.customersController = {
 
   // GET /customers/by_name?n=XXX&p=XXX
   showByName: function(req, res) {
+    var number = req["query"]["n"];
+    var pages = req["query"]["p"];
     var db = new Customer();
+    db.find_by_sorted("name", number, pages, function(err, result) {
+      return res.status(200).json(result);
+    });
   }
 
   // // GET /customers/by_registered_at?n=XXX&p=XXX
@@ -34,6 +39,10 @@ exports.customersController = {
 
   // // GET /customers/by_postal_code?n=XXX&p=XXX
   // showByPostalCode: function(req, res) {
+  //
+  // }
+
+  // sortBy: function() {
   //
   // }
 };
