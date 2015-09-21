@@ -24,24 +24,11 @@ Customer.prototype.find_checked_out = function(id, callback) {
         "checked_out_movies": res1,
         "returned_movies": res2
       };
-      console.log(result);
       if (callback) callback(err, result);
 
       db.close();
     });
   });
 };
-
-// Customer.prototype.find_stuff = function(callback) {
-//   var db = new sqlite3.Database('db/' + db_env + '.db');
-//   var statement = "SELECT * FROM " + this.table_name + ";";
-//
-//   db.all(statement, function(err, res){
-//     if (callback) callback(err, res);
-//     db.close();
-//   });
-// };
-
-// console.log(Customer.prototype);
 
 module.exports = Customer;
