@@ -12,4 +12,14 @@ router.get('/:column/:n/:p', function(req, res, next) {
   return customers_exports.customersController.by_column(req, res);
 });
 
+/* GET /customers/:id/movies */
+router.get('/:customer_id/movies', function(req, res, next) {
+  return customers_exports.customersController.movies_by_customer_current(req, res);
+});
+
+/* GET /customers/:id/history */
+router.get('/:customer_id/history', function(req, res, next) {
+  return customers_exports.customersController.movies_by_customer_history(req, res);
+});
+
 module.exports = router;

@@ -27,6 +27,7 @@ var customer_fields = [
 
 var rental_table = "rentals";
 var rental_fields = [
+  ['checkout_date', 'text'],
   ['return_date', 'text'],
   ['movie_id', 'integer'],
   ['customer_id', 'integer'],
@@ -57,7 +58,7 @@ function create_rentals_table(table_name)  {
     db.run("DROP TABLE IF EXISTS " + table_name + ";");
 
     // create fresh version of table with id as primary key
-    db.run("CREATE TABLE rentals (id INTEGER PRIMARY KEY, return_date text, movie_id integer, customer_id integer, checked_out boolean, FOREIGN KEY(movie_id) REFERENCES movie(id), FOREIGN KEY(customer_id) REFERENCES customer(id));");
+    db.run("CREATE TABLE rentals (id INTEGER PRIMARY KEY, checkout_date text, return_date text, movie_id integer, customer_id integer, checked_out boolean, FOREIGN KEY(movie_id) REFERENCES movie(id), FOREIGN KEY(customer_id) REFERENCES customer(id));");
   });
 }
 
