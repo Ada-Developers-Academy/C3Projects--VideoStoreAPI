@@ -28,6 +28,9 @@ app.use('/all/registered/:page', zomgRoutes);
 var users = require('./routes/users');
 app.use('/users', users);
 
+var movies = require('./routes/movieRoutes');
+app.use('/movies', movies);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
