@@ -19,7 +19,7 @@
         "checkout_date": "2015-09-10",
         "due_date": "2015-09-14",
         "return_date": null,
-        "overdue": 1,
+        "overdue": 0,
         "movie_title": "North by Northwest",
         "customer_id": 1
     },
@@ -42,7 +42,7 @@
     {
         "checkout_date": "2015-09-06",
         "due_date": "2015-09-09",
-        "return_date": "2015-09-07",
+        "return_date": null,
         "overdue": 0,
         "movie_title": "Alien",
         "customer_id": 10

@@ -89,14 +89,7 @@ exports.rentalsController = {
     var db = new sqlite3.Database('./db/' + db_env + '.db'),
     title = req.params.title,
     id = req.params.customer_id,
-    statement = "Insert into rentals VALUES (?, date('now'), date('now', '+3 day'), ?, ?, ?, ?);";
-
-    // var checkout_long = new Date();
-    // var due_long= new Date(checkout_long);
-    //   due_long.setDate(checkout_long.getDate()+3);
-    // var due_date = due_long.toISOString().split('T')[0];
-    // var checkout_date = checkout_long.toISOString().split('T')[0];
-    // console.log(typeof checkout_date)
+    statement = "Insert into rentals (checkout_date, due_date, return_date, overdue, movie_title, customer_id) VALUES (date('now'), date('now', '+3 day'), ?, ?, ?, ?);";
 
     db.run(statement, [null, 0, title, id]);
     db.close();
@@ -106,12 +99,16 @@ exports.rentalsController = {
   },
 
   checkin: function checkin(req,res) {
-    var results = {
-      // check if return_date == nil
-      // update rentals table for given customer_id and movie_title (only works if exact) return date = Date.now
-      // overdue check is due date before date.now, overdue == 1, else ==0
-    }
-  return res.status(200).json(results);
+    var db = new sqlite3.Database('./db/' + db_env + '.db'),
+    title = req.params.title,
+    id = req.params.customer_id,
+    statement = "Update rentals SET return_date = date('now'), overdue = (CASE WHEN (date('now') > due_date) THEN 1 ELSE 0 END) WHERE return_date IS NULL AND movie_title = ? AND customer_id = ?;";
+    //if return_date after due_date Set overdue = 1"
+    db.run(statement, [title, id]);
+    db.close();
+    var results = [];
+    results.push({message: 'Check-in successful', movie_title: title, customer_id: id});
+    return res.status(200).json(results);
   },
 
   overdue: function overdue(req,res) {

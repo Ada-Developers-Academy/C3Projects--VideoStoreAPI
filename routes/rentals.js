@@ -33,18 +33,12 @@ router.post('/checkout/:title/:customer_id', function(req, res) {
   return rentals_exports.rentalsController.checkout(req, res);
 });
 
-// router('/checkout/:title/:customer_id')
-  // .post(function(req, res) {
-    // console.log(req.body);
-    // res.send(rentals_exports.rentalsController.checkout_success(req, res));
-  // return rentals_exports.rentalsController.checkout(req, res);
-  // })
+router.get('/checkin/:title/:customer_id', function(req, res, next) {
+  return rentals_exports.rentalsController.checkin(req, res);
+  next();
+});
 
-  // router.post(function(req, res) {
-    // res.send(rentals_exports.rentalsController.checkout(req, res));
-  // });
-
-router.put('/checkin/:title/:customer_id', function(req, res, next) {
+router.put('/checkin/:title/:customer_id', function(req, res) {
  return rentals_exports.rentalsController.checkin(req, res);
 });
 
