@@ -22,4 +22,8 @@ router.get('/:title/current_customers', function(req, res, next) {
   return movie_exports.moviesController.current_customers(req, res);
 });
 
+router.get('/:title/past_customers', function(req, res, next) {
+  return movie_exports.moviesController.past_customers(req, res);
+});
+
 module.exports = router;
