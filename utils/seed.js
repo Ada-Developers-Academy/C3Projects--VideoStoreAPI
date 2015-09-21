@@ -22,6 +22,23 @@ var rental_statement = db.prepare( // we will use this statement later
   VALUES( ?, ?, ?, ?, ?, ?);"
 );
 
+var formatDate = function(date) {
+  var dateObj = new Date(date);
+  var month = (dateObj.getUTCMonth() + 1).toString(); //months from 1-12
+  var day = (dateObj.getUTCDate()).toString();
+  var year = (dateObj.getUTCFullYear()).toString();
+
+  if (month.length == 1) { // This will ensure month is two digits
+    month = "0" + month;
+  }
+
+  if (day.length == 1) { // This will ensure day is two digits
+    day = "0" + day;
+  }
+
+  return parseInt(year + month + day);
+}
+
 db.serialize(function() {
   // loop through movies
   for(var i = 0; i < movies.length; i++) {
@@ -41,20 +58,8 @@ db.serialize(function() {
   for(var j = 0; j < customers.length; j++) {
     var customer = customers[j];
     // this will format dates in sqlite to read year/month/day for easier sorting
-    var dateObj = new Date(customer.registered_at);
-    var month = (dateObj.getUTCMonth() + 1).toString(); //months from 1-12
-    var day = (dateObj.getUTCDate()).toString();
-    var year = (dateObj.getUTCFullYear()).toString();
 
-    if (month.length == 1) { // This will ensure month is two digits
-      month = "0" + month;
-    }
-
-    if (day.length == 1) { // This will ensure day is two digits
-      day = "0" + day;
-    }
-
-    var formatted_date = parseInt(year + month + day);
+    var formatted_date = formatDate(customer.registered_at);
 
     // insert each customer into the db
     customer_statement.run(
