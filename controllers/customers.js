@@ -20,12 +20,21 @@ exports.customersController = {
     });
   },
 
-name_sort: function name_sort(req, res) {
-  var sort_type = "name";
-  var records_per_page = req.params.records_per_page;
-  var offset = req.params.offset;
-  var customers = customer.sort_by(sort_type, records_per_page, offset, function(customers) {
-    return res.status(200).json(customers);
-  });
-}
+  name_sort: function name_sort(req, res) {
+    var sort_type = "name";
+    var records_per_page = req.params.records_per_page;
+    var offset = req.params.offset;
+    var customers = customer.sort_by(sort_type, records_per_page, offset, function(customers) {
+      return res.status(200).json(customers);
+    });
+  },
+
+  postal_code_sort: function postal_code_sort(req, res) {
+    var sort_type = "postal_code";
+    var records_per_page = req.params.records_per_page;
+    var offset = req.params.offset;
+    var customers = customer.sort_by(sort_type, records_per_page, offset, function(customers) {
+      return res.status(200).json(customers);
+    });
+  }
 }
