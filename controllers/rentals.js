@@ -112,10 +112,15 @@ exports.rentalsController = {
   },
 
   overdue: function overdue(req,res) {
-    var results = {
-      // customers where overdue ==1, add
-      // customers where return_date = nil, if Date.now is after due_date
-    }
-  return res.status(200).json(results);
+    var db = new sqlite3.Database('./db/' + db_env + '.db'),
+        results = [],
+        statement = "SELECT customers.id, customers.name, rentals.movie_title from customers, rentals WHERE customers.id=rentals.customer_id AND (rentals.overdue = 1 OR ( date('now')>rentals.due_date AND rentals.return_date IS NULL));";
+    db.all(statement, function(err, rows) {
+        rows.forEach(function (row) {
+          results.push(row);
+        });
+        db.close();
+      return res.status(200).json(results);
+    });
   }
 }
