@@ -49,12 +49,26 @@ module.exports = {
     var db = new sqlite3.Database('db/' + db_env + '.db');
 
     var statement = "SELECT * FROM " + this.table_name + " ORDER BY " + column + " LIMIT ? OFFSET ?";
-    console.log(statement);
 
     db.all(statement, queries, function(err, res) {
       if (callback) { callback(err, res); }
       db.close();
     });
-  }
+  },
 
+  // customers/create/:name/:registered_at/:address/:city/:state/:postal_code/:phone
+  create: function(columns, values, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    var column_names = columns.join(', ');
+    var question_marks =  Array(values.length + 1).join('?').split('').join(', ');
+
+    var statement = 
+    "INSERT INTO " + this.table_name + " (" + column_names + ") \
+    VALUES (" + question_marks + ");";
+
+    db.run(statement, values, function(err, res) {
+      if (callback) { callback(err, { inserted_id: this.lastID }); }
+      db.close();
+    });
+  }
 }
