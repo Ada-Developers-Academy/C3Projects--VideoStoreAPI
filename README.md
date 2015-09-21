@@ -71,11 +71,11 @@ DONE- Retrieve a subset of movies
     - ordered by check out date
 
 ### Rental
-- Look a movie up by title to see
+- DONE Look a movie up by title to see
   - it's synopsis
   - release date
   - and inventory total
-- Know if a movie has any inventory available to rent
+- DONE Know if a movie has any inventory available to rent
 - See a list of customers that have _currently_ checked out any of the movie's inventory
 - Given a customer's `id` and a movie's `title` ...
   - "check out" one of the movie's inventory to the customer
@@ -92,4 +92,3 @@ DONE- Retrieve a subset of movies
 - All endpoints must be tested.
 - We will use [Mocha](https://mochajs.org/) for tests.
 - There isn't a coverage requirement for this project, beyond demonstrating that every endpoint is covered by some manner of tests.
-
