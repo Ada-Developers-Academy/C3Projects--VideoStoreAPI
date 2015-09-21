@@ -8,9 +8,9 @@ function Rental() {
 
 Rental.prototype = require('./database').prototype;
 
-Rental.prototype.update = function update(movie_title, date, callback) {
+Rental.prototype.return = function update(movie_title, date, callback) {
     var db = this.openDB();
-    var statement = "UPDATE rentals SET return_date = ? WHERE movie_title = ?;";
+    var statement = "UPDATE rentals SET return_date = ? WHERE movie_title LIKE ?;";
     var values = [date, movie_title];
 
     db.run(statement, values, function(err) {

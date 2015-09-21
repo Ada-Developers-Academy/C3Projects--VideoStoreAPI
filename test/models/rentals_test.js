@@ -40,13 +40,13 @@ describe('Rental', function() {
     });
   });
 
-  describe('#update', function() {
-    it('updates a rental record', function(done) {
+  describe('#return', function() {
+    it('adds a return date to a rental', function(done) {
       var movie_title = 'Wait Until Dark';
 
       var date = '2015-09-20';
 
-      rental.update(movie_title, date, function(err, res) {
+      rental.return(movie_title, date, function(err, res) {
         assert.equal(err, undefined);
         assert.equal(res.changed, 1);
         done();
