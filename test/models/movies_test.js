@@ -56,6 +56,7 @@ describe('Movie', function() {
       movie.findBy('title', 'Jaws', function(err, rows) {
         assert.equal(err, undefined);
         assert.equal(rows.length, 1);
+        assert.equal(rows[0].title, 'Jaws');
         done();
       });
     });
