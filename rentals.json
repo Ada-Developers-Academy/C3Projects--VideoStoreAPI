@@ -9,7 +9,7 @@
         "movie_id": 2,
         "customer_id": 1,
         "returned_date": "2015-06-19",
-        "checked_out": ""
+        "checked_out": "2015-06-11"
     },
     {
         "movie_id": 3,
@@ -19,9 +19,9 @@
     },
     {
         "movie_id": 4,
-        "customer_id": 2,
+        "customer_id": 1,
         "returned_date": "2015-07-17",
-        "checked_out": ""
+        "checked_out": "2015-07-10"
     },
     {
         "movie_id": 5,

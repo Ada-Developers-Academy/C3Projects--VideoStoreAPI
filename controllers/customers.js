@@ -30,5 +30,14 @@ exports.customersController = {
     customer.customer_rentals(customer_id, function(err, record){
       res.status(200).json({ current_rentals: record });
     })
+  },
+
+  rental_history: function rental_history(req, res, customer_id) {
+
+    var customer = new Customer();
+
+    customer.customer_history(customer_id, function(err, record){
+      res.status(200).json({ rental_history: record });
+    })
   }
 }
