@@ -52,6 +52,22 @@ describe('Movie', function() {
         done();
       });
     });
+
+    it('requires a title to be unique', function(done) {
+      var data = validMovieData();
+
+      movie.create(data, function(err, res) {
+        assert.equal(err, undefined);
+        assert.equal(res.insertedID, numSeeded + 1);
+        assert.equal(res.changed, 1);
+
+        movie.create(data, function(err, res) {
+          assert.equal(err.errno, 19);
+          assert.equal(err.message, 'SQLITE_CONSTRAINT: UNIQUE constraint failed: movies.title');
+          done();
+        });
+      });
+    });
   });
 
   describe('#all', function() {
