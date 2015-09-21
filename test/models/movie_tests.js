@@ -44,5 +44,19 @@ describe("Movie", function() {
         done();
       });
     })
+
+    it("displays all records from movies table", function(done) {
+      movie.all_movies(function(err, result) {
+        console.log(result);
+        assert.equal(result.length, 2);
+        done();
+      });
+    })
+
+// [0].last.title, "The Adventures of Robin Hood"
+
+
+
+
   })
 });
