@@ -2,6 +2,15 @@
 
 var Customer = require('../models/customers');
 
+function sortBy(sort_by, req, res) {
+  var number = req["query"]["n"];
+  var pages = req["query"]["p"];
+  var db = new Customer();
+  db.find_by_sorted(sort_by, number, pages, function(err, result) {
+    return res.status(200).json(result);
+  });
+}
+
 exports.customersController = {
   // GET /customers
   index: function(req, res) {
@@ -30,19 +39,15 @@ exports.customersController = {
     db.find_by_sorted("name", number, pages, function(err, result) {
       return res.status(200).json(result);
     });
-  }
+  },
 
-  // // GET /customers/by_registered_at?n=XXX&p=XXX
-  // showByRegistered_at: function(req, res) {
-  //
-  // },
+  // GET /customers/by_registered_at?n=XXX&p=XXX
+  showByRegistered_at: function(req, res) {
+    sortBy("registered_at", req, res);
+  },
 
   // // GET /customers/by_postal_code?n=XXX&p=XXX
   // showByPostalCode: function(req, res) {
-  //
-  // }
-
-  // sortBy: function() {
   //
   // }
 };
