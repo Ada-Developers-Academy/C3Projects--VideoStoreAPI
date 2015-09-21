@@ -39,7 +39,7 @@ Database.prototype.all = function all(callback) {
   var statement = 'SELECT * FROM ' + this.tableName + ';';
 
   db.all(statement, function(err, rows) {
-    if (err) { console.log('PLBBT!'); }
+    if (err) { console.log('!!!!ERROR!!!! In Database#all.'); } // FIXME: how is error tracking best handled?
 
     callback(err, rows);
     db.close();
