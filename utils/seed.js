@@ -79,4 +79,6 @@ db.serialize(function() {
 
 // returns movies checkout out by customer 1 ->  SELECT "movies".* FROM "movies" INNER JOIN "rentals" ON "movies"."id" = "rentals"."movie_id" WHERE "rentals"."customer_id" = 1 AND "rentals"."returned_date" = "";
 
+//
+
 db.close();

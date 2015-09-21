@@ -61,8 +61,20 @@ module.exports = {
   movie_current_customers: function(value, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
 
-    var statement = "SELECT 'customers'.* FROM 'customers' INNER JOIN 'rentals' ON 'customers'.'id' = 'rentals'.'customer_id' WHERE 'rentals'.'movie_id' = (SELECT 'movies'.'id' FROM 'movies' WHERE 'movies'.'title' = ? COLLATE NOCASE LIMIT 1);";
+    var statement = "SELECT 'customers'.* FROM 'customers' INNER JOIN 'rentals' ON 'customers'.'id' = 'rentals'.'customer_id' WHERE 'rentals'.'movie_id' = (SELECT 'movies'.'id' FROM 'movies' WHERE 'movies'.'title' = ? COLLATE NOCASE LIMIT 1) AND 'rentals'.'returned_date' = '';";
 
+    db.all(statement, value, function(err, res) {
+      if (callback) callback(err, res);
+      db.close();
+    });
+  },
+
+  movie_past_customers: function(value, column, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    console.log("value:" + value, "column:" + column);
+    var statement = "SELECT 'customers'.* FROM 'customers' INNER JOIN 'rentals' ON 'customers'.'id' = 'rentals'.'customer_id' WHERE 'rentals'.'movie_id' = (SELECT 'movies'.'id' FROM 'movies' WHERE 'movies'.'title' = ? COLLATE NOCASE LIMIT 1) AND 'rentals'.'returned_date' != '' ORDER BY " + column + ";";
+
+    console.log(statement);
     db.all(statement, value, function(err, res) {
       if (callback) callback(err, res);
       db.close();

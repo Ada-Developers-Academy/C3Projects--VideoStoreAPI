@@ -6,8 +6,8 @@
         "checked_out": "2015-09-20"
     },
     {
-        "movie_id": 2,
-        "customer_id": 1,
+        "movie_id": 1,
+        "customer_id": 7,
         "returned_date": "2015-06-19",
         "checked_out": "2015-06-11"
     },
@@ -18,7 +18,7 @@
         "checked_out": "2015-09-20"
     },
     {
-        "movie_id": 4,
+        "movie_id": 1,
         "customer_id": 1,
         "returned_date": "2015-07-17",
         "checked_out": "2015-07-10"

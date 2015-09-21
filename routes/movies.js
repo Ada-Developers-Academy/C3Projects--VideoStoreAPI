@@ -14,10 +14,17 @@ router.get('/one_movie', function(req, res, next) {
   //return customer_exports.customerController.one_customer(req, res);
 });
 
+//movies/:title/past_rentals/:column
+router.get('/:movie_title/past_rentals/:column', function(req, res, next) {
+  return movie_exports.moviesController.past_rentals(req, res, req.params.movie_title, req.params.column);
+});
+
+
 //movies/:title/current_rentals
 router.get('/:movie_title/current_rentals', function(req, res, next) {
   return movie_exports.moviesController.current_rentals(req, res, req.params.movie_title);
 });
+
 
 // movies/name/1
 router.get('/:column/:number', function(req, res, next) {

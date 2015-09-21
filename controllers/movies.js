@@ -30,5 +30,14 @@ exports.moviesController = {
     movie.movie_current_customers(movie_title, function(err, record) {
       res.status(200).json({ movie_current_customers: record });
     })
+  },
+
+  past_rentals: function current_rentals(req, res, movie_title, column) {
+
+    var movie = new Movie();
+
+    movie.movie_past_customers(movie_title, column, function(err, record) {
+      res.status(200).json({ movie_past_customers: record });
+    })
   }
 }

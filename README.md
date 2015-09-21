@@ -43,29 +43,29 @@ The API you build should have the following capabilities. The schema of your dat
 - There is not an authentication requirement for this project; assume all users interacting with the API are video store employees.
 
 ### Customers
-- Retrive a list of all customers
-- Retrive a subset of customers
-  - Given a sort column, return _n_ customer records, offset by _p_ records (this will be used to create "pages" of customers)
-  - Sort columns are
+DONE- Retrive a list of all customers
+DONE- Retrive a subset of customers
+  DONE- Given a sort column, return _n_ customer records, offset by _p_ records (this will be used to create "pages" of customers)
+  DONE- Sort columns are
     - `name`
     - `registered_at`
     - `postal_code`
 - Given a customer's `id`...
-  - List the movies they _currently_ have checked out
+  DONE- List the movies they _currently_ have checked out
   - List the movies a customer has checked out in the past
     - ordered by check out date
     - includes return date
 
 ### Movies
-- Retrieve a list of all movies
-- Retrieve a subset of movies
-  - Given a sort column, return _n_ movie records, offset by _p_ records (this will be used to create "pages" of movies)
-  - Sort columns are
+DONE- Retrieve a list of all movies
+DONE- Retrieve a subset of movies
+  DONE- Given a sort column, return _n_ movie records, offset by _p_ records (this will be used to create "pages" of movies)
+  DONE- Sort columns are
     - `title`
     - `release_date`
 - Given a movie's `title`...
-  - Get a list of customers that have _currently_ checked out a copy of the film
-  - Get a list of customers that have checked out a copy _in the past_
+  DONE- Get a list of customers that have _currently_ checked out a copy of the film
+  DONE- Get a list of customers that have checked out a copy _in the past_
     - ordered by customer `id`
     - ordered by customer `name`
     - ordered by check out date
