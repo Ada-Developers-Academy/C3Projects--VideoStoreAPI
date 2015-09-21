@@ -24,8 +24,9 @@ router.get('/history/name/:title', function(req, res, next) {
   return rentals_exports.rentalsController.name_history(req, res);
 });
 
-router.get('/checkout/:title/:customer_id', function(req, res) {
+router.get('/checkout/:title/:customer_id', function(req, res, next) {
   return rentals_exports.rentalsController.checkout(req, res);
+  next();
 });
 
 router.post('/checkout/:title/:customer_id', function(req, res) {
