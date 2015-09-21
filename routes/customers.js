@@ -10,4 +10,8 @@ router.get('/registered_at_sort/:records_per_page/:offset', function(req, res, n
   return customer_exports.customersController.registered_at_sort(req, res);
 });
 
+router.get('/name_sort/:records_per_page/:offset', function(req, res, next) {
+  return customer_exports.customersController.name_sort(req, res);
+});
+
 module.exports = router;
