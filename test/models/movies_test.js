@@ -70,6 +70,44 @@ describe('Movie', function() {
       });
     });
   });
+
+  describe('#sortBy', function() {
+    it('returns all movies sorted by title', function(done) {
+      movie.sortBy('title', 'all', function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, numSeeded);
+        assert.equal(rows[0].title, 'Jaws');
+        done();
+      });
+    });
+
+    it('returns all movies sorted by release_date', function(done){
+      movie.sortBy('release_date', 'all', function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, numSeeded);
+        assert.equal(rows[0].release_date, '1975-06-19');
+        done();
+      });
+    });
+
+    it('returns 1 movies sorted by title', function(done) {
+      movie.sortBy('title', 1, function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, 1);
+        assert.equal(rows[0].title, 'Jaws');
+        done();
+      });
+    });
+
+    it('returns 1 movie sorted by release_date', function(done){
+      movie.sortBy('release_date', 1, function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, 1);
+        assert.equal(rows[0].release_date, '1975-06-19');
+        done();
+      });
+    });
+  });
 });
 
 function resetMoviesTable(done) {
@@ -81,7 +119,7 @@ function resetMoviesTable(done) {
       "BEGIN; \
       DELETE FROM movies; \
       INSERT INTO movies(title, overview, release_date, inventory) \
-      VALUES('Jaws', 'Shark!', 'Yesterday', 10), \
+      VALUES('Jaws', 'Shark!', '1975-06-19', 10), \
             ('Jaws and Maws', 'Worm!', 'Yesterday', 11); \
       COMMIT;",
       function(err) {
