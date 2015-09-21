@@ -24,70 +24,52 @@ var customersController = {
   },
 
   customer: function(req, callback) {
-    var json_result = {};
-
-    var statement = "SELECT * FROM customers WHERE id = " + req.params.id + ";";
-    var customer_renting_statement = 
-      "SELECT * FROM rentals WHERE customer_id = " + req.params.id + " AND return_date IS NULL;";
-
-    var customer_rented_statement =
-      "SELECT * FROM rentals \
-      WHERE customer_id = " + req.params.id + " AND \
-      return_date IS NOT NULL;";
-
+    var statement = "SELECT * FROM customers, rentals WHERE customers.id = " + req.params.id + " AND rentals.customer_id = " + req.params.id + ";";    
     var db = new Database('db/development.db');
 
-    function firstQuery(err, this_query, callback) { 
-      db.query(this_query, function(err, result) {
-        json_result.customer = result[0];
-      });
-
-      callback(err, customer_renting_statement, thirdQuery);
-    };
-
-      function secondQuery(err, this_query, callback) {
-        db.query(this_query, function(err, result) {
-          json_result.renting = result;
-        });
-
-        callback(err, customer_rented_statement);
+    db.query(statement, function(err, result) {
+      
+      var customer_info = {
+        id: result[0].customer_id,
+        name: result[0].name,
+        registered_at: result[0].registered_at,
+        address: result[0].address,
+        city: result[0].city,
+        state: result[0].state,
+        postal_code: result[0].postal_code,
+        phone: result[0].phone,
+        account_credit: result[0].account_credit
       };
 
-        function thirdQuery(err, this_query) {
-          db.query(customer_rented_statement, function(err, result) {
-            json_result.rented = result;
-            console.log(json_result);
-          });
+      var renting_movies = [];
+      var rented_movies = [];
+
+      for(var i = 0; i < result.length; i++) {
+        var movie = {
+          id: result[i].movie_id,
+          title: result[i].title,
+          checkout_date: result[i].checkout_date,
+          due_date: result[i].due_date,
+          return_date: result[i].return_date
         };
 
+        if(movie.return_date == null) {
+          renting_movies.push(movie);
+        } else {
+          rented_movies.push(movie);
+        }
+      }
 
-    firstQuery(err, statement, secondQuery);
-    
+      var json_results = {   
+        account: customer_info,
+        renting: renting_movies,
+        rented: rented_movies
+      };
 
-    // var customer_info = db.query(statement, function(err, result) {
-    //   json_result.customer = result[0];
-    // });
-
-    // var customer_renting = db.query(customer_renting_statement, function(err, result) {
-    //   json_result.renting = result;
-    // })
-
-    // var customer_rented = db.query(customer_rented_statement, function(err, result) {
-    //   json_result.rented = result;
-    // })
-
-    // console.log("customer_info = " + customer_info);
-    // console.log("customer_renting = " + customer_renting);
-    // console.log("customer_rented = " + customer_rented);
-
-    // var json_result = {
-    //   customer: customer_info,
-    //   renting: customer_renting,
-    //   rented: customer_rented 
-    // };
-
-    callback(err, json_result);
+      callback(err, json_results);
+    });
   }
+
 };
 
 module.exports = customersController;
