@@ -97,6 +97,15 @@ db.serialize(function() {
     1, // return_status (0 for false (checked out) 1 for true (returned))
     5 // cost
     );
+
+  rental_statement.run(
+    9,
+    1,
+    "2015-09-19",
+    "2015-09-30",
+    0,
+    5
+    );
   rental_statement.finalize();
 
 });
