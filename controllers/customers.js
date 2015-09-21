@@ -17,6 +17,22 @@ exports.customersController = {
     // var results = { "customers": [] }
     var db = new Customer();
     db.all(function(err, result) {
+      console.log(result)
+      results = []
+      for (var i = 0; i < result.length; i++) {
+        result[i].name
+        results.push()
+      }
+
+    // id: 1,
+    // name: 'Shelley Rocha',
+    // registered_at: 'Wed, 29 Apr 2015 07:54:14 -0700',
+    // address: 'Ap #292-5216 Ipsum Rd.',
+    // city: 'Hillsboro',
+    // state: 'OR',
+    // postal_code: '24309',
+    // phone: '(322) 510-8695',
+    // account_credit: 13.15 },
       return res.status(200).json(result);
     });
   },
