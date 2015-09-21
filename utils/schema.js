@@ -25,7 +25,9 @@ var customer_fields = [
 
 var rental_fields = [
   ['customer_id', 'integer'],
+  ['name', 'text'],
   ['movie_id', 'integer'],
+  ['title', 'text'],
   ['checkout_date', 'text'],
   ['due_date', 'text'],
   ['return_date', 'text']

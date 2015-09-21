@@ -13,8 +13,8 @@ router.get("/", function(req, res, next) {
   })
 })
 
-// "GET ./movies/{:id}"
-router.get("/:id", function(req, res, next) {
+// "GET ./movies/{:title}"
+router.get("/:title", function(req, res, next) {
   moviesController.movie(req, function(err, result) {
     if (err) {
       res.status(500).json(err);
