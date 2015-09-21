@@ -9,7 +9,7 @@ function Movie() {
     'overview', // TEXT
     'release_date', // TEXT
     'inventory integer' // INTEGER NOT NULL DEFAULT 0
-  ]
+  ];
 }
 
 // this is silly-ish, but necessary because of how we set up the DB object
