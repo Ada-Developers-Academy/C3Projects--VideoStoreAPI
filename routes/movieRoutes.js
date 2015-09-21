@@ -14,7 +14,6 @@ router.get('/all/:page', function(req, res, next) {
 
 router.get("/all/:sort/:page", function(req, res, next) {
   var sort = req.params.sort;
-  console.log("req.params.page " + req.params.page);
 
   switch (sort) {
     case "release_date":
