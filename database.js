@@ -97,5 +97,18 @@ module.exports = {
       if (callback) callback(err, res);
       db.close();
     });
+  },
+
+  customers: function(value, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+
+    var today = new Date().toISOString().slice(0, 10); //gets date in SQL format for comparison
+
+    var statement = "SELECT 'customers'.* FROM 'customers' INNER JOIN 'rentals' ON 'customers'.'id' = 'rentals'.'customer_id' WHERE 'rentals'.'returned_date' = ;"
+
+    db.all(statement, value, function(err, res) {
+      if (callback) callback(err, res);
+      db.close();
+    });
   }
 }

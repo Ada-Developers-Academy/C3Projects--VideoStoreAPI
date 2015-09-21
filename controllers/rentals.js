@@ -19,5 +19,14 @@ exports.rentalsController = {
     rental.customers(movie_title, function(err, record) {
       res.status(200).json({ rental_customers: record });
     })
+  },
+
+  overdue_customers: function overdue_customers(req, res, movie_title) {
+
+    var rental = new Rental();
+
+    rental.overdue(function(err, record) {
+      res.status(200).json({ overdue_customers: record });
+    })
   }
 }
