@@ -52,7 +52,7 @@ exports.moviesController = {
       results = [],
       title = req.params.title,
       titleish = '%' + title + '%',
-      statement = "SELECT movies.title, movies.overview, movies.inventory FROM movies, rentals WHERE movies.title=rentals.movie_title AND movies.title LIKE ? AND rentals.return_date IS NULL;";
+      statement = "SELECT movies.title, movies.overview, movies.inventory FROM movies, rentals WHERE movies.title LIKE ? (CASE WHEN movies.title=rentals.movie_title AND rentals.return_date IS NULL) THEN  ELSE;";
 
       db.all(statement, [titleish], function(err, rows) {
         var rented = rows.length,
