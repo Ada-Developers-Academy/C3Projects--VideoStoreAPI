@@ -35,7 +35,7 @@ var customer_statement = db.prepare(
 );
 
 db.serialize(function() {
-  // loop them movies
+  // loop through customers
   for(var i = 0; i < customers.length; i++) {
     var customer = customers[i];
 
@@ -53,6 +53,30 @@ db.serialize(function() {
   }
 
   customer_statement.finalize();
+});
+
+var rentals = require('./rentals');
+var rental_statement = db.prepare(
+  "INSERT INTO rentals(check_out_date, check_in_date, expected_return_date, \
+  customer_id, movie_id) VALUES (?, ?, ?, ?, ?);"
+);
+
+db.serialize(function() {
+  // loop through rentals
+  for(var i = 0; i < rentals.length; i++) {
+    var rental = rentals[i];
+
+    // insert each one into the db
+    rental_statement.run(
+      rental.check_out_date,
+      rental.check_in_date,
+      rental.expected_return_date,
+      rental.customer_id,
+      rental.movie_id
+    );
+  }
+
+  rental_statement.finalize();
 });
 
 db.close();

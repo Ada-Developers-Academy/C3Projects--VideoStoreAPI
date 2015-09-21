@@ -1,0 +1,30 @@
+[
+    {
+        "check_out_date": "1988-07-07",
+        "check_in_date": "1988-07-17",
+        "expected_return_date": "1988-08-07",
+        "customer_id": 1,
+        "movie_id": 54
+    },
+    {
+        "check_out_date": "1989-10-01",
+        "check_in_date": "1989-10-02",
+        "expected_return_date": "1989-11-01",
+        "customer_id": 3,
+        "movie_id": 33
+    },
+    {
+        "check_out_date": "1989-10-01",
+        "check_in_date": "1989-10-02",
+        "expected_return_date": "1989-11-01",
+        "customer_id": 3,
+        "movie_id": 33
+    },
+    {
+        "check_out_date": "1990-01-01",
+        "check_in_date": "",
+        "expected_return_date": "1990-02-01",
+        "customer_id": 10,
+        "movie_id": 15
+    }
+]
