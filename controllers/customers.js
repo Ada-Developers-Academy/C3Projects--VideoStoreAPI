@@ -25,7 +25,7 @@ exports.customersController = {
     db.all("SELECT movies.title FROM rentals \
     INNER JOIN movie_copies ON rentals.movie_copy_id = movie_copies.id \
     INNER JOIN movies ON movie_copies.movie_id = movies.id \
-    WHERE rentals.customer_id = ?", id, function(err, the_movies) {
+    WHERE rentals.customer_id = ? AND rentals.return_status = 0", id, function(err, the_movies) {
       if (err) {
         console.log(err);
       }
