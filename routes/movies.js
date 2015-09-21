@@ -30,4 +30,8 @@ router.get('/:title/past_customers/customer_id_sort', function(req, res, next) {
   return movie_exports.moviesController.past_customers_id_sort(req, res);
 });
 
+router.get('/:title/past_customers/customer_name_sort', function(req, res, next) {
+  return movie_exports.moviesController.past_customers_name_sort(req, res);
+});
+
 module.exports = router;
