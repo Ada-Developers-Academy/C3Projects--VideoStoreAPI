@@ -1,16 +1,17 @@
 "use strict";
 
 var assert = require("assert");
+var sqlite3 = require('sqlite3').verbose();
 var Customer = require('../../models/customer');
 
 describe('Customer', function() {
   var customer;
   var dbPath = "db/test.db";
-  var numSeeded = 0;
+  var numSeeded = 2;
 
   beforeEach(function(done) {
     customer = new Customer();
-    done();
+    resetCustomersTable(done);
   });
 
   it('can be instantiated', function() {
@@ -43,3 +44,21 @@ describe('Customer', function() {
     });
   });
 });
+
+function resetCustomersTable(done) {
+  var db = new sqlite3.Database('db/test.db');
+  db.serialize(function() {
+    db.exec(
+      "BEGIN; \
+      DELETE FROM customers; \
+      INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_balance) \
+      VALUES('Customer1', '01/02/2015', 'Address1', 'City1', 'State1', 'Zip1', 'Phone1', '1250'), \
+            ('Customer2', '12/01/2014', 'Address2', 'City2', 'State2', 'Zip2', 'Phone2', '1000'); \
+      COMMIT;",
+      function(err) {
+        db.close();
+        done();
+      }
+    );
+  });
+}
