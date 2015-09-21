@@ -11,7 +11,7 @@ router.get('/:title', function(req, res, next) {
   return movies_exports.moviesController.movies_by_title(req, res);
 });
 
-router.get('/:title/current_renters', function(req, res, next) {
+router.get('/:title/current_renters/:order', function(req, res, next) {
   return movies_exports.moviesController.current_renters_by_title(req, res);
 });
 
