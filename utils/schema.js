@@ -72,9 +72,9 @@ db.serialize(function() {
   db.run("CREATE TABLE rentals (id INTEGER PRIMARY KEY);");
 
   // add columns that I need to those tables
-  for(var i = 0; i < customer_fields.length; i++) {
-    var name = customer_fields[i][0],
-        type = customer_fields[i][1];
+  for(var i = 0; i < rental_fields.length; i++) {
+    var name = rental_fields[i][0],
+        type = rental_fields[i][1];
 
     // ALTER TABLE movies ADD COLUMN title text;
     db.run("ALTER TABLE rentals ADD COLUMN " + name + " " + type + ";");
