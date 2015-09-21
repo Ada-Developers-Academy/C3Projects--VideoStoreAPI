@@ -30,6 +30,18 @@ exports.moviesController = {
     db.all(statement, function(err, rows) {
       res.status(200).json(rows);
     });
-  }
+  },
 
+  // '/movies/:title/inventory'
+  check_inventory: function(req, res) {
+    var statement = "SELECT * FROM movies WHERE title LIKE '%" + req.params.title + "%';";
+
+    db.all(statement, function(err, rows) {
+      var inventory = { "title"    : rows[0].title,
+                        "inventory": rows[0].inventory
+                      }
+
+      res.status(200).json(inventory);
+    });
+  }
 }
