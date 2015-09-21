@@ -15,12 +15,12 @@
 
 **DONE** GET "/movies"
 // for routes below, will need to return results offset by page number
-GET "/movies/:title" // will be dynamic
-GET "/movies/:release_date"
+**DONE** GET "/movies/:title" // will be dynamic
+**DONE** GET "/movies/:release_date"
 
 // for routes below, will need to pass an ordering parameter to order by customer id, name, or checkout date
 **DONE** GET "/movies/:title/current_customers/:order"
-GET "/movies/:title/past_customers/:order"
+**DONE** GET "/movies/:title/past_customers/:order"
 
 // normalize database or join everything???
 **DONE** GET "/movies/:title"

@@ -15,6 +15,10 @@ router.get('/:title/current_renters/:order', function(req, res, next) {
   return movies_exports.moviesController.current_renters_by_title(req, res);
 });
 
+router.get('/:title/past_renters/:order', function(req, res, next) {
+  return movies_exports.moviesController.past_renters_by_title(req, res);
+});
+
 router.get('/release/:release_date', function(req, res, next) {
   return movies_exports.moviesController.movies_by_release(req, res);
 });

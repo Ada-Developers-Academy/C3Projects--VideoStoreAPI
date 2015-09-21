@@ -106,6 +106,15 @@ db.serialize(function() {
     0,
     5
     );
+
+    rental_statement.run(
+      9,
+      6,
+      "2015-09-19",
+      "2015-09-30",
+      1,
+      5
+      );
   rental_statement.finalize();
 
 });
