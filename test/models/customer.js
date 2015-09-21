@@ -100,6 +100,25 @@ describe("Customer", function() {
         });
       });
     });
+
+    it("can update a customer record", function(done) {
+      var id = 2;
+      var columns = ['name', 'city', 'state'];
+      var values = ['Foxy Mulder', 'Victoria', 'BC'];
+
+      customer.update(id, columns, values, function(err, res) {
+        assert.equal(res.changes, 1);
+
+        customer.find_by("name", "Fox Mulder", function(err, res) {
+          assert.equal(res, undefined); //we can't find by old name
+        });
+
+        customer.find_by("name", "Foxy Mulder", function(err, res) {
+          assert.equal(res.name, "Foxy Mulder");
+          done();
+        });
+      });
+    });
   });
 
     // it("can save changes to a customer", function(done) {

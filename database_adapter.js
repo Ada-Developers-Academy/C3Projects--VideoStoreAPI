@@ -70,5 +70,26 @@ module.exports = {
       if (callback) { callback(err, { inserted_id: this.lastID }); }
       db.close();
     });
+  },
+
+  // Example route:
+  // customers/update/:id?name=name&city=city&state=state
+  update: function(id, columns, values, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    // "column1 = ?, column2 = ?, column3 = ?"
+    var columnsQueries = [];
+
+    for (var i = 0; i < columns.length; i++) {
+      columnsQueries.push(columns[i] + " = ?");
+    };
+
+    var update_statement = columnsQueries.join(', ');
+
+    var statement = "UPDATE " + this.table_name + " SET " + update_statement + "WHERE id = " + id + ";";
+
+    db.run(statement, values, function(err, res) {
+      if (callback) { callback(err, { changes: this.changes }); }
+      db.close();
+    });
   }
 }
