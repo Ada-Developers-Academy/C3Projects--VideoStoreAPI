@@ -7,7 +7,7 @@ exports.customersController = {
   index: function(req, res) {
     // var results = { "customers": [] }
     var db = new Customer();
-    var data = db.all(function(err, result) {
+    db.all(function(err, result) {
       return res.status(200).json(result);
     });
   },
@@ -17,14 +17,15 @@ exports.customersController = {
     // returns currently checkout_out movies & rental history
     var id = req["params"]["id"];
     var db = new Customer();
-    var data = db.find_checked_out(id, function(err, result) {
+    db.find_checked_out(id, function(err, result) {
       return res.status(200).json(result);
     });
+  },
 
   // GET /customers/by_name?n=XXX&p=XXX
-  // showByName: function(req, res) {
-  //   var Customer = new Customer();
-  // },
+  showByName: function(req, res) {
+    var db = new Customer();
+  }
 
   // // GET /customers/by_registered_at?n=XXX&p=XXX
   // showByRegistered_at: function(req, res) {
