@@ -13,6 +13,7 @@ function sortBy(sort_by, req, res) {
 
 exports.customersController = {
   // GET /customers
+  // returns all customers
   index: function(req, res) {
     // var results = { "customers": [] }
     var db = new Customer();
@@ -22,8 +23,8 @@ exports.customersController = {
   },
 
   // GET /customers/:id
+  // returns currently checked out movies & rental history
   show: function(req, res) {
-    // returns currently checkout_out movies & rental history
     var id = req["params"]["id"];
     var db = new Customer();
     db.find_checked_out(id, function(err, result) {
@@ -32,17 +33,20 @@ exports.customersController = {
   },
 
   // GET /customers/by_name?n=XXX&p=XXX
+  // returns customers sorted by name & only the number & pages selected
   showByName: function(req, res) {
     sortBy("name", req, res);
   },
 
   // GET /customers/by_registered_at?n=XXX&p=XXX
+  // returns customers sorted by registered at & only the number & pages selected
   // NOTE: Need to change registered at to a time object? Sorting alphabetally vs. by date!
   showByRegistered_at: function(req, res) {
     sortBy("registered_at", req, res);
   },
 
   // GET /customers/by_postal_code?n=XXX&p=XXX
+  // returns customers sorted by postal code & only the number & pages selected
   showByPostalCode: function(req, res) {
     sortBy("postal_code", req, res);
   }
