@@ -40,10 +40,7 @@ router.post('/checkout/:customer_id/:movie_id', function(req, res, next) {
     return_date.setDate(return_date.getDate() + RENTAL_PERIOD);
 
     var defaults = [checkout_date, return_date, "false"];
-
-    for (var i = 0; i < defaults.length; i++) {
-      values.push(defaults[i]);
-    }
+    values = values.concat(defaults);
 
     var columns = ['customer_id', 'movie_id', 'checkout_date', 'return_date', 'returned'];
 
