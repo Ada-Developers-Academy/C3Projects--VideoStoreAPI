@@ -14,9 +14,9 @@ router.get('/one_movie', function(req, res, next) {
   //return customer_exports.customerController.one_customer(req, res);
 });
 
-router.get('/:column', function(req, res, next) {
-  // return subsets of movies, might be two different endpoints
-return movie_exports.moviesController.subset(req, res, req.params.column);
+// movies/name/1
+router.get('/:column/:number', function(req, res, next) {
+  return movie_exports.moviesController.subset(req, res, req.params.column, req.params.number);
 });
 
 // one movies/title/customers will return customer info
