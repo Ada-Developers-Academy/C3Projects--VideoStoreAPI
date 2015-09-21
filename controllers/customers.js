@@ -16,7 +16,7 @@ exports.customersController = {
 
     var customer = new Customer();
 
-    var offset = pageNumber * 50;
+    var offset = (pageNumber - 1) * 50;
 
     customer.find_subset(column, 50, offset, function(err, record) {
       res.status(200).json({ customer_subset: record });
