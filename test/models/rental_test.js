@@ -32,7 +32,7 @@ describe('Rental', function() {
 
   describe('#create', function() {
     it('creates a new rental record', function(done) {
-      var data = validRentalDate();
+      var data = validRentalData();
 
       rental.create(data, function(err, res) {
         assert.equal(err, undefined);
@@ -52,6 +52,11 @@ describe('Rental', function() {
       rental.checkIn(movie_title, date, function(err, res) {
         assert.equal(err, undefined);
         assert.equal(res.changed, 1);
+
+        rental.findBy('movie_title', 'Wait Until Dark', function(err, row) {
+          assert.equal(err, undefined);
+          assert.equal(row[0].return_date, '2015-09-20');
+        });
         done();
       });
     });
