@@ -50,9 +50,3 @@ set_tables(" customers ", customer_fields);
 set_tables(" rentals ", rental_fields);
 
 db.close();
-
-
-
-
-
-

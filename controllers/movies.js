@@ -12,12 +12,14 @@ exports.moviesController = {
     })
   },
 
-  subset: function subset(req, res, column) {
+  subset: function subset(req, res, column, pageNumber) {
 
     var movie = new Movie();
 
-    movie.find_subset(column, 5, 0, function(err, record) {
-      res.status(200).json({ subset_movies: record });
+    var offset = (pageNumber - 1) * 50;
+
+    movie.find_subset(column, 50, offset, function(err, record) {
+      res.status(200).json({ movie_subset: record });
     })
   }
 }

@@ -49,6 +49,27 @@ db.serialize(function() {
   customer_statement.finalize();
 });
 
+var rentals = require('../rentals');
+var rental_statement = db.prepare(
+  "INSERT INTO rentals(movie_id, customer_id, returned_date, checked_out) \
+  VALUES (?, ?, ?, ?);"
+);
+
+db.serialize(function() {
+  for(var i = 0; i < rentals.length; i++) {
+    var rental = rentals[i];
+
+    rental_statement.run(
+      rental.movie_id,
+      rental.customer_id,
+      rental.returned_date,
+      rental.checked_out
+    );
+  }
+  rental_statement.finalize();
+});
+
+
 // INSERT INTO rentals(customer_id, movie_id, returned_date, checked_out) VALUES (2, 3, 'tomorrow', 1);
 
 // SELECT "movies".* FROM "movies" INNER JOIN "rentals" ON "movies"."id" = "rentals"."movie_id" WHERE "rentals"."movie_id" = 3;
