@@ -7,8 +7,9 @@ describe("Database", function() {
   var db;
   var dbPath = "db/test.db";
 
-  beforeEach(function() {
+  beforeEach(function(done) {
     db = new Database();
+    done();
   });
 
   it("can be instantiated", function() {

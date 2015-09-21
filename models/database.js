@@ -34,4 +34,32 @@ Database.prototype.create = function create(data, callback) {
   });
 }
 
+Database.prototype.all = function all(callback) {
+  var db = this.openDB();
+  var statement = 'SELECT * FROM ' + this.tableName + ';';
+
+  db.all(statement, function(err, rows) {
+    if (err) { console.log('!!!!ERROR!!!! In Database#all.'); } // FIXME: how is error tracking best handled?
+
+    callback(err, rows);
+    db.close();
+    statement.finalize();
+  });
+}
+
+// OPTIMIZE / TODO: this can only search by one parameter at a time, and only with an `=` relationship.
+Database.prototype.findBy = function findBy(parameter, value, callback) {
+  // FIXME: it'd be nice to have a security check that the parameter is a valid parameter (e.g. make sure it's not sql injection)
+  var db = this.openDB();
+  var statement = 'SELECT * FROM ' + this.tableName + ' WHERE ' + parameter + ' LIKE ?;';
+
+  db.all(statement, value, function(err, rows) {
+    if (err) { console.log('!!!!ERROR!!!! In Database#findBy'); } // FIXME: how is error tracking best handled?
+
+    callback(err, rows);
+    db.close();
+    statement.finalize();
+  });
+}
+
 module.exports = Database;
