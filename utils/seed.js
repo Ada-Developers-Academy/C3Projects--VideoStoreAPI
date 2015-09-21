@@ -44,6 +44,9 @@ db.serialize(function() {
   for(var i = 0; i < movies.length; i++) {
     var movie = movies[i];
 
+
+    var formatted_date = formatDate(movie.release_date);
+
     // insert each movie into the db
     movie_statement.run(
       movie.title,
