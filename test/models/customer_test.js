@@ -83,6 +83,16 @@ describe('Customer', function() {
       });
     });
   });
+
+  describe('#all', function() {
+    it('returns all customers', function(done) {
+      customer.all(function(err, rows){
+        assert.equal(err, undefined);
+        assert.equal(rows.length, numSeeded);
+        done();
+      });
+    });
+  });
 });
 
 function resetCustomersTable(done) {
