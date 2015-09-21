@@ -62,7 +62,7 @@ var rental_fields = [
   ['expected_return_date', 'text'],
   ['customer_id', 'integer'],
   ['movie_id', 'integer']
-]
+];
 
 db.serialize(function() {
   // drop existing tables
