@@ -8,6 +8,7 @@ router.get('/', function(req, res, next) {
   return customer_exports.customersController.index(req, res);
 });
 
+ // /customers/:id ?? returns info from rentals table
 router.get('/one_customer', function(req, res, next) {
   // return one customer based on id
   //return customer_exports.customerController.one_customer(req, res);
