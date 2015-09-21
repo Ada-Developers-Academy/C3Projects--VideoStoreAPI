@@ -1,7 +1,7 @@
 "use strict";
 
 var assert = require("assert");
-var Movie = require('../../models/movies');
+var Movie = require('../../models/movie');
 var sqlite3 = require('sqlite3').verbose();
 
 describe('Movie', function() {
