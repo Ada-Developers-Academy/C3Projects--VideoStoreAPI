@@ -4,18 +4,18 @@ The following are all the endpoints available from our Video Store API.
 ## Customer
 
 __Endpoint__  
-`GET ./customers`   
-Returns all the information on record of all of our customers.
+`GET ./customers`  
 
-returns n number of customers (hardcoded?) sorted by name  
-offset by p records (hardcoded)  
- all of the attr of customers  
+Returns all the information on record of our customers. Can be sorted by `name`, `registered_at`, or `postal_code`. Also can be paginated with `number` and `page` (e.g. display the 2nd page of 20 customer records: `./customers?number=20&page=2`).
+
 
 __Request Parameters__  
 
-| Query Parameter     | Value          |
-| :-------------------| :------------- |
-| `order_by `           | _Optional._ Provide this parameter if you would like the customers sorted. Options include: `name`, `registered_at`, or `postal_code`.        |
+| Query Parameter | Value          |
+| :-------------- | :------------- |
+| `order_by `     | _Optional._ Provide this parameter if you would like the customers sorted. Options include: `name`, `registered_at`, or `postal_code`. When using `name`, customers are sorted by their first name. |
+| `number`        | An integer that represents the number of customer records you'd like returned. |
+| `page`          | _Requires `number` query._ The page of customer records you'd like returned. |
 
 __Response Format__  
 
@@ -69,7 +69,12 @@ __Request Parameter__
 __Response__
 
     {
-      "customer": {
+      "account": {
+        "id": 2,
+        "name": "Curran Stout",
+        "registered_at": "Wed, 16 Apr 2014 21:40: -0770"
+        "address": ,
+
         "renting": [
           {
             "id": 1
@@ -141,7 +146,7 @@ __Response__
 ***
 
 __Endpoint__  
-`GET ./movie/{:title}`  
+`GET ./movies/{:title}`  
 Returns movies that match the title query.
 E.g. ".movie/jaws", "./movie/north%20by%20northwest"
 
