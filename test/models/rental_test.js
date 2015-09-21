@@ -92,6 +92,27 @@ describe('Rental', function() {
     });
   });
 
+  describe('#sortBy', function() {
+    it('returns all rentals sorted by return_date', function(done) {
+      rental.sortBy('return_date', 'all', function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, numSeeded);
+        assert.equal(rows[0].return_date, "2015-03-20");
+        assert.equal(rows[0].movie_title, 'North by Northwest');
+        done();
+      });
+    });
+
+    it('returns 1 rental sorted by customer_id', function(done) {
+      rental.sortBy('customer_id', 1, function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, 1);
+        assert.equal(rows[0].customer_id, 2);
+        done();
+      });
+    });
+  });
+
   describe('#checkIn', function() {
     it('checks in a rental by adding a return date', function(done) {
       var movie_title = 'Wait Until Dark';
@@ -119,7 +140,7 @@ function resetRentalsTable(done) {
       "BEGIN; \
       DELETE FROM rentals; \
       INSERT INTO rentals(checkout_date, return_date, movie_title, customer_id) \
-      VALUES('2015-03-16', '015-03-20', 'North by Northwest', 2), \
+      VALUES('2015-03-16', '2015-03-20', 'North by Northwest', 2), \
             ('2015-09-16', '', 'Wait Until Dark', 9); \
       COMMIT;",
       function(err) {
