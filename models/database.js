@@ -43,7 +43,6 @@ Database.prototype.all = function all(callback) {
 
     callback(err, rows);
     db.close();
-    statement.finalize();
   });
 }
 
@@ -58,7 +57,6 @@ Database.prototype.findBy = function findBy(parameter, value, callback) {
 
     callback(err, rows);
     db.close();
-    statement.finalize();
   });
 }
 
