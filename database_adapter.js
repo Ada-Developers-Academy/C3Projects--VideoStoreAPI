@@ -76,7 +76,7 @@ module.exports = {
   // customers/update/:id?name=name&city=city&state=state
   update: function(id, columns, values, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
-    // "column1 = ?, column2 = ?, column3 = ?"
+    // eg. "column1 = ?, column2 = ?, column3 = ?"
     var columnsQueries = [];
 
     for (var i = 0; i < columns.length; i++) {
