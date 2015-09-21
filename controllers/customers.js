@@ -32,5 +32,13 @@ exports.customersController = {
   postal_code_sort: function postal_code_sort(req, res) {
     var sort_type = "postal_code";
     sortCustomers(sort_type, req.params, res);
+  },
+
+  current_rentals: funcion current_rentals(req, res) {
+    var id = req.params.id;
+    
+    customer.current_rentals(id, function(current_rentals) {
+      return res.status(200).json(current_rentals);
+    });
   }
 }

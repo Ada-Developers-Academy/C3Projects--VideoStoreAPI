@@ -18,4 +18,8 @@ router.get('/postal_code_sort/:records_per_page/:offset', function(req, res, nex
   return customer_exports.customersController.postal_code_sort(req, res);
 })
 
+router.get('/:id/current_rentals', function(req, res, next){
+  return customer_exports.customersController.current_rentals(req, res);
+})
+
 module.exports = router;
