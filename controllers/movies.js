@@ -42,6 +42,14 @@ exports.moviesController = {
 
     movie.current_customers(movie_title, function(current_customers) {
       return res.status(200).json(current_customers);
-    })
+    });
+  },
+
+  past_customers: function past_customers(req, res) {
+    var movie_title = req.params.title;
+
+    movie.past_customers(movie_title, function(past_customers) {
+      return res.status(200).json(past_customers);
+    });
   }
 }
