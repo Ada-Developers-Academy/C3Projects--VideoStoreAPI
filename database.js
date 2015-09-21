@@ -39,8 +39,25 @@ module.exports = {
   },
 
   current_customers: function(movie_title, callback) {
-    // we want customers who currently have a rental with this movie title
-    this.query("SELECT * FROM customers, rentals WHERE customers.id=rentals.customer_id AND rentals.movie_title LIKE '%" + movie_title + "%' AND rentals.check_in IS NULL;", function(res) {
+    this.query("SELECT customers.id, customers.name, customers.registered_at, \
+                customers.address, customers.city, customers.state, \
+                customers.postal_code, customers.phone, customers.account_credit \
+                FROM customers, rentals \
+                WHERE customers.id=rentals.customer_id \
+                AND rentals.movie_title LIKE '%" + movie_title + "%' \
+                AND rentals.check_in IS NULL;", function(res) {
+      callback(res);
+    });
+  },
+
+  past_customers: function(movie_title, callback) {
+    this.query("SELECT customers.id, customers.name, customers.registered_at, \
+                customers.address, customers.city, customers.state, \
+                customers.postal_code, customers.phone, customers.account_credit \
+                FROM customers, rentals \
+                WHERE customers.id=rentals.customer_id \
+                AND rentals.movie_title LIKE '%" + movie_title + "%' \
+                AND rentals.check_in IS NOT NULL;", function(res) {
       callback(res);
     });
   }
