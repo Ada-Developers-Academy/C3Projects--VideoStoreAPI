@@ -6,8 +6,8 @@ var sqlite3 = require('sqlite3').verbose(),
 
 var movies = require('../movies');
 var movie_statement = db.prepare(
-  "INSERT INTO movies(title, overview, inventory, release_date) \
-  VALUES (?, ?, ?, ?);"
+  "INSERT INTO movies(title, overview, release_date, inventory, available) \
+  VALUES (?, ?, ?, ?, ?);"
 );
 
 db.serialize(function() {
@@ -17,8 +17,9 @@ db.serialize(function() {
     movie_statement.run(
       movie.title,
       movie.overview,
+      movie.release_date,
       movie.inventory,
-      movie.release_date
+      movie.inventory
     );
   }
   movie_statement.finalize();
@@ -73,5 +74,9 @@ db.serialize(function() {
 // INSERT INTO rentals(customer_id, movie_id, returned_date, checked_out) VALUES (2, 3, 'tomorrow', 1);
 
 // SELECT "movies".* FROM "movies" INNER JOIN "rentals" ON "movies"."id" = "rentals"."movie_id" WHERE "rentals"."movie_id" = 3;
+
+//finds rental based on customer id -> SELECT "rentals".* FROM "rentals" INNER JOIN "customers" ON "customers"."id" = "rentals"."customer_id" WHERE "rentals"."customer_id" = 1;
+
+// returns movies checkout out by customer 1 ->  SELECT "movies".* FROM "movies" INNER JOIN "rentals" ON "movies"."id" = "rentals"."movie_id" WHERE "rentals"."customer_id" = 1 AND "rentals"."returned_date" = "";
 
 db.close();

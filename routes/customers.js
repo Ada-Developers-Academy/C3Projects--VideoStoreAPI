@@ -14,6 +14,11 @@ router.get('/one_customer', function(req, res, next) {
   //return customer_exports.customerController.one_customer(req, res);
 });
 
+// customers/:id/current_rentals
+router.get('/:id/current_rentals', function(req, res, next) {
+  return customer_exports.customersController.current_rentals(req, res, req.params.id);
+});
+
 // customers/name/1
 router.get('/:column/:number', function(req, res, next) {
   return customer_exports.customersController.subset(req, res, req.params.column, req.params.number);

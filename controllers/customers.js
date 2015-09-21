@@ -21,5 +21,14 @@ exports.customersController = {
     customer.find_subset(column, 50, offset, function(err, record) {
       res.status(200).json({ customer_subset: record });
     })
+  },
+
+  current_rentals: function current_rentals(req, res, customer_id) {
+
+    var customer = new Customer();
+
+    customer.customer_rentals(customer_id, function(err, record){
+      res.status(200).json({ current_rentals: record });
+    })
   }
 }

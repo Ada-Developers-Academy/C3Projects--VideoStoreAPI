@@ -8,7 +8,8 @@ var movie_fields = [
   ['title', 'text'],
   ['overview', 'text'],
   ['release_date', 'text'],
-  ['inventory', 'integer']
+  ['inventory', 'integer'],
+  ['available', 'integer']
 ]
 
 var customer_fields = [
@@ -26,7 +27,7 @@ var rental_fields = [
   ['movie_id', 'integer'],
   ['customer_id', 'integer'],
   ['returned_date', 'text'],
-  ['checked_out', 'integer']
+  ['checked_out', 'text']
 ]
 
 function set_tables(table, table_fields) {

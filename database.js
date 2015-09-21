@@ -32,5 +32,16 @@ module.exports = {
       if (callback) callback(err, res);
       db.close();
     });
+  },
+
+  customer_rentals: function(value, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+
+    var statement = "SELECT 'movies'.* FROM 'movies' INNER JOIN 'rentals' ON 'movies'.'id' = 'rentals'.'movie_id' WHERE 'rentals'.'customer_id' = ? AND 'rentals'.'returned_date' = '';";
+
+    db.all(statement, value, function(err, res) {
+      if (callback) callback(err, res);
+      db.close();
+    });
   }
 }

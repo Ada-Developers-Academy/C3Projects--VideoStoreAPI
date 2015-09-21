@@ -2,37 +2,37 @@
     {
         "movie_id": 1,
         "customer_id": 1,
-        "returned_date": "1960-06-16",
-        "checked_out": 1
+        "returned_date": "",
+        "checked_out": "2015-09-20"
     },
     {
         "movie_id": 2,
         "customer_id": 1,
-        "returned_date": "1975-06-19",
-        "checked_out": 0
+        "returned_date": "2015-06-19",
+        "checked_out": ""
     },
     {
         "movie_id": 3,
         "customer_id": 1,
-        "returned_date": "1973-12-26",
-        "checked_out": 1
+        "returned_date": "",
+        "checked_out": "2015-09-20"
     },
     {
         "movie_id": 4,
         "customer_id": 2,
-        "returned_date": "1959-07-17",
-        "checked_out": 0
+        "returned_date": "2015-07-17",
+        "checked_out": ""
     },
     {
         "movie_id": 5,
         "customer_id": 3,
-        "returned_date": "1991-02-14",
-        "checked_out": 1
+        "returned_date": "",
+        "checked_out": "2015-09-20"
     },
     {
         "movie_id": 1,
         "customer_id": 2,
-        "returned_date": "1991-03-14",
-        "checked_out": 1
+        "returned_date": "",
+        "checked_out": "2015-09-20"
     }
 ]
