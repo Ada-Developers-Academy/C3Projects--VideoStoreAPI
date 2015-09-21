@@ -32,6 +32,10 @@ app.use('/movies', movie_routes);
 var customer_routes = require('./routes/customers');
 app.use('/customers', customer_routes);
 
+// register rental routes
+var rental_routes = require('./routes/rentals');
+app.use('/rentals', rental_routes);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
