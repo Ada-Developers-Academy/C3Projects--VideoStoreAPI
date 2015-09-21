@@ -49,7 +49,6 @@ module.exports = {
     var db = new sqlite3.Database('db/' + db_env + '.db');
 
     var statement = "SELECT * FROM " + this.table_name + " ORDER BY " + column + " LIMIT ? OFFSET ?";
-    console.log(statement);
 
     db.all(statement, queries, function(err, res) {
       if (callback) { callback(err, res); }

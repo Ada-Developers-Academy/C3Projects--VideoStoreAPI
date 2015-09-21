@@ -48,14 +48,47 @@ describe("Customer", function() {
         assert(res instanceof Object);
         assert.equal(res.id, 1);
         done();
-      })
-    })
+      });
+    });
+
+    it("can return a subset of customers sorted by name", function(done){
+      var queries = [1, 0]
+      customer.subset("name", queries, function(err, res) {
+        assert.equal(err, undefined);
+        assert(res instanceof Array);
+        assert.equal(res[0].id, 1);
+        assert.equal(res[0].name, "Dana Scully")
+        done();
+      });
+    });
+
+    it("can return a subset of customers sorted by registered_at", function(done){
+      var queries = [1, 0]
+      customer.subset("registered_at", queries, function(err, res) {
+        assert.equal(err, undefined);
+        assert(res instanceof Array);
+        assert.equal(res[0].id, 2);
+        assert.equal(res[0].name, "Fox Mulder")
+        done();
+      });
+    });
+
+    it("can return a subset of customers sorted by postal_code", function(done){
+      var queries = [1, 1]
+      customer.subset("postal_code", queries, function(err, res) {
+        assert.equal(err, undefined);
+        assert(res instanceof Array);
+        assert.equal(res[0].id, 2);
+        assert.equal(res[0].name, "Fox Mulder")
+        done();
+      });
+    });
 
     // it("can save changes to a customer", function(done) {
-    //   customer.find_by("title", "Jaws", function(err, res) {
-    //     var original_title = res[0].title;
-    //     var id = res[0].id;
-    //     customer.save({title: "Jaws 2: Jawsier", id: id}, function(err, res) {
+    //   customer.find_by("name", "Fox Mulder", function(err, res) {
+    //     var original_name = res.name;
+    //     var id = res.id;
+    //     customer.save({name: "Foxy Mulder", id: id}, function(err, res) {
     //       assert.equal(err, undefined);
     //       assert.equal(res.inserted_id, 0); //it didn't insert any records
     //       assert.equal(res.changed, 1); //it updated one record
