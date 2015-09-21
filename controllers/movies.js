@@ -27,6 +27,13 @@ exports.moviesController = {
   title_sort: function title_sort(req, res) {
     var sort_type = "title";
     sortMovies(sort_type, req.params, res);
-  }
+  },
 
+  movie_info: function movie_info(req, res) {
+    var title = req.params.title;
+
+    movie.movie_info(title, function(movie_info) {
+      return res.status(200).json(movie_info);
+    });
+  }
 }

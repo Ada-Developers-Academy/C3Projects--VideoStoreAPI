@@ -6,13 +6,16 @@ router.get('/', function(req, res, next) {
   return movie_exports.moviesController.all(req, res);
 });
 
-
 router.get('/release_date_sort/:records_per_page/:offset', function(req, res, next){
   return movie_exports.moviesController.release_date_sort(req, res);
 });
 
 router.get('/title_sort/:records_per_page/:offset', function(req, res, next){
   return movie_exports.moviesController.title_sort(req, res);
+});
+
+router.get('/:title', function(req, res, next) {
+  return movie_exports.moviesController.movie_info(req, res);
 });
 
 module.exports = router;

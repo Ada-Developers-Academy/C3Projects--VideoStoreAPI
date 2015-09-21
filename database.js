@@ -19,7 +19,6 @@ module.exports = {
   },
 
   all: function(callback) {
-
     this.query("SELECT * FROM " + this.table_name + ";", function(res) {
       callback(res);
     });
@@ -29,7 +28,13 @@ module.exports = {
    this.query("SELECT * FROM " + this.table_name + " ORDER BY " + sort_type + " LIMIT " + records_per_page + " OFFSET " + offset + ";", function(res) {
      callback(res);
    });
- }
+  },
+
+  movie_info: function(movie_title, callback) {
+    this.query("SELECT * FROM " + this.table_name + " WHERE title LIKE '%" + movie_title + "%';", function(res) {
+      callback(res);
+    });
+  }
 
 }
 
