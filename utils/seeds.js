@@ -20,6 +20,9 @@ var customers_statement = db.prepare(
   "INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_credit) \
   VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
 
+// var convert_register_date = db.prepare(
+//   "UPDATE customers SET registered_at = SUBSTR(registered_at, ) WHERE id = ?;");
+
 var rental_statement = db.prepare(
   "INSERT INTO rentals(movie_copy_id, customer_id, checkout_date, return_date, return_status, cost) \
   VALUES (?, ?, ?, ?, ?, ?);"
@@ -70,6 +73,18 @@ db.serialize(function() {
   }
 
   customers_statement.finalize();
+
+  // for(var i = 0; i < customers.length; i++) {
+  //   var customer = customers[i];
+  //   var date;
+  //   convert_register_date.run(
+  //     customer.registered_at,
+  //     i + 1
+  //   );
+  //   date =
+  // }
+
+  // convert_register_date.finalize();
 
   rental_statement.run(
     9, // movie_copy_id

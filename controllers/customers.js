@@ -53,36 +53,51 @@ exports.customersController = {
 
   customers_by_name: function(req, res) {
     db = new sqlite3.Database('db/' + db_env + '.db');
-    var name = req.params.name;
+    var name  = req.params.name,
+        per_page = req.params.per_page,
+        page  = req.params.pg;
+        page  = page * per_page;
+
     name = addPercents(name);
-    db.all("SELECT * FROM customers WHERE name LIKE ?;", name, function(err, the_name) {
+
+    db.all("SELECT * FROM customers WHERE name LIKE ? ORDER BY name \
+            LIMIT ? OFFSET ?;", name, per_page, page, function(err, the_name) {
       db.close();
       console.log(arguments);
       return res.status(200).json(the_name);
     });
-
   },
 
   customers_by_register_date: function(req, res) {
     db = new sqlite3.Database('db/' + db_env + '.db');
-    var date = req.params.date;
+    var date  = req.params.date,
+        per_page = req.params.per_page,
+        page  = req.params.pg;
+        page  = page * per_page;
+
+
     date = addPercents(date);
-    db.all("SELECT * FROM customers WHERE registered_at LIKE ?;", date, function(err, the_date) {
+    db.all("SELECT * FROM customers WHERE registered_at LIKE ? ORDER BY registered_at \
+            LIMIT ? OFFSET ?;", date, per_page, page, function(err, the_date) {
       db.close();
       return res.status(200).json(the_date);
     });
-
   },
 
   customers_by_postal_code: function(req, res) {
     db = new sqlite3.Database('db/' + db_env + '.db');
-    var zipcode = req.params.zipcode;
+    var zipcode = req.params.zipcode,
+        per_page = req.params.per_page,
+        page    = req.params.pg;
+        page    = page * per_page;
+
     zipcode = addPercents(zipcode);
-    db.all("SELECT * FROM customers WHERE postal_code LIKE ?;", zipcode, function(err, the_code) {
+
+    db.all("SELECT * FROM customers WHERE postal_code LIKE ? ORDER BY postal_code \
+            LIMIT ? OFFSET ?;", zipcode, per_page, page, function(err, the_code) {
       db.close();
       return res.status(200).json(the_code);
     });
-
   },
 
 };
