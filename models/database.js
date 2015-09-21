@@ -62,4 +62,21 @@ Database.prototype.findBy = function findBy(parameter, value, callback) {
   });
 }
 
+Database.prototype.sortBy = function sortBy(parameter, n, callback) {
+  var db = this. openDB();
+
+  if (n === 'all') {
+    var statement = 'SELECT * FROM ' + this.tableName + ' ORDER BY ?;';
+    var values = parameter;
+  } else {
+    var statement = 'SELECT * FROM ' + this.tableName + ' ORDER BY ? LIMIT ?;';
+    var values = [parameter, n];
+  }
+
+  db.all(statement, values, function(err, rows) {
+    callback(err, rows);
+    db.close();
+  });
+}
+
 module.exports = Database;
