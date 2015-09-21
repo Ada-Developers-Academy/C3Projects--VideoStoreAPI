@@ -1,7 +1,7 @@
 "use strict";
 
 var Customer = require('../models/customers');
-var Rentals = require('../models/rentals');
+// var Rentals = require('../models/rentals');
 
 // // ALTERNATIVE WAY OF CODING THIS:
 // function CustomersController() {
@@ -30,10 +30,15 @@ exports.customersController = {
       // need to receive checked_out movies by customer id
       // need to recieve rental history by customer id
 
+      currently_checked_out_movies_statement =
+        "SELECT * FROM rentals WHERE customer_id = " + id +
+        " AND check_in_date = \"\";"
+      returned_movies_statement =
+        "SELECT * FROM rentals WHERE customer_id = " + id +
+        " AND check_in_date != \"\";"
+
       return res.status(200).json(result);
     });
-  }
-
   // for each customer, add that customer to results
   // for (var i = 0; i < data.length; i++) {
   //   results.customers[i] = {
@@ -41,14 +46,17 @@ exports.customersController = {
   //     "name": "yo",
   //   }
   // }
+  },
+  // GET /customers/by_name?n=XXX&p=XXX
+  showByName: function(req, res) {
+    var Customer = new Customer();
+  },
+  // GET /customers/by_registered_at?n=XXX&p=XXX
+  showByRegistered_at: function(req, res) {
+
+  },
+  // GET /customers/by_postal_code?n=XXX&p=XXX
+  showByPostalCode: function(req, res) {
+
+  }
 };
-
-  /*
-
-  GET /customers/by_name?n=XXX&p=XXX
-
-  GET /customers/by_registered_at?n=XXX&p=XXX
-
-  GET /customers/by_postal_code?n=XXX&p=XXX
-
-  */
