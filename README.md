@@ -19,7 +19,7 @@ GET "/movies/:title" // will be dynamic
 GET "/movies/:release_date"
 
 // for routes below, will need to pass an ordering parameter to order by customer id, name, or checkout date
-**DONE-ISH** GET "/movies/:title/current_customers/:order"
+**DONE** GET "/movies/:title/current_customers/:order"
 GET "/movies/:title/past_customers/:order"
 
 // normalize database or join everything???
