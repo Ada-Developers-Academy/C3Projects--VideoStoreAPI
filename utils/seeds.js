@@ -81,10 +81,19 @@ db.serialize(function() {
     );
 
   rental_statement.run(
-    10, // movie_copy_id
+    1, // movie_copy_id
     7,  // customer_id
     "2015-09-10",
     "2015-09-13",
+    1, // return_status (0 for false (checked out) 1 for true (returned))
+    5 // cost
+    );
+
+  rental_statement.run(
+    9, // movie_copy_id
+    7,  // customer_id
+    "2015-09-10",
+    "2015-09-12",
     1, // return_status (0 for false (checked out) 1 for true (returned))
     5 // cost
     );

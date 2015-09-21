@@ -25,7 +25,7 @@ exports.customersController = {
     db.all("SELECT movies.title FROM rentals \
     INNER JOIN movie_copies ON rentals.movie_copy_id = movie_copies.id \
     INNER JOIN movies ON movie_copies.movie_id = movies.id \
-    WHERE rentals.customer_id=?", id, function(err, the_movies) {
+    WHERE rentals.customer_id = ?", id, function(err, the_movies) {
       if (err) {
         console.log(err);
       }
@@ -34,9 +34,22 @@ exports.customersController = {
     });
   },
 
-  // select movies.title from rentals
-    // inner join movie_copies on rentals.copy_id = movie_copies.copy_id
-    // inner join movies on movie_copies.movie_id = movies.movie_id
+  customers_past_movies: function(req, res) {
+    db = new sqlite3.Database('db/' + db_env + '.db');
+    var id = req.params.id;
+    console.log("customer id " + id);
+    db.all("SELECT movies.title, rentals.return_date FROM rentals \
+    INNER JOIN movie_copies ON rentals.movie_copy_id = movie_copies.id \
+    INNER JOIN movies ON movie_copies.movie_id = movies.id \
+    WHERE rentals.customer_id = ? AND rentals.return_status = 1 \
+    ORDER BY rentals.return_date", id, function(err, the_movies) {
+      if (err) {
+        console.log(err);
+      }
+      db.close();
+      return res.status(200).json(the_movies);
+    });
+  },
 
   customers_by_name: function(req, res) {
     db = new sqlite3.Database('db/' + db_env + '.db');
