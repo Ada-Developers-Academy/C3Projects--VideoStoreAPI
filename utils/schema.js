@@ -11,7 +11,7 @@ var data = [
       'title TEXT NOT NULL UNIQUE',
       'overview TEXT',
       'release_date TEXT',
-      'inventory integer NOT NULL DEFAULT 0'
+      'inventory INTEGER NOT NULL DEFAULT 0'
     ]
   },
   {
@@ -24,7 +24,7 @@ var data = [
       'state TEXT',
       'postal_code TEXT',
       'phone TEXT',
-      'account_balance integer NOT NULL DEFAULT 0'
+      'account_balance INTEGER NOT NULL DEFAULT 0'
     ]
   },
   {
