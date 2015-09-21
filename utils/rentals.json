@@ -8,6 +8,14 @@
         "customer_id": 1
     },
     {
+        "checkout_date": "2015-09-14",
+        "due_date": "2015-09-30",
+        "return_date": null,
+        "overdue": 0,
+        "movie_title": "Jaws",
+        "customer_id": 3
+    },
+    {
         "checkout_date": "2015-09-10",
         "due_date": "2015-09-14",
         "return_date": null,
