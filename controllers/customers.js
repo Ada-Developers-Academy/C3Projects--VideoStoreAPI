@@ -23,19 +23,12 @@ exports.customersController = {
     // (currently checkout_out movies, rental history)
     var id = req["params"]["id"];
     var db = new Customer();
-    var data = db.find_by("id", id, function(err, result) {
+    var data = db.find_checked_out(id, function(err, result) {
       // console.log(result);
       // var db_rentals = new Rentals();
       // var dataing = db_rentals.find_by("")
       // need to receive checked_out movies by customer id
       // need to recieve rental history by customer id
-
-      currently_checked_out_movies_statement =
-        "SELECT * FROM rentals WHERE customer_id = " + id +
-        " AND check_in_date = \"\";"
-      returned_movies_statement =
-        "SELECT * FROM rentals WHERE customer_id = " + id +
-        " AND check_in_date != \"\";"
 
       return res.status(200).json(result);
     });
@@ -46,17 +39,17 @@ exports.customersController = {
   //     "name": "yo",
   //   }
   // }
-  },
-  // GET /customers/by_name?n=XXX&p=XXX
-  showByName: function(req, res) {
-    var Customer = new Customer();
-  },
-  // GET /customers/by_registered_at?n=XXX&p=XXX
-  showByRegistered_at: function(req, res) {
-
-  },
-  // GET /customers/by_postal_code?n=XXX&p=XXX
-  showByPostalCode: function(req, res) {
-
   }
+  // GET /customers/by_name?n=XXX&p=XXX
+  // showByName: function(req, res) {
+  //   var Customer = new Customer();
+  // },
+  // // GET /customers/by_registered_at?n=XXX&p=XXX
+  // showByRegistered_at: function(req, res) {
+  //
+  // },
+  // // GET /customers/by_postal_code?n=XXX&p=XXX
+  // showByPostalCode: function(req, res) {
+  //
+  // }
 };
