@@ -39,6 +39,20 @@ describe('Rental', function() {
       });
     });
   });
+
+  describe('#update', function() {
+    it('updates a rental record', function(done) {
+      var movie_title = 'Wait Until Dark';
+
+      var date = '2015-09-20';
+
+      rental.update(movie_title, date, function(err, res) {
+        assert.equal(err, undefined);
+        assert.equal(res.changed, 1);
+        done();
+      });
+    });
+  })
 });
 
 function resetRentalsTable(done) {
