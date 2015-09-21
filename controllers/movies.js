@@ -30,10 +30,18 @@ exports.moviesController = {
   },
 
   movie_info: function movie_info(req, res) {
-    var title = req.params.title;
+    var movie_title = req.params.title;
 
-    movie.movie_info(title, function(movie_info) {
+    movie.movie_info(movie_title, function(movie_info) {
       return res.status(200).json(movie_info);
     });
+  },
+
+  current_customers: function current_customers(req, res) {
+    var movie_title = req.params.title;
+
+    movie.current_customers(movie_title, function(current_customers) {
+      return res.status(200).json(current_customers);
+    })
   }
 }
