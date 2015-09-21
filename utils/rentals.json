@@ -47,5 +47,29 @@
     "overdue": 1,
     "customer_id": 8,
     "movie_title": "King Kong"
+  },
+  {
+    "check_out": "2015-07-03",
+    "check_in": "",
+    "due_date": "2015-07-06",
+    "overdue": 1,
+    "customer_id": 9,
+    "movie_title": "King Kong"
+  },
+  {
+    "check_out": "2015-07-03",
+    "check_in": "2015-07-06",
+    "due_date": "2015-07-06",
+    "overdue": 0,
+    "customer_id": 9,
+    "movie_title": "King Kong"
+  },
+  {
+    "check_out": "2014-07-03",
+    "check_in": "2014-07-06",
+    "due_date": "2014-07-06",
+    "overdue": 0,
+    "customer_id": 3,
+    "movie_title": "King Kong"
   }
 ]
