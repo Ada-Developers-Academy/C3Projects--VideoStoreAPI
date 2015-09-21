@@ -6,7 +6,6 @@ var db_env = process.env.DB || 'development';
 module.exports = {
   query: function(statement, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
-
     db.serialize(function() {
       // below: this is the callback pattern...parameters(ERRORS, RESULT)
       db.all(statement, function(err, res) {
@@ -34,7 +33,17 @@ module.exports = {
     this.query("SELECT * FROM " + this.table_name + " WHERE title LIKE '%" + movie_title + "%';", function(res) {
       callback(res);
     });
+  },
+
+  current_rentals: function(id, callback) {
+    // list of current rentals out based on customer id
+    this.query("SELECT * FROM rentals WHERE customer_id=" + id + " AND check_in IS null;", function(res) {
+      callback(res);
+    });
   }
+
+// Get a list of customers that have currently checked out a copy of the film
+  // rentals = select * from rentals where movie_title = title and check_in = null
 
 }
 

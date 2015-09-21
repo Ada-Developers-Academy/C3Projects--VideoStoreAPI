@@ -42,7 +42,7 @@
   },
   {
     "check_out": "2015-07-03",
-    "check_in": null,
+    "check_in": "",
     "due_date": "2015-07-06",
     "overdue": 1,
     "customer_id": 8,

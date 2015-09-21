@@ -34,9 +34,9 @@ exports.customersController = {
     sortCustomers(sort_type, req.params, res);
   },
 
-  current_rentals: funcion current_rentals(req, res) {
+  current_rentals: function current_rentals(req, res) {
     var id = req.params.id;
-    
+
     customer.current_rentals(id, function(current_rentals) {
       return res.status(200).json(current_rentals);
     });
