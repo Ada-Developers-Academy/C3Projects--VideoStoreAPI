@@ -93,6 +93,35 @@ describe('Customer', function() {
       });
     });
   });
+
+  describe('#findBy', function() {
+    // because of how we seeded the db, this also tests that it will only return exact title matches
+    it('returns 1 customer where the name is Customer1', function(done) {
+      customer.findBy('name', 'Customer1', function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, 1);
+        assert.equal(rows[0].name, 'Customer1');
+        done();
+      });
+    });
+
+    it('"CUSTOMER1" returns customer with name "Customer1"', function(done) {
+      customer.findBy('name', 'CUSTOMER1', function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, 1);
+        assert.equal(rows[0].name, 'Customer1');
+        done();
+      });
+    });
+
+    it('does not return partial patches', function(done) {
+      customer.findBy('name', 'Customer', function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, 0);
+        done();
+      });
+    });
+  });
 });
 
 function resetCustomersTable(done) {
