@@ -8,6 +8,18 @@ describe('Customer', function() {
   var customer;
   var dbPath = "db/test.db";
   var numSeeded = 2;
+  var validCustomerData = function validCustomerData() {
+    return {
+      name: 'Customer1',
+      registered_at: 'Yesterday',
+      address: '1234 Nowhere St',
+      city: 'Nowhereville',
+      state: 'NW',
+      postal_code: '12345',
+      phone: '123-456-7890',
+      account_balance: '2045'
+    };
+  };
 
   beforeEach(function(done) {
     customer = new Customer();
@@ -24,16 +36,7 @@ describe('Customer', function() {
 
   describe('#create', function() {
     it('creates a new customer record', function(done) {
-     var data = {
-      name: 'Customer1',
-      registered_at: 'Yesterday',
-      address: '1234 Nowhere St',
-      city: 'Nowhereville',
-      state: 'NW',
-      postal_code: '12345',
-      phone: '123-456-7890',
-      account_balance: '20.45'
-    }
+      var data = validCustomerData();
 
      customer.create(data, function(err, res) {
        assert.equal(err, undefined);
@@ -41,6 +44,43 @@ describe('Customer', function() {
        assert.equal(res.changed, 1);
        done();
      });
+    });
+
+    it('requires at least one input', function(done) {
+      var data = {}
+
+      customer.create(data, function(err, res) {
+        // err = { [Error: SQLITE_ERROR: near ")": syntax error] errno: 1, code: 'SQLITE_ERROR' }
+        assert.equal(err.errno, 1);
+        done();
+      });
+    });
+
+    it('requires a name', function(done) {
+      var data = validCustomerData();
+      delete data.name;
+
+      customer.create(data, function(err, res) {
+        // err = { [Error: SQLITE_CONSTRAINT: NOT NULL constraint failed: customers.name] errno: 19, code: 'SQLITE_CONSTRAINT' }
+        assert.equal(err.errno, 19);
+        assert.equal(err.message, 'SQLITE_CONSTRAINT: NOT NULL constraint failed: customers.name');
+        done();
+      });
+    });
+
+    it('defaults account balance to zero', function(done) {
+      var data = validCustomerData();
+      delete data.account_balance;
+
+      customer.create(data, function(err, res) {
+        assert.equal(err, undefined);
+        assert(res.insertedID, numSeeded + 1);
+        customer.findBy('id', res.insertedID, function(err, rows) {
+          assert.equal(rows.length, 1);
+          assert.equal(rows[0].account_balance, 0);
+          done();
+        });
+      });
     });
   });
 });
