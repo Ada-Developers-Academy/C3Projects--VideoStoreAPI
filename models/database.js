@@ -47,13 +47,18 @@ Database.prototype.all = function all(callback) {
 
     callback(err, rows);
     db.close();
-    statement.finalize();
   });
 }
 
 // OPTIMIZE / TODO: this can only search by one parameter at a time, and only with an `=` relationship.
 Database.prototype.findBy = function findBy(parameter, value, callback) {
-  // FIXME: it'd be nice to have a security check that the parameter is a valid parameter (e.g. make sure it's not sql injection)
+  // check that the parameter is a valid parameter (e.g. make sure it's not sql injection)
+  if (!this._validParam(parameter)) {
+    console.log('!!!!ERROR!!!! In Database#findBy. Unrecognized parameter: ' + parameter);
+    callback({ message: 'Error: syntax error. Unrecognized parameter.', errno: null, code: null }, null);
+    return;
+  }
+
   var db = this.openDB();
   var statement = 'SELECT * FROM ' + this.tableName + ' WHERE ' + parameter + ' LIKE ?;';
 
@@ -62,12 +67,11 @@ Database.prototype.findBy = function findBy(parameter, value, callback) {
 
     callback(err, rows);
     db.close();
-    statement.finalize();
   });
 }
 
 Database.prototype.sortBy = function sortBy(parameter, n, callback) {
-  var db = this. openDB();
+  var db = this.openDB();
 
   if (typeof n === "string" && n.toLowerCase() === 'all') {
     var statement = 'SELECT * FROM ' + this.tableName + ' ORDER BY ?;';
@@ -81,6 +85,17 @@ Database.prototype.sortBy = function sortBy(parameter, n, callback) {
     callback(err, rows);
     db.close();
   });
+}
+
+Database.prototype._validParam = function _validParam(parameter) {
+  parameter = parameter.toLowerCase();
+
+  for (var i = 0; i < this.columnNames.length; i++) {
+    if (this.columnNames[i] == parameter) {
+      return true;
+    }
+  }
+  return false;
 }
 
 module.exports = Database;
