@@ -87,16 +87,20 @@ describe("Customer", function() {
 
   describe("class methods", function() {
     it("can create a new customer in the database", function(done) {
-      var data = {
-        name: "Ratboy",
-        registered_at: "Wed, 24 Feb 2012 18:22:18 -0700",
-        address: "55 Skinner Ave.",
-        city: "Vancouver",
-        state: "BC",
-        postal_code: "93840",
-        phone: "(385) 948-9282",
-        account_credit: 9900
-      }
+      // var data = {
+      //   name: "Ratboy",
+      //   registered_at: "Wed, 24 Feb 2012 18:22:18 -0700",
+      //   address: "55 Skinner Ave.",
+      //   city: "Vancouver",
+      //   state: "BC",
+      //   postal_code: "93840",
+      //   phone: "(385) 948-9282",
+      //   account_credit: 9900
+      // }
+
+      var columns = ['name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone'];
+      var values = ["Ratboy", "Wed, 24 Feb 2012 18:22:18 -0700", "55 Skinner Ave.", 
+        "Vancouver", "BC", "93840", "(385) 948-9282"];
 
       customer.create(columns, values, function(err, res) {
         assert.equal(res.inserted_id, 3); //it inserted a new record
@@ -107,6 +111,7 @@ describe("Customer", function() {
         //   assert.equal(res[0].title, 'RoboJaws'); //we found our new customer
         //   done();
         // })
+        done();
       });
     });
   });

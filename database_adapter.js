@@ -60,11 +60,11 @@ module.exports = {
   create: function(columns, values, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
     var column_names = columns.join(', ');
-    var question_marks =  Array(values.length + 1).join('?').split('').join(', ');
+    var question_marks =  Array(columns.length + 1).join('?').split('').join(', ');
 
-    var statement = 
-    "INSERT INTO " + this.table_name + " (" + column_names + ") \
-    VALUES (" + question_marks + ");";
+    var statement = "INSERT INTO " + this.table_name + " (" + column_names + ") VALUES (" + question_marks + ");";
+
+    console.log(statement);
 
     db.run(statement, values, function(err, res) {
       if (callback) { callback(err, { inserted_id: this.lastID }); }
