@@ -3,7 +3,7 @@
 var Movie = require('../movies');
 var movie = new Movie();
 
-var sortInfo = function (sort_type, params, res) {
+var sortMovies = function (sort_type, params, res) {
   var records_per_page = params.records_per_page;
   var offset = params.offset;
   var movies = movie.sort_by(sort_type, records_per_page, offset, function(movies){
@@ -21,12 +21,12 @@ exports.moviesController = {
 
   release_date_sort: function release_date_sort(req, res) {
     var sort_type = "release_date";
-    sortInfo(sort_type, req.params, res);
+    sortMovies(sort_type, req.params, res);
   },
 
   title_sort: function title_sort(req, res) {
     var sort_type = "title";
-    sortInfo(sort_type, req.params, res);
+    sortMovies(sort_type, req.params, res);
   }
 
 }
