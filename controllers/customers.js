@@ -2,10 +2,10 @@
 var Customer = require("../models/customer.js");
 
 exports.customersController = {
-  // zomg: function zomg(req,res) {
-  //   var results = {
-  //     zomg: "It works!",
-  //   }
-  //   return res.status(200).json(results);
-  // },
+  findAllCustomers: function(req, res) {
+    var dbCustomer = new Customer();
+    var result = dbCustomer.find_all(function(err,result){
+    return res.status(200).json(result);
+    });
+  }
 }
