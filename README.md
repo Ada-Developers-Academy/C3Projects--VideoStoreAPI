@@ -57,6 +57,10 @@ The API you build should have the following capabilities. The schema of your dat
 
 ### Movies
 - Retrieve a list of all movies
+- Look a movie up by title to see
+  - it's synopsis
+  - release date
+  - and inventory total
 - Retrieve a subset of movies
   - Given a sort column, return _n_ movie records, offset by _p_ records (this will be used to create "pages" of movies)
   - Sort columns are
@@ -70,10 +74,6 @@ The API you build should have the following capabilities. The schema of your dat
     - ordered by check out date
 
 ### Rental
-- Look a movie up by title to see
-  - it's synopsis
-  - release date
-  - and inventory total
 - Know if a movie has any inventory available to rent
 - See a list of customers that have _currently_ checked out any of the movie's inventory
 - Given a customer's `id` and a movie's `title` ...

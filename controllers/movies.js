@@ -10,27 +10,27 @@ exports.moviesController = {
   // GET /movies
   getAllMovies: function(res) {
     db.all("SELECT title, overview, release_date, inventory FROM movies", function(err, rows) {
-      if (err != null) {
+      if (err !== null) {
         console.log(err);
       }
       res.status(200).json(rows);
     });
   },
 
-    // Get /movies/id/:id(synopsis, inventory, release_date)
-  // getMovieById: function(id, res) {
-  //   db.all("SELECT title, overview, release_date, inventory FROM movies WHERE id=?", id, function(err, rows) {
-  //     if (err != null) {
-  //       console.log(err);
-  //     }
-  //     res.status(200).json(rows);
-  //   });
-  // },
+  // Get /movies/id/:id(synopsis, inventory, release_date)
+  getMovieById: function(id, res) {
+    db.all("SELECT title, overview, release_date, inventory FROM movies WHERE id=?", id, function(err, rows) {
+      if (err !== null) {
+        console.log(err);
+      }
+      res.status(200).json(rows);
+    });
+  },
 
   // GET /movies/title/:title
   getMovieByTitle: function(title, res) {
     db.all("SELECT title, overview, release_date, inventory FROM movies WHERE title LIKE ?", title, function(err, rows) {
-      if (err != null) {
+      if (err !== null) {
         console.log(err);
       }
       res.status(200).json(rows);
@@ -40,7 +40,7 @@ exports.moviesController = {
   // GET /movies/title/:title/:inventory
   getMovieByTitleInventory: function(title, res) {
     db.all("SELECT title, inventory FROM movies WHERE title LIKE ?", title, function(err, rows) {
-      if (err != null) {
+      if (err !== null) {
         console.log(err);
       }
       res.status(200).json(rows);
@@ -50,7 +50,7 @@ exports.moviesController = {
   // GET /movies/release_date?n=XXX&p=XXX
   getMoviesByReleaseDate: function(num, page, res) {
     var callback = function(err, rows) {
-      if (err != null) {
+      if (err !== null) {
         console.log(err);
       }
       res.status(200).json(rows);
@@ -73,7 +73,7 @@ exports.moviesController = {
   // GET /movies/title?n=XXX&p=XXX
   getMoviesByTitle: function(num, page, res) {
     var callback = function(err, rows) {
-      if (err != null) {
+      if (err !== null) {
         console.log(err);
       }
       res.status(200).json(rows);
@@ -96,7 +96,7 @@ exports.moviesController = {
   // GET /movies/title/:title/checked_out_current
   getCheckedOutCustomersByTitle: function(title, res) {
     db.all("SELECT customers.id, customers.name, customers.phone, rentals.check_out_date FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id INNER JOIN movies ON movies.id = rentals.movie_id WHERE movies.title LIKE ? AND rentals.check_in_date IS NULL", title, function(err, rows) {
-      if (err != null) {
+      if (err !== null) {
         console.log(err);
       }
       res.status(200).json(rows);
@@ -112,11 +112,11 @@ exports.moviesController = {
       order = "customers.id";
     else if (ordered_by == "name")
       order = "customers.name";
-    else if (ordered_by != undefined)
+    else if (ordered_by !== undefined)
       order = ordered_by;
 
     db.all("SELECT customers.id, customers.name, customers.phone, rentals.check_out_date FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id INNER JOIN movies ON movies.id = rentals.movie_id WHERE movies.title LIKE ? AND rentals.check_in_date IS NOT NULL ORDER BY ?", title, order, function(err, rows) {
-      if (err != null) {
+      if (err !== null) {
         console.log(err);
       }
       res.status(200).json(rows);
