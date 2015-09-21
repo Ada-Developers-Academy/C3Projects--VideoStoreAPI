@@ -5,10 +5,11 @@
 function Movie() {
   this.tableName = 'movies';
   this.columnNames = [
+    'id', // INTEGER PRIMARY KEY
     'title', // TEXT NOT NULL UNIQUE
     'overview', // TEXT
     'release_date', // TEXT
-    'inventory integer' // INTEGER NOT NULL DEFAULT 0
+    'inventory' // INTEGER NOT NULL DEFAULT 0
   ];
 }
 

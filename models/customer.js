@@ -5,6 +5,7 @@
 function Customer() {
   this.tableName = 'customers';
   this.columnNames = [
+    'id', // INTEGER PRIMARY KEY
     'name', // TEXT NOT NULL
     'registered_at', // TEXT
     'address', // TEXT
