@@ -40,8 +40,8 @@ router.post('/create/:name/:registered_at/:address/:city/:state/:postal_code/:ph
   values.push(req.params.phone);
   var columns = ['name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone']
 
-  customer.create(columns, values, function(err, pineapple) {
-    res.status(200).json(pineapple);
+  customer.create(columns, values, function(err, res) {
+    res.status(200).json(res);
   });
 });
 
