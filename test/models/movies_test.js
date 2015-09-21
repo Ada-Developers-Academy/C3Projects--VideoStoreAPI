@@ -40,6 +40,16 @@ describe('Movie', function() {
       });
     });
   });
+
+  describe('#all', function() {
+    it('returns all movies', function(done) {
+      movie.all(function(err, rows){
+        assert.equal(err, undefined);
+        assert.equal(rows.length, numSeeded);
+        done();
+      });
+    });
+  });
 });
 
 function resetMoviesTable(done) {
