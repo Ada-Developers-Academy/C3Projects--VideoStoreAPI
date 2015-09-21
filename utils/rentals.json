@@ -6,7 +6,7 @@
     "due_date": "2015-06-19",
     "overdue": 0,
     "customer_id": 1,
-    "movie_id": 12
+    "movie_title": "Jaws"
   },
   {
     "check_out": "2015-04-27",
@@ -14,7 +14,7 @@
     "due_date": "2015-04-30",
     "overdue": 1,
     "customer_id": 7,
-    "movie_id": 24
+    "movie_title": "Alien"
   },
   {
     "check_out": "2015-05-14",
@@ -22,7 +22,7 @@
     "due_date": "2015-04-17",
     "overdue": 0,
     "customer_id": 12,
-    "movie_id": 37
+    "movie_title": "Psycho"
   },
   {
     "check_out": "2015-06-03",
@@ -30,7 +30,7 @@
     "due_date": "2015-06-06",
     "overdue": 1,
     "customer_id": 3,
-    "movie_id": 18
+    "movie_title": "The Birds"
   },
   {
     "check_out": "2015-07-03",
@@ -38,14 +38,14 @@
     "due_date": "2015-07-06",
     "overdue": 0,
     "customer_id": 8,
-    "movie_id": 26
+    "movie_title": "The Godfather"
   },
   {
     "check_out": "2015-07-03",
-    "check_in": "2015-07-06",
+    "check_in": null,
     "due_date": "2015-07-06",
-    "overdue": 0,
+    "overdue": 1,
     "customer_id": 8,
-    "movie_id": 85
+    "movie_title": "King Kong"
   }
 ]

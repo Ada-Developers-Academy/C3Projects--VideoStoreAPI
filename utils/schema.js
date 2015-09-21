@@ -27,7 +27,9 @@ var rental_fields = [
   ['check_out', 'text'],
   ['check_in', 'text'],
   ['due_date', 'text'],
-  ['overdue', 'integer', 'DEFAULT 0'] // 0 for false 1 for true
+  ['overdue', 'integer', 'DEFAULT 0'], // 0 for false 1 for true
+  ['movie_title', 'string'],
+  ['customer_id', 'integer']
 ]
 
 // I want these to work somewhat how rake db:reset works, so I need to do three things:
@@ -42,11 +44,10 @@ db.serialize(function() {
   // 2. create fresh versions of those tables
   db.run("CREATE TABLE movies (id INTEGER PRIMARY KEY);");
   db.run("CREATE TABLE customers (id INTEGER PRIMARY KEY);");
-  db.run("CREATE TABLE rentals (id INTEGER PRIMARY KEY, \
-          customer_id INTEGER, \
-          movie_id INTEGER, \
-          FOREIGN KEY (customer_id) REFERENCES customer(id), \
-          FOREIGN KEY (movie_id) REFERENCES movie(id));");
+  db.run("CREATE TABLE rentals (id INTEGER PRIMARY KEY);");
+          // FOREIGN KEY (customer_id) REFERENCES customer(id), \
+          // FOREIGN KEY (movie_id) REFERENCES movie(id));");
+
 
   // 3. add the columns to those tables
   // CREATE MOVIES TABLE COLUMNS
