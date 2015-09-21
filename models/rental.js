@@ -4,6 +4,12 @@ var sqlite3 = require('sqlite3').verbose();
 
 function Rental() {
   this.tableName = "rentals";
+  this.columnNames = [
+    'checkout_date', // TEXT NOT NULL DEFAULT CURRENT_DATE
+    'return_date', // TEXT
+    'movie_title', // TEXT NOT NULL // FOREIGN KEY(movie_title) REFERENCES movies(title)
+    'customer_id' // INTEGER NOT NULL // FOREIGN KEY(customer_id) REFERENCES customers(id)
+  ];
 }
 
 Rental.prototype = require('./database').prototype;
