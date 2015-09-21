@@ -47,15 +47,15 @@ router.post('/create/:name/:registered_at/:address/:city/:state/:postal_code/:ph
 
 // DEBUGGER ROUTE
 
-// router.get('/:city', function(req, res, next) {
-//   var values = [];
-//   values.push(req.params.city);
-//   console.log(values);
+router.get('/where/:city', function(req, res, next) {
+  var values = [];
+  values.push(req.params.city);
+  console.log(values);
 
-//   customer.where(['city'], values, function(err, rows) {
-//     console.log(values);
-//     res.status(200).json({ customers: rows} );
-//   });
-// });
+  customer.where(['city'], values, function(err, rows) {
+    console.log(rows.length);
+    res.status(200).json({ customers: rows} );
+  });
+});
 
 module.exports = router;
