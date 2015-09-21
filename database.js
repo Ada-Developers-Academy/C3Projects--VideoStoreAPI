@@ -31,6 +31,7 @@ module.exports = {
     });
   },
 
+  // MOVIES
   movie_info: function(movie_title, callback) {
     this.query("SELECT * FROM " + this.table_name + " WHERE title LIKE '%" + movie_title + "%';", function(res) {
       callback(res);
@@ -51,21 +52,29 @@ module.exports = {
     });
   },
 
-// Get a list of customers that have currently checked out a copy of the film
-  // rentals = select * from rentals where movie_title = title and check_in = null
-  // select
-
+  // CUSTOMERS
   current_customers: function(movie_title, callback) {
-    // we want customers who currently have a rental with this movie title
-    this.query("SELECT customers.name FROM customers, rentals WHERE customers.id=rentals.customer_id AND rentals.movie_title LIKE '%" + movie_title + "%' AND rentals.check_in IS NULL;", function(res) {
+     this.query("SELECT customers.id, customers.name, customers.registered_at, \
+                 customers.address, customers.city, customers.state, \
+                 customers.postal_code, customers.phone, customers.account_credit \
+                 FROM customers, rentals \
+                 WHERE customers.id=rentals.customer_id \
+                 AND rentals.movie_title LIKE '%" + movie_title + "%' \
+                 AND rentals.check_in IS NULL;", function(res) {
+       callback(res);
+     });
+   },
+
+  // RENTALS
+  overdue: function(callback) {
+    this.query("SELECT customers.id, customers.name, customers.registered_at, \
+    customers.address, customers.city, customers.state, \
+    customers.postal_code, customers.phone, customers.account_credit \
+    FROM customers, rentals \
+    WHERE customers.id=rentals.customer_id \
+    AND rentals.overdue = 1;", function(res) {
       callback(res);
     });
-  },
-
-  // current customers with movie checkout out
-  rental_info: function(movie_title, callback) {
-    
   }
-}
 
-// We want to export the Database into the overall node structure
+}
