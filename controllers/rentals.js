@@ -89,15 +89,20 @@ exports.rentalsController = {
     var db = new sqlite3.Database('./db/' + db_env + '.db'),
     title = req.params.title,
     id = req.params.customer_id,
-    statement = "Insert into rentals VALUES (?, ?, ?, ?, ?, ?);";
+    statement = "Insert into rentals VALUES (?, ?, ?, ?, ?, ?, ?);";
 
-    var checkout_date = new Date();
-    var due_date= new Date(checkout_date);
-      due_date.setDate(checkout_date.getDate()+3);
-      console.log(title, id, checkout_date, due_date);
+    var checkout_long = new Date();
+    var due_long= new Date(checkout_long);
+      due_long.setDate(checkout_long.getDate()+3);
+    var due_date = due_long.toISOString().split('T')[0];
+    var checkout_date = checkout_long.toISOString().split('T')[0];
+    console.log(typeof checkout_date)
 
     db.run(statement, [checkout_date, due_date, null, 0, title, id]);
     db.close();
+    var results = [];
+    results.push({checkout_date: checkout_date, due_date: due_date, movie_title: title, customer_id: id});
+    return res.status(200).json(results);
   },
 
   checkin: function checkin(req,res) {
