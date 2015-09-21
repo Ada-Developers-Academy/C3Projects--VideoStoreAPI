@@ -58,9 +58,8 @@ exports.moviesController = {
         var rented = rows.length,
             movie = rows[0],
             available = movie.inventory - rented;
-            console.log(movie);
         results.push(movie, {'Available': available});
-    
+
         db.close();
         return res.status(200).json(results);
       });

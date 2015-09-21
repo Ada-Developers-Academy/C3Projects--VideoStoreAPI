@@ -30,5 +30,21 @@
         "overdue": 0,
         "movie_title": "The Exorcist",
         "customer_id": 1
+    },
+    {
+        "checkout_date": "2015-09-10",
+        "due_date": "2015-09-13",
+        "return_date": "2015-09-11",
+        "overdue": 0,
+        "movie_title": "Alien",
+        "customer_id": 7
+    },
+    {
+        "checkout_date": "2015-09-06",
+        "due_date": "2015-09-09",
+        "return_date": "2015-09-07",
+        "overdue": 0,
+        "movie_title": "Alien",
+        "customer_id": 10
     }
 ]
