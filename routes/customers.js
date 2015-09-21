@@ -21,7 +21,7 @@ router.get('/:sort_by/:results_per_page/:page_number', function(req, res, next) 
 // with a customer's id - the movies they currently have checked out
 // '/customers/:id/current'
 router.get('/:id/current', function(req, res, next) {
-  return customers_exports.customersController.sort_pages(req, res);
+  return customers_exports.customersController.search_id(req, res);
 });
 
 // with a customer's id - '/customers/:id/...'
