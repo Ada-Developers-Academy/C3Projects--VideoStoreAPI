@@ -14,8 +14,15 @@ router.get('/zomg', function(req, res, next) {
   return zomgController.itWorks(req, res)
 });
 
+/* GET all customers sorted by registration. */
+router.get("/all/registered/:page", function(req, res, next) {
+  console.log("req.params.page " + req.params.page);
+  return zomgController.registered_at(req, res);
+});
+
 /* GET all customers. */
 router.get('/all', function(req, res, next) {
+  console.log("/all");
   return zomgController.all_customers(req, res)
 });
 

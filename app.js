@@ -23,6 +23,7 @@ var zomgRoutes = require('./routes/zomgRoutes');
 app.use('/', zomgRoutes);
 app.use('/zomg', zomgRoutes);
 app.use('/all', zomgRoutes);
+app.use('/all/registered/:page', zomgRoutes);
 
 var users = require('./routes/users');
 app.use('/users', users);

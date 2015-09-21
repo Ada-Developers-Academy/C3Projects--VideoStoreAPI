@@ -28,7 +28,27 @@ module.exports = {
     var statement = "SELECT * FROM customers LIMIT " + customers.limit +
       " OFFSET " + offset + ";";
 
+    db.all(statement, function(err, results) { // closure
+      if(err) {
+        console.log(err); // error handling
+        return;
+      }
+      console.log('results are: ' + results);
+      return response.status(200).json(results);
+    });
+
+    db.close();
+  },
+
+  registered_at: function(request, response) {
     var db = new sqlite3.Database("db/" + dbEnv + ".db");
+    var customers = new customerTable();
+
+    // prepare statement
+    var pageNumber = request.params.page;
+    var offset = (pageNumber - 1) * customers.limit;
+    var statement = "SELECT * FROM customers ORDER BY (registered_at) LIMIT "
+      + customers.limit + " OFFSET " + offset + ";";
 
     db.all(statement, function(err, results) { // closure
       if(err) {
@@ -41,4 +61,5 @@ module.exports = {
 
     db.close();
   }
+
 }
