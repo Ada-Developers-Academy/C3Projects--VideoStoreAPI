@@ -65,7 +65,7 @@ Database.prototype.findBy = function findBy(parameter, value, callback) {
 Database.prototype.sortBy = function sortBy(parameter, n, callback) {
   var db = this. openDB();
 
-  if (n === 'all') {
+  if (typeof n === "string" && n.toLowerCase() === 'all') {
     var statement = 'SELECT * FROM ' + this.tableName + ' ORDER BY ?;';
     var values = parameter;
   } else {
