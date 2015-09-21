@@ -25,11 +25,9 @@ module.exports = {
     });
   },
 
- registered_at_sort: function(sort_type, records_per_page, offset, callback) {
-   console.log(offset);
+  sort_by: function(sort_type, records_per_page, offset, callback) {
    this.query("SELECT * FROM " + this.table_name + " ORDER BY " + sort_type + " LIMIT " + records_per_page + " OFFSET " + offset + ";", function(res) {
      callback(res);
-     console.log(res);
    });
  }
 }
