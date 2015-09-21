@@ -55,9 +55,19 @@ exports.moviesController = {
 
   past_customers_id_sort: function past_customers_id_sort(req, res) {
     var movie_title = req.params.title;
+    var sort_type = "id";
 
-    movie.past_customers_id_sort(movie_title, function(past_customers_sorted_by_id) {
+    movie.past_customers_sort(movie_title, sort_type, function(past_customers_sorted_by_id) {
       return res.status(200).json(past_customers_sorted_by_id);
+    });
+  },
+
+  past_customers_name_sort: function past_customers_name_sort(req, res) {
+    var movie_title = req.params.title;
+    var sort_type = "name";
+
+    movie.past_customers_sort(movie_title, sort_type, function(past_customers_sorted_by_name) {
+      return res.status(200).json(past_customers_sorted_by_name);
     });
   }
 }

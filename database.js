@@ -62,7 +62,7 @@ module.exports = {
     });
   },
 
-  past_customers_id_sort: function(movie_title, callback) {
+  past_customers_sort: function(movie_title, sort_type, callback) {
     this.query("SELECT customers.id, customers.name, customers.registered_at, \
                 customers.address, customers.city, customers.state, \
                 customers.postal_code, customers.phone, customers.account_credit \
@@ -70,7 +70,7 @@ module.exports = {
                 WHERE customers.id=rentals.customer_id \
                 AND rentals.movie_title LIKE '%" + movie_title + "%' \
                 AND rentals.check_in IS NOT NULL \
-                ORDER BY rentals.customer_id;", function(res) {
+                ORDER BY customers." + sort_type + ";", function(res) {
       callback(res);
     });
   }
