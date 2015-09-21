@@ -6,10 +6,19 @@ var customersController = {
 
   // maybe move the var db = ... out here?
 
-  // "/customers?order_by=name"
+  // ALL CUSTOMERS SEARCH...  "/customers?order_by=name"
+  // PAGINATION...            "/customers?number=25&page=2"  => customers 26-50
   all_customers: function(req, callback) {
     var column = req.query.order_by ? req.query.order_by : "id";
-    var statement = "SELECT * FROM customers ORDER BY " + column + " ASC;";
+    
+    if (req.query.number && req.query.page) {
+      var limit = req.query.number;
+      var offset = req.query.page * limit - limit;
+      var statement = "SELECT * FROM customers ORDER BY " + column + " ASC LIMIT " + limit + " OFFSET " + offset + ";";
+    } else {
+      var statement = "SELECT * FROM customers ORDER BY " + column + " ASC;";
+    }
+    
     var db = new Database('db/development.db');
 
     db.query(statement, function(err, result) {
@@ -24,7 +33,7 @@ var customersController = {
   },
 
   customer: function(req, callback) {
-    var statement = "SELECT * FROM customers, rentals WHERE customers.id = " + req.params.id + " AND rentals.customer_id = " + req.params.id + ";";    
+    var statement = "SELECT * FROM customers, rentals WHERE customers.id = " + req.params.id + " AND rentals.customer_id = " + req.params.id + " ORDER BY rentals.checkout_date ASC;";    
     var db = new Database('db/development.db');
 
     db.query(statement, function(err, result) {
