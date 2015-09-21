@@ -51,5 +51,13 @@ exports.moviesController = {
     movie.past_customers(movie_title, function(past_customers) {
       return res.status(200).json(past_customers);
     });
+  },
+
+  past_customers_id_sort: function past_customers_id_sort(req, res) {
+    var movie_title = req.params.title;
+
+    movie.past_customers_id_sort(movie_title, function(past_customers_sorted_by_id) {
+      return res.status(200).json(past_customers_sorted_by_id);
+    });
   }
 }

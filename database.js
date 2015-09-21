@@ -60,7 +60,20 @@ module.exports = {
                 AND rentals.check_in IS NOT NULL;", function(res) {
       callback(res);
     });
+  },
+
+  past_customers_id_sort: function(movie_title, callback) {
+    this.query("SELECT customers.id, customers.name, customers.registered_at, \
+                customers.address, customers.city, customers.state, \
+                customers.postal_code, customers.phone, customers.account_credit \
+                FROM customers, rentals \
+                WHERE customers.id=rentals.customer_id \
+                AND rentals.movie_title LIKE '%" + movie_title + "%' \
+                AND rentals.check_in IS NOT NULL \
+                ORDER BY rentals.customer_id;", function(res) {
+      callback(res);
+    });
   }
 }
 
-// We want to export the Database into the overall node structure
+// SELECT customers.id, customers.name FROM customers, rentals WHERE customers.id=rentals.customer_id AND rentals.movie_title LIKE '%" + movie_title + "%' AND rentals.check_in IS NOT NULL ORDER BY rentals.customer_id;
