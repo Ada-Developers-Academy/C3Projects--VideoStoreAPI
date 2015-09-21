@@ -14,4 +14,8 @@ router.get('/name_sort/:records_per_page/:offset', function(req, res, next) {
   return customer_exports.customersController.name_sort(req, res);
 });
 
+router.get('/postal_code_sort/:records_per_page/:offset', function(req, res, next) {
+  return customer_exports.customersController.postal_code_sort(req, res);
+})
+
 module.exports = router;
