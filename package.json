@@ -6,7 +6,8 @@
     "start": "nodemon ./bin/www",
     "db:schema": "node ./utils/schema",
     "db:seed": "node ./utils/seeds",
-    "db:reset": "npm run db:schema; npm run db:seed"
+    "db:reset": "npm run db:schema; npm run db:seed",
+    "test": "clear; DB=test mocha --recursive"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
