@@ -50,9 +50,31 @@ describe('Movie', function() {
       });
     });
   });
+
+  describe('#findBy', function() {
+    // because of how we seeded the db, this also tests that it will only return exact title matches
+    it('returns 1 movie where the name is Jaws', function(done) {
+      movie.findBy('title', 'Jaws', function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, 1);
+        done();
+      });
+    });
+
+    it('"JAWS" returns movie with title "Jaws"', function(done) {
+      movie.findBy('title', 'JAWS', function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, 1);
+        assert.equal(rows[0].title, 'Jaws');
+        done();
+      });
+    });
+  });
 });
 
 function resetMoviesTable(done) {
+  // NOTE: we need to maintain these titles (where 'Jaws' is in both)
+  //       in order to test that only exact matches are returned in #findBy
   var db = new sqlite3.Database('db/test.db');
   db.serialize(function() {
     db.exec(
@@ -60,7 +82,7 @@ function resetMoviesTable(done) {
       DELETE FROM movies; \
       INSERT INTO movies(title, overview, release_date, inventory) \
       VALUES('Jaws', 'Shark!', 'Yesterday', 10), \
-            ('Maws', 'Worm!', 'Yesterday', 11); \
+            ('Jaws and Maws', 'Worm!', 'Yesterday', 11); \
       COMMIT;",
       function(err) {
         db.close();
