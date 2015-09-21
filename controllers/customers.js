@@ -6,8 +6,10 @@ var customersController = {
 
   // maybe move the var db = ... out here?
 
+  // "/customers?order_by=name"
   all_customers: function(req, callback) {
-    var statement = "SELECT * FROM customers";
+    var column = req.query.order_by ? req.query.order_by : "id";
+    var statement = "SELECT * FROM customers ORDER BY " + column + " ASC;";
     var db = new Database('db/development.db');
 
     db.query(statement, function(err, result) {
