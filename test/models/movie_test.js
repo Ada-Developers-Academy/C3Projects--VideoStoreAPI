@@ -68,6 +68,21 @@ describe('Movie', function() {
         });
       });
     });
+
+    it('defaults inventory to zero', function(done) {
+      var data = validMovieData();
+      delete data.inventory;
+
+      movie.create(data, function(err, res) {
+        assert.equal(err, undefined);
+        assert(res.insertedID, numSeeded + 1);
+        movie.findBy('id', res.insertedID, function(err, rows) {
+          assert.equal(rows.length, 1);
+          assert.equal(rows[0].inventory, 0);
+          done();
+        });
+      });
+    });
   });
 
   describe('#all', function() {
