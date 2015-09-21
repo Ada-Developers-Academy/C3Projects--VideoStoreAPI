@@ -14,6 +14,14 @@ describe("Movie", function() {
 
   it("has a find_by property that is a function", function() {
     assert.equal(typeof movie.find_by, "function");
+  })
+
+  it("has a 'find_all' property that is a function", function() {
+    assert.equal(typeof movie.find_all, "function");
+  })
+
+  it("has a 'sort_by' property that is a function", function() {
+    assert.equal(typeof movie.sort_by, "function");
   });
 
   describe("movie queries", function(){
@@ -46,17 +54,21 @@ describe("Movie", function() {
     })
 
     it("displays all records from movies table", function(done) {
-      movie.all_movies(function(err, result) {
+      movie.find_all(function(err, result) {
         console.log(result);
         assert.equal(result.length, 2);
         done();
       });
     })
 
-// [0].last.title, "The Adventures of Robin Hood"
-
-
-
+    it("displays all records from 'movies' table, sorted by title", function(done) {
+      movie.sort_by("title", function(err, result) {
+        console.log(result);
+        var rigthOrder = [{ id: 1, title: 'Jaws', overview: 'Shark!', release_date: 'Yesterday', inventory: 10, available: 10 }, { id: 2, title: 'Maws', overview: 'Worm!', release_date: 'Yesterday', inventory: 11, available: 11 }];
+        assert.equal(result, rigthOrder);
+        done();
+      });
+    })
 
   })
 });

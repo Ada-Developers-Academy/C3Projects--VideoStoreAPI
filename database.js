@@ -14,9 +14,19 @@ module.exports = {
     });
   },
 
-  all_movies: function(callback) {
+  find_all: function(callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
     var statement = "SELECT * FROM " + this.table_name + ";";
+
+    db.all(statement, function(err, res) {
+      if (callback) callback(err, res);
+      db.close();
+    });
+  },
+
+  sort_by: function(column, callback){
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    var statement = "SELECT * FROM " + this.table_name + "ORDER BY " + column + ";";
 
     db.all(statement, function(err, res) {
       if (callback) callback(err, res);
@@ -38,7 +48,6 @@ module.exports = {
     values.push(data.total);
     values.push(data.customer_id);
     values.push(data.movie_id);
-
 
     db.run(statement, values, function(err) {
       callback(err, res);
