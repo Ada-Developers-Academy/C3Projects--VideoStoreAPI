@@ -14,8 +14,8 @@ describe("Movie", function() {
         "BEGIN; \
         DELETE FROM movies; \
         INSERT INTO movies(title, overview, release_date, inventory) \
-        VALUES('Jaws', 'Shark!', 'Yesterday', 10), \
-              ('Maws', 'Worm!', 'Yesterday', 11); \
+        VALUES('Jaws', 'Shark!', '20150920', 10), \
+              ('Maws', 'Worm!', '20150111', 11); \
         COMMIT;"
         , function(err) {
           db_cleaner.close();
@@ -34,53 +34,86 @@ describe("Movie", function() {
       movie.find_by("id", 1, function(err, res) {
         assert.equal(err, undefined);
         assert(res instanceof Object);
-        // assert.equal(res.length, 1);
         assert.equal(res.id, 1);
         done();
       })
     })
 
-    // it("can find a movie by title", function(done) {
-    //   movie.find_by("title", "Jaws", function(err, res) {
-    //     assert.equal(err, undefined);
-    //     assert(res instanceof Array);
-    //     assert.equal(res.length, 1);
-    //     assert.equal(res[0].title, 'Jaws');
-    //     done();
-    //   })
-    // })
+    it("can find a movie by title", function(done) {
+      movie.find_by("title", "Jaws", function(err, res) {
+        assert.equal(err, undefined);
+        assert(res instanceof Object);
+        assert.equal(res.title, 'Jaws');
+        done();
+      })
+    })
 
-    // it("can save changes to a movie", function(done) {
-    //   movie.find_by("title", "Jaws", function(err, res) {
-    //     var original_title = res[0].title;
-    //     var id = res[0].id;
-    //     movie.save({title: "Jaws 2: Jawsier", id: id}, function(err, res) {
-    //       assert.equal(err, undefined);
-    //       assert.equal(res.inserted_id, 0); //it didn't insert any records
-    //       assert.equal(res.changed, 1); //it updated one record
-    //       done();
-    //     })
-    //   })
-    // });
+    it("can find all movies where a column has a particular value", function(done) {
+      movie.where(["title"], ["Jaws"], function(err, res) {
+        assert.equal(err, undefined);
+        assert(res instanceof Object); // Why is this breaking?
+        assert.equal(res.length, 1);
+        assert.equal(res[0].title, "Jaws");
+        done();
+      })
+    })
 
-    // it("can save a new movie to the database", function(done) {
-    //   var data = {
-    //     title: "RoboJaws",
-    //     overview: "Jaws is hunted by RoboJaws",
-    //     release_date: "Tomorrow",
-    //     inventory: 10
-    //   }
+    it("can return a subset of movies sorted by title", function(done){
+      var queries = [1, 0] // number, offset
+      movie.subset("title", queries, function(err, res) {
+        assert.equal(err, undefined);
+        assert(res instanceof Array);
+        assert.equal(res[0].id, 1);
+        assert.equal(res[0].title, "Jaws");
+        done();
+      });
+    });
 
-    //   movie.create(data, function(err, res) {
-    //     assert.equal(res.inserted_id, 3); //it inserted a new record
-    //     assert.equal(res.changed, 1); //one record was changed
+    it("can return a subset of movies sorted by release_date", function(done){
+      var queries = [1, 0] // number, offset
+      movie.subset("release_date", queries, function(err, res) {
+        assert.equal(err, undefined);
+        assert(res instanceof Array);
+        assert.equal(res[0].id, 2);
+        assert.equal(res[0].release_date, "20150111");
+        done();
+      });
+    });
+  });
 
-    //     movie.find_by("title", "RoboJaws", function(err, res) {
-    //       assert.equal(res.length, 1);
-    //       assert.equal(res[0].title, 'RoboJaws'); //we found our new movie
-    //       done();
-    //     })
-    //   })
-    // });
-  })
-})
+  describe("class methods", function() {
+    it("can create a new movie in the database", function(done) {
+      var columns = ['title', 'overview', 'release_date', 'inventory'];
+      var values = ['The X-Files: Fight the Future', 'A supercool movie.', 
+        '1998', 3];
+
+      movie.create(columns, values, function(err, res) {
+        assert.equal(res.inserted_id, 3); //it inserted a new record
+
+        movie.find_by("title", "The X-Files: Fight the Future", function(err, res) {
+          assert.equal(res.title, "The X-Files: Fight the Future"); //we found our new movie
+          done();
+        });
+      });
+    });
+
+    it("can update a movie record", function(done) {
+      var id = 2;
+      var columns = ['title', 'release_date'];
+      var values = ['The X-Files: I Want to Believe', '2008'];
+
+      movie.update(id, columns, values, function(err, res) {
+        assert.equal(res.changes, 1);
+
+        movie.find_by("title", "Maws", function(err, res) {
+          assert.equal(res, undefined); //we can't find by old name
+        });
+
+        movie.find_by("title", 'The X-Files: I Want to Believe', function(err, res) {
+          assert.equal(res.title, 'The X-Files: I Want to Believe');
+          done();
+        });
+      });
+    });
+  });
+});
