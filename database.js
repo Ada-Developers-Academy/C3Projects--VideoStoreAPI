@@ -53,12 +53,18 @@ module.exports = {
 
 // Get a list of customers that have currently checked out a copy of the film
   // rentals = select * from rentals where movie_title = title and check_in = null
+  // select
 
   current_customers: function(movie_title, callback) {
     // we want customers who currently have a rental with this movie title
     this.query("SELECT customers.name FROM customers, rentals WHERE customers.id=rentals.customer_id AND rentals.movie_title LIKE '%" + movie_title + "%' AND rentals.check_in IS NULL;", function(res) {
       callback(res);
     });
+  },
+
+  // current customers with movie checkout out
+  rental_info: function(movie_title, callback) {
+    
   }
 }
 
