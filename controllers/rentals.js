@@ -1,9 +1,9 @@
 "use strict";
-
 var sqlite3 = require('sqlite3').verbose();
 var db_env = process.env.DB || 'development';
 var db = new sqlite3.Database('db/' + db_env + '.db');
 var Movie = require('../models/rentals');
+var Customer = require('../models/customers');
 
 exports.rentalsController = {
   // GET /rentals
@@ -36,10 +36,41 @@ exports.rentalsController = {
       res.status(200).json(rows);
     });
   },
-  /*
 
-  POST /rentals/check_out(cust id, movie title) (math for checkout cost)
+  // POST /rentals/check_out(cust id, movie title) (math for checkout cost)
+  // creating a new rental with no returned date
+  create: function(req, res) {
+    console.log(req["req"]["body"]);
 
+    // return res.status(200).json(req["req"]["body"]);
+    // return res.redirect('index', { title: 'Express' });
+
+    var data = req["req"]["body"]
+
+    var db = new Customer();
+    db.create(data, function(err, result) {
+
+      console.log("DONE");
+    });
+
+    // if (req.method == 'POST') {
+    //   var body = req.body;
+      // req.on('data', function (data) {
+      //   body += data;
+      //
+      //   // Too much POST data, kill the connection!
+      //   if (body.length > 1e6)
+      //       request.connection.destroy();
+      // });
+      // req.on('end', function () {
+      //   var post = qs.parse(body);
+      //
+      //   // use post['blah'], etc.
+      // });
+    // }
+  }
+
+/*
   restapi.post('/data', function(req, res){
     db.run("UPDATE counts SET value = value + 1 WHERE key = ?", "counter", function(err, row){
         if (err){
@@ -54,6 +85,6 @@ exports.rentalsController = {
 });
 
   PATCH /rentals/check_in(cust id, movie title)
-
+// adding returned date
   */
-}
+};

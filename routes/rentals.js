@@ -1,7 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var movie_exports = require('../controllers/movies');
-var customer_exports = require('../controllers/customers');
 var rental_exports = require('../controllers/rentals');
 
 // GET /rentals
@@ -19,5 +17,10 @@ router.get('/currently_out', function(req, res, next){
   rental_exports.rentalsController.getAllCurrentlyOut(res);
 });
 
+// POST /rentals
+// check_out & check_in
+router.post('/', function(req, res, next) {
+  rental_exports.rentalsController.create(res);
+});
 
 module.exports = router;
