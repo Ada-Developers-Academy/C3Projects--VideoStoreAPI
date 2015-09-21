@@ -8,6 +8,14 @@ describe('Movie', function() {
   var movie;
   var numSeeded = 2;
   var expectedPath = "db/test.db";
+  var validMovieData = function validMovieData() {
+    return {
+      title: 'RoboJaws',
+      overview: 'Jaws is hunted by RoboJaws',
+      release_date: 'Tomorrow',
+      inventory: 10
+    };
+  };
 
   beforeEach(function(done) {
     movie = new Movie();
@@ -24,17 +32,23 @@ describe('Movie', function() {
 
   describe('#create', function() {
     it('creates a new movie record', function(done) {
-      var data = {
-       title: 'RoboJaws',
-       overview: 'Jaws is hunted by RoboJaws',
-       release_date: 'Tomorrow',
-       inventory: 10
-     }
+      var data = validMovieData();
 
       movie.create(data, function(err, res) {
         assert.equal(err, undefined);
         assert.equal(res.insertedID, numSeeded + 1);
         assert.equal(res.changed, 1);
+        done();
+      });
+    });
+
+    it('requires a title', function(done) {
+      var data = validMovieData();
+      delete data.title;
+
+      movie.create(data, function(err, res) {
+        assert.equal(err.errno, 19);
+        assert.equal(err.message, 'SQLITE_CONSTRAINT: NOT NULL constraint failed: movies.title');
         done();
       });
     });
