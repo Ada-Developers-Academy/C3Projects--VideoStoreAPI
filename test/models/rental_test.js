@@ -7,6 +7,7 @@ var sqlite3 = require('sqlite3').verbose();
 describe('Rental', function() {
   var rental;
   var expectedPath = "db/test.db";
+  var numSeeded = 2;
   var validRentalData = function validRentalData() {
     return {
       checkout_date: '2014-12-16',
@@ -38,6 +39,16 @@ describe('Rental', function() {
         assert.equal(err, undefined);
         assert.equal(res.insertedID, 3);
         assert.equal(res.changed, 1);
+        done();
+      });
+    });
+  });
+
+  describe('#all', function() {
+    it('returns all rentals', function(done) {
+      rental.all(function(err, rows){
+        assert.equal(err, undefined);
+        assert.equal(rows.length, numSeeded);
         done();
       });
     });
