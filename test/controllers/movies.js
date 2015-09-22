@@ -56,12 +56,8 @@ describe("/movies", function() {
   describe("GET /movies/:title", function() {
     var movie_request;
 
-    beforeEach(function(done) {
+    it("can find amelie and show that 2 are checked out", function(done) {
       movie_request = agent.get('/movies/amelie').set('Accept', 'application/json');
-      done();
-    })
-
-    it("can find amelie and show none are checked out", function(done) {
       movie_request
         .expect('Content-Type', /application\/json/)
         .expect(200, function(err, res) {
@@ -71,7 +67,23 @@ describe("/movies", function() {
           assert.deepEqual(Object.keys(res.body[0]), keys);
 
           assert.equal(res.body[0].title, 'Amelie');
-          assert.equal(res.body[1].Available, 5);
+          assert.equal(res.body[1].Available, 3);
+          done();
+        });
+    })
+
+    it("can find moneyball and show that none are checked out", function(done) {
+      movie_request = agent.get('/movies/moneyball').set('Accept', 'application/json');
+      movie_request
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(err, res) {
+          assert.equal(res.body.length, 2);
+
+          var keys = ['title', 'overview', 'inventory'];
+          assert.deepEqual(Object.keys(res.body[0]), keys);
+
+          assert.equal(res.body[0].title, 'Moneyball');
+          assert.equal(res.body[1].Available, 6);
           done();
         });
     })
@@ -80,12 +92,8 @@ describe("/movies", function() {
   describe("GET /movies/title/:records/:offset", function() {
     var movie_request;
 
-    beforeEach(function(done) {
-      movie_request = agent.get('/movies/title/2/2').set('Accept', 'application/json');
-      done();
-    })
-
     it("returns n records of movies sorted by title with n offset", function(done) {
+      movie_request = agent.get('/movies/title/2/2').set('Accept', 'application/json');
       movie_request
         .expect('Content-Type', /application\/json/)
         .expect(200, function(err, res) {
@@ -101,12 +109,8 @@ describe("/movies", function() {
   describe("GET /movies/released/:records/:offset", function() {
     var movie_request;
 
-    beforeEach(function(done) {
-      movie_request = agent.get('/movies/released/1/0').set('Accept', 'application/json');
-      done();
-    })
-
     it("returns n records of movies sorted by most recent release date with n offset", function(done) {
+      movie_request = agent.get('/movies/released/1/0').set('Accept', 'application/json');
       movie_request
         .expect('Content-Type', /application\/json/)
         .expect(200, function(err, res) {
