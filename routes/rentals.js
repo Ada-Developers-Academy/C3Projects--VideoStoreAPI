@@ -11,66 +11,59 @@ var Movie = require('../models/movie'),
 var RENTAL_PERIOD = 5; // 5 days
 
 router.post('/checkout/:customer_id/:movie_id', function(req, res, next) {
-  // Add check for if there is an available movie for checkout:
-  // query db to count # of rentals with that movie id
-  // TODO: check only returned = false
-
-  // compareWithInventory
-  // respondToCall
-  // -> either send error message or execute checkout based on answer
-
-  // 
-
   var movie_id = req.params.movie_id;
+  var count, inventory, enoughInventory;
 
-  var count;
-  var inventory;
-
-  async.series([
-    function countCheckedOutMovies(movie_id, callback) {
+  async.waterfall([
+    function(callback) {
       rental.where(['movie_id', 'returned'], [movie_id, 'false'], function(err, rows) {
         count = rows.length;
+        // console.log(count, rows, typeof(count));
         callback(null, count);
-      });
+      })
     },
-
-    function retrieveInventory(movie_id, callback) {
+    function(movieCount, callback) {
       movie.find_by('id', movie_id, function(err, row) {
+        // don't need inventory, could call row.inventory on line 29
         inventory = row.inventory;
-        callback(null, inventory);
+        enoughInventory = (movieCount < inventory) ? true : false;
+        // console.log(row, inventory, typeof(inventory));
+        callback(null, enoughInventory);
       })
     }
-  ],
+  ], function(err, result) {
+      // if result, which equals enoughInventory, is false, return message NO
+      if (result == false) {
+        res.status(403).json({ error: "There are no available copies of that movie for rental." })
+      } else {  // proceed with checkout
+        var values = [];
+        values.push(req.params.customer_id);
+        values.push(movie_id);
 
-  function compareCountInventory(err, results) {
-    console.log(results);
+        var checkout_date = new Date();
+        var return_date = new Date();
+        return_date.setDate(return_date.getDate() + RENTAL_PERIOD);
 
-    count = results[0];
-    inventory = results[1];
+        var defaults = [checkout_date, return_date, "false"];
+        values = values.concat(defaults);
 
-    if (count >= inventory) {
-      // if inventory <= rentals, return message NO
-      res.status(403).json({ error: "There are no available copies of that movie for rental." })
-    } else {
-      // proceed with checkout
-      var values = [];
-      values.push(req.params.customer_id);
-      values.push(movie_id);
+        var columns = ['customer_id', 'movie_id', 'checkout_date', 'return_date', 'returned'];
 
-      var checkout_date = new Date();
-      var return_date = new Date();
-      return_date.setDate(return_date.getDate() + RENTAL_PERIOD);
-
-      var defaults = [checkout_date, return_date, "false"];
-      values = values.concat(defaults);
-
-      var columns = ['customer_id', 'movie_id', 'checkout_date', 'return_date', 'returned'];
-
-      rental.create(columns, values, function(err, results) {
-        res.status(200).json({ success: "Yay! You checked out a movie." });
-      });
-    }
+        rental.create(columns, values, function(err, results) {
+          res.status(200).json({ success: "Yay! You checked out a movie." });
+        });
+      }
   });
+
+  // countCheckedOutMovies(
+  //   retrieveCompareInventory(
+  //     createRental(
+  //       )
+  //     )
+  //   );
+
+  // retrieveCompareInventory(createRental());
+
 });
 
 module.exports = router;
