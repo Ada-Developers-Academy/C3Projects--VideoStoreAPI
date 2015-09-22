@@ -52,12 +52,14 @@ exports.moviesController = {
       results = [],
       title = req.params.title,
       titleish = '%' + title + '%',
-      statement = "SELECT movies.title, movies.overview, movies.inventory FROM movies, rentals WHERE movies.title LIKE ? (CASE WHEN movies.title=rentals.movie_title AND rentals.return_date IS NULL) THEN  ELSE;";
+      // need to account for movies that may not have rentals and movies with titleish matches
+      statement = "SELECT movies.title, movies.overview, movies.inventory FROM movies, rentals WHERE (movies.title=rentals.movie_title AND) movies.title LIKE ? AND rentals.return_date IS NULL;";
 
       db.all(statement, [titleish], function(err, rows) {
         var rented = rows.length,
             movie = rows[0],
             available = movie.inventory - rented;
+            console.log(movie);
         results.push(movie, {'Available': available});
 
         db.close();

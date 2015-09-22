@@ -46,5 +46,13 @@
         "overdue": 0,
         "movie_title": "Alien",
         "customer_id": 10
+    },
+    {
+        "checkout_date": "2015-09-06",
+        "due_date": "2015-09-09",
+        "return_date": null,
+        "overdue": 0,
+        "movie_title": "All the President's Men",
+        "customer_id": 10
     }
 ]

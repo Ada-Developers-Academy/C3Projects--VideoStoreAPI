@@ -70,6 +70,7 @@ exports.rentalsController = {
       titleish = '%' + title + '%',
       statement = "Select customers.id, customers.name, rentals.checkout_date FROM customers, rentals WHERE rentals.customer_id=customers.id AND rentals.movie_title LIKE ? AND rentals.return_date IS NOT NULL ORDER BY customers.name;";
       db.all(statement, [titleish], function(err, rows) {
+        console.log(rows);
         rows.forEach(function (row) {
           results.push(row);
         });
