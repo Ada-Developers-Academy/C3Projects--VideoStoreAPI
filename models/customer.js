@@ -19,6 +19,18 @@ function Customer() {
 
 Customer.prototype = require('./database').prototype;
 
+Customer.prototype.rentals = function rentals(customerID, callback) {
+  var db = this.openDB();
+  var statement = 'SELECT "rentals".* FROM "rentals" WHERE "rentals"."customer_id" = ? ORDER BY "rentals"."checkout_date" ASC';
+
+  db.all(statement, customerID, function(err, rows) {
+    if (err) { console.log('!!!!ERROR!!!! In Customer#rentals.'); } // FIXME: how is error tracking best handled?
+
+    callback(err, rows);
+    db.close();
+  })
+}
+
 // Customer.prototype.movies = function movies(customerID, callback) {
 //   var db = this.openDB();
 //   var statement = 'SELECT "movies".* FROM "movies" INNER JOIN "rentals" ON "movies"."title" = "rentals"."movie_title" WHERE "rentals"."customer_id" = ?';

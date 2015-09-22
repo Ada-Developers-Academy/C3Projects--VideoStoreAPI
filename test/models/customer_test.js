@@ -132,6 +132,21 @@ describe('Customer', function() {
     });
   });
 
+  describe('#rentals', function() {
+    before(function(done) {
+      seedRentals(done);
+    });
+
+    it('returns all rentals for a given customer, in order by checkout date', function(done) {
+      customer.rentals(1, function(err, rows) {
+        assert.equal(rows.length, 2);
+        assert.equal(rows[0].movie_title, "Movie2");
+        assert.equal(rows[1].movie_title, "Movie1");
+        done();
+      });
+    });
+  });
+
   // describe('#movies', function() {
   //   before(function(done) {
   //     seedRentals(done);
@@ -196,9 +211,9 @@ function resetRentalsTable(done) {
       "BEGIN; \
       DELETE FROM rentals; \
       INSERT INTO rentals(checkout_date, return_date, movie_title, customer_id) \
-      VALUES('2015-03-16', '2015-03-20', 'Movie1', 1), \
-            ('2015-09-16', '', 'Movie2', 1), \
-            ('2015-09-18', '', 'Movie2', 2); \
+      VALUES('2015-09-16', '', 'Movie1', 1), \
+            ('2015-03-16', '2015-03-20', 'Movie2', 1), \
+            ('2015-09-18', '', 'Movie3', 2); \
       COMMIT;",
       function(err) {
         db.close();
