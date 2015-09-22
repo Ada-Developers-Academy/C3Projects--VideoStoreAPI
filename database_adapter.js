@@ -45,6 +45,18 @@ module.exports = {
     });
   },
 
+  where_in: function(column, valueList, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    var questionMarks = Array(valueList.length + 1).join('?').split('').join(', ');
+
+    var statement = "SELECT * FROM " + this.table_name + " WHERE " + column + " IN (" + questionMarks + ");";
+
+    db.all(statement, valueList, function(error, result) {
+      if (callback) { callback(error, result); }
+      db.close();
+    });
+  },
+
   subset: function(column, queries, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
 

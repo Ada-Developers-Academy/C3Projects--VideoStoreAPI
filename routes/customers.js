@@ -14,7 +14,7 @@ router.get('/:id', function(req, res, next) {
   var id = req.params.id;
 
   customer.find_by('id', id, function(err, row) {
-    res.status(200).json({ customer: row} );
+    res.status(200).json({ customer: row } );
   });
 });
 
