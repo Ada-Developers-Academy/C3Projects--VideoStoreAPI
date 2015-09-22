@@ -28,48 +28,40 @@ router.get('/:title', function(request, response, next) {
         callback(null, inventory, movieObject);
       });
     },
-    // retrieve customer_ids from rentals for that movie
+    // retrieve rental records for that movie
     function(movieInventory, movieObject, callback) {
-      rental.where('customer_id', ['movie_id', 'returned'], 
+      rental.where(['movie_id', 'returned'], 
         [movieObject.movie.id, 'false'], function(error, rows) {
-          console.log(rows); // 1
           callback(null, movieInventory, rows, movieObject);
       });
     },
     // get count of rentals
-    function(movieInventory, customerIDs, movieObject, callback) {
+    function(movieInventory, rentals, movieObject, callback) {
       // check how many copies of that movie are checked out
-      rentedCount = customerIDs.length;
-      console.log(customerIDs); // 2
-      callback(null, movieInventory, rentedCount, customerIDs, movieObject);
+      rentedCount = rentals.length;
+      callback(null, movieInventory, rentedCount, rentals, movieObject);
     },
     // calculate availability
-    function(movieInventory, rentedCount, customerIDs, movieObject, callback) {
+    function(movieInventory, rentedCount, rentals, movieObject, callback) {
       var availableBool = (rentedCount < movieInventory) ? true : false;
       var availableCount = (rentedCount < movieInventory) ? (movieInventory - rentedCount) : 0;
       movieObject.availability = {
         available: availableBool,
         copiesAvailable: availableCount
       };
-      console.log(customerIDs); // 3
-      callback(null, customerIDs, movieObject);
+      callback(null, rentals, movieObject);
     },
-    // turn object of customerIDs into array of ids
-    function(customerIDs, movieObject, callback) {
-      console.log(customerIDs); // 4
-      for (var i = 0; i < customerIDs.length; i++) {
-        console.log(customerIDs[i]); // 5
-        customerIdList.push(customerIDs[i].customer_id);
+    // turn object of rentals into array of ids
+    function(rentals, movieObject, callback) {
+      for (var i = 0; i < rentals.length; i++) {
+        customerIdList.push(rentals[i].customer_id);
       }
-      console.log(customerIdList); // 6
       callback(null, customerIdList, movieObject);
     },
     // query DB for full customer data
     // parameter is movieObject with movie and availability objects
     function(customerIDs, movieObject, callback) {
-      console.log(customerIDs); // 7
       customer.where_in('id', customerIDs, function(error, rows) {
-        console.log(rows);
         movieObject.currentRenters = rows;
         callback(null, movieObject);
       });
@@ -86,7 +78,7 @@ router.post('/checkout/:customer_id/:movie_id', function(request, response, next
   async.waterfall([
     // count total # of checked out copies of movie with id, movie_id
     function(callback) {
-      rental.where(['*', 'movie_id', 'returned'], [movie_id, 'false'], function(err, rows) {
+      rental.where(['movie_id', 'returned'], [movie_id, 'false'], function(err, rows) {
         count = rows.length;
         callback(null, count);
       });
