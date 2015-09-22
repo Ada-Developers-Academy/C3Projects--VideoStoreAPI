@@ -42,6 +42,55 @@ describe('Rental', function() {
         done();
       });
     });
+
+    it('defaults checkout_date to current date', function(done) {
+      var data = validRentalData();
+      var date = new Date(),
+          year = date.getFullYear(),
+          month = addZero(date.getMonth() + 1),
+          day = addZero(date.getDate());
+
+      function addZero(unit) {
+        unit = unit < 10 ? "0" + unit : unit;
+        return unit;
+      }
+
+      var current_date = year + "-" + month + "-" + day;
+      delete data.checkout_date;
+
+      rental.create(data, function(err, res) {
+        assert.equal(err, undefined);
+        assert(res.insertedID, numSeeded + 1);
+
+        rental.findBy('movie_title', data.movie_title, function(err, rows) {
+          assert.equal(rows.length, 1);
+          assert.equal(rows[0].checkout_date, current_date);
+          done();
+        });
+      });
+    });
+
+    it('requires a movie_title', function(done) {
+      var data = validRentalData();
+      delete data.movie_title;
+
+      rental.create(data, function(err, res) {
+        assert.equal(err.errno, 19);
+        assert.equal(err.message, 'SQLITE_CONSTRAINT: NOT NULL constraint failed: rentals.movie_title');
+        done();
+      });
+    });
+
+    it('requires a customer_id', function(done) {
+      var data = validRentalData();
+      delete data.customer_id;
+
+      rental.create(data, function(err, res) {
+        assert.equal(err.errno, 19);
+        assert.equal(err.message, 'SQLITE_CONSTRAINT: NOT NULL constraint failed: rentals.customer_id');
+        done();
+      });
+    });
   });
 
   describe('#all', function() {
