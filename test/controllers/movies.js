@@ -20,7 +20,7 @@ describe.only("movies controller", function() {
         INSERT INTO rentals(check_out, check_in, due_date, overdue, movie_title, customer_id) \
         VALUES('2015-06-16', '2015-06-17', '2015-06-19', 0, 'Jaws', 1), \
         ('2015-06-10', '2015-06-12', '2015-06-13', 0, 'Jaws', 2),\
-              ('2015-06-16', null, '2015-06-19', 1, 'Alien', 1); \
+        ('2015-06-16', null, '2015-06-19', 1, 'Alien', 1); \
         INSERT INTO movies(title, overview, release_date, inventory, inventory_available) \
         VALUES('Jaws', 'omg sharks!',   '1975-06-19', 6, 6), \
               ('Alien', 'omg aliens!', 1979-05-25, 4, 4); \
@@ -193,7 +193,6 @@ describe.only("movies controller", function() {
     })
   });
 
-  //  /:title/past_customers/customer_name_sort
   describe("GET '/movies/Jaws/past_customers/customer_name_sort'", function() {
     it("knows about the route", function(done) {
       agent.get('/movies/Jaws/past_customers/customer_name_sort').set('Accept', 'application/json')
@@ -225,4 +224,58 @@ describe.only("movies controller", function() {
     })
   });
 
+  //:title/past_customers/checkout_date_sort
+  describe("GET '/movies/Jaws/past_customers/checkout_date_sort'", function() {
+    it("knows about the route", function(done) {
+      agent.get('/movies/Jaws/past_customers/checkout_date_sort').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result) {
+          assert.equal(error, undefined);
+          done();
+        });
+    });
+
+    it("returns an array of customers who have checked the movie out in the past", function(done) {
+      agent.get('/movies/Jaws/past_customers/checkout_date_sort').set("Accept", "application/json")
+        .expect(200, function(error, result) {
+          assert.equal(result.body.length, 2);
+          customer_keys;
+          assert.deepEqual(Object.keys(result.body[0]), customer_keys);
+          done();
+        });
+    });
+
+    it("sorts the customers by name", function(done) {
+      agent.get('/movies/Jaws/past_customers/checkout_date_sort').set("Accept", "application/json")
+        .expect(200, function(error, result) {
+          assert.equal(result.body[0].id, 2);
+          customer_keys;
+          assert.deepEqual(Object.keys(result.body[0]), customer_keys);
+          done();
+        });
+    })
+  });
+
+  //:title
+  describe("GET '/movies/Jaws'", function() {
+    it("knows about the route", function(done) {
+      agent.get('/movies/jaws').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result) {
+          assert.equal(error, undefined);
+          done();
+        });
+    });
+
+    it("returns an array of movie objects", function(done) {
+      agent.get('/movies/jaws').set("Accept", "application/json")
+        .expect(200, function(error, result) {
+          assert.equal(result.body[0].overview, 'omg sharks!');
+
+          movie_keys;
+          assert.deepEqual(Object.keys(result.body[0]), movie_keys);
+          done();
+        });
+    });
+  });
 }); // top level describe
