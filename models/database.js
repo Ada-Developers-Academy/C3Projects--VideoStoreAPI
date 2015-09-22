@@ -54,8 +54,7 @@ Database.prototype.all = function all(callback) {
 Database.prototype.findBy = function findBy(parameter, value, callback) {
   // check that the parameter is a valid parameter (e.g. make sure it's not sql injection)
   if (!this._validParam(parameter)) {
-    console.log('!!!!ERROR!!!! In Database#findBy. Unrecognized parameter: ' + parameter);
-    callback({ message: 'Error: syntax error. Unrecognized parameter.', errno: null, code: null }, null);
+    callback(new Error('Error: syntax error. Unrecognized parameter.'));
     return;
   }
 

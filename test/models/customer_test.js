@@ -121,6 +121,15 @@ describe('Customer', function() {
         done();
       });
     });
+
+    it('returns an error when an unrecognized column is provided', function(done) {
+      customer.findBy('badColumnName', 'Jaws', function(err, rows) {
+        assert(err);
+        assert.equal(err.message, 'Error: syntax error. Unrecognized parameter.');
+        assert.equal(rows, undefined);
+        done();
+      });
+    });
   });
 
   // describe('#movies', function() {
