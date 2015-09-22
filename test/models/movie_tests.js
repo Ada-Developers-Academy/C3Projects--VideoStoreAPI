@@ -43,6 +43,13 @@ describe("Movie", function() {
         assert.equal(result[0].title, 'Jaws');
         done();
       });
-    })
+    });
+
+    it("returns all movies", function(done) {
+      movie.all(function(err, result) {
+        assert.equal(result.length, 2);
+        done();
+      });
+    });
   })
 });

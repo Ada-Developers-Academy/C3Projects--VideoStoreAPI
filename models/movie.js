@@ -9,3 +9,5 @@ var movie = new Movie();
 movie.find_by("title", "Jaws", function(err, res){});
 
 module.exports = Movie;
+
+

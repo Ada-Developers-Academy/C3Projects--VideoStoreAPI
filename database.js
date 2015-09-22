@@ -14,6 +14,16 @@ module.exports = {
     });
   },
 
+  all: function(callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db'),
+        statement = "SELECT * FROM " + this.table_name + ";";
+
+    db.all(statement, function(err, res) {
+      callback(err, res);
+      db.close();
+    });
+  },
+
   create_rental: function(data, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
     var statement = "INSERT INTO rentals (checkout_date, returned_date, rental_time, \
