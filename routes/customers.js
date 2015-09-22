@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var customers_exports = require('../controller/customers');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
