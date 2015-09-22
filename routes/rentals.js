@@ -29,12 +29,12 @@ router.post('/checkout/:customer_id/:movie_id', function(req, res, next) {
         inventory = row.inventory;
         enoughInventory = (movieCount < inventory) ? true : false;
         callback(null, enoughInventory);
-      })
+      });
     }
   ], function(err, result) {
       // if result, which equals enoughInventory, is false, return message NO
       if (result == false) {
-        res.status(403).json({ error: "There are no available copies of that movie for rental." })
+        res.status(403).json({ error: "There are no available copies of that movie for rental." });
       } else {  // proceed with checkout
         var values = [];
         values.push(req.params.customer_id);
