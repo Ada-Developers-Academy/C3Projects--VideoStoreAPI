@@ -63,5 +63,45 @@ exports.rentalsController = {
 
       res.status(200).json(inventory);
     });
+  },
+
+  // *POST* rental/:title/:customer_id/checkin
+  checkin: function(req, res) {
+  // find rental entry by searchng with customer_id and movie title
+    var statement = "SELECT * FROM movies WHERE title LIKE '%" + req.params.title + "%';";
+
+    db.all(statement, function(err, rows){
+      // rows is specific movie
+      var movieId = rows[0].id;
+      var newInventory = parseInt(rows[0].current_inventory) + 1;
+      var updateMovieStatement = "UPDATE movies SET current_inventory=? WHERE id=? ;";
+      // update movie inventory_available (+1)
+      db.run(updateMovieStatement, newInventory, movieId, function(err, rows) {
+
+        var statement = "SELECT * FROM rentals WHERE customer_id = " + req.params.customer_id + " AND movie_id = " + movieId + " AND return_date = '';";
+
+        db.all(statement, function(err, rows){
+          // rows is specific rental entry
+          var rentalId = rows[0].id;
+          // change return_date to current date
+          var updateRentalStatement = "UPDATE rentals SET return_date=? WHERE id=? ;";
+
+          db.run(updateRentalStatement, (new Date()).toString(), rentalId, function(err, rows) {
+            res.status(200).json('success');
+          })
+        });
+      })
+    });
   }
+
+
+  // *POST* rental/:title/:customer_id/checkout
+  // create new rental entry
+  //  ['customer_id', 'integer'] -> in params
+  //  ['movie_id', 'integer'], -> will need to find
+  //  ['return_date', 'text'], -> ''
+  //  ['checkout_date', 'text'], -> today's date
+  //  ['due_date', 'text'] -> today's date + 7 days
+  // update movie inventory_available (-1)
+  // subtract $1 from customer's credit
 }

@@ -24,9 +24,13 @@ router.get('/:title/available', function(req, res, next) {
   return rentals_exports.rentalsController.check_inventory(req, res);
 });
 
-// *POST* rental/title/:id/checkout
+// *POST* rental/:title/:customer_id/checkin
+router.post('/:title/:customer_id/checkin', function(req, res, next) {
+  return rentals_exports.rentalsController.checkin(req, res);
+});
 
-// *POST* rental/title/:id/checkin
+// *POST* rental/:title/:customer_id/checkout
+
 
 
 module.exports = router;
