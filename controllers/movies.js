@@ -41,7 +41,6 @@ exports.moviesController = {
     var movie_title = req.params.title;
     console.log("movie title:" + movie_title)
     movie.current_customers(movie_title, function(current_customers) {
-      console.log(current_customers);
       return res.status(200).json(current_customers);
     });
   },
