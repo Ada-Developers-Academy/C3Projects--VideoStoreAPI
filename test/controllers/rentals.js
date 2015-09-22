@@ -18,7 +18,7 @@ describe("rentals controller", function() {
         DELETE FROM rentals; \
         INSERT INTO rentals(check_out, check_in, due_date, overdue, movie_title, customer_id) \
         VALUES('2015-06-16', '2015-06-17', '2015-06-19', 0, 1, 'Jaws'), \
-              ('2015-06-16', '2015-06-17', '2015-06-19', 0, 1, 'Alien'); COMMIT;"
+              ('2015-06-16', '2015-06-17', '2015-06-19', 1, 1, 'Alien'); COMMIT;"
         , function(err) {
           db_cleaner.close();
           done();
