@@ -117,18 +117,16 @@ exports.rentalsController = {
   // POST /rentals/check_out(cust id, movie title) (math for checkout cost)
   // creating a new rental with no returned date
   create: function(req, res) {
-    console.log("request ", req);
     var data = req["body"]
     var db = new Customer();
-    console.log("response", res);
 
     db.check_out(data, function(err, result) {
-      // res.status(200).json();
-      console.log("DONE");
-      console.log(res);
-      return res.status(200).json({});
-      // return res.status(200).json(req["req"]["body"]);
-      // return res.redirect('index', { title: 'Express' });
+      if (err !== null) {
+        console.log(err);
+        return res.status(500).json({});
+      } else {
+        return res.status(200).json({});
+      }
     });
   },
 
