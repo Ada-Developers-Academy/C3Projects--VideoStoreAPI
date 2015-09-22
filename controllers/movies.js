@@ -88,13 +88,12 @@ exports.moviesController = {
   },
 
   movies_by_release: function(req, res) {
-    db = new sqlite3.Database('db/' + db_env + '.db');
-    var release = req.params.release_date;
-    release = addPercents(release);
-    db.all("SELECT * FROM movies WHERE release_date ?;", release, function(err, the_date) {
-      db.close();
-      return res.status(200).json(the_date);
+    var date = req.params.release_date.toLowerCase(),
+        movie = new Movie();
+        date = addPercents(date);
+
+    movie.find_by("release_date", date, function(error, result) {
+      return res.status(200).json(result);
     });
   }
-
 }; // end
