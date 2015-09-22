@@ -59,6 +59,7 @@ db.serialize(function() {
 
   for (var i = 0; i < customers.length; i++) {
     var customer = customers[i];
+
     // insert each into db
     customers_statement.run(
       customer.name,
