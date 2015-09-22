@@ -12,12 +12,12 @@ router.get('/:title/renting', function(req, res, next) {
   return movieController.whos_renting(req, res);
 });
 
-router.get('/:title/rented/:sort=:query/:page', function(req, res, next) {
-  var sort = req.params.sort;
+router.get('/:title/rented/sort_by=:query/:page', function(req, res, next) {
+  var sort = req.params.query;
+  console.log("VERB: " +  sort);
 
   switch (sort) {
     case "customer_id":
-      console.log("sort: " + sort);
       return movieController.customer_id(req, res);
       break;
     case "customer_name":

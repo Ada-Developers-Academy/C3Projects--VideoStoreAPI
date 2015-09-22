@@ -118,8 +118,8 @@ module.exports = {
     var movies = new movieTable();
     var title = request.params.title;
     var query = request.params.query;
-    var page = request.params.page;
-    var offset = (pageNumber - 1) * movies.limit;
+    var page = request.params.page || 1;
+    var offset = (page - 1) * movies.limit;
 
     var statement =
       "SELECT * FROM rentals \
@@ -127,9 +127,7 @@ module.exports = {
       "'AND returned = 1 \
       ORDER BY customer_id \
       LIMIT " + movies.limit + " \
-      OFFSET " + offset + ");";
-      console.log(statement);
-
+      OFFSET " + offset;
 
     db.all(statement, function(err, result) {
       if(err) {
