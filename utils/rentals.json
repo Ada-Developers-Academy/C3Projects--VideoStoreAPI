@@ -112,7 +112,7 @@
         "returned": "false"
     },
     {
-        "customer_id": 1,
+        "customer_id": 32,
         "movie_id": 14,
         "checkout_date": "01 Nov 2004 06:19:02",
         "return_date": "06 Nov 2004 18:19:02",
@@ -203,7 +203,7 @@
         "returned": "true"
     },
     {
-        "customer_id": 14,
+        "customer_id": 32,
         "movie_id": 14,
         "checkout_date": "03 Oct 2012 00:25:08",
         "return_date": "11 Oct 2012 07:54:14 -0700",
