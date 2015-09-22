@@ -14,8 +14,8 @@ __Request Parameters__
 | Query Parameter | Value          |
 | :-------------- | :------------- |
 | `order_by `     | _Optional._ Provide this parameter if you would like the customers sorted. Options include: `name`, `registered_at`, or `postal_code`. When using `name`, customers are sorted by their first name. |
-| `number`        | An integer that represents the number of customer records you'd like returned. |
-| `page`          | _Requires `number` query._ The page of customer records you'd like returned. |
+| `number`        | _Optional._ An integer that represents the number of customer records you'd like returned. |
+| `page`          | _Optional, but requires the `number` query._ The page of customer records you'd like returned. |
 
 __Response Format__  
 
@@ -51,14 +51,8 @@ __Response Format__
 
 __Endpoint__  
 `GET /customers/{:id}`  
-  all of the attr of that customer
-  currently checked out movies
-   all movies with that customer_id and return_date == nil
-     include id, title
 
-  movies checked out in the past
-   all movies with that customer_id and return_date != nil (sort ASC by checkout_date)
-     include id, title and return_date
+Returns all the information on record of the selected customer, including all the movies they have currently and previously checked out.  
 
 __Request Parameter__  
 
@@ -108,16 +102,16 @@ __Response__
 
 __Endpoint__  
 `GET ./movies`  
-Returns all of the movies in our database with their complete information.
 
-returns n number of movies (hardcoded?) sorted by title  
-offset by p records (hardcoded)
+Returns all of the movies in our database with their complete information. Can be ordered by `title` or `release_date`. Also can be paginated with number and page (e.g. display the 2nd page of 20 customer records: `./movies?number=20&page=2`).
 
 __Request Parameters__  
 
 | Query Parameter     | Value          |
 | :-------------------| :------------- |
 | `order_by`            | _Optional._ Provide this parameter if you would like the customers sorted. Options include: `title` or `release_date`.        |
+| `number`        | _Optional._ An integer that represents the number of customer records you'd like returned. |
+| `page`          | _Optional, but requires the `number` query._ The page of customer records you'd like returned. |
 
 __Response__
 
@@ -146,15 +140,16 @@ __Response__
 ***
 
 __Endpoint__  
-`GET ./movies/{:title}`  
-Returns movies that match the title query.
-E.g. ".movie/jaws", "./movie/north%20by%20northwest"
+`GET ./movies/title/{:title}`  
+
+Returns movies that fuzzy match the title query. The results are automatically ordered by `movie_id` but can also be ordered by title or release date.
 
 __Request Parameters__  
 
 | Path Parameter     | Value                    |
 | :------------------| :------------------------|
 | `title`            |  The title of the movie. |
+| `order_by`         | _Optional._ Provide this parameter if you would like the customers sorted. Options include: `title` or `release_date`.        |
 
 __Response__
 
@@ -171,8 +166,9 @@ __Response__
 ***
 
 __Endpoint__  
-`GET /movie/{:title}/customers`
-default is sorting by id
+`GET /movies/{:title}/rentals`  
+
+Retrieve customers who currently and previously checked out a specific movie. Default ordering is by customer ID, but can be changed to order by the customer's name or the movie's checkout date.  
 
 __Request Parameters__  
 
@@ -182,57 +178,27 @@ __Request Parameters__
 
 | Query Parameter    | Value                    |
 | :------------------| :----------------------- |
-| `order_by`         |  _Optional._ Provide this parameter if you would like the customers sorted. Options include: `name` or `checkout_date`. |
+| `order_by`         |  _Optional._ Provide this parameter if you would like the customers sorted. Options include: `customer_id`, `name`, or `checkout_date`.     |
 
 __Response__
 
     {
-      "current_customers": [
+      "current_rentals": [
         {
-          "id": "5",
-          "name": "Aquila Riddle",
-          "registered_at": "Thu, 27 Aug 2015 08:17:24 -0700",
-          "address": "Ap #187-9582 Primis St.",
-          "city": "Tacoma",
-          "state": "WA",
-          "postal_code": "73251",
-          "phone": "(925) 161-2223",
-          "account_credit": 17.82
+          "rental_id": "5",
+          "movie_title": "Night of the Living Dead",
         },
         {
-          "id": "6",
-          "name": "Phyllis Russell",
-          "registered_at": "Wed, 02 Apr 2014 21:44:46 -0700",
-          "address": "746-8511 Ipsum Ave",
-          "city": "Boise",
-          "state": "Idaho",
-          "postal_code": "76759",
-          "phone": "(961) 964-5158",
-          "account_credit": 88.67
+
         }
       ],
-      "previous_customers": [
+
+      "previous_rentals": [
         {
-          "id": "9",
-          "name": "Jacqueline Perry",
-          "registered_at": "Thu, 23 Jul 2015 10:18:35 -0700",
-          "address": "Ap #288-7228 Dis Rd.",
-          "city": "Anchorage",
-          "state": "AK",
-          "postal_code": "99789",
-          "phone": "(479) 207-8414",
-          "account_credit": 96.28
+
         },
         {
-          "id": "5",
-          "name": "Aquila Riddle",
-          "registered_at": "Thu, 27 Aug 2015 08:17:24 -0700",
-          "address": "Ap #187-9582 Primis St.",
-          "city": "Tacoma",
-          "state": "WA",
-          "postal_code": "73251",
-          "phone": "(925) 161-2223",
-          "account_credit": 17.82
+
         },
          …
       ]
@@ -242,31 +208,28 @@ __Response__
 ## Rentals
 
 __Endpoint__  
-`POST /customers/{:id}/rental/{:title}`    
-maybe change it be searching for movie id instead of movie title?
+`POST ./rentals/{:customer_id}/checkout/{:movie_id}`  
 
-Creates a new rental entry.
-
-PUT   updates inventory_avail -1 for that movie
-      updates customer account_credit -$X rental fee
+Checks out the given movie for the given customer, automatically setting the rental's return date to 7 days after checkout.  
 
 __Request Parameters__  
 
 | Path Parameter  | Value                    |
 | :---------------| :------------------------|
-| `id`            |  The ID of the movie.    |
-| `title`         |  The title of the movie. |
+| `customer_id`   |  The ID of the movie.    |
+| `movie_id`      |  The title of the movie. |
 
 __Response__
 
     {
-      "1": {
+      "rental": {
+        "id": 2,
         "customer_id": "5",
         "name": "Aquila Riddle",
         "movie_id": "",
         "title": "Close Encounters of the Third Kind",
-        "checkout_date": "Thu, Sept 17 2015 16:26:30 -0700",
-        "due_date": "Fri, Sept 25 2015 00:00:00 -0700",
+        "checkout_date": "2015-09-13",
+        "due_date": "2015-09-20",
         "return_date": null
       }
     }
@@ -274,28 +237,28 @@ __Response__
 ***
 
 __Endpoint__  
-`PUT /customers/{:id}/rental/{:title}`  
-updates return_date to Time.now (rental record)
-updates inventory_avail +1 for that movie
+`PUT ./rentals/{:customer_id}/return/{:movie_id}`  
+
+Returns the updated rental information for that checked in movie and all previously returned movies in descending order of `return_date`.  
 
 __Request Parameters__  
 
 | Path Parameter  | Value                    |
 | :---------------| :------------------------|
-| `id`            |  The ID of the movie.    |
-| `title`         |  The title of the movie. |
+| `customer_id`   |  The ID of the movie.    |
+| `movie_id`      |  The title of the movie. |
 
 __Response__
 
     {
-      "rental": {
+      "rental_history": {
         "customer_id": "5",
         "name": "Aquila Riddle",
         "movie_id": "",
         "title": "Close Encounters of the Third Kind",
-        "checkout_date": "Thu, Sept 17 2015 16:26:30 -0700",
-        "due_date": "Fri, Sept 25 2015 00:00:00 -0700",
-        "return_date": "Wed, Sept 23 2015 04:20:45 -0700"
+        "checkout_date": "2015-09-13",
+        "due_date": "2015-09-20",
+        "return_date": "2015-09-19"
       }
     }
 
@@ -303,37 +266,18 @@ __Response__
 
 __Endpoint__  
 `GET /rentals/overdue`  
-array of customers with all their overdue movies  
-overdue = current_date > due_date && return_date == nil
+
+Returns an array of rentals that are currently overdue.  
 
 __Response__
 
     {
-      "customers": [
+      "overdue_movies": [
         {
-          "id": "6",
-          "name" : "Phyllis Russell",
-          "overdue_movies": [
-            {
-              "id":
-              "title" : "",
-            },
-            {
-              "id":
-              "title" : "",
-            }
-          ]
-        },
 
+        },
         {
-          "id": "4",
-          "name" : "Carolyn Chandler",
-          "overdue_movies": [
-            {
-              "id":
-              "title" : "",
-            }
-          ]
+
         },
         …
       ]
