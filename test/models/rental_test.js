@@ -7,7 +7,7 @@ var sqlite3 = require('sqlite3').verbose();
 describe('Rental', function() {
   var rental;
   var expectedPath = "db/test.db";
-  var numSeeded = 2;
+  var numSeeded = 3;
   var validRentalData = function validRentalData() {
     return {
       checkout_date: '2014-12-16',
@@ -37,7 +37,7 @@ describe('Rental', function() {
 
       rental.create(data, function(err, res) {
         assert.equal(err, undefined);
-        assert.equal(res.insertedID, 3);
+        assert.equal(res.insertedID, numSeeded + 1);
         assert.equal(res.changed, 1);
         done();
       });
@@ -122,11 +122,12 @@ describe('Rental', function() {
       });
     });
 
-    it('returns 1 rental where the return_date is an empty string', function(done) {
+    it('returns all rentals where the return_date is an empty string', function(done) {
       rental.findBy('return_date', "", function(err, rows) {
         assert.equal(err, undefined);
-        assert.equal(rows.length, 1);
+        assert.equal(rows.length, 2);
         assert.equal(rows[0].movie_title, 'Wait Until Dark');
+        assert.equal(rows[1].movie_title, 'Jaws');
         done();
       });
     });
@@ -160,6 +161,15 @@ describe('Rental', function() {
         done();
       });
     });
+
+    it('returns 1 rental sorted by customer_id from the second page', function(done) {
+      rental.sortBy('customer_id', 1, 2, function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, 1);
+        assert.equal(rows[0].customer_id, 9);
+        done();
+      });
+    });
   });
 
   describe('#checkIn', function() {
@@ -190,7 +200,8 @@ function resetRentalsTable(done) {
       DELETE FROM rentals; \
       INSERT INTO rentals(checkout_date, return_date, movie_title, customer_id) \
       VALUES('2015-03-16', '2015-03-20', 'North by Northwest', 2), \
-            ('2015-09-16', '', 'Wait Until Dark', 9); \
+            ('2015-09-16', '', 'Wait Until Dark', 9), \
+            ('2015-08-10', '', 'Jaws', 1); \
       COMMIT;",
       function(err) {
         db.close();
