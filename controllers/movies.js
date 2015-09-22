@@ -1,20 +1,21 @@
 "use strict";
 
 var sqlite3 = require('sqlite3').verbose(),
+    Movie   = require('../models/movie'),
     db_env  = process.env.DB || 'development',
     db;
 
-    function addPercents(variable) {
-      var percented = "%" + variable + "%";
-      return percented;
-    }
+function addPercents(variable) {
+  var percented = "%" + variable + "%";
+  return percented;
+}
 
 exports.moviesController = {
   movies: function(req, res) {
-    db = new sqlite3.Database('db/' + db_env + '.db');
-    db.all("SELECT * FROM movies", function(err, all_movies) {
-      db.close();
-      return res.status(200).json(all_movies);
+    var movie = new Movie();
+    movie.all(function(error, result) {
+
+    return res.status(200).json(result);
     });
   },
 
