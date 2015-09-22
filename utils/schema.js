@@ -27,8 +27,7 @@ var rental_fields = [
   ['checkout_date', 'text'],
   ['return_date', 'text'],
   ['return_status', 'integer'],
-  ['cost', 'integer'],
-  ['title', 'text']
+  ['cost', 'integer']
 ];
   // sqlite does no have a separate boolean class, using values 0 and 1 for true and false
 
