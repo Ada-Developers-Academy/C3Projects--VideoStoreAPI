@@ -73,9 +73,20 @@ var Database = {
   customers_by_movie_history: function(title, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
     // all customers who have checked out this movie in the past
-    var statement = "SELECT 'customers'.* FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id WHERE rentals.movie_id = (SELECT movies.id FROM movies WHERE movies.title = ? COLLATE NOCASE LIMIT 1) AND rentals.checked_out = 'false' ORDER BY customers.id, customers.name, rentals.checkout_date; ";
+    var statement = "SELECT 'customers'.* FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id WHERE rentals.movie_id = (SELECT movies.id FROM movies WHERE movies.title = ? COLLATE NOCASE LIMIT 1) AND rentals.checked_out = 'false' ";
 
     db.all(statement, title, function(err, rows) {
+      callback(err, rows);
+      db.close();
+    });
+  },
+
+  customers_by_movie_history_sorted: function(title, column, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    // all customers who have checked out this movie in the past
+    var statement = "SELECT 'customers'.* FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id WHERE rentals.movie_id = (SELECT movies.id FROM movies WHERE movies.title = ? COLLATE NOCASE LIMIT 1) AND rentals.checked_out = 'false' ORDER BY " + column + " ;";
+
+    db.all(statement, title, column, function(err, rows) {
       callback(err, rows);
       db.close();
     });
