@@ -29,9 +29,8 @@ module.exports = {
   title: function(request, response) {
     var db = new sqlite3.Database("db/" + dbEnv + ".db");
     var movies = new movieTable();
-
-    // prepare statement
-    var pageNumber = request.params.page; // we still need to handle for page 1
+    var pageNumber = request.params.page || 1;
+    console.log(pageNumber);
     var offset = (pageNumber - 1) * movies.limit;
     var statement = "SELECT * FROM movies ORDER BY (title) LIMIT "
       + movies.limit + " OFFSET " + offset + ";";

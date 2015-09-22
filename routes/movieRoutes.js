@@ -14,7 +14,6 @@ router.get('/:title/renting', function(req, res, next) {
 
 router.get('/:title/rented/sort_by=:query/:page', function(req, res, next) {
   var sort = req.params.query;
-  console.log("VERB: " +  sort);
 
   switch (sort) {
     case "customer_id":
@@ -34,7 +33,6 @@ router.get('/:title/rented/sort_by=:query/:page', function(req, res, next) {
 
 router.get('/:title/rented/sort_by=:query', function(req, res, next) {
   var sort = req.params.query;
-  console.log("VERB: " +  sort);
 
   switch (sort) {
     case "customer_id":
@@ -59,7 +57,7 @@ router.get('/all', function(req, res, next) {
   return movieController.all_movies(req, res);
 });
 
-router.get("/all/:sort/:page", function(req, res, next) {
+router.get("/all/sort_by=:sort/:page", function(req, res, next) {
   var sort = req.params.sort;
 
   switch (sort) {
@@ -75,14 +73,5 @@ router.get("/all/:sort/:page", function(req, res, next) {
       break;
   }
 });
-
-// /* GET all customers. */
-// router.get('/movies/all/:page', function(req, res, next) {
-//   return movieController.all(req, res);
-// });
-//
-// router.get("/potato", function(req, res, next) {
-//   return movieController.potato(req, res);
-// });
 
 module.exports = router;
