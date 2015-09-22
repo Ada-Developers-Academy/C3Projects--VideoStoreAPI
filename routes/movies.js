@@ -23,5 +23,10 @@ router.get('/sort/release_date/:limit/:offset', function(req, res, next) {
   return movies_exports.moviesController.sortMoviesByReleaseDate(req, res)
 });
 
+/* SHOWS INVENTORY OF AVAILABLE MOVIES */
+router.get('/:title/available', function(req, res, next) {
+  return movies_exports.moviesController.availableMovies(req, res)
+});
+
 module.exports = router;
 // title?page=:page&number=:number

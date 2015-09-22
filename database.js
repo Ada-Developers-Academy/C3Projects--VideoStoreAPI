@@ -14,16 +14,6 @@ module.exports = {
     });
   },
 
-
-  all: function(callback) {
-    var db = new sqlite3.Database('db/' + db_env + '.db'),
-        statement = "SELECT * FROM " + this.table_name + ";";
-
-    db.all(statement, function(err, res) {
-      callback(err, res);
-    });
-  },
-
   find_all: function(callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
     var statement = "SELECT * FROM " + this.table_name + ";";
@@ -39,6 +29,16 @@ module.exports = {
     var statement = "SELECT * FROM " + this.table_name + " ORDER BY " + column + " LIMIT " + limit + " OFFSET " + offset + ";";
 
     db.all(statement, function(err, res) {
+      if (callback) callback(err, res);
+      db.close();
+    });
+  },
+
+  available: function(value, callback){
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    var statement = "SELECT title, available FROM " + this.table_name + " WHERE title = ?;";
+
+    db.all(statement, value, function(err, res) {
       if (callback) callback(err, res);
       db.close();
     });
