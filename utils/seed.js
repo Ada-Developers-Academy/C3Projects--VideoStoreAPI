@@ -47,5 +47,27 @@ db.serialize(function(){
   customer_statement.finalize();
 })
 
+// RENTAL TABLE ===============================================================================
+var rentals = require('./rentals');
+var rental_statement = db.prepare(
+  "INSERT INTO rentals(checkout_date, returned_date, rental_time, cost, total, customer_id, movie_id) VALUES (?, ?, ?, ?, ?, ?, ?);"
+  );
+
+db.serialize(function() {
+  for(var i = 0; i < rentals.length; i++) {
+    var rental = rentals[i];
+    rental_statement.run(
+      rental.checkout_date,
+      rental.returned_date,
+      rental.rental_time,
+      rental.cost,
+      rental.total,
+      rental.customer_id,
+      rental.movie_id
+    );
+  }
+  rental_statement.finalize();
+})
+
 
 db.close();
