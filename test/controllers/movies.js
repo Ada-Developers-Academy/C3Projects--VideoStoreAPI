@@ -56,22 +56,6 @@ describe("/movies", function() {
   describe("GET /movies/:title", function() {
     var movie_request;
 
-    it("can find amelie and show that 2 are checked out", function(done) {
-      movie_request = agent.get('/movies/amelie').set('Accept', 'application/json');
-      movie_request
-        .expect('Content-Type', /application\/json/)
-        .expect(200, function(err, res) {
-          assert.equal(res.body.length, 2);
-
-          var keys = ['title', 'overview', 'inventory'];
-          assert.deepEqual(Object.keys(res.body[0]), keys);
-
-          assert.equal(res.body[0].title, 'Amelie');
-          assert.equal(res.body[1].Available, 3);
-          done();
-        });
-    })
-
     it("can find moneyball and show that none are checked out", function(done) {
       movie_request = agent.get('/movies/moneyball').set('Accept', 'application/json');
       movie_request

@@ -143,4 +143,42 @@ describe("/rentals", function() {
         });
     })
   })
+
+  describe("POST /checkout/:title/:customer_id", function() {
+    var rental_request;
+
+    it("checks out a movie to a given customer", function(done) {
+      rental_request = agent.post('/rentals/checkout/alien/1').set('Accept', 'application/json');
+      rental_request
+      .expect(201, function(err, res) {
+        assert.equal(res.body.length, 1);
+
+        var keys = ['message', 'movie_title', 'customer_id'];
+        assert.deepEqual(Object.keys(res.body[0]), keys);
+
+        assert.equal(res.body[0].movie_title, 'alien');
+        done();
+      });
+    })
+  })
+
+  describe("PUT /checkin/:title/:customer_id", function() {
+    var rental_request;
+
+    it("checks in a movie for a given customer", function(done) {
+      rental_request = agent.put('/rentals/checkin/amelie/1').set('Accept', 'application/json');
+      rental_request
+      .expect(200, function(err, res) {
+        assert.equal(res.body.length, 1);
+
+        var keys = ['message', 'movie_title', 'customer_id'];
+        assert.deepEqual(Object.keys(res.body[0]), keys);
+
+        assert.equal(res.body[0].movie_title, 'amelie');
+        done();
+      });
+    })
+  })
+
+
 })
