@@ -51,7 +51,7 @@ rentals.movieInfo = function(req, resp) {
   // query database
   var db = new sqlite3.Database("db/" + dbEnv + ".db"); // grab the database
   db.all(statement, function(err, data) { // query the database
-    var results = {};
+    var results = { meta: {} };
 
     if (err) { // log error if error
       status = 500; // internal server error
@@ -68,21 +68,17 @@ rentals.movieInfo = function(req, resp) {
         movieInfo: formatMovieInfo(data),
         availableToRent: isMovieAvailable(data)
       };
+
+      results.meta.customersHoldingCopies = ourWebsite + "/rentals/" + title + "/customers"
     };
 
-    results.meta = {
-      searchMovies: ourWebsite + "/movies/" + title,
-      yourQuery: ourWebsite + "/rentals/" + title
-    };
+    results.meta.searchMovies = ourWebsite + "/movies/" + title;
+    results.meta.yourQuery = ourWebsite + "/rentals/" + title;
 
     return resp.status(status).json(results);
   });
 
   db.close();
-}
-
-rentals.movieInfos = function(req, resp) {
-
 }
 
 rentals.overdue = function(req, resp) {
