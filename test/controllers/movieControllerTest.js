@@ -27,9 +27,25 @@ describe('movie controller', function() {
       done();
     })
 
-    it("responds with keys of 'id', 'title', 'overview' and 'release_date' and 'inventory'")
-      var movie_keys = ['id', 'title', 'overview', 'release_date', 'inventory'];
-assert.deepEqual(Object.keys(result.body[0]), keys);
+    it("responds with keys of 'id', \
+      'title', 'overview', 'release_date' and 'inventory'",
+      function(done) {
+
+      var movie_keys = [
+        'id',
+        'title',
+        'overview',
+        'release_date',
+        'inventory'
+      ];
+
+      agent.get('/movies/all/1').set('Accept', 'application/json')
+      .expect(200, function(error, result) {
+        assert.deepEqual(Object.keys(result.body[0]), movie_keys);
+      })
+      done();
+
+    })
   }) // GET /movies
 
 
