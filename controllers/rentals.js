@@ -115,51 +115,19 @@ exports.rentalsController = {
   // POST /rentals/check_out(cust id, movie title) (math for checkout cost)
   // creating a new rental with no returned date
   create: function(req, res) {
-    console.log(req["req"]["body"]);
-
-    // return res.status(200).json(req["req"]["body"]);
-    // return res.redirect('index', { title: 'Express' });
-
     var data = req["req"]["body"]
-
     var db = new Customer();
+
     db.create(data, function(err, result) {
-
       console.log("DONE");
+      // return res.status(200).json(req["req"]["body"]);
+      // return res.redirect('index', { title: 'Express' });
     });
+  },
 
-    // if (req.method == 'POST') {
-    //   var body = req.body;
-      // req.on('data', function (data) {
-      //   body += data;
-      //
-      //   // Too much POST data, kill the connection!
-      //   if (body.length > 1e6)
-      //       request.connection.destroy();
-      // });
-      // req.on('end', function () {
-      //   var post = qs.parse(body);
-      //
-      //   // use post['blah'], etc.
-      // });
-    // }
+  //PATCH /rentals/check_in(cust id, movie title)
+  // adding returned date
+  update: function(req, res) {
+
   }
-
-/*
-  restapi.post('/data', function(req, res){
-    db.run("UPDATE counts SET value = value + 1 WHERE key = ?", "counter", function(err, row){
-        if (err){
-            console.err(err);
-            res.status(500);
-        }
-        else {
-            res.status(202);
-        }
-        res.end();
-    });
-});
-
-  PATCH /rentals/check_in(cust id, movie title)
-// adding returned date
-  */
 };
