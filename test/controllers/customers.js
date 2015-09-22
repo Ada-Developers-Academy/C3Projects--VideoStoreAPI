@@ -150,7 +150,7 @@ describe("customers controller", function() {
 
   describe("GET /customers/:id/current_rentals", function() {
     it("knows about the route", function(done) {
-      agent.get("/customers/2/current_rentals").set('Accept', 'application/json')
+      agent.get("/customers/1/current_rentals").set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result) {
           assert.equal(error, undefined);
@@ -164,6 +164,29 @@ describe("customers controller", function() {
       .expect(200, function(error, result) {
         assert.equal(result.body.length, 1);
         assert.equal(result.body[0].movie_title, "Alien");
+
+        assert.deepEqual(Object.keys(result.body[0]), rental_keys);
+        done();
+      });
+    });
+  });
+
+  describe("GET /customers/:id/past_rentals", function() {
+    it("knows about the route", function(done) {
+      agent.get("/customers/1/past_rentals").set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result) {
+          assert.equal(error, undefined);
+          done();
+        });
+    });
+
+    it("retuns an array of the customer with current rentals", function(done) {
+      agent.get("/customers/1/past_rentals").set('Accept', 'application/json')
+      .expect('Content-Type', /application\/json/)
+      .expect(200, function(error, result) {
+        assert.equal(result.body.length, 1);
+        assert.equal(result.body[0].movie_title, "Jaws");
 
         assert.deepEqual(Object.keys(result.body[0]), rental_keys);
         done();
