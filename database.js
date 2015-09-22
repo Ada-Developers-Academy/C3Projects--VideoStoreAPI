@@ -36,16 +36,16 @@ var Database = {
     });
   },
 
-  movie_info: function(title, callback) {
-    var db = new sqlite3.Database('db/' + db_env + '.db');
-    // information about specified movie
-    var statement = "SELECT 'movies'.* FROM movies where movies.title = ? COLLATE NOCASE LIMIT 1; ";
-
-    db.all(statement, title, function(err, rows) {
-      callback(err, rows);
-      db.close();
-    });
-  },
+  // movie_info: function(title, callback) {
+  //   var db = new sqlite3.Database('db/' + db_env + '.db');
+  //   // information about specified movie
+  //   var statement = "SELECT 'movies'.* FROM movies where movies.title = ? COLLATE NOCASE LIMIT 1; ";
+  //
+  //   db.all(statement, title, function(err, rows) {
+  //     callback(err, rows);
+  //     db.close();
+  //   });
+  // },
 
   customers_by_movie_history: function(title, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
