@@ -58,6 +58,17 @@ var Database = {
       db.close();
     });
   },
+
+  customers_overdue: function(callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    // all customers who currently have the movie checked out
+    var statement = "SELECT 'customers'.* FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id WHERE date(rentals.return_date) < date('now') AND rentals.checked_out = 'true'; ";
+
+    db.all(statement, function(err, rows) {
+      callback(err, rows);
+      db.close();
+    });
+  },
 };
 
 
