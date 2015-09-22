@@ -6,8 +6,8 @@ var sqlite3 = require('sqlite3').verbose(),
 
 var movies = require('./movies');
 var movie_statement = db.prepare(
-  "INSERT INTO movies(title, overview, inventory, release_date) \
-  VALUES (?, ?, ?, ?);"
+  "INSERT INTO movies(title, overview, release_date, total_inventory, inventory_available) \
+  VALUES (?, ?, ?, ?, ?);"
 );
 
 db.serialize(function() {
@@ -17,8 +17,9 @@ db.serialize(function() {
     movie_statement.run(
       movie.title,
       movie.overview,
+      movie.release_date,
       movie.inventory,
-      movie.release_date
+      movie.inventory
     );
   }
 

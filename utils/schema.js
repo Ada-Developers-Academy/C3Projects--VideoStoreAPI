@@ -8,7 +8,8 @@ var movie_fields = [
   ['title', 'text'],
   ['overview', 'text'],
   ['release_date', 'text'],
-  ['inventory', 'integer']
+  ['total_inventory', 'integer'],
+  ['inventory_available', 'integer']
 ];
 
 db.serialize(function() {
