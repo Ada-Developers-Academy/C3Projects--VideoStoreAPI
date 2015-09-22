@@ -123,7 +123,8 @@ var rentalsController = {
     var select_last_rental_statement = 
       "SELECT rentals.id, rentals.title, rentals.customer_id, rentals.name, rentals.checkout_date, rentals.due_date, rentals.return_date \
       FROM rentals \
-      WHERE movie_id = " + movie_id + " AND customer_id = " + customer_id + ";";
+      WHERE movie_id = " + movie_id + " AND customer_id = " + customer_id + " \
+      ORDER BY return_date DESC;";
 
     var db = new Database('db/development.db');
 
