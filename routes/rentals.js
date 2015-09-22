@@ -28,19 +28,13 @@ router.get('/current_renters/:title', function(req, res, next) {
 });
 
 // POST rentals/check_in?id=XXX&title=XXX
-router.post('/check_in', function(req, res, next) {
+router.patch('/check_in', function(req, res, next) {
   rental_exports.rentalsController.checkIn(req.query.id, req.query.title, res);
 });
 
 // POST rentals/check_out?id=XXX&title=XXX
 router.post('/check_out', function(req, res, next) {
-  rental_exports.rentalsController.checkOut(req.query.id, req.query.title, res);
-});
-
-// POST /rentals
-// check_out & check_in
-router.post('/', function(req, res, next) {
-  rental_exports.rentalsController.create(req, res);
+  rental_exports.rentalsController.checkOut(req, res);
 });
 
 module.exports = router;
