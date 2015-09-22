@@ -35,4 +35,15 @@ router.post("/:customer_id/checkout/:movie_id", function(req, res, next) {
   })
 })
 
+// "PUT ./rentals/{:customer_id}/return/{:movie_id}"
+router.put("/:customer_id/return/:movie_id", function(req, res, next) {
+  rentalsController.return_movie(req, function(err, result) {
+     if (err) {
+      res.status(500).json(err);
+    } else {
+      res.status(200).json(result);
+    }   
+  })
+})
+
 module.exports = router;

@@ -99,8 +99,6 @@ var rentalsController = {
         UPDATE customers SET account_credit = account_credit - 3 WHERE ID = " + customer_id + ";";
 
       db.multi_query(post_rental_statement, function(err) { // no result, bc it's calling .exec (db.js file)
-        console.log("statment:", post_rental_statement);
-        console.log("error: ", err);
 
         db.query(select_last_rental_statement, function(err, result) {
 
@@ -112,8 +110,36 @@ var rentalsController = {
         })
       });
     })
+  }, // end of checkout_movie
 
-  } // end of checkout_movie
+  return_movie: function(req, callback) {
+    var customer_id = parseInt(req.params.customer_id);
+    var movie_id = parseInt(req.params.movie_id);
+
+    var return_movie_statement = 
+      "UPDATE rentals SET return_date = date('now') WHERE movie_id = " + movie_id + " AND return_date IS NULL; \
+      UPDATE movies SET inventory_avail = inventory_avail + 1 WHERE id = " + movie_id + ";";
+
+    var select_last_rental_statement = 
+      "SELECT rentals.id, rentals.title, rentals.customer_id, rentals.name, rentals.checkout_date, rentals.due_date, rentals.return_date \
+      FROM rentals \
+      WHERE movie_id = " + movie_id + " AND customer_id = " + customer_id + ";";
+
+    var db = new Database('db/development.db');
+
+
+    db.multi_query(return_movie_statement, function(err) {
+      db.query(select_last_rental_statement, function(err, result) {
+      console.log("error: ", err);
+
+        var json_result = {
+          rental: result
+        };
+        
+        callback(err, json_result);
+      })
+    })   
+  } // end of return_movie
 };
 
 module.exports = rentalsController;
