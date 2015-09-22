@@ -127,7 +127,7 @@ describe('Movie', function() {
 
   describe('#sortBy', function() {
     it('returns all movies sorted by title', function(done) {
-      movie.sortBy('title', 'all', function(err, rows) {
+      movie.sortBy('title', null, null, function(err, rows) {
         assert.equal(err, undefined);
         assert.equal(rows.length, numSeeded);
         assert.equal(rows[0].title, 'Jaws');
@@ -136,7 +136,7 @@ describe('Movie', function() {
     });
 
     it('returns all movies sorted by release_date', function(done){
-      movie.sortBy('release_date', 'all', function(err, rows) {
+      movie.sortBy('release_date', null, null, function(err, rows) {
         assert.equal(err, undefined);
         assert.equal(rows.length, numSeeded);
         assert.equal(rows[0].release_date, '1975-06-19');
@@ -145,7 +145,7 @@ describe('Movie', function() {
     });
 
     it('returns 1 movies sorted by title', function(done) {
-      movie.sortBy('title', 1, function(err, rows) {
+      movie.sortBy('title', 1, null, function(err, rows) {
         assert.equal(err, undefined);
         assert.equal(rows.length, 1);
         assert.equal(rows[0].title, 'Jaws');
