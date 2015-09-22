@@ -173,6 +173,7 @@ describe('Movie', function() {
         assert.equal(err, undefined);
         assert.equal(rows.length, 1);
         assert.equal(rows[0].id, 3);
+        assert.equal(rows[0].checkout_date, '2015-09-18');
         done();
       });
     });
