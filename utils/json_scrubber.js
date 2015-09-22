@@ -10,20 +10,17 @@ var json_array = [];
     var formatted_date = date.toISOString();
 
     customer.registered_at = formatted_date.split("T")[0];
-    console.log("customer.registered_at " + customer.registered_at);
+    // console.log("customer.registered_at " + customer.registered_at);
 
     // customer.registered_at
     json_array.push(JSON.stringify(customer));
   }
   console.log("json_array " + json_array[0]);
 
-    // JSON.parse(json_array);
-    // console.log("parsed json_array " + JSON.parse(json_array));
-
     // var parsed_json_array = JSON.parse(json_array);
-    // console.log("parsed json array " + parsed_json_array)
+    // console.log("parsed json_array" + JSON.parse(json_array[0]));
 
-    fs.writeFile('formatted_customers.json', JSON.parse(json_array), function(err) {
+    fs.writeFile('formatted_customers.json', json_array, function(err) {
       if (err) {
         console.log(err);
         return;
