@@ -121,13 +121,14 @@ module.exports = {
     var page = request.params.page || 1;
     var offset = (page - 1) * movies.limit;
 
-    var statement =
-      "SELECT * FROM rentals \
-      WHERE movie_title = '" + title +
-      "'AND returned = 1 \
-      ORDER BY customer_id \
-      LIMIT " + movies.limit + " \
-      OFFSET " + offset;
+      var statement =
+        "SELECT customers.name, rentals.check_out_date, \
+        rentals.movie_title \
+        FROM rentals LEFT JOIN customers \
+        ON rentals.customer_id = customers.id \
+        WHERE rentals.movie_title = '" + title + "' \
+        AND rentals.returned = 0 \
+        ORDER BY customers.id";
 
     db.all(statement, function(err, result) {
       if(err) {
@@ -146,7 +147,6 @@ module.exports = {
     var title = request.params.title;
     var query = request.params.query;
     var page = request.params.page || 1;
-    console.log("INSIDE CUSTOMER_NAME");
     var offset = (page - 1) * movies.limit;
 
     var statement =
@@ -154,11 +154,9 @@ module.exports = {
       rentals.movie_title \
       FROM rentals LEFT JOIN customers \
       ON rentals.customer_id = customers.id \
-      WHERE rentals.movie_title = 'Alien' \
-      AND rentals.returned = 0";
-
-      console.log("STATEMENT: " + statement);
-
+      WHERE rentals.movie_title = '" + title + "' \
+      AND rentals.returned = 0 \
+      ORDER BY customers.name";
 
     db.all(statement, function(err, result) {
       if(err) {
@@ -175,18 +173,17 @@ module.exports = {
     var movies = new movieTable();
     var title = request.params.title;
     var query = request.params.query;
-    var page = request.params.page;
+    var page = request.params.page || 1;
     var offset = (page - 1) * movies.limit;
 
     var statement =
-      "SELECT * FROM rentals \
-      WHERE movie_title = '" + title + "' \
-      AND returned = 1 \
-      ORDER BY check_out_date \
-      LIMIT " + movies.limit + " \
-      OFFSET " + offset + ");";
-      console.log(statement);
-
+      "SELECT customers.name, rentals.check_out_date, \
+      rentals.movie_title \
+      FROM rentals LEFT JOIN customers \
+      ON rentals.customer_id = customers.id \
+      WHERE rentals.movie_title = '" + title + "' \
+      AND rentals.returned = 0 \
+      ORDER BY check_out_date";
 
     db.all(statement, function(err, result) {
       if(err) {
