@@ -16,7 +16,10 @@ var validateParams = require(helps + "validate_params");
 var ourWebsite = require(helps + "url_base");
 var formatMovieInfo = require(rents + "format_movie_info");
 var formatCustomerInfo = require(rents + "format_customer_info");
+var addMovieMetadata = require(rents + "add_movie_to_customer_metadata");
+console.log("add movie: " + addMovieMetadata);
 var isMovieAvailable = require(rents + "is_movie_available");
+var hoursInMilliseconds = require(rents + "convert_hours_to_milliseconds");
 
 // ------------ begin controller object ------------ //
 var rentals = {};
@@ -88,11 +91,51 @@ rentals.movieInfo = function(request, response, next) {
 
 rentals.overdue = function(request, response, next) {
   // var db = new sqlite3.Database("db/" + dbEnv + ".db");
-  var page = request.params.page;
+  var page = Number(request.params.page) || 1;
+  var status = 200; // ok
 
-  var statement = "";
-  var result = { overdueTitles: noDb, currentPage: page };
-  return response.status(200).json(result);
+  var customerFields = ["id", "name", "city", "state", "postal_code"];
+  var statement = "SELECT customers." + customerFields.join(", customers.") + ", "
+                + "rentals.check_out_date, rentals.movie_title "
+                + "FROM rentals "
+                + "LEFT JOIN customers "
+                + "ON customers.id = rentals.customer_id "
+                + "WHERE rentals.returned = 0 " // we only want customers that haven't returned a copy.
+                + "AND rentals.check_out_date + " + hoursInMilliseconds(72) + " < " + Date.now() + ";";
+
+  // query database
+  var db = new sqlite3.Database("db/" + dbEnv + ".db"); // grab the database
+  db.all(statement, function(error, data) { // query the database
+    var results = { meta: {} };
+
+    if (error) { // log error if error
+      console.log("i'm here")
+      status = 500; // internal server error
+      results.data = error;
+    } else if (data.length == 0) { // handling for no results
+      status = 303; // see other
+      results.data = {
+        status: status,
+        message: "No results found. You must query this endpoint with an exact title. "
+               + "If you are using an exact title, no customers have a copy checked out."
+      };
+    } else {
+      data = fixTime(data, "check_out_date"); // fixing time
+      results.data = { customers: formatCustomerInfo(data) };
+      results = addMovieMetadata(results);
+    };
+
+    results.meta.yourQuery = ourWebsite + "/rentals/overdue";
+
+    if (page >= 1)
+      results.meta.nextPage = results.meta.yourQuery + "/" + (page + 1);
+    if (page >= 2)
+      results.meta.prevPage = results.meta.yourQuery + "/" + (page - 1);
+    if (page != 1)
+      results.meta.yourQuery += "/" + page;
+
+    return response.status(status).json(results);
+  })
 }
 
 
@@ -106,17 +149,17 @@ rentals.customers = function(request, response, next) {
   var customerFields = ["id", "name", "city", "state", "postal_code"];
 
   var statement = "SELECT customers." + customerFields.join(", customers.") + ", rentals.check_out_date "
-                  + "FROM rentals "
-                  + "LEFT JOIN customers "
-                  + "ON customers.id = rentals.customer_id "
-                  + "WHERE rentals.movie_title = '" + title + "' "
-                  + "AND rentals.returned = 0;"; // we only want customers that haven't returned a copy.
+                + "FROM rentals "
+                + "LEFT JOIN customers "
+                + "ON customers.id = rentals.customer_id "
+                + "WHERE rentals.movie_title = '" + title + "' "
+                + "AND rentals.returned = 0;"; // we only want customers that haven't returned a copy.
 
   // query database
   var db = new sqlite3.Database("db/" + dbEnv + ".db"); // grab the database
   db.all(statement, function(error, data) { // query the database
     var results = { meta: {} };
-    console.log(statement);
+
     if (error) { // log error if error
       status = 500; // internal server error
       results.data = error;
@@ -125,7 +168,7 @@ rentals.customers = function(request, response, next) {
       results.data = {
         status: status,
         message: "No results found. You must query this endpoint with an exact title. "
-                 + "If you are using an exact title, no customers have a copy checked out."
+               + "If you are using an exact title, no customers have a copy checked out."
       };
     } else {
       data = fixTime(data, "check_out_date"); // fixing time
