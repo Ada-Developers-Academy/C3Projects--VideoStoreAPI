@@ -8,6 +8,7 @@ var request = require('supertest'),
 describe.only("movies controller", function() {
   var movie, db_cleaner;
   var movie_keys = ['id', 'title', 'overview', 'release_date', 'inventory', 'inventory_available'];
+  var customer_keys = ['id', 'name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone', 'account_credit'];
   beforeEach(function(done) {
     movie = new Movie();
 
@@ -16,6 +17,9 @@ describe.only("movies controller", function() {
       db_cleaner.exec(
         "BEGIN; \
         DELETE FROM movies; DELETE FROM customers; DELETE FROM rentals; \
+        INSERT INTO rentals(check_out, check_in, due_date, overdue, movie_title, customer_id) \
+        VALUES('2015-06-16', '2015-06-17', '2015-06-19', 0, 'Jaws', 1), \
+              ('2015-06-16', null, '2015-06-19', 1, 'Alien', 1); \
         INSERT INTO movies(title, overview, release_date, inventory, inventory_available) \
         VALUES('Jaws', 'omg sharks!',   '1975-06-19', 6, 6), \
               ('Alien', 'omg aliens!', 1979-05-25, 4, 4); \
@@ -112,6 +116,27 @@ describe.only("movies controller", function() {
           done();
         });
     })
+  });
+
+  describe("GET '/movies/Alien/current_customers'", function() {
+    it("knows about the route", function(done) {
+      agent.get('/movies/Jaws/current_customers').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result) {
+          assert.equal(error, undefined);
+          done();
+        });
+    });
+
+    it("returns an array of customers who currently have the movie checked out", function(done) {
+      agent.get('/movies/Alien/current_customers').set("Accept", "application/json")
+        .expect(200, function(error, result) {
+          assert.equal(result.body.length, 1);
+          customer_keys;
+          assert.deepEqual(Object.keys(result.body[0]), customer_keys);
+          done();
+        });
+    });
   });
 
 }); // top level describe
