@@ -1,6 +1,7 @@
 "use strict";
 
 var sqlite3 = require('sqlite3').verbose(),
+   Customer = require('../models/customer'),
     db_env  = process.env.DB || 'development',
     db;
 
@@ -11,10 +12,9 @@ function addPercents(variable) {
 
 exports.customersController = {
   customers: function(req, res) {
-    db = new sqlite3.Database('db/' + db_env + '.db');
-    db.all("SELECT * FROM customers", function(err, all_customers) {
-      db.close();
-      return res.status(200).json(all_customers);
+    var customer = new Customer();
+    customer.all(function(error, result) {
+      return res.status(200).json(result);
     });
   },
 

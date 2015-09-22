@@ -14,18 +14,19 @@ exports.moviesController = {
   movies: function(req, res) {
     var movie = new Movie();
     movie.all(function(error, result) {
-
-    return res.status(200).json(result);
+      return res.status(200).json(result);
     });
   },
 
   movies_by_title: function(req, res) {
-    db = new sqlite3.Database('db/' + db_env + '.db');
-    var title = req.params.title.toLowerCase();
+    // db = new sqlite3.Database('db/' + db_env + '.db');
+    // db.all("SELECT * FROM movies WHERE title LIKE ?;", title, function(err, the_title) {
+    //   db.close();
+    var title = req.params.title.toLowerCase(),
+        movie = new Movie();
         title = addPercents(title);
-    db.all("SELECT * FROM movies WHERE title LIKE ?;", title, function(err, the_title) {
-      db.close();
-      return res.status(200).json(the_title);
+    movie.find_by("title", title, function(error, result) {
+      return res.status(200).json(result);
     });
   },
 
