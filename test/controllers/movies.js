@@ -5,7 +5,7 @@ var request = require('supertest'),
     agent = request.agent(app),
     Movie = require('../../movies');
 
-describe.only("movies controller", function() {
+describe("movies controller", function() {
   var movie, db_cleaner;
   var movie_keys = ['id', 'title', 'overview', 'release_date', 'inventory', 'inventory_available'];
   var customer_keys = ['id', 'name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone', 'account_credit'];
