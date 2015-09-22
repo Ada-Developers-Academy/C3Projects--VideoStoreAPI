@@ -12,6 +12,30 @@ router.get('/:title', function(req, res, next) {
   return movieController.by_title(req, res);
 });
 
+router.get('/:title/renting', function(req, res, next) {
+  return movieController.whos_renting(req, res);
+});
+
+router.get('/:title/rented/:sort=:query/:page', function(req, res, next) {
+  var sort = req.params.sort;
+
+  switch (sort) {
+    case "customer_id":
+      console.log("sort: " + sort);
+      return movieController.customer_id(req, res);
+      break;
+    case "customer_name":
+      return movieController.customer_name(req, res);
+      break;
+    case "check_out_date":
+      return movieController.check_out_date(req, res);
+      break;
+    default: // all
+      return movieController.all_movies(req, res);
+      break;
+    }
+});
+
 router.get('/all/:page', function(req, res, next) {
   return movieController.all_movies(req, res);
 });

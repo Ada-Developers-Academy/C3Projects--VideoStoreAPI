@@ -103,6 +103,66 @@ module.exports = {
     });
     // should be not all
     db.close();
-  }
+  },
+
+  customer_id: function(request, response) {
+    var db = new sqlite3.Database("db/" + dbEnv + ".db");
+    var movies = new movieTable();
+    var title = request.params.title;
+    var query = request.params.query;
+    var page = request.params.page;
+
+    // var statement = "SELECT * FROM movies WHERE (title: " + queried_title + ");";
+
+    db.all(statement, function(err, result) {
+      if(err) {
+        console.log(err); // error handling
+        return;
+      };
+      return response.status(200).json(result);
+
+    });
+    db.close();
+  },
+
+  customer_name: function(request, response) {
+    var db = new sqlite3.Database("db/" + dbEnv + ".db");
+    var movies = new movieTable();
+    var title = request.params.title;
+    var query = request.params.query;
+    var page = request.params.page;
+
+    // var statement = "SELECT * FROM movies WHERE (title: " + queried_title + ");";
+
+    db.all(statement, function(err, result) {
+      if(err) {
+        console.log(err); // error handling
+        return;
+      };
+      return response.status(200).json(result);
+
+    });
+    db.close();
+  },
+
+  check_out_date: function(request, response) {
+    var db = new sqlite3.Database("db/" + dbEnv + ".db");
+    var movies = new movieTable();
+    var title = request.params.title;
+    var query = request.params.query;
+    var page = request.params.page;
+
+    // var statement = "SELECT * FROM movies WHERE (title: " + queried_title + ");";
+
+    db.all(statement, function(err, result) {
+      if(err) {
+        console.log(err); // error handling
+        return;
+      };
+      return response.status(200).json(result);
+
+    });
+    db.close();
+  },
 
 }
