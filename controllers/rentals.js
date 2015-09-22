@@ -7,12 +7,12 @@ var Customer = require('../models/customers');
 var Rental = require('../models/rentals');
 
 // Convert a JavaScript Date to a string in yyyymmdd format
-function yyyymmdd(date) {
-  var yyyy = date.getFullYear().toString();
-  var mm = (date.getMonth()+1).toString(); // getMonth() is zero-based
-  var dd = date.getDate().toString();
-  return yyyy + '-' + (mm[1]?mm:"0"+mm[0]) + '-' + (dd[1]?dd:"0"+dd[0]);
-}
+// function yyyymmdd(date) {
+//   var yyyy = date.getFullYear().toString();
+//   var mm = (date.getMonth()+1).toString(); // getMonth() is zero-based
+//   var dd = date.getDate().toString();
+//   return yyyy + '-' + (mm[1]?mm:"0"+mm[0]) + '-' + (dd[1]?dd:"0"+dd[0]);
+// }
 
 exports.rentalsController = {
   // GET /rentals
@@ -91,26 +91,28 @@ exports.rentalsController = {
   },
 
   // POST rentals/check_out?id=XXX&title=XXX
-  checkOut:function(id, title, res) {
-    var checkoutLengthDays = 4;
-    var now = new Date();
-    var due = new Date(now);
-    due.setDate(now.getDate()+checkoutLengthDays);
-
-    db.run("INSERT INTO rentals (check_out_date, expected_return_date, customer_id, movie_id) VALUES (?,?,?,(SELECT id FROM movies where title LIKE ?))", yyyymmdd(now), yyyymmdd(due), id, title, function(err, rows) {
-      if (err !== null) {
-        console.log(err);
-      }
-    });
-
-    db.run("UPDATE customers SET account_credit=(account_credit-5) WHERE id=?", id, function(err, rows) {
-        if (err !== null) {
-          console.log(err);
-        }
-    });
-
-    res.status(200).json([]);
-  },
+  // checkOut:function(id, title, res) {
+  //   var checkoutLengthDays = 4;
+  //   var now = new Date();
+  //   var due = new Date(now);
+  //   var rental_cost = 5
+  //   var late_fee = 3
+  //   due.setDate(now.getDate()+checkoutLengthDays);
+  //
+  //   db.run("INSERT INTO rentals (check_out_date, expected_return_date, customer_id, movie_id) VALUES (?,?,?,(SELECT id FROM movies where title LIKE ?))", yyyymmdd(now), yyyymmdd(due), id, title, function(err, rows) {
+  //     if (err !== null) {
+  //       console.log(err);
+  //     }
+  //   });
+  //
+  //   db.run("UPDATE customers SET account_credit=(account_credit-rental_cost) WHERE id=?", id, function(err, rows) {
+  //       if (err !== null) {
+  //         console.log(err);
+  //       }
+  //   });
+  //
+  //   res.status(200).json([]);
+  // },
 
   // POST /rentals/check_out(cust id, movie title) (math for checkout cost)
   // creating a new rental with no returned date
@@ -118,7 +120,8 @@ exports.rentalsController = {
     var data = req["req"]["body"]
     var db = new Customer();
 
-    db.create(data, function(err, result) {
+    db.check_out(data, function(err, result) {
+      // res.status(200).json();
       console.log("DONE");
       // return res.status(200).json(req["req"]["body"]);
       // return res.redirect('index', { title: 'Express' });
