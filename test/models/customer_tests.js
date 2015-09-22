@@ -16,6 +16,10 @@ describe("Customer", function() {
     assert.equal(typeof customer.find_all, "function");
   })
 
+  it("has a 'sort_by' property that is a function", function() {
+    assert.equal(typeof customer.sort_by, "function");
+  });
+
   describe("customer queries", function(){
     beforeEach(function(done){
       customer = new Customer();
@@ -38,9 +42,26 @@ describe("Customer", function() {
       })
     })
 
+    it("finds 'Shelly Rocha' name in the customers table", function(done) {
+      customer.find_by('name', "Shelley Rocha", function(err, result){
+        assert.equal(result[0].name, 'Shelley Rocha');
+        done();
+      });
+    })
+
     it("displays all records from customers table", function(done) {
       customer.find_all(function(err, result) {
         console.log(result);
+        assert.equal(result.length, 2);
+        done();
+      });
+    })
+
+    it("displays all records from 'customers' table, sorted by name with limit 2, offset 0", function(done) {
+      customer.sort_by("name", 2, 0, function(err, result) {
+        console.log(result);
+        assert.equal(result[0].name, 'Another Shelley Rocha');
+        assert.equal(result[1].name, 'Shelley Rocha');
         assert.equal(result.length, 2);
         done();
       });
