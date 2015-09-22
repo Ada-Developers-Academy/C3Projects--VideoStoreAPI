@@ -200,4 +200,29 @@ module.exports = {
     db.close();
   },
 
+  whos_renting: function(request, response) {
+    var db = new sqlite3.Database("db/" + dbEnv + ".db");
+    var movies = new movieTable();
+    var title = request.params.title;
+    var page = request.params.page || 1;
+    var offset = (page - 1) * movies.limit;
+
+    var statement =
+      "SELECT * FROM rentals \
+      WHERE movie_title = '" + title + "' \
+      AND returned = 0 \
+      LIMIT " + movies.limit + " \
+      OFFSET " + offset;
+
+    db.all(statement, function(err, result) {
+      if(err) {
+        console.log(err); // error handling
+        return;
+      };
+      return response.status(200).json(result);
+
+    });
+    db.close();
+  }
+
 }

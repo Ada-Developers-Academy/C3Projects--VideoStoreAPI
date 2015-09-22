@@ -4,10 +4,6 @@ var express = require('express');
 var router = express.Router();
 var movieController = require("../controllers/movieController");
 
-router.get('/test', function(req, res, next) {
-  return movieController.test(req, res);
-});
-
 router.get('/:title', function(req, res, next) {
   return movieController.by_title(req, res);
 });
