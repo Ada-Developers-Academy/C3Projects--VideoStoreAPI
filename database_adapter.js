@@ -26,21 +26,34 @@ module.exports = {
   },
 
   // returns array of records
-  where: function(columns, values, callback) {
+  where: function(desiredColumns, queriedColumns, values, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
     var where_statements = [];
 
     // where_statements => ["city = ?", "state = ?"]
-    for (var i = 0; i < columns.length; i++) {
-      where_statements.push(columns[i] + " = ?");
+    for (var i = 0; i < queriedColumns.length; i++) {
+      where_statements.push(queriedColumns[i] + " = ?");
     }
     // where_statement => "city = ? AND state = ?"
     var where_statement = where_statements.join(" AND ");
 
-    var statement = "SELECT * FROM " + this.table_name + " WHERE " + where_statement;
+    var statement = "SELECT " + desiredColumns + " FROM " + this.table_name + " WHERE " + where_statement;
 
     db.all(statement, values, function(err, res) {
       if (callback) { callback(err, res); }
+      db.close();
+    });
+  },
+
+  where_in: function(column, valueList, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    console.log("value list: ", valueList);
+    var questionMarks = Array(valueList.length + 1).join('?').split('').join(', ');
+
+    var statement = "SELECT * FROM " + this.table_name + " WHERE " + column + " IN (" + questionMarks + ");";
+    console.log(statement, valueList);
+    db.all(statement, valueList, function(error, result) {
+      if (callback) { callback(error, result); }
       db.close();
     });
   },
