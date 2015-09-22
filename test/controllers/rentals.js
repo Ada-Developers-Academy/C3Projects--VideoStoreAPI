@@ -20,7 +20,7 @@ describe("rentals controller", function() {
         VALUES('2015-06-16', '2015-06-17', '2015-06-19', 0, 'Jaws', 1), \
               ('2015-06-16', '2015-06-17', '2015-06-19', 1, 'Alien', 1); \
         INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_credit) \
-        VALUES('Harry', '2015-06-16', '1234', 'Seattle', 'WA', '98103', '1234567', 123);\
+        VALUES('Harry', 20150616, '1234', 'Seattle', 'WA', '98103', '1234567', 123); \
         COMMIT;"
         , function(err) {
           db_cleaner.close();

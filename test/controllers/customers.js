@@ -3,7 +3,8 @@ var request = require('supertest'),
     app = require('../../app'),
     sqlite3 = require('sqlite3').verbose(),
     agent = request.agent(app),
-    Customer = require('../../customers');
+    Customer = require('../../customers'),
+    keys = ['id', 'name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone', 'account_credit'];
 
 describe("customers controller", function() {
   var customer, db_cleaner;
@@ -20,8 +21,8 @@ describe("customers controller", function() {
         VALUES('2015-06-16', '2015-06-17', '2015-06-19', 0, 'Jaws', 1), \
               ('2015-06-16', '2015-06-17', '2015-06-19', 1, 'Alien', 1); \
         INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_credit) \
-        VALUES('Harry', '2015-06-16', '1234', 'Seattle', 'WA', '98103', '1234567', 123), \
-              ('Ron', '2014-06-14', '1234', 'Pasadena', 'CA', '90222', '1234432', 321);\
+        VALUES('Harry', 20150616, '1234', 'Seattle', 'WA', '98103', '1234567', 123), \
+              ('Hermione', 20150501, '5678', 'London', 'UK', '99999', '1234568', 213); \
         COMMIT;"
         , function(err) {
           db_cleaner.close();
@@ -47,8 +48,37 @@ describe("customers controller", function() {
         .expect(200, function(error, result) {
           assert.equal(result.body.length, 2);
 
-          var keys = ['id', 'name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone', 'account_credit'];
           assert.deepEqual(Object.keys(result.body[0]), keys);
+          done();
+        });
+    });
+  });
+
+  describe("GET '/customers/registered_at_sort/:records_per_page/:offset'", function() {
+    it("knows about the route", function(done) {
+      agent.get('/customers/registered_at_sort/1/2').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result) {
+          assert.equal(error, undefined);
+          done();
+        });
+    });
+
+    it("returns an array of n customer objects offset by p", function(done) {
+      agent.get('/customers/registered_at_sort/1/0').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result) {
+          assert.equal(result.body.length, 1);
+
+          assert.deepEqual(Object.keys(result.body[0]), keys);
+          done();
+        });
+    });
+
+    it("the returned array is sorted by registered_at field", function(done) {
+      agent.get('/customers/registered_at_sort/1/0')
+        .expect(200, function(error, result) {
+          assert.equal(result.body[0].name, "Hermione");
           done();
         });
     });
