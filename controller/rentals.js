@@ -18,5 +18,20 @@ exports.rentalsController = {
         res.status(200).json(rows);
       });
     });
+  },
+
+  // '/rentals/:title/past/:sort_option'
+  past_rentals: function(req, res) {
+    var statement = "SELECT * FROM movies WHERE title LIKE '%" + req.params.title + "%';";
+
+    db.all(statement, function(err, rows) {
+      var movieId = rows[0].id;
+
+      var secondStatement = "SELECT * FROM rentals WHERE movie_id = " + movieId + " AND return_date != '' ORDER BY " + req.params.sort_option + ";";
+
+      db.all(secondStatement, function(err, rows) {
+        res.status(200).json(rows);
+      });
+    });
   }
 }
