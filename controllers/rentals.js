@@ -74,47 +74,39 @@ var rentalsController = {
   },
 
   checkout_movie: function(req, callback) {
-    // creating a new rental record
-    // reducing inventory available for that movie -1
-    // reducing customer's account credit by $3
-
-    // var statement = 
-    //   "INSERT INTO rentals (customer_id, name, movie_id, title, checkout_date, due_date, return_date) \
-    //   VALUES (" + req.params.customer_id + ", " + CUSTOMER_NAME + ", " + req.params.movie_id 
-    //   + ", " + MOVIE_TITLE + ", date('now'), date('now', '+7 days', NULL); \
-
-    //   UPDATE movies SET inventory_avail = inventory_avail - 1 WHERE ID = " + req.params.movie_id + "; \
-    //   UPDATE customers SET account_credit = account_credit - 3 WHERE ID = " + req.params.customer_id + ";"; 
-
     var customer_id = parseInt(req.params.customer_id);
     var movie_id = parseInt(req.params.movie_id);
 
-    var statement = 
+    var post_rental_statement = 
       "INSERT INTO rentals (customer_id, name, movie_id, title, checkout_date, due_date, return_date) \
-      VALUES (" + customer_id + ", 'test customer name', " + movie_id + ", 'test movie name', date('now'), date('now', '+7 days'), NULL);";
-      // UPDATE movies SET inventory_avail = inventory_avail - 1 WHERE ID = " + req.params.movie_id + "; \
-      // UPDATE customers SET account_credit = account_credit - 3 WHERE ID = " + req.params.customer_id + "; \
-      // SELECT rentals.id, rentals.title, rentals.customer_id, rentals.name, \
-      //   rentals.checkout_date, rentals.due_date, rentals.return_date \
-      // FROM movies, rentals \
-      // ORDER BY id DESC \
-      // LIMIT 1";
-    
+      VALUES (" + customer_id + ", 'test customer name', " + movie_id + ", 'test movie name', date('now'), date('now', '+7 days'), NULL); \
+      UPDATE movies SET inventory_avail = inventory_avail - 1 WHERE ID = " + movie_id + "; \
+      UPDATE customers SET account_credit = account_credit - 3 WHERE ID = " + customer_id + ";";
+
+    var select_last_rental_statement = 
+      "SELECT rentals.id, rentals.title, rentals.customer_id, rentals.name, rentals.checkout_date, rentals.due_date, rentals.return_date \
+      FROM movies, rentals \
+      ORDER BY rentals.id DESC \
+      LIMIT 1";
+
+// Test sql query
+// INSERT INTO rentals (customer_id, name, movie_id, title, checkout_date, due_date, return_date) VALUES (2, 'test customer name', 12, 'test movie name', date('now'), date('now', '+7 days'), NULL); UPDATE movies SET inventory_avail = inventory_avail - 1 WHERE ID = 12; UPDATE customers SET account_credit = account_credit - 3 WHERE ID = 2; SELECT rentals.id, rentals.title, rentals.customer_id, rentals.name, rentals.checkout_date, rentals.due_date, rentals.return_date, movies.inventory_avail FROM movies, rentals ORDER BY rentals.id DESC LIMIT 1;    
 
     var db = new Database('db/development.db');         
-      db.query(statement, function(err, result) {
+    
+    db.multi_query(post_rental_statement, function(err) { // no result, bc it's calling .exec (db.js file)
 
-        console.log(statement);
-        console.log(err);
-
+      db.query(select_last_rental_statement, function(err, result) {
+        
         var json_result = {
           rental: result
         };
-
+        
         callback(err, json_result);
+      })
     });
 
-  }
+  } // end of checkout_movie
 };
 
 module.exports = rentalsController;

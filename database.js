@@ -20,7 +20,21 @@ StoreDatabase.prototype = {
       });
     
     });
+  },
 
+  multi_query: function(statement, callback) {
+    var db = new sqlite3.Database(this.path); // creates a connection to the db
+
+    db.serialize(function() {
+      // statement == some SQL string
+      db.exec(statement, function(err, result) {
+        // '.exec' does not give a result, so we don't need to pass it back into the callback()
+        if (callback) { callback(err); }
+
+        db.close();
+      });
+    
+    });
   }
 };
 
