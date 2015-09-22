@@ -35,14 +35,12 @@ router.get("/all/:sort/:page", function(req, res, next) {
 
 /* GET all customers sorted by registration. */
 router.get("/all/registered", function(req, res, next) {
-  console.log("req.params.page " + req.params.page);
   return zomgController.registered_at(req, res);
 });
 
 
 /* GET all customers. */
-router.get('/all', function(req, res, next) {
-  console.log("/all");
+router.get('/all/:page', function(req, res, next) {
   return zomgController.all_customers(req, res)
 });
 

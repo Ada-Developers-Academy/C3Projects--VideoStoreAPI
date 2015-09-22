@@ -36,7 +36,28 @@
   },
   {
     "movie_title": "Alien",
-    "customer_id": 60,
+    "customer_id": 61,
+    "returned": 0,
+    "check_out_date": "Thu, 17 Sep 2015 14:00:10 -0700",
+    "return_date": ""
+  },
+  {
+    "movie_title": "Alien",
+    "customer_id": 62,
+    "returned": 0,
+    "check_out_date": "Thu, 17 Sep 2015 14:00:10 -0700",
+    "return_date": ""
+  },
+  {
+    "movie_title": "Alien",
+    "customer_id": 64,
+    "returned": 0,
+    "check_out_date": "Thu, 17 Sep 2015 14:00:10 -0700",
+    "return_date": ""
+  },
+  {
+    "movie_title": "Alien",
+    "customer_id": 65,
     "returned": 0,
     "check_out_date": "Thu, 17 Sep 2015 14:00:10 -0700",
     "return_date": ""
