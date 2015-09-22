@@ -39,7 +39,7 @@ exports.moviesController = {
 
   current_customers: function current_customers(req, res) {
     var movie_title = req.params.title;
-
+    console.log("movie title:" + movie_title)
     movie.current_customers(movie_title, function(current_customers) {
       return res.status(200).json(current_customers);
     });

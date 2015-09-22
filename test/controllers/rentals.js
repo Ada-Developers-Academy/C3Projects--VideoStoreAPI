@@ -30,9 +30,10 @@ describe("rentals controller", function() {
     });
   });
 
-  describe("GET '/rentals'", function() {
+  var rentals_path = '/rentals';
+  describe("GET rentals_path", function() {
     it("knows about the route", function(done) {
-      agent.get('/rentals').set('Accept', 'application/json')
+      agent.get(rentals_path).set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result) {
           assert.equal(error, undefined);
@@ -41,7 +42,7 @@ describe("rentals controller", function() {
     });
 
     it("returns an array of rental objects", function(done) {
-      agent.get('/rentals').set("Accept", "application/json")
+      agent.get(rentals_path).set("Accept", "application/json")
         .expect(200, function(error, result) {
           assert.equal(result.body.length, 2);
 
@@ -52,9 +53,10 @@ describe("rentals controller", function() {
     });
   });
 
-  describe("GET '/rentals/overdue'", function() {
+  var rentals_overdue_path = '/rentals/overdue';
+  describe("GET rentals_overdue_path", function() {
     it("knows about the route", function(done) {
-      agent.get('/rentals/overdue').set('Accept', 'application/json')
+      agent.get(rentals_overdue_path).set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result) {
           assert.equal(error, undefined);
@@ -63,7 +65,7 @@ describe("rentals controller", function() {
     });
 
     it("returns an array of overdue rental objects", function(done) {
-      agent.get('/rentals/overdue').set("Accept", "application/json")
+      agent.get(rentals_overdue_path).set("Accept", "application/json")
         .expect(200, function(error, result) {
           assert.equal(result.body.length, 1);
 
