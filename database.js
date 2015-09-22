@@ -99,7 +99,7 @@ module.exports = {
     });
   },
 
-  overdue: function(value, callback) {
+  overdue: function(callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
 
     //var today = new Date().toISOString().slice(0, 10); //gets date in SQL format for comparison
@@ -108,10 +108,11 @@ module.exports = {
     var date_conversion = today.setDate(today.getDate() - 10); //
 
     var overdue_date = new Date(date_conversion).toISOString().slice(0, 10);
+    console.log(overdue_date);
 
-    var statement = "SELECT 'customers'.* FROM 'customers' INNER JOIN 'rentals' ON 'customers'.'id' = 'rentals'.'customer_id' WHERE 'rentals'.'returned_date' = '' AND 'rentals'.'checked_out' < '2015-09-12' ;";
+    var statement = "SELECT 'customers'.* FROM 'customers' INNER JOIN 'rentals' ON 'customers'.'id' = 'rentals'.'customer_id' WHERE 'rentals'.'returned_date' = '' AND 'rentals'.'checked_out' < '" + overdue_date + "';";
 
-    db.all(statement, value, function(err, res) {
+    db.all(statement, function(err, res) {
       if (callback) callback(err, res);
       db.close();
     });

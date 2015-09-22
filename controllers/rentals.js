@@ -21,7 +21,7 @@ exports.rentalsController = {
     })
   },
 
-  overdue_customers: function overdue_customers(req, res, movie_title) {
+  overdue_customers: function overdue_customers(req, res) {
 
     var rental = new Rental();
 
