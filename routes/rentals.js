@@ -15,19 +15,19 @@ router.post('/checkout/:customer_id/:movie_id', function(req, res, next) {
   var count, inventory, enoughInventory;
 
   async.waterfall([
+    // count total # of checked out copies of movie with id, movie_id
     function(callback) {
       rental.where(['movie_id', 'returned'], [movie_id, 'false'], function(err, rows) {
         count = rows.length;
-        // console.log(count, rows, typeof(count));
         callback(null, count);
       })
     },
+    // check if enough inventory of movie is available (true/false)
     function(movieCount, callback) {
       movie.find_by('id', movie_id, function(err, row) {
         // don't need inventory, could call row.inventory on line 29
         inventory = row.inventory;
         enoughInventory = (movieCount < inventory) ? true : false;
-        // console.log(row, inventory, typeof(inventory));
         callback(null, enoughInventory);
       })
     }
@@ -54,16 +54,6 @@ router.post('/checkout/:customer_id/:movie_id', function(req, res, next) {
         });
       }
   });
-
-  // countCheckedOutMovies(
-  //   retrieveCompareInventory(
-  //     createRental(
-  //       )
-  //     )
-  //   );
-
-  // retrieveCompareInventory(createRental());
-
 });
 
 module.exports = router;
