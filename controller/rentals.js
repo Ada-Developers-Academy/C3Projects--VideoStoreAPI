@@ -33,5 +33,23 @@ exports.rentalsController = {
         res.status(200).json(rows);
       });
     });
+  },
+
+  // '/rentals/overdue'
+  overdue: function(req, res) {
+    db.all("SELECT * FROM rentals;", function(err, rows) {
+      var overdue = [];
+      console.log(rows);
+      for(var i = 0; i < rows.length; i++) {
+        var returnDate = rows[i].return_date == "" ? new Date() : new Date(rows[i].return_date);
+        var dueDate = new Date(rows[i].due_date);
+
+        if (returnDate > dueDate) {
+          overdue.push(rows[i]);
+        }
+      }
+
+      res.status(200).json(overdue);
+    });
   }
 }
