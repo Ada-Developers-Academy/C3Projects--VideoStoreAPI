@@ -40,7 +40,7 @@ router.post('/check_out', function(req, res, next) {
 // POST /rentals
 // check_out & check_in
 router.post('/', function(req, res, next) {
-  rental_exports.rentalsController.create(res);
+  rental_exports.rentalsController.create(req, res);
 });
 
 module.exports = router;
