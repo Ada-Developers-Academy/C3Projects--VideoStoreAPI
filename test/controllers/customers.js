@@ -115,4 +115,35 @@ describe("customers controller", function() {
         });
     });
   });
+
+  describe("GET /customers/postal_code_sort/:records_per_page/:offset", function(done) {
+    it("knows about the route", function(done) {
+      agent.get("/customers/postal_code_sort/1/0").set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result) {
+          assert.equal(error, undefined);
+          done();
+        });
+    });
+
+    it("returns an array of n customer objects offset by p", function(done) {
+      agent.get('/customers/postal_code_sort/2/0').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result) {
+          assert.equal(result.body.length, 2);
+
+          assert.deepEqual(Object.keys(result.body[0]), keys);
+          done();
+        });
+    });
+
+    it("the returned array is sorted by postal_code field", function(done) {
+      agent.get('/customers/postal_code_sort/1/0').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result) {
+          assert.equal(result.body[0].name, "Harry");
+          done();
+        });
+    });
+  });
 });
