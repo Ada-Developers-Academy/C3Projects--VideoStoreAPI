@@ -99,16 +99,21 @@ module.exports = {
     });
   },
 
-  // customers: function(value, callback) {
-  //   var db = new sqlite3.Database('db/' + db_env + '.db');
-  //
-  //   var today = new Date().toISOString().slice(0, 10); //gets date in SQL format for comparison
-  //
-  //   var statement = "SELECT 'customers'.* FROM 'customers' INNER JOIN 'rentals' ON 'customers'.'id' = 'rentals'.'customer_id' WHERE 'rentals'.'returned_date' = ;"
-  //
-  //   db.all(statement, value, function(err, res) {
-  //     if (callback) callback(err, res);
-  //     db.close();
-  //   });
-  // }
+  overdue: function(value, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+
+    //var today = new Date().toISOString().slice(0, 10); //gets date in SQL format for comparison
+    var today = new Date(); // sets today to today
+
+    var date_conversion = today.setDate(today.getDate() - 10); //
+
+    var overdue_date = new Date(date_conversion).toISOString().slice(0, 10);
+
+    var statement = "SELECT 'customers'.* FROM 'customers' INNER JOIN 'rentals' ON 'customers'.'id' = 'rentals'.'customer_id' WHERE 'rentals'.'returned_date' = '' AND 'rentals'.'checked_out' < '2015-09-12' ;";
+
+    db.all(statement, value, function(err, res) {
+      if (callback) callback(err, res);
+      db.close();
+    });
+  }
 }
