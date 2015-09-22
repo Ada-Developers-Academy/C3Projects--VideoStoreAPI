@@ -22,4 +22,9 @@ router.get('/:customer_id/history', function(req, res, next) {
   return customers_exports.customersController.movies_by_customer_history(req, res);
 });
 
+/* GET /customers/overdue */
+router.get('/overdue', function(req, res, next) {
+  return customers_exports.customersController.customers_overdue(req, res);
+});
+
 module.exports = router;
