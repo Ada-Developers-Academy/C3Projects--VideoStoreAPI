@@ -17,7 +17,6 @@ var ourWebsite = require(helps + "url_base");
 var formatMovieInfo = require(rents + "format_movie_info");
 var formatCustomerInfo = require(rents + "format_customer_info");
 var addMovieMetadata = require(rents + "add_movie_to_customer_metadata");
-console.log("add movie: " + addMovieMetadata);
 var isMovieAvailable = require(rents + "is_movie_available");
 var hoursInMilliseconds = require(rents + "convert_hours_to_milliseconds");
 
@@ -109,7 +108,6 @@ rentals.overdue = function(request, response, next) {
     var results = { meta: {} };
 
     if (error) { // log error if error
-      console.log("i'm here")
       status = 500; // internal server error
       results.data = error;
     } else if (data.length == 0) { // handling for no results
