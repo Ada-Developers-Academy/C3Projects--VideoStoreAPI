@@ -90,9 +90,10 @@ exports.rentalsController = {
     var db = new sqlite3.Database('./db/' + db_env + '.db'),
     title = req.params.title,
     id = req.params.customer_id,
-    statement = "Insert into rentals (checkout_date, due_date, return_date, overdue, movie_title, customer_id) VALUES (date('now'), date('now', '+3 day'), ?, ?, ?, ?);";
-
-    db.run(statement, [null, 0, title, id]);
+    insert_statement = "Insert into rentals (checkout_date, due_date, return_date, overdue, movie_title, customer_id) VALUES (date('now'), date('now', '+3 day'), ?, ?, ?, ?);",
+    update_statement = "Update customers SET account_credit = account_credit - 2 WHERE id = ?;";
+    db.run(insert_statement, [null, 0, title, id]);
+    db.run(update_statement, [id]);
     db.close();
     var results = [];
     results.push({message: 'Checkout successful', movie_title: title, customer_id: id});
