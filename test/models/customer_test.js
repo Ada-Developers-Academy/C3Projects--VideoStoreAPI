@@ -131,6 +131,36 @@ describe('Customer', function() {
       });
     });
   });
+
+  describe('#sortBy', function() {
+    // sort options: name, registered_at, postal_code
+    it('returns all customers sorted by name', function(done) {
+      customer.sortBy('name', 'all', function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, numSeeded);
+        assert.equal(rows[0].name, 'Customer1');
+        done();
+      });
+    });
+
+    it('returns all customers sorted by postal_code', function(done) {
+      customer.sortBy('postal_code', 'all', function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, numSeeded);
+        assert.equal(rows[0].postal_code, 'Zip1');
+        done();
+      });
+    });
+
+    it('returns 1 customer sorted by registered_at', function(done) {
+      customer.sortBy('registered_at', 1, function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, 1);
+        assert.equal(rows[0].registered_at, '01/02/2015');
+        done();
+      });
+    });
+  });
 });
 
 function resetCustomersTable(done) {
