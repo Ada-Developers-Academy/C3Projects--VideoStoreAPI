@@ -24,4 +24,15 @@ router.get("/overdue", function(req, res, next) {
   })
 })
 
+// "POST ./rentals/{:customer_id}/checkout/{:movie_id}"
+router.post("/:customer_id/checkout/:movie_id", function(req, res, next) {
+  rentalsController.checkout_movie(req, function(err, result) {
+     if (err) {
+      res.status(500).json(err);
+    } else {
+      res.status(200).json(result);
+    }   
+  })
+})
+
 module.exports = router;
