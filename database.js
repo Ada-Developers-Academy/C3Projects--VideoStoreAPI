@@ -16,7 +16,7 @@ var Database = {
 
   by_column: function(column, number, page, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
-    var statement = "SELECT " + column + " FROM " + this.table_name + " LIMIT " + number + " OFFSET " + page + ";";
+    var statement = "SELECT * FROM " + this.table_name + " ORDER BY " + column + " LIMIT " + number + " OFFSET " + page + ";";
 
     db.all(statement, function(err, res) {
       if (callback) callback(err, res);
@@ -54,6 +54,17 @@ var Database = {
     var statement = "SELECT 'movies'.*, rentals.checkout_date, rentals.return_date FROM movies INNER JOIN rentals ON movies.id = rentals.movie_id WHERE rentals.customer_id = (SELECT customers.id FROM customers WHERE customers.id = ? COLLATE NOCASE LIMIT 1) AND rentals.checked_out = 'false' ORDER BY rentals.checkout_date; ";
 
     db.all(statement, customer_id, function(err, rows) {
+      callback(err, rows);
+      db.close();
+    });
+  },
+
+  customers_overdue: function(callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    // all customers who currently have the movie checked out
+    var statement = "SELECT 'customers'.* FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id WHERE date(rentals.return_date) < date('now') AND rentals.checked_out = 'true'; ";
+
+    db.all(statement, function(err, rows) {
       callback(err, rows);
       db.close();
     });

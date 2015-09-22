@@ -28,5 +28,12 @@ exports.customersController = {
     db.movies_by_customer_history(req.params.customer_id, function(err, result) {
       return res.status(200).json(result);
     });
+  },
+
+  customers_overdue: function(req, res) {
+    var db = new Customer();
+    db.customers_overdue(function(err, result) {
+      return res.status(200).json(result);
+    });
   }
 };
