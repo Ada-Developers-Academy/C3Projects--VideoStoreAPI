@@ -95,8 +95,8 @@ exports.rentalsController = {
           if (err !== null) {
             console.log(err);
           } else {
-            var statement_late_fee = "UPDATE customers SET account_credit=(account_credit-" + late_fee + ") WHERE id=? AND date(SELECT expected_return_date FROM rentals WHERE id=?) < date('now')";
-            
+            var statement_late_fee = "UPDATE customers SET account_credit=(account_credit-" + late_fee + ") WHERE id=? AND date((SELECT expected_return_date FROM rentals WHERE id=?)) < date('now');";
+
             db.run(statement_late_fee, id, result1[0].id, function(err, result3) {
               if (err !== null) {
                 console.log(err);
