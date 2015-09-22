@@ -33,7 +33,7 @@ get "/movies/:title/customers/past/sort_by_checkout_date" = movie title, sorted 
 🔵 get "/movies/:title" = Search for one specific title. Include synopsis, release date, and inventory total.
  - From Movies table find title
 
-get "/movies/:title/available" = Returns inventory available to rent.
+🔵 get "/movies/:title/available" = Returns inventory available to rent.
   - From Movies table find available
 
 Customers
