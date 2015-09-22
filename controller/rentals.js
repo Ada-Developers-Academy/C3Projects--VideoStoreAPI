@@ -12,9 +12,9 @@ exports.rentalsController = {
     db.all(statement, function(err, rows) {
       var movieId = rows[0].id;
 
-      var secondStatement = "SELECT * FROM rentals WHERE movie_id = " + movieId + " AND return_date = '' ORDER BY " + req.params.sort_option + ";";
+      var statement = "SELECT * FROM rentals WHERE movie_id = " + movieId + " AND return_date = '' ORDER BY " + req.params.sort_option + ";";
 
-      db.all(secondStatement, function(err, rows) {
+      db.all(statement, function(err, rows) {
         res.status(200).json(rows);
       });
     });
@@ -27,9 +27,9 @@ exports.rentalsController = {
     db.all(statement, function(err, rows) {
       var movieId = rows[0].id;
 
-      var secondStatement = "SELECT * FROM rentals WHERE movie_id = " + movieId + " AND return_date != '' ORDER BY " + req.params.sort_option + ";";
+      var statement = "SELECT * FROM rentals WHERE movie_id = " + movieId + " AND return_date != '' ORDER BY " + req.params.sort_option + ";";
 
-      db.all(secondStatement, function(err, rows) {
+      db.all(statement, function(err, rows) {
         res.status(200).json(rows);
       });
     });
