@@ -6,8 +6,19 @@ var customersController = {
 
   // maybe move the var db = ... out here?
 
+  // ALL CUSTOMERS SEARCH...  "/customers?order_by=name"
+  // PAGINATION...            "/customers?number=25&page=2"  => customers 26-50
   all_customers: function(req, callback) {
-    var statement = "SELECT * FROM customers";
+    var column = req.query.order_by ? req.query.order_by : "id";
+    
+    if (req.query.number && req.query.page) {
+      var limit = req.query.number;
+      var offset = req.query.page * limit - limit;
+      var statement = "SELECT * FROM customers ORDER BY " + column + " ASC LIMIT " + limit + " OFFSET " + offset + ";";
+    } else {
+      var statement = "SELECT * FROM customers ORDER BY " + column + " ASC;";
+    }
+    
     var db = new Database('db/development.db');
 
     db.query(statement, function(err, result) {
@@ -22,41 +33,52 @@ var customersController = {
   },
 
   customer: function(req, callback) {
-    var statement = "SELECT * FROM customers WHERE id = " + req.params.id + ";";
-    var customer_renting_statment = 
-      "SELECT * FROM rentals \
-      WHERE customer_id = " + req.params.id + "AND \
-      return_date IS NULL;";
-
-    var customer_rented_statment =
-      "SELECT * FROM rentals \
-      WHERE customer_id = " + req.params.id + "AND \
-      return_date IS NOT NULL;";
-
+    var statement = "SELECT * FROM customers, rentals WHERE customers.id = " + req.params.id + " AND rentals.customer_id = " + req.params.id + " ORDER BY rentals.checkout_date ASC;";    
     var db = new Database('db/development.db');
 
-    var customer_info = db.query(statement, function(err, result) {
-      return result[0];
+    db.query(statement, function(err, result) {
+      
+      var customer_info = {
+        id: result[0].customer_id,
+        name: result[0].name,
+        registered_at: result[0].registered_at,
+        address: result[0].address,
+        city: result[0].city,
+        state: result[0].state,
+        postal_code: result[0].postal_code,
+        phone: result[0].phone,
+        account_credit: result[0].account_credit
+      };
+
+      var renting_movies = [];
+      var rented_movies = [];
+
+      for(var i = 0; i < result.length; i++) {
+        var movie = {
+          id: result[i].movie_id,
+          title: result[i].title,
+          checkout_date: result[i].checkout_date,
+          due_date: result[i].due_date,
+          return_date: result[i].return_date
+        };
+
+        if(movie.return_date == null) {
+          renting_movies.push(movie);
+        } else {
+          rented_movies.push(movie);
+        }
+      }
+
+      var json_results = {   
+        account: customer_info,
+        renting: renting_movies,
+        rented: rented_movies
+      };
+
+      callback(err, json_results);
     });
-
-    var customer_renting = db.query(customer_renting_statment, function(err, result) {
-      return result;
-    })
-
-    var customer_rented = db.query(customer_rented_statment, function(err, result) {
-      return result;
-    })
-
-    console.log(customer_info);
-
-    var json_result = {
-      customer: customer_info,
-      renting: customer_renting,
-      rented: customer_rented 
-    };
-
-    callback(err, json_result);
   }
+
 };
 
 module.exports = customersController;

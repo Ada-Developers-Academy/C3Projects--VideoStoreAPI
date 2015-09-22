@@ -24,4 +24,15 @@ router.get("/:title", function(req, res, next) {
   })
 })
 
+// "GET ./movies/{:title}/rentals"
+router.get("/:title/rentals", function(req, res, next) {
+  moviesController.movie_rentals(req, function(err, result) {
+    if (err) {
+      res.status(500).json(err);
+    } else {
+      res.status(200).json(result);
+    }
+  })
+})
+
 module.exports = router;
