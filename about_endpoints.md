@@ -37,6 +37,8 @@ other data:
       - customer name `http://wobsite.url/movies/<title>/rented?sort=customer_name&page=2`
       - check out date `http://wobsite.url/movies/<title>/rented?sort=check_out_date&page=2`
 
+# `DB=test npm run db:schema`
+
 3. Rentals - this is the interface used when talking to customers
   - GET `http://wobsite.url/rentals/movies/<title>`
     - returns
