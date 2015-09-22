@@ -15,7 +15,7 @@ var movie_copies_statement = db.prepare(
   VALUES (?);"
 );
 
-var customers = require('../customers');
+var customers = require('../formatted_customers');
 var customers_statement = db.prepare(
   "INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_credit) \
   VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
