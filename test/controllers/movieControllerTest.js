@@ -11,15 +11,25 @@ describe('movie controller', function() {
   describe.only('GET /movies/all/:page', function() {
     it('responds with json format', function(done) {
       agent.get('/movies/all/1').set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect('Content-Length', '10')
-      .expect(200, function(error, result) {
+        .expect('Content-Type', /json/)
+        .expect(200, function(error, result) {
         assert.equal(error, undefined);
       })
       done();
     })
 
+    it('responds with 10 movie results', function(done) {
+      agent.get('/movies/all/1').set('Accept', 'application/json')
+        .expect('Content-Length', '10')
+        .expect(200, function(error, result) {
+          assert.equal(error, undefined);
+        })
+      done();
+    })
 
+    it("responds with keys of 'id', 'title', 'overview' and 'release_date' and 'inventory'")
+      var movie_keys = ['id', 'title', 'overview', 'release_date', 'inventory'];
+assert.deepEqual(Object.keys(result.body[0]), keys);
   }) // GET /movies
 
 
