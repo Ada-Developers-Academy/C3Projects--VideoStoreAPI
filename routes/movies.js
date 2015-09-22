@@ -25,7 +25,7 @@ router.get('/title/:title', function(req, res, next) {
 // GET /movies/release_date?n=XXX&p=XXX
 router.get('/release_date', function(req, res, next){
   movie_exports.moviesController.getMoviesByReleaseDate(req.query.n, req.query.p, res);
-})
+});
 
 // GET /movies/title?n=XXX&p=XXX
 router.get('/title', function(req, res, next){
