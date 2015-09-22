@@ -4,11 +4,11 @@ Movies
  - √ written method 'find_all'; test passed,
  - √ displays all movies on webpage
 
-🔵 get "/movies/sort/title?page=:page&number=:number" = sort title alphabetically. We need movie titles.
+🔵 get "/movies/sort/title/:limit/:page" = sort title alphabetically. We need movie titles.
   * From Movie table:
     - titles
 
-get "/movies/sort/release_date?page=:page&number=:number" = sort by release_date. We need movie release dates.
+🔵 get "/movies/sort/release_date/:limit/:page" = sort by release_date. We need movie release dates.
   * From Movie table:
     - release_date
 
@@ -30,7 +30,7 @@ get "/movies/:title/customers/past/sort_by_name" = movie title, sorted by custom
 
 get "/movies/:title/customers/past/sort_by_checkout_date" = movie title, sorted by checkout dates
 
-get "/movies/:title" = Search for one specific title. Include synopsis, release date, and inventory total.
+🔵 get "/movies/:title" = Search for one specific title. Include synopsis, release date, and inventory total.
  - From Movie table find title
 
 get "/movies/:title/available" = Returns inventory available to rent.
@@ -41,13 +41,13 @@ Customers
   - √ From Customer table find all customers
   - √ displays all customers on webpage
 
-get "/customers/sort/name?page=:page&number=:number" = sort customers alphabetically by name.
+🔵 get "/customers/sort/name/:limit/:page" = sort customers alphabetically by name.
   - From Customer table find all customers
   - sort by name
 
-get "/customers/sort/registered_at?page=:page&number=:number" = returns all customers sorted date they registered.
+🔵 get "/customers/sort/registered_at/:limit/:page" = returns all customers sorted date they registered.
 
-get "/customers/sort/postal_code?page=:page&number=:number" = returns all customers sorted by postal_code.
+get "/customers/sort/postal_code/:limit/:page" = returns all customers sorted by postal_code.
 
 get "/customers/:id/movies/current" = show all the movies that this customer is renting currently.
   - From Rent table find all of one customer's current rentals
