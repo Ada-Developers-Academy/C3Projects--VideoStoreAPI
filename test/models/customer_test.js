@@ -7,7 +7,7 @@ var Customer = require('../../models/customer');
 describe('Customer', function() {
   var customer;
   var dbPath = "db/test.db";
-  var numSeeded = 2;
+  var numSeeded = 3;
   var validCustomerData = function validCustomerData() {
     return {
       name: 'Customer1',
@@ -160,6 +160,15 @@ describe('Customer', function() {
         done();
       });
     });
+
+    it('returns 1 customer sorted by name from the second page', function(done) {
+      customer.sortBy('name', 1, 2, function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, 1);
+        assert.equal(rows[0].name, 'Customer2');
+        done();
+      });
+    });
   });
 });
 
@@ -171,7 +180,8 @@ function resetCustomersTable(done) {
       DELETE FROM customers; \
       INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_balance) \
       VALUES('Customer1', '01/02/2015', 'Address1', 'City1', 'State1', 'Zip1', 'Phone1', '1250'), \
-            ('Customer2', '12/01/2014', 'Address2', 'City2', 'State2', 'Zip2', 'Phone2', '1000'); \
+            ('Customer2', '12/01/2014', 'Address2', 'City2', 'State2', 'Zip2', 'Phone2', '1000'), \
+            ('Customer3', '01/25/2015', 'Address3', 'City3', 'State3', 'Zip3', 'Phone3', '1000');\
       COMMIT;",
       function(err) {
         db.close();
