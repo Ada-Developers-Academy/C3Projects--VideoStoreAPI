@@ -18,8 +18,19 @@ Movie.prototype = require('./database').prototype;
 
 Movie.prototype.customersCurrent = function customersCurrent(movieTitle, callback) {
   var db = this.openDB();
-  var statement = 'SELECT customers.id AS customers_id, customers.name, rentals.id, rentals.checkout_date FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id WHERE rentals.movie_title LIKE ? AND rentals.return_date = "";';
+  var statement = 'SELECT customers.id AS customers_id, customers.name, rentals.id AS rental_id, rentals.checkout_date FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id WHERE rentals.movie_title LIKE ? AND rentals.return_date = "";';
   var values = movieTitle;
+
+  db.all(statement, values, function(err, rows) {
+    callback(err, rows);
+    db.close();
+  });
+}
+
+Movie.prototype.customersPast = function customersPast(movieTitle, parameter, callback) {
+  var db = this.openDB();
+  var statement = 'SELECT customers.id AS customer_id, customers.name, rentals.id AS rental_id, rentals.checkout_date FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id WHERE rentals.movie_title LIKE ? AND rentals.return_date != "" ORDER BY ?;';
+  var values = [movieTitle, parameter];
 
   db.all(statement, values, function(err, rows) {
     callback(err, rows);
