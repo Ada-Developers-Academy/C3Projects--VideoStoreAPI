@@ -172,21 +172,46 @@ describe('Movie', function() {
       movie.customersCurrent('Movie3', function(err, rows) {
         assert.equal(err, undefined);
         assert.equal(rows.length, 1);
-        assert.equal(rows[0].id, 3);
+        assert.equal(rows[0].rental_id, 4);
         assert.equal(rows[0].checkout_date, '2015-09-18');
         done();
       });
     });
   });
 
+  describe('#customersPast', function() {
+    before(function(done) {
+      seedCustomers(done);
+    });
 
+    it('returns a list of customers sorted by customer_id who have checked out a movie in the past given the title', function(done) {
+      movie.customersPast('Movie2', 'customer_id', function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, 1);
+        assert.equal(rows[0].customer_id, 1);
+        done();
+      });
+    });
+
+    it('returns a list of customers sorted by customer name who have checked out a movie in the past given the title', function(done) {
+      movie.customersPast('Movie2', 'name', function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, 1);
+        assert.equal(rows[0].name, 'Customer1');
+        done();
+      });
+    });
+
+    it('returns a list of customers sorted by checkout_date who have checked out a movie in the past given the title', function(done) {
+      movie.customersPast('Movie2', 'checkout_date', function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, 1);
+        assert.equal(rows[0].checkout_date, '2015-03-16');
+        done();
+      });
+    });
+  });
 });
-
-// Get a list of customers that have checked out a copy in the past
-//
-// ordered by customer id
-// ordered by customer name
-// ordered by check out date
 
 function resetMoviesTable(done) {
   // NOTE: we need to maintain these titles (where 'Jaws' is in both)
@@ -236,6 +261,7 @@ function resetRentalsTable(done) {
       INSERT INTO rentals(checkout_date, return_date, movie_title, customer_id) \
       VALUES('2015-09-16', '', 'Movie1', 1), \
             ('2015-03-16', '2015-03-20', 'Movie2', 1), \
+            ('2015-06-23', '', 'Movie2', 2), \
             ('2015-09-18', '', 'Movie3', 2); \
       COMMIT;",
       function(err) {
