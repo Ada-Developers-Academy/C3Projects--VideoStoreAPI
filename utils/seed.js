@@ -16,6 +16,12 @@ var customer_statement = db.prepare(
   postal_code, phone, account_credit) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
 );
 
+var rentals = require('./rentals');
+var rental_statement = db.prepare(
+  "INSERT INTO rentals(customer_id, movie_id, checkout_date, return_date, returned) \
+  VALUES (?, ?, ?, ?, ?);"
+  );
+
 db.serialize(function() {
   // loop thru movies
   for (var i = 0; i < movies.length; i++) {
@@ -48,6 +54,20 @@ db.serialize(function() {
   }
 
   customer_statement.finalize();
+
+  for (var i = 0; i < rentals.length; i++) {
+    var rental = rentals[i];
+
+    rental_statement.run(
+      rental.customer_id,
+      rental.movie_id,
+      rental.checkout_date,
+      rental.return_date,
+      rental.returned // boolean
+    );
+  }
+
+  rental_statement.finalize();
 });
 
 db.close();

@@ -1,0 +1,233 @@
+[
+    {
+        "customer_id": 1,
+        "movie_id": 1,
+        "checkout_date": "29 Apr 2015 07:54:14 -0700",
+        "return_date": "3 May 2015 07:54:14 -0700",
+        "returned": "false"
+    },
+    {
+        "customer_id": 1,
+        "movie_id": 1,
+        "checkout_date": "01 Nov 2004 06:19:02",
+        "return_date": "06 Nov 2004 18:19:02",
+        "returned": "false"
+    },
+    {
+        "customer_id": 1,
+        "movie_id": 1,
+        "checkout_date": "03 Dec 2009 02:58:43",
+        "return_date": "08 Dec 2009 06:19:02",
+        "returned": "true"
+    },
+    {
+        "customer_id": 1,
+        "movie_id": 1,
+        "checkout_date": "10 May 2011 02:58:43",
+        "return_date": "15 May 2011 02:58:43",
+        "returned": "true"
+    },
+    {
+        "customer_id": 1,
+        "movie_id": 1,
+        "checkout_date": "03 Oct 2012 00:25:08",
+        "return_date": "11 Oct 2012 07:54:14 -0700",
+        "returned": "false"
+    },
+    {
+        "customer_id": 1,
+        "movie_id": 2,
+        "checkout_date": "29 Apr 2015 07:54:14 -0700",
+        "return_date": "3 May 2015 07:54:14 -0700",
+        "returned": "false"
+    },
+    {
+        "customer_id": 1,
+        "movie_id": 3,
+        "checkout_date": "01 Nov 2004 06:19:02",
+        "return_date": "06 Nov 2004 18:19:02",
+        "returned": "false"
+    },
+    {
+        "customer_id": 1,
+        "movie_id": 2,
+        "checkout_date": "03 Dec 2009 02:58:43",
+        "return_date": "08 Dec 2009 06:19:02",
+        "returned": "true"
+    },
+    {
+        "customer_id": 1,
+        "movie_id": 3,
+        "checkout_date": "10 May 2011 02:58:43",
+        "return_date": "15 May 2011 02:58:43",
+        "returned": "true"
+    },
+    {
+        "customer_id": 2,
+        "movie_id": 2,
+        "checkout_date": "03 Oct 2012 00:25:08",
+        "return_date": "11 Oct 2012 07:54:14 -0700",
+        "returned": "false"
+    },
+    {
+        "customer_id": 2,
+        "movie_id": 4,
+        "checkout_date": "29 Apr 2015 07:54:14 -0700",
+        "return_date": "3 May 2015 07:54:14 -0700",
+        "returned": "false"
+    },
+    {
+        "customer_id": 2,
+        "movie_id": 4,
+        "checkout_date": "01 Nov 2004 06:19:02",
+        "return_date": "06 Nov 2004 18:19:02",
+        "returned": "false"
+    },
+    {
+        "customer_id": 34,
+        "movie_id": 89,
+        "checkout_date": "03 Dec 2009 02:58:43",
+        "return_date": "08 Dec 2009 06:19:02",
+        "returned": "true"
+    },
+    {
+        "customer_id": 10,
+        "movie_id": 7,
+        "checkout_date": "10 May 2011 02:58:43",
+        "return_date": "15 May 2011 02:58:43",
+        "returned": "false"
+    },
+    {
+        "customer_id": 100,
+        "movie_id": 5,
+        "checkout_date": "03 Oct 2012 00:25:08",
+        "return_date": "11 Oct 2012 07:54:14 -0700",
+        "returned": "false"
+    },
+    {
+        "customer_id": 134,
+        "movie_id": 71,
+        "checkout_date": "29 Apr 2015 07:54:14 -0700",
+        "return_date": "3 May 2015 07:54:14 -0700",
+        "returned": "false"
+    },
+    {
+        "customer_id": 32,
+        "movie_id": 14,
+        "checkout_date": "01 Nov 2004 06:19:02",
+        "return_date": "06 Nov 2004 18:19:02",
+        "returned": "false"
+    },
+    {
+        "customer_id": 1,
+        "movie_id": 16,
+        "checkout_date": "03 Dec 2009 02:58:43",
+        "return_date": "08 Dec 2009 06:19:02",
+        "returned": "true"
+    },
+    {
+        "customer_id": 14,
+        "movie_id": 13,
+        "checkout_date": "10 May 2011 02:58:43",
+        "return_date": "15 May 2011 02:58:43",
+        "returned": "true"
+    },
+    {
+        "customer_id": 94,
+        "movie_id": 7,
+        "checkout_date": "03 Oct 2012 00:25:08",
+        "return_date": "11 Oct 2012 07:54:14 -0700",
+        "returned": "true"
+    },
+    {
+        "customer_id": 2,
+        "movie_id": 4,
+        "checkout_date": "29 Apr 2015 07:54:14 -0700",
+        "return_date": "3 May 2015 07:54:14 -0700",
+        "returned": "false"
+    },
+    {
+        "customer_id": 165,
+        "movie_id": 5,
+        "checkout_date": "01 Nov 2004 06:19:02",
+        "return_date": "06 Nov 2004 18:19:02",
+        "returned": "false"
+    },
+    {
+        "customer_id": 198,
+        "movie_id": 54,
+        "checkout_date": "03 Dec 2009 02:58:43",
+        "return_date": "08 Dec 2009 06:19:02",
+        "returned": "true"
+    },
+    {
+        "customer_id": 122,
+        "movie_id": 19,
+        "checkout_date": "10 May 2011 02:58:43",
+        "return_date": "15 May 2011 02:58:43",
+        "returned": "true"
+    },
+    {
+        "customer_id": 64,
+        "movie_id": 87,
+        "checkout_date": "03 Oct 2012 00:25:08",
+        "return_date": "11 Oct 2012 07:54:14 -0700",
+        "returned": "false"
+    },
+    {
+        "customer_id": 39,
+        "movie_id": 25,
+        "checkout_date": "29 Apr 2015 07:54:14 -0700",
+        "return_date": "3 May 2015 07:54:14 -0700",
+        "returned": "false"
+    },
+    {
+        "customer_id": 28,
+        "movie_id": 99,
+        "checkout_date": "19 Sep 2015 06:19:02",
+        "return_date": "24 Sep 2004 18:19:02",
+        "returned": "false"
+    },
+    {
+        "customer_id": 32,
+        "movie_id": 85,
+        "checkout_date": "03 Dec 2009 02:58:43",
+        "return_date": "08 Dec 2009 06:19:02",
+        "returned": "true"
+    },
+    {
+        "customer_id": 13,
+        "movie_id": 13,
+        "checkout_date": "10 May 2011 02:58:43",
+        "return_date": "15 May 2011 02:58:43",
+        "returned": "true"
+    },
+    {
+        "customer_id": 32,
+        "movie_id": 14,
+        "checkout_date": "03 Oct 2012 00:25:08",
+        "return_date": "11 Oct 2012 07:54:14 -0700",
+        "returned": "false"
+    },
+    {
+        "customer_id": 12,
+        "movie_id": 29,
+        "checkout_date": "29 Apr 2015 07:54:14 -0700",
+        "return_date": "3 May 2015 07:54:14 -0700",
+        "returned": "false"
+    },
+    {
+        "customer_id": 56,
+        "movie_id": 5,
+        "checkout_date": "01 Nov 2004 06:19:02",
+        "return_date": "06 Nov 2004 18:19:02",
+        "returned": "false"
+    },
+    {
+        "customer_id": 177,
+        "movie_id": 82,
+        "checkout_date": "03 Dec 2009 02:58:43",
+        "return_date": "08 Dec 2009 06:19:02",
+        "returned": "true"
+    }
+]
