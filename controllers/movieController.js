@@ -91,7 +91,7 @@ module.exports = {
     var movies = new movieTable();
     var queried_title = request.params.title;
 
-    var statement = "SELECT * FROM movies WHERE (title: " + queried_title + ");";
+    // var statement = "SELECT * FROM movies WHERE (title: " + queried_title + ");";
 
     db.all(statement, function(err, result) {
       if(err) {
