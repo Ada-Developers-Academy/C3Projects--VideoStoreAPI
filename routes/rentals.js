@@ -3,6 +3,7 @@ var router = express.Router();
 var rentals_exports = require('../controller/rentals');
 
 // '/rentals/:title/current/:sort_option'
+// :sort_option - id, name, checkout_date
 router.get('/:title/current/:sort_option', function(req, res, next) {
   return rentals_exports.rentalsController.current_rentals(req, res);
 });
@@ -13,8 +14,19 @@ router.get('/:title/past/:sort_option', function(req, res, next) {
 });
 
 // '/rentals/overdue'
+// *GET*  rental/customers/overdue
 router.get('/overdue', function(req, res, next) {
   return rentals_exports.rentalsController.overdue(req, res);
 });
+
+// *GET*  rental/:title/available
+router.get('/:title/inventory', function(req, res, next) {
+  return rentals_exports.rentalsController.check_inventory(req, res);
+});
+
+// *POST* rental/title/:id/checkout
+
+// *POST* rental/title/:id/checkin
+
 
 module.exports = router;
