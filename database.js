@@ -22,7 +22,19 @@ module.exports = {
       if (callback) callback(err, res);
       db.close();
     });
-  }
+  },
+
+  find_by_with_limit: function(column, value, per_page, page, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    var statement = "SELECT * FROM " + this.table_name + " WHERE " + column + " LIKE ? ORDER BY " + column + " LIMIT " + per_page + " OFFSET " + page;
+
+    db.all(statement, value, function(err, res) {
+      if (callback) callback(err, res);
+      db.close();
+    });
+  },
+
+
 
   // create: function(data, callback) {
   //   var db = new sqlite3.Database('db/' + db_env + '.db');

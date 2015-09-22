@@ -68,5 +68,47 @@ describe("GET '/'", function() {
      });
    }); // returns array objects
 
+   it("knows about the route", function(done) {
+     agent.get('/customers/date/2015/per_page1/pg0').set('Accept', 'application/json')
+       .expect('Content-Type', /application\/json/)
+       .expect(200, function(err, res) {
+       assert.equal(err, undefined);
+        // console.log(err);
+       done();
+       });
+   });
+
+   it("returns the customer object", function(done) {
+    agent.get('/customers/date/2015/per_page1/pg0').set('Accept', 'application/json')
+      .expect(200, function(err, result) {
+       assert.equal(result.body.length, 1);
+
+       var keys = ['id', 'name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone', 'account_credit'];
+       assert.deepEqual(Object.keys(result.body[0]), keys);
+       done();
+      });
+    }); // returns array objects
+
+    it("knows about the route", function(done) {
+      agent.get('/customers/zipcode/98104/per_page1/pg0').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(err, res) {
+        assert.equal(err, undefined);
+         // console.log(err);
+        done();
+        });
+    });
+
+    it("returns the customer object", function(done) {
+     agent.get('/customers/zipcode/98104/per_page1/pg0').set('Accept', 'application/json')
+       .expect(200, function(err, result) {
+        assert.equal(result.body.length, 1);
+
+        var keys = ['id', 'name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone', 'account_credit'];
+        assert.deepEqual(Object.keys(result.body[0]), keys);
+        done();
+       });
+     }); // returns array objects
+
  }); // describe get
 }); // describe customers
