@@ -54,6 +54,15 @@ exports.moviesController = {
     });
     var result = dbCustomer.find_by("id", customerId, function(error, result) {
       return result
+    )};
+  },
+
+  availableMovies: function(req, res) {
+    var dbMovie = new Movie();
+    var title = req.params.title;
+    var result = dbMovie.available(title, function(err,result){
+    return res.status(200).json(result);
+
     });
   }
 }
