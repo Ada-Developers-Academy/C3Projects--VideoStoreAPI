@@ -14,6 +14,14 @@ describe("Movie", function() {
 
   it("has a find_by property that is a function", function() {
     assert.equal(typeof movie.find_by, "function");
+  })
+
+  it("has a 'find_all' property that is a function", function() {
+    assert.equal(typeof movie.find_all, "function");
+  })
+
+  it("has a 'sort_by' property that is a function", function() {
+    assert.equal(typeof movie.sort_by, "function");
   });
 
   describe("movie queries", function(){
@@ -28,6 +36,7 @@ describe("Movie", function() {
           DELETE FROM movies; \
           INSERT INTO movies(title, overview, release_date, inventory, available) \
           VALUES('Jaws', 'Shark!', 'Yesterday', 10, 10), \
+                ('Aws', 'Shark!', 'Yesterday', 10, 10), \
                 ('Maws', 'Worm!', 'Yesterday', 11, 11); \
           COMMIT;",
           function(err) {
@@ -43,6 +52,7 @@ describe("Movie", function() {
         assert.equal(result[0].title, 'Jaws');
         done();
       });
+
     });
 
     it("returns all movies", function(done) {
@@ -51,5 +61,24 @@ describe("Movie", function() {
         done();
       });
     });
+
+    it("displays all records from movies table", function(done) {
+      movie.find_all(function(err, result) {
+        console.log(result);
+        assert.equal(result.length, 3);
+        done();
+      });
+    })
+
+    it("displays all records from 'movies' table, sorted by title with limit 2", function(done) {
+      movie.sort_by("title", 2, 0, function(err, result) {
+        console.log(result);
+        assert.equal(result[0].title, 'Aws');
+        assert.equal(result[1].title, 'Jaws');
+        assert.equal(result.length, 2);
+        done();
+      });
+    })
+
   })
 });
