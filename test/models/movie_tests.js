@@ -36,6 +36,7 @@ describe("Movie", function() {
           DELETE FROM movies; \
           INSERT INTO movies(title, overview, release_date, inventory, available) \
           VALUES('Jaws', 'Shark!', 'Yesterday', 10, 10), \
+                ('Aws', 'Shark!', 'Yesterday', 10, 10), \
                 ('Maws', 'Worm!', 'Yesterday', 11, 11); \
           COMMIT;",
           function(err) {
@@ -56,19 +57,19 @@ describe("Movie", function() {
     it("displays all records from movies table", function(done) {
       movie.find_all(function(err, result) {
         console.log(result);
+        assert.equal(result.length, 3);
+        done();
+      });
+    })
+
+    it("displays all records from 'movies' table, sorted by title with limit 2", function(done) {
+      movie.sort_by("title", 2, 0, function(err, result) {
+        console.log(result);
+        assert.equal(result[0].title, 'Aws');
+        assert.equal(result[1].title, 'Jaws');
         assert.equal(result.length, 2);
         done();
       });
     })
-
-    it("displays all records from 'movies' table, sorted by title", function(done) {
-      movie.sort_by("title", function(err, result) {
-        console.log(result);
-        var rigthOrder = [{ id: 1, title: 'Jaws', overview: 'Shark!', release_date: 'Yesterday', inventory: 10, available: 10 }, { id: 2, title: 'Maws', overview: 'Worm!', release_date: 'Yesterday', inventory: 11, available: 11 }];
-        assert.equal(result, rigthOrder);
-        done();
-      });
-    })
-
   })
 });

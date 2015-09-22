@@ -1,10 +1,10 @@
 Movies
 
-√ get "/movies" = All movies
+🔵 get "/movies" = All movies
  - √ written method 'find_all'; test passed,
  - √ displays all movies on webpage
 
-get "/movies/sort/title?page=:page&number=:number" = sort title alphabetically. We need movie titles.
+🔵 get "/movies/sort/title?page=:page&number=:number" = sort title alphabetically. We need movie titles.
   * From Movie table:
     - titles
 
@@ -37,8 +37,9 @@ get "/movies/:title/available" = Returns inventory available to rent.
   - From Movie table find available
 
 Customers
-get "/customers" = All customers
-  - From Customer table find all customers
+🔵 get "/customers" = All customers
+  - √ From Customer table find all customers
+  - √ displays all customers on webpage
 
 get "/customers/sort/name?page=:page&number=:number" = sort customers alphabetically by name.
   - From Customer table find all customers

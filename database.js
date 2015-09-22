@@ -24,9 +24,9 @@ module.exports = {
     });
   },
 
-  sort_by: function(column, callback){
+  sort_by: function(column, limit, offset, callback){
     var db = new sqlite3.Database('db/' + db_env + '.db');
-    var statement = "SELECT * FROM " + this.table_name + "ORDER BY " + column + ";";
+    var statement = "SELECT * FROM " + this.table_name + " ORDER BY " + column + " LIMIT " + limit + " OFFSET " + offset + ";";
 
     db.all(statement, function(err, res) {
       if (callback) callback(err, res);
