@@ -17,4 +17,9 @@ router.get('/:title', function(req, res, next) {
   return movies_exports.moviesController.search_title(req, res);
 });
 
+// '/movies/:title/inventory'
+router.get('/:title/inventory', function(req, res, next) {
+  return movies_exports.moviesController.check_inventory(req, res);
+});
+
 module.exports = router;
