@@ -8,6 +8,10 @@ router.get('/test', function(req, res, next) {
   return movieController.test(req, res);
 });
 
+router.get('/:title', function(req, res, next) {
+  return movieController.by_title(req, res);
+});
+
 router.get('/all/:page', function(req, res, next) {
   return movieController.all_movies(req, res);
 });

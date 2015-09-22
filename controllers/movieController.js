@@ -84,6 +84,25 @@ module.exports = {
     });
 
     db.close();
+  },
+
+  by_title: function(request, response) {
+    var db = new sqlite3.Database("db/" + dbEnv + ".db");
+    var movies = new movieTable();
+    var queried_title = request.params.title;
+
+    var statement = "SELECT * FROM movies WHERE (title: " + queried_title + ");";
+
+    db.all(statement, function(err, result) {
+      if(err) {
+        console.log(err); // error handling
+        return;
+      };
+      return response.status(200).json(result);
+
+    });
+    // should be not all
+    db.close();
   }
 
 }
