@@ -48,23 +48,11 @@ exports.rentalsController = {
       // return res.status(200).json(req["req"]["body"]);
       // return res.redirect('index', { title: 'Express' });
     });
+  },
+
+  //PATCH /rentals/check_in(cust id, movie title)
+  // adding returned date
+  update: function(req, res) {
+
   }
-
-/*
-  restapi.post('/data', function(req, res){
-    db.run("UPDATE counts SET value = value + 1 WHERE key = ?", "counter", function(err, row){
-        if (err){
-            console.err(err);
-            res.status(500);
-        }
-        else {
-            res.status(202);
-        }
-        res.end();
-    });
-});
-
-  PATCH /rentals/check_in(cust id, movie title)
-// adding returned date
-  */
 };
