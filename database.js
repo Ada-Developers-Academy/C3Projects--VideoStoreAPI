@@ -9,8 +9,8 @@ module.exports = {
     db.serialize(function() {
       // below: this is the callback pattern...parameters(ERRORS, RESULT)
       db.all(statement, function(err, res) {
-        console.log(statement);
-        console.log(err);
+        // console.log(statement);
+        // console.log(err);
         // error handling looks like -> if (err) { };
         if (callback) { callback(res); }
       });
@@ -97,7 +97,7 @@ module.exports = {
     customers.postal_code, customers.phone, customers.account_credit \
     FROM customers, rentals \
     WHERE customers.id=rentals.customer_id \
-    AND rentals.overdue = 1;", function(res) {
+    AND rentals.overdue=1;", function(res) {
       callback(res);
     });
   }
