@@ -134,7 +134,7 @@ var rentalsController = {
       console.log("error: ", err);
 
         var json_result = {
-          rental: result
+          rental_history: result
         };
         
         callback(err, json_result);
