@@ -14,12 +14,19 @@ Rental.prototype = {
     var rental_duration_days = 7;
     var checkout_date = new Date(Date.now());
     var return_date = new Date(Date.now() + (rental_duration_days * 24 * 60 * 60 * 1000));
+    var rental_cost = 1.0;
 
-    var statement = "INSERT INTO " + this.table_name + " (checkout_date, return_date, movie_id, customer_id, checked_out) " + "VALUES ('" + checkout_date + "', '" + return_date  + "', (SELECT id FROM movies WHERE title = '" + movie_title + "'), " + customer_id + ", 'true');";
-    console.log(statement);
+    var create_statement = "INSERT INTO " + this.table_name + " (checkout_date, return_date, movie_id, customer_id, checked_out) " + "VALUES ('" + checkout_date + "', '" + return_date  + "', (SELECT id FROM movies WHERE title = '" + movie_title + "'), " + customer_id + ", 'true')";
 
-    db.run(statement, function(err) {
+    var charge_statement = "UPDATE customers SET account_credit = (account_credit - " + rental_cost + ") WHERE ID = " + customer_id + " ;";
+
+    db.run(create_statement, function(err) {
       callback(err, { inserted_id: this.lastID, changed: this.changes });
+      db.close();
+    });
+
+    db.run(charge_statement, function(err) {
+      callback(err, { changed: this.changes });
       db.close();
     });
   }
