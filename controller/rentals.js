@@ -7,8 +7,16 @@ var db = new sqlite3.Database('db/' + db_env + '.db');
 exports.rentalsController = {
   // '/rentals/:title/current/:sort_option'
   current_rentals: function(req, res) {
-    db.all("SELECT * FROM movies;", function(err, rows) {
-      res.status(200).json(rows);
+    var statement = "SELECT * FROM movies WHERE title LIKE '%" + req.params.title + "%';";
+
+    db.all(statement, function(err, rows) {
+      var movieId = rows[0].id;
+
+      var secondStatement = "SELECT * FROM rentals WHERE movie_id = " + movieId + " AND return_date = '' ORDER BY " + req.params.sort_option + ";";
+
+      db.all(secondStatement, function(err, rows) {
+        res.status(200).json(rows);
+      });
     });
   }
 }
