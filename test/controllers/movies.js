@@ -193,4 +193,36 @@ describe.only("movies controller", function() {
     })
   });
 
+  //  /:title/past_customers/customer_name_sort
+  describe("GET '/movies/Jaws/past_customers/customer_name_sort'", function() {
+    it("knows about the route", function(done) {
+      agent.get('/movies/Jaws/past_customers/customer_name_sort').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result) {
+          assert.equal(error, undefined);
+          done();
+        });
+    });
+
+    it("returns an array of customers who have checked the movie out in the past", function(done) {
+      agent.get('/movies/Jaws/past_customers/customer_name_sort').set("Accept", "application/json")
+        .expect(200, function(error, result) {
+          assert.equal(result.body.length, 2);
+          customer_keys;
+          assert.deepEqual(Object.keys(result.body[0]), customer_keys);
+          done();
+        });
+    });
+
+    it("sorts the customers by name", function(done) {
+      agent.get('/movies/Jaws/past_customers/customer_name_sort').set("Accept", "application/json")
+        .expect(200, function(error, result) {
+          assert.equal(result.body[0].id, 1);
+          customer_keys;
+          assert.deepEqual(Object.keys(result.body[0]), customer_keys);
+          done();
+        });
+    })
+  });
+
 }); // top level describe
