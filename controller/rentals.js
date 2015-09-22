@@ -53,13 +53,12 @@ exports.rentalsController = {
   },
 
   // *GET*  rental/:title/available
-  // NOTE: COME BACK TO THIS
   check_inventory: function(req, res) {
     var statement = "SELECT * FROM movies WHERE title LIKE '%" + req.params.title + "%';";
 
     db.all(statement, function(err, rows) {
       var inventory = { "title"    : rows[0].title,
-                        "inventory": rows[0].inventory
+                        "inventory_available": rows[0].inventory_available
                       }
 
       res.status(200).json(inventory);

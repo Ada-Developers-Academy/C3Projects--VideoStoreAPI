@@ -20,7 +20,7 @@ router.get('/overdue', function(req, res, next) {
 });
 
 // *GET*  rental/:title/available
-router.get('/:title/inventory', function(req, res, next) {
+router.get('/:title/available', function(req, res, next) {
   return rentals_exports.rentalsController.check_inventory(req, res);
 });
 
