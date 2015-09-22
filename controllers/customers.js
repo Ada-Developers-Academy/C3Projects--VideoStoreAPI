@@ -78,21 +78,6 @@ exports.customersController = {
     // all checked out movies for a given customer id
   },
 
-  checkedout: function checkedout(req,res) {
-    var db = new sqlite3.Database('./db/' + db_env + '.db');
-    var customer_rentals = [];
-    var id = req.params.id;
-    var statement = "SELECT movie_title, checkout_date, return_date FROM rentals WHERE customer_id=? ORDER BY checkout_date DESC;";
-        db.all(statement, [id], function(err, rows) {
-          rows.forEach(function (row) {
-            customer_rentals.push(row);
-          });
-          db.close();
-          return res.status(200).json(customer_rentals);
-        });
-      // all checked out movies including current for a given customer id
-  },
-
   history: function history(req,res) {
     var db = new sqlite3.Database('./db/' + db_env + '.db');
     var customer_rentals = [];
