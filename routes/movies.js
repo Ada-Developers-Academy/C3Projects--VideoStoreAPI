@@ -28,7 +28,7 @@ router.get('/:title/history', function(req, res, next) {
 });
 
 /* GET /movies/:title/:column */
-router.get('/:title/:column', function(req, res, next) {
+router.get('/:title/history/:table/:column', function(req, res, next) {
   return movies_exports.moviesController.customers_by_movie_history_sorted(req, res);
 });
 

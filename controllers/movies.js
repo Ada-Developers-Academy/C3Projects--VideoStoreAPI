@@ -40,7 +40,7 @@ exports.moviesController = {
 
   customers_by_movie_history_sorted: function(req, res) {
     var db = new Movie();
-    db.customers_by_movie_history_sorted(req.params.title, req.params.column, function(err, result) {
+    db.customers_by_movie_history_sorted(req.params.title, req.params.table, req.params.column, function(err, result) {
       return res.status(200).json(result);
     });
   }
