@@ -90,16 +90,15 @@ module.exports = {
   },
 
   by_title: function(request, response) {
+    console.log("INSIDE BY_TITLE");
     var db = new sqlite3.Database("db/" + dbEnv + ".db");
     var movies = new movieTable();
     var queried_title = request.params.title;
-    var offset = (pageNumber - 1) * movies.limit;
 
     var statement =
       "SELECT * FROM movies \
-      WHERE title = '" + queried_title + "' \
-      LIMIT " + movies.limit + " \
-      OFFSET " + offset + ");";
+      WHERE title = '" + queried_title + "'";
+
       console.log(statement);
 
 
@@ -111,7 +110,6 @@ module.exports = {
       return response.status(200).json(result);
 
     });
-    // should be not all
     db.close();
   },
 
@@ -125,9 +123,9 @@ module.exports = {
 
     var statement =
       "SELECT * FROM rentals \
-      WHERE movie_title = '" + title + "' \
-      AND returned = 1 \
-      ORDER BY customer_id \"
+      WHERE movie_title = '" + title +
+      "'AND returned = 1 \
+      ORDER BY customer_id \
       LIMIT " + movies.limit + " \
       OFFSET " + offset + ");";
       console.log(statement);
@@ -156,7 +154,7 @@ module.exports = {
       "SELECT * FROM rentals \
       WHERE movie_title = '" + title + "' \
       AND returned = 1 \
-      ORDER BY customer_name \"
+      ORDER BY customer_name \
       LIMIT " + movies.limit + " \
       OFFSET " + offset + ");";
       console.log(statement);
@@ -185,7 +183,7 @@ module.exports = {
       "SELECT * FROM rentals \
       WHERE movie_title = '" + title + "' \
       AND returned = 1 \
-      ORDER BY check_out_date \"
+      ORDER BY check_out_date \
       LIMIT " + movies.limit + " \
       OFFSET " + offset + ");";
       console.log(statement);
