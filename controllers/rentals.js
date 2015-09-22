@@ -48,6 +48,30 @@ var rentalsController = {
 
       callback(err, json_result);
     });
+  },
+
+  rentals_overdue: function(req, callback) {
+    var column = req.query.order_by ? req.query.order_by : "customer_id";
+    var statement =
+      "SELECT \
+        rentals.id, rentals.title, rentals.customer_id, rentals.name, \
+        rentals.checkout_date, rentals.due_date, rentals.return_date \
+      FROM movies, rentals \
+      WHERE rentals.movie_id = movies.id \
+        AND movies.title LIKE '%" + title + "%' \
+        AND rentals.return_date 
+      ORDER BY " + column + " ASC;"; 
+
+    var db = new Database('db/development.db'); 
+    
+    db.query(statement, function(err, result) {
+
+      var json_result = {
+        overdue_movies: result
+      };
+
+      callback(err, json_result);
+    });
   }
 };
 
