@@ -9,6 +9,14 @@ exports.moviesController = {
     });
   },
 
+  findMovieByTitle: function(req, res) {
+    var dbMovie = new Movie();
+    var value = req.params.title;
+    var result = dbMovie.find_by("title", value function(err,result){
+    return res.status(200).json(result);
+    });
+  },
+
   sortMoviesByTitle: function(req, res) {
     var dbMovie = new Movie();
     var limit = req.params.limit;
