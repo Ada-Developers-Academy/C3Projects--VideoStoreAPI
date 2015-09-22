@@ -69,9 +69,12 @@ module.exports = {
     // prepare statement
     var pageNumber = request.params.page; // we still need to handle for page 1
     var offset = (pageNumber - 1) * movies.limit;
-    var statement = "SELECT * FROM movies ORDER BY (release_date) LIMIT "
-      + movies.limit + " OFFSET " + offset + ";";
-      console.log(statement);
+    var statement =
+      "SELECT * FROM movies \
+      ORDER BY (release_date) \
+      LIMIT " + movies.limit + " \
+      OFFSET " + offset + ";";
+    console.log(statement);
 
     db.all(statement, function(err, results) { // closure
       if(err) {
@@ -90,8 +93,15 @@ module.exports = {
     var db = new sqlite3.Database("db/" + dbEnv + ".db");
     var movies = new movieTable();
     var queried_title = request.params.title;
+    var offset = (pageNumber - 1) * movies.limit;
 
-    // var statement = "SELECT * FROM movies WHERE (title: " + queried_title + ");";
+    var statement =
+      "SELECT * FROM movies \
+      WHERE title = '" + queried_title + "' \
+      LIMIT " + movies.limit + " \
+      OFFSET " + offset + ");";
+      console.log(statement);
+
 
     db.all(statement, function(err, result) {
       if(err) {
@@ -111,8 +121,17 @@ module.exports = {
     var title = request.params.title;
     var query = request.params.query;
     var page = request.params.page;
+    var offset = (pageNumber - 1) * movies.limit;
 
-    // var statement = "SELECT * FROM movies WHERE (title: " + queried_title + ");";
+    var statement =
+      "SELECT * FROM rentals \
+      WHERE movie_title = '" + title + "' \
+      AND returned = 1 \
+      ORDER BY customer_id \"
+      LIMIT " + movies.limit + " \
+      OFFSET " + offset + ");";
+      console.log(statement);
+
 
     db.all(statement, function(err, result) {
       if(err) {
@@ -131,8 +150,17 @@ module.exports = {
     var title = request.params.title;
     var query = request.params.query;
     var page = request.params.page;
+    var offset = (pageNumber - 1) * movies.limit;
 
-    // var statement = "SELECT * FROM movies WHERE (title: " + queried_title + ");";
+    var statement =
+      "SELECT * FROM rentals \
+      WHERE movie_title = '" + title + "' \
+      AND returned = 1 \
+      ORDER BY customer_name \"
+      LIMIT " + movies.limit + " \
+      OFFSET " + offset + ");";
+      console.log(statement);
+
 
     db.all(statement, function(err, result) {
       if(err) {
@@ -151,8 +179,17 @@ module.exports = {
     var title = request.params.title;
     var query = request.params.query;
     var page = request.params.page;
+    var offset = (pageNumber - 1) * movies.limit;
 
-    // var statement = "SELECT * FROM movies WHERE (title: " + queried_title + ");";
+    var statement =
+      "SELECT * FROM rentals \
+      WHERE movie_title = '" + title + "' \
+      AND returned = 1 \
+      ORDER BY check_out_date \"
+      LIMIT " + movies.limit + " \
+      OFFSET " + offset + ");";
+      console.log(statement);
+
 
     db.all(statement, function(err, result) {
       if(err) {
