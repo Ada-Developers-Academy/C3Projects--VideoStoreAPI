@@ -143,7 +143,7 @@ describe('Rental', function() {
 
   describe('#sortBy', function() {
     it('returns all rentals sorted by return_date', function(done) {
-      rental.sortBy('return_date', 'all', function(err, rows) {
+      rental.sortBy('return_date', null, null, function(err, rows) {
         assert.equal(err, undefined);
         assert.equal(rows.length, numSeeded);
         assert.equal(rows[0].return_date, "2015-03-20");
@@ -153,7 +153,7 @@ describe('Rental', function() {
     });
 
     it('returns 1 rental sorted by customer_id', function(done) {
-      rental.sortBy('customer_id', 1, function(err, rows) {
+      rental.sortBy('customer_id', 1, null, function(err, rows) {
         assert.equal(err, undefined);
         assert.equal(rows.length, 1);
         assert.equal(rows[0].customer_id, 2);
