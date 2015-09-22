@@ -126,6 +126,28 @@ describe("GET '/'", function() {
    }); // returns array objects
 
   it("knows about the route", function(done) {
+    agent.get('/movies/Jaws/past_renters/id').set('Accept', 'application/json')
+      .expect('Content-Type', /application\/json/)
+      .expect(200, function(err, res) {
+      assert.equal(err, undefined);
+       // console.log(err);
+      done();
+      });
+  });
+
+  it("returns the movie object", function(done) {
+   agent.get('/movies/Jaws/past_renters/id').set('Accept', 'application/json')
+     .expect(200, function(err, result) {
+      assert.equal(result.body.length, 2);
+
+      var keys = ['name'];
+      assert.deepEqual(Object.keys(result.body[0]), keys);
+      done();
+     });
+   }); // returns array objects
+
+
+  it("knows about the route", function(done) {
     agent.get('/movies/release/2015').set('Accept', 'application/json')
       .expect('Content-Type', /application\/json/)
       .expect(200, function(err, res) {
