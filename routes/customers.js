@@ -13,9 +13,15 @@ router.get('/sort/name/:limit/:offset', function(req, res, next) {
   return customer_exports.customersController.sortCustomersByName(req, res)
 });
 
-/* SORT MOVIES BY release_date */
+/* SORT Customers BY registered_at */
 router.get('/sort/registered_at/:limit/:offset', function(req, res, next) {
   return customer_exports.customersController.sortCustomersByRegisteredAt(req, res)
 });
+
+/* SORT Customers BY postal_code */
+router.get('/sort/postal_code/:limit/:offset', function(req, res, next) {
+  return customer_exports.customersController.sortCustomersByPostalCode(req, res)
+});
+
 
 module.exports = router;

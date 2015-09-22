@@ -30,7 +30,7 @@ get "/movies/:title/customers/past/sort_by_name" = movie title, sorted by custom
 
 get "/movies/:title/customers/past/sort_by_checkout_date" = movie title, sorted by checkout dates
 
-get "/movies/:title" = Search for one specific title. Include synopsis, release date, and inventory total.
+🔵 get "/movies/:title" = Search for one specific title. Include synopsis, release date, and inventory total.
  - From Movie table find title
 
 get "/movies/:title/available" = Returns inventory available to rent.
@@ -47,7 +47,7 @@ Customers
 
 🔵 get "/customers/sort/registered_at/:limit/:page" = returns all customers sorted date they registered.
 
-get "/customers/sort/postal_code?page=:page&number=:number" = returns all customers sorted by postal_code.
+get "/customers/sort/postal_code/:limit/:page" = returns all customers sorted by postal_code.
 
 get "/customers/:id/movies/current" = show all the movies that this customer is renting currently.
   - From Rent table find all of one customer's current rentals
