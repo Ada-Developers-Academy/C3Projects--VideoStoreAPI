@@ -77,11 +77,7 @@ var rentalsController = {
     var customer_id = parseInt(req.params.customer_id);
     var movie_id = parseInt(req.params.movie_id);
 
-    var post_rental_statement = 
-      "INSERT INTO rentals (customer_id, name, movie_id, title, checkout_date, due_date, return_date) \
-      VALUES (" + customer_id + ", 'test customer name', " + movie_id + ", 'test movie name', date('now'), date('now', '+7 days'), NULL); \
-      UPDATE movies SET inventory_avail = inventory_avail - 1 WHERE ID = " + movie_id + "; \
-      UPDATE customers SET account_credit = account_credit - 3 WHERE ID = " + customer_id + ";";
+    var select_name_and_title = "SELECT name, title FROM customers, movies WHERE customers.id = " + customer_id + " AND movies.id = " + movie_id + ";";
 
     var select_last_rental_statement = 
       "SELECT rentals.id, rentals.title, rentals.customer_id, rentals.name, rentals.checkout_date, rentals.due_date, rentals.return_date \
@@ -89,22 +85,33 @@ var rentalsController = {
       ORDER BY rentals.id DESC \
       LIMIT 1";
 
-// Test sql query
-// INSERT INTO rentals (customer_id, name, movie_id, title, checkout_date, due_date, return_date) VALUES (2, 'test customer name', 12, 'test movie name', date('now'), date('now', '+7 days'), NULL); UPDATE movies SET inventory_avail = inventory_avail - 1 WHERE ID = 12; UPDATE customers SET account_credit = account_credit - 3 WHERE ID = 2; SELECT rentals.id, rentals.title, rentals.customer_id, rentals.name, rentals.checkout_date, rentals.due_date, rentals.return_date, movies.inventory_avail FROM movies, rentals ORDER BY rentals.id DESC LIMIT 1;    
-
     var db = new Database('db/development.db');         
-    
-    db.multi_query(post_rental_statement, function(err) { // no result, bc it's calling .exec (db.js file)
+      
+    db.query(select_name_and_title, function(err, result) {
+      var customer_name = result[0].name;
+      var movie_title = result[0].title;
+      console.log("typeof :", typeof customer_name);
 
-      db.query(select_last_rental_statement, function(err, result) {
-        
-        var json_result = {
-          rental: result
-        };
-        
-        callback(err, json_result);
-      })
-    });
+      var post_rental_statement = 
+        "INSERT INTO rentals (customer_id, name, movie_id, title, checkout_date, due_date, return_date) \
+        VALUES (" + customer_id + ", '" + customer_name + "', " + movie_id + ", '" + movie_title + "', date('now'), date('now', '+7 days'), NULL); \
+        UPDATE movies SET inventory_avail = inventory_avail - 1 WHERE ID = " + movie_id + "; \
+        UPDATE customers SET account_credit = account_credit - 3 WHERE ID = " + customer_id + ";";
+
+      db.multi_query(post_rental_statement, function(err) { // no result, bc it's calling .exec (db.js file)
+        console.log("statment:", post_rental_statement);
+        console.log("error: ", err);
+
+        db.query(select_last_rental_statement, function(err, result) {
+
+          var json_result = {
+            rental: result
+          };
+          
+          callback(err, json_result);
+        })
+      });
+    })
 
   } // end of checkout_movie
 };
