@@ -109,19 +109,6 @@ describe("/customers", function() {
       })
     })
   })
-  //
-  // describe("GET '/checkedout/:id'", function() {
-  //   it("returns an array of all rentals by customer with id 1", function(done) {
-  //     customer_request = agent.get('/customers/checkedout/1').set('Accept', 'application/json');
-  //     customer_request.expect(200, function(err, res) {
-  //       assert.equal(res.body.length, 2);
-  //       console.log(res.body);
-  //       assert.equal(res.body[0].return_date, null);
-  //       assert.notEqual(res.body[1].return_date, null);
-  //       done();
-  //     })
-  //   })
-  // })
 
   describe("GET '/history/:id'", function() {
     it("returns an array of all rentals by customer with id 1", function(done) {
