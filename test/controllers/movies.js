@@ -35,10 +35,10 @@ describe.only("movies controller", function() {
       );
     });
   });
-
-  describe("GET '/movies'", function() {
+  var movies_path = '/movies';
+  describe("GET movies_path", function() {
     it("knows about the route", function(done) {
-      agent.get('/movies').set('Accept', 'application/json')
+      agent.get(movies_path).set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result) {
           assert.equal(error, undefined);
@@ -47,7 +47,7 @@ describe.only("movies controller", function() {
     });
 
     it("returns an array of movie objects", function(done) {
-      agent.get('/movies').set("Accept", "application/json")
+      agent.get(movies_path).set("Accept", "application/json")
         .expect(200, function(error, result) {
           assert.equal(result.body.length, 2);
 
@@ -58,9 +58,10 @@ describe.only("movies controller", function() {
     });
   });
 
-  describe("GET '/movies/title_sort/1/2'", function() {
+  var title_sort_path = '/movies/title_sort/1/1';
+  describe("GET title_sort_path", function() {
     it("knows about the route", function(done) {
-      agent.get('/movies/title_sort/1/2').set('Accept', 'application/json')
+      agent.get('/movies/title_sort/1/1').set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result) {
           assert.equal(error, undefined);
@@ -69,7 +70,7 @@ describe.only("movies controller", function() {
     });
 
     it("returns an array of movie objects 1 per page offset by 2", function(done) {
-      agent.get('/movies/title_sort/1/1').set("Accept", "application/json")
+      agent.get(title_sort_path).set("Accept", "application/json")
         .expect(200, function(error, result) {
           assert.equal(result.body.length, 1);
           movie_keys;
@@ -79,7 +80,7 @@ describe.only("movies controller", function() {
     });
 
     it("sorts the movies by title", function(done) {
-      agent.get('/movies/title_sort/1/1').set("Accept", "application/json")
+      agent.get(title_sort_path).set("Accept", "application/json")
         .expect(200, function(error, result) {
           assert.equal(result.body[0].title, 'Jaws');
           movie_keys;
@@ -89,9 +90,10 @@ describe.only("movies controller", function() {
     })
   });
 
-  describe("GET '/movies/release_date_sort/1/2'", function() {
+  var release_date_sort_path = '/movies/title_sort/1/1';
+  describe("GET release_date_sort_path", function() {
     it("knows about the route", function(done) {
-      agent.get('/movies/title_sort/1/2').set('Accept', 'application/json')
+      agent.get(release_date_sort_path).set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result) {
           assert.equal(error, undefined);
@@ -100,7 +102,7 @@ describe.only("movies controller", function() {
     });
 
     it("returns an array of movie objects 1 per page offset by 2", function(done) {
-      agent.get('/movies/release_date_sort/1/1').set("Accept", "application/json")
+      agent.get(release_date_sort_path).set("Accept", "application/json")
         .expect(200, function(error, result) {
           assert.equal(result.body.length, 1);
           movie_keys;
@@ -110,7 +112,7 @@ describe.only("movies controller", function() {
     });
 
     it("sorts the movies by release date", function(done) {
-      agent.get('/movies/release_date_sort/1/1').set("Accept", "application/json")
+      agent.get(release_date_sort_path).set("Accept", "application/json")
         .expect(200, function(error, result) {
           assert.equal(result.body[0].title, 'Jaws');
           movie_keys;
@@ -120,7 +122,8 @@ describe.only("movies controller", function() {
     })
   });
 
-  describe("GET '/movies/Alien/current_customers'", function() {
+  var current_customers_path = '/movies/Alien/current_customers';
+  describe("GET current_customers_path", function() {
     it("knows about the route", function(done) {
       agent.get('/movies/Jaws/current_customers').set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
@@ -131,7 +134,7 @@ describe.only("movies controller", function() {
     });
 
     it("returns an array of customers who currently have the movie checked out", function(done) {
-      agent.get('/movies/Alien/current_customers').set("Accept", "application/json")
+      agent.get(current_customers_path).set("Accept", "application/json")
         .expect(200, function(error, result) {
           assert.equal(result.body.length, 1);
           customer_keys;
@@ -141,9 +144,10 @@ describe.only("movies controller", function() {
     });
   });
 
-  describe("GET '/movies/Jaws/past_customers'", function() {
+  var past_customers_path = '/movies/Jaws/past_customers'
+  describe("GET past_customers_path", function() {
     it("knows about the route", function(done) {
-      agent.get('/movies/Jaws/past_customers').set('Accept', 'application/json')
+      agent.get(past_customers_path).set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result) {
           assert.equal(error, undefined);
@@ -162,9 +166,10 @@ describe.only("movies controller", function() {
     });
   });
 
-  describe("GET '/movies/Jaws/past_customers/customer_id_sort'", function() {
+  var past_customers_id_sort_path = '/movies/Jaws/past_customers/customer_id_sort'
+  describe("GET past_customers_id_sort_path", function() {
     it("knows about the route", function(done) {
-      agent.get('/movies/Jaws/past_customers/customer_id_sort').set('Accept', 'application/json')
+      agent.get(past_customers_id_sort_path).set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result) {
           assert.equal(error, undefined);
@@ -173,7 +178,7 @@ describe.only("movies controller", function() {
     });
 
     it("returns an array of customers who have checked the movie out in the past", function(done) {
-      agent.get('/movies/Jaws/past_customers/customer_id_sort').set("Accept", "application/json")
+      agent.get(past_customers_id_sort_path).set("Accept", "application/json")
         .expect(200, function(error, result) {
           assert.equal(result.body.length, 2);
           customer_keys;
@@ -183,7 +188,7 @@ describe.only("movies controller", function() {
     });
 
     it("sorts the customers by id", function(done) {
-      agent.get('/movies/Jaws/past_customers/customer_id_sort').set("Accept", "application/json")
+      agent.get(past_customers_id_sort_path).set("Accept", "application/json")
         .expect(200, function(error, result) {
           assert.equal(result.body[0].id, 1);
           customer_keys;
@@ -193,9 +198,10 @@ describe.only("movies controller", function() {
     })
   });
 
-  describe("GET '/movies/Jaws/past_customers/customer_name_sort'", function() {
+  var past_customer_name_sort_path = '/movies/Jaws/past_customers/customer_name_sort'
+  describe("GET past_customer_name_sort_path", function() {
     it("knows about the route", function(done) {
-      agent.get('/movies/Jaws/past_customers/customer_name_sort').set('Accept', 'application/json')
+      agent.get(past_customer_name_sort_path).set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result) {
           assert.equal(error, undefined);
@@ -204,7 +210,7 @@ describe.only("movies controller", function() {
     });
 
     it("returns an array of customers who have checked the movie out in the past", function(done) {
-      agent.get('/movies/Jaws/past_customers/customer_name_sort').set("Accept", "application/json")
+      agent.get(past_customer_name_sort_path).set("Accept", "application/json")
         .expect(200, function(error, result) {
           assert.equal(result.body.length, 2);
           customer_keys;
@@ -214,7 +220,7 @@ describe.only("movies controller", function() {
     });
 
     it("sorts the customers by name", function(done) {
-      agent.get('/movies/Jaws/past_customers/customer_name_sort').set("Accept", "application/json")
+      agent.get(past_customer_name_sort_path).set("Accept", "application/json")
         .expect(200, function(error, result) {
           assert.equal(result.body[0].id, 1);
           customer_keys;
@@ -224,10 +230,10 @@ describe.only("movies controller", function() {
     })
   });
 
-  //:title/past_customers/checkout_date_sort
-  describe("GET '/movies/Jaws/past_customers/checkout_date_sort'", function() {
+  var past_customers_checkout_sort_path = '/movies/Jaws/past_customers/checkout_date_sort'
+  describe("GET past_customers_checkout_sort_path", function() {
     it("knows about the route", function(done) {
-      agent.get('/movies/Jaws/past_customers/checkout_date_sort').set('Accept', 'application/json')
+      agent.get(past_customers_checkout_sort_path).set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result) {
           assert.equal(error, undefined);
@@ -236,7 +242,7 @@ describe.only("movies controller", function() {
     });
 
     it("returns an array of customers who have checked the movie out in the past", function(done) {
-      agent.get('/movies/Jaws/past_customers/checkout_date_sort').set("Accept", "application/json")
+      agent.get(past_customers_checkout_sort_path).set("Accept", "application/json")
         .expect(200, function(error, result) {
           assert.equal(result.body.length, 2);
           customer_keys;
@@ -246,7 +252,7 @@ describe.only("movies controller", function() {
     });
 
     it("sorts the customers by name", function(done) {
-      agent.get('/movies/Jaws/past_customers/checkout_date_sort').set("Accept", "application/json")
+      agent.get(past_customers_checkout_sort_path).set("Accept", "application/json")
         .expect(200, function(error, result) {
           assert.equal(result.body[0].id, 2);
           customer_keys;
