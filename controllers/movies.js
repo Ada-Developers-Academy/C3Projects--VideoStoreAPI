@@ -22,5 +22,19 @@ exports.moviesController = {
     db.customers_by_movie_current(req.params.title, function(err, result) {
       return res.status(200).json(result);
     });
-  }
+  },
+
+  movie_info: function(req, res) {
+    var db = new Movie();
+    db.movie_info(req.params.title, function(err, result) {
+      return res.status(200).json(result);
+    });
+  },
+
+  customers_by_movie_history: function(req, res) {
+    var db = new Movie();
+    db.customers_by_movie_history(req.params.title, function(err, result) {
+      return res.status(200).json(result);
+    });
+  },
 };

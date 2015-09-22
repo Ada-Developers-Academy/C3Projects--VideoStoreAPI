@@ -17,4 +17,14 @@ router.get('/:title/customers', function(req, res, next) {
   return movies_exports.moviesController.customers_by_movie_current(req, res);
 });
 
+/* GET /movies/:title */
+router.get('/:title', function(req, res, next) {
+  return movies_exports.moviesController.movie_info(req, res);
+});
+
+/* GET /movies/:title/history */
+router.get('/:title/history', function(req, res, next) {
+  return movies_exports.moviesController.customers_by_movie_history(req, res);
+});
+
 module.exports = router;

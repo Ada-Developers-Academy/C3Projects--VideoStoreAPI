@@ -41,5 +41,12 @@ describe("Movie", function() {
         });
       });
     });
+    context("GET #movies_by_customer_history", function() {
+      it("retrieves all past movie records from that customer", function(done) {
+        movie.movies_by_customer_history(function(err,res) {
+          done();
+        });
+      });
+    });
   });
 });
