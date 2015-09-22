@@ -10,3 +10,5 @@ Movie.prototype = require('../database');
 // movie.find_all(function(err, res){});
 // movie.sort_by("title", 30, 1, function(err, res){});
 module.exports = Movie;
+
+

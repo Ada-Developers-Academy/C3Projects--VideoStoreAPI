@@ -52,7 +52,15 @@ describe("Movie", function() {
         assert.equal(result[0].title, 'Jaws');
         done();
       });
-    })
+
+    });
+
+    it("returns all movies", function(done) {
+      movie.all(function(err, result) {
+        assert.equal(result.length, 2);
+        done();
+      });
+    });
 
     it("displays all records from movies table", function(done) {
       movie.find_all(function(err, result) {
@@ -71,5 +79,6 @@ describe("Movie", function() {
         done();
       });
     })
+
   })
 });
