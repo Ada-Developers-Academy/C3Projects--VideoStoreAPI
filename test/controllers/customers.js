@@ -4,7 +4,8 @@ var request = require('supertest'),
     sqlite3 = require('sqlite3').verbose(),
     agent = request.agent(app),
     Customer = require('../../customers'),
-    keys = ['id', 'name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone', 'account_credit'];
+    customer_keys = ['id', 'name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone', 'account_credit'],
+    rental_keys = ['id', 'check_out', 'check_in', 'due_date', 'overdue', 'movie_title', 'customer_id'];
 
 describe("customers controller", function() {
   var customer, db_cleaner;
@@ -19,7 +20,7 @@ describe("customers controller", function() {
         DELETE FROM rentals; DELETE FROM customers; \
         INSERT INTO rentals(check_out, check_in, due_date, overdue, movie_title, customer_id) \
         VALUES('2015-06-16', '2015-06-17', '2015-06-19', 0, 'Jaws', 1), \
-              ('2015-06-16', '2015-06-17', '2015-06-19', 1, 'Alien', 1); \
+              ('2015-06-16', null, '2015-06-19', 1, 'Alien', 1); \
         INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_credit) \
         VALUES('Harry', 20150616, '1234', 'Seattle', 'WA', '98103', '1234567', 123), \
               ('Hermione', 20150501, '5678', 'London', 'UK', '99999', '1234568', 213); \
@@ -48,7 +49,7 @@ describe("customers controller", function() {
         .expect(200, function(error, result) {
           assert.equal(result.body.length, 2);
 
-          assert.deepEqual(Object.keys(result.body[0]), keys);
+          assert.deepEqual(Object.keys(result.body[0]), customer_keys);
           done();
         });
     });
@@ -70,7 +71,7 @@ describe("customers controller", function() {
         .expect(200, function(error, result) {
           assert.equal(result.body.length, 1);
 
-          assert.deepEqual(Object.keys(result.body[0]), keys);
+          assert.deepEqual(Object.keys(result.body[0]), customer_keys);
           done();
         });
     });
@@ -101,7 +102,7 @@ describe("customers controller", function() {
         .expect(200, function(error, result) {
           assert.equal(result.body.length, 2);
 
-          assert.deepEqual(Object.keys(result.body[0]), keys);
+          assert.deepEqual(Object.keys(result.body[0]), customer_keys);
           done();
         });
     });
@@ -132,7 +133,7 @@ describe("customers controller", function() {
         .expect(200, function(error, result) {
           assert.equal(result.body.length, 2);
 
-          assert.deepEqual(Object.keys(result.body[0]), keys);
+          assert.deepEqual(Object.keys(result.body[0]), customer_keys);
           done();
         });
     });
@@ -144,6 +145,29 @@ describe("customers controller", function() {
           assert.equal(result.body[0].name, "Harry");
           done();
         });
+    });
+  });
+
+  describe("GET /customers/:id/current_rentals", function() {
+    it("knows about the route", function(done) {
+      agent.get("/customers/2/current_rentals").set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result) {
+          assert.equal(error, undefined);
+          done();
+        });
+    });
+
+    it("retuns an array of the customer with current rentals", function(done) {
+      agent.get("/customers/1/current_rentals").set('Accept', 'application/json')
+      .expect('Content-Type', /application\/json/)
+      .expect(200, function(error, result) {
+        assert.equal(result.body.length, 1);
+        assert.equal(result.body[0].movie_title, "Alien");
+
+        assert.deepEqual(Object.keys(result.body[0]), rental_keys);
+        done();
+      });
     });
   });
 });
