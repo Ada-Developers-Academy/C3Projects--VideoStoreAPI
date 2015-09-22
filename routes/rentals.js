@@ -2,11 +2,11 @@ var express = require('express');
 var router = express.Router();
 var rentals_exports = require("../controllers/rentals");
 
-/* GET home page. */
+/* GET all customers for all currently checkout out movies */
 router.get('/customers/current', function(req, res, next) {
  return rentals_exports.rentalsController.customers_current(req, res);
 });
-// for specific movie, show all customers w/ it checkout out
+// for specific movie, show all customers w/ it checked out
 router.get('/checkedout/:title', function(req, res, next) {
   return rentals_exports.rentalsController.checkedout(req, res);
 });
