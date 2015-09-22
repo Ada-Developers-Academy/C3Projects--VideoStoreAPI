@@ -9,7 +9,7 @@ var sortCustomers = function(sort_type, params, res) {
   var customers = customer.sort_by(sort_type, records_per_page, offset, function(customers) {
     return res.status(200).json(customers);
   });
-}
+};
 
 exports.customersController = {
 
