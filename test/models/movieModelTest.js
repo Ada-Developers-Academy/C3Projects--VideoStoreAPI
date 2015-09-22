@@ -15,6 +15,15 @@ describe("Movie", function() {
         DELETE FROM movies; \
         INSERT INTO movies(title, overview, release_date, inventory) \
         VALUES('Jaws', 'Shark!', 'Yesterday', 10), \
+              ('Paws', 'Aaw, so cute!', 'Yesterday', 1), \
+              ('Aaws', 'adorable!', 'Yesterday', 5), \
+              ('Freelaws', 'Shark!', 'Yesterday', 6), \
+              ('Jamaws', 'Snark!', 'Yesterday', 20), \
+              ('Saws', 'Spark!', 'Yesterday', 10), \
+              ('Baws', 'Swark!', 'Yesterday', 10), \
+              ('Caws', 'The Birds!', 'Yesterday', 3), \
+              ('Daws', 'Puddles!', 'Yesterday', 4), \
+              ('Faws', 'Story of a Fawn!', 'Yesterday', 15), \
               ('Maws', 'Worm!', 'Yesterday', 11); \
         COMMIT;"
         , function(err) {
