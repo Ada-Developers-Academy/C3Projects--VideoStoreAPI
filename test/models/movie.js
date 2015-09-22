@@ -49,7 +49,7 @@ describe("Movie", function() {
     })
 
     it("can find all movies where a column has a particular value", function(done) {
-      movie.where('*', ["title"], ["Jaws"], function(err, res) {
+      movie.where(["title"], ["Jaws"], function(err, res) {
         assert.equal(err, undefined);
         assert(res instanceof Object); // Why is this breaking?
         assert.equal(res.length, 1);
