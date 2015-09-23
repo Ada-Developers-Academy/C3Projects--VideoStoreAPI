@@ -10,6 +10,16 @@ var rentalsController = {
     db.check_out(customer_id, movie_title, function(err, result) {
       return response.status(200).json(result);
     });
+  },
+
+  update: function(request, response, next) {
+    var customer_id = request.body.id,
+        movie_title = request.body.title,
+        db = new Rental();
+
+    db.check_in(customer_id, movie_title, function(err, result) {
+      return response.status(200).json(result);
+    });
   }
 };
 
