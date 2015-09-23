@@ -59,12 +59,8 @@ describe("/customers", function() {
   describe("GET '/name/:records/:offset'", function() {
     var customer_request;
 
-    beforeEach(function(done) {
-      customer_request = agent.get('/customers/name/2/0').set('Accept', 'application/json');
-      done();
-    })
-
     it("returns an array of 2 customers sorted by name", function(done) {
+      customer_request = agent.get('/customers/name/2/0').set('Accept', 'application/json');
       customer_request.expect(200, function(err, res) {
         assert.equal(res.body.length, 2);
         assert.equal(res.body[0].name, "Jack");
@@ -75,6 +71,8 @@ describe("/customers", function() {
   })
 
   describe("GET '/registered/:records/:offset'", function() {
+    var customer_request;
+
     it("returns an array of 2 customers sorted by date of registration in ascending order", function(done) {
       customer_request = agent.get('/customers/registered/2/0').set('Accept', 'application/json');
       customer_request.expect(200, function(err, res) {
@@ -87,6 +85,8 @@ describe("/customers", function() {
   })
 
   describe("GET '/postal/:records/:offset'", function() {
+    var customer_request;
+
     it("returns an array of 2 customers sorted by postal code in ascending order", function(done) {
       customer_request = agent.get('/customers/postal/2/0').set('Accept', 'application/json');
       customer_request.expect(200, function(err, res) {

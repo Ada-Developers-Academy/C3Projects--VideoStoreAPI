@@ -3,27 +3,27 @@
 var Customer = require('../models/customers');
 
 var Controller = {
-  index: function(req, res, callback) {
+  index: function(req, res, next) {
     new Customer().all(Controller.send_json.bind(res))
   },
 
-  name: function(req, res, callback) {
-    new Customer().some('name', req.params.offset, req.params.records, Controller.send_json.bind(res))
+  name: function(req, res, next) {
+    new Customer().some('name', req.params.records, req.params.offset, Controller.send_json.bind(res))
   },
 
-  registered: function(req, res, callback) {
-    new Customer().some('registered_at', req.params.offset, req.params.records, Controller.send_json.bind(res))
+  registered: function(req, res, next) {
+    new Customer().some('registered_at', req.params.records, req.params.offset, Controller.send_json.bind(res))
   },
 
-  postal: function(req, res, callback) {
-    new Customer().some('postal_code', req.params.offset, req.params.records, Controller.send_json.bind(res))
+  postal: function(req, res, next) {
+    new Customer().some('postal_code', req.params.records, req.params.offset, Controller.send_json.bind(res))
   },
 
-  current: function(req, res, callback) {
+  current: function(req, res, next) {
    new Customer().find_by('customer_id', 'return_date IS NULL', req.params.id, Controller.send_json.bind(res))
   },
 
-  history: function(req, res, callback) {
+  history: function(req, res, next) {
    new Customer().find_by('customer_id', 'return_date IS NOT NULL ORDER BY checkout_date', req.params.id, Controller.send_json.bind(res))
   },
 
