@@ -9,8 +9,8 @@ module.exports = {
     db.serialize(function() {
       // below: this is the callback pattern...parameters(ERRORS, RESULT)
       db.all(statement, function(err, res) {
-        // console.log(statement);
-        // console.log(err);
+        console.log(statement);
+        console.log(err);
         // error handling looks like -> if (err) { };
         if (callback) { callback(res); }
       });
@@ -105,16 +105,38 @@ module.exports = {
  // passing req.body to data
   check_out: function(data, callback) {
     // data will be an object with a key value pair with each item for rental
-    console.log(data);
     var check_out_date = new Date();
+    var check_out = formatDate(check_out_date);
     var due_date = new Date(check_out_date);
     due_date.setDate(check_out_date.getDate() + 3);
-    var movie_title = data.movie_title;
+    var due = formatDate(due_date);
+    var title = data.movie_title;
     var customer_id = data.customer_id;
-    var statement = "INSERT INTO " + this.table_name + "(check_out, check_in, due_date, overdue, movie_title, customer_id) VALUES(" + check_out_date + ", null, " + due_date + ", 0, " + movie_title + ", " + customer_id +  ")"
-    this.query(statement, function(res) {
-      callback(res);
-    });
-    console.log(statement);
+
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    db.exec(
+    "BEGIN; \
+    INSERT INTO " + this.table_name + "(check_out, check_in, due_date, overdue, movie_title, customer_id) VALUES(" + check_out + ", null, " + due + ", 0, '" + title + "', " + customer_id +  "); \
+    UPDATE movies SET inventory_available=inventory_available - 1 WHERE title='" + title + "'; \
+    UPDATE customers SET account_credit=account_credit - 3 WHERE id=" + customer_id + "; \
+    COMMIT;");
+    db.close();
   }
+}
+
+var formatDate = function(date) {
+  var dateObj = new Date(date);
+  var month = (dateObj.getUTCMonth() + 1).toString(); //months from 1-12
+  var day = (dateObj.getUTCDate()).toString();
+  var year = (dateObj.getUTCFullYear()).toString();
+
+  if (month.length == 1) { // This will ensure month is two digits
+    month = "0" + month;
+  }
+
+  if (day.length == 1) { // This will ensure day is two digits
+    day = "0" + day;
+  }
+
+  return parseInt(year + month + day);
 }
