@@ -48,7 +48,9 @@ module.exports = {
     var db = new sqlite3.Database('db/' + db_env + '.db');
     var statement = "SELECT * FROM rentals WHERE " + column + " = ? AND returned_date = 'nil';";
 
+
     db.all(statement, value, function(error, result) {
+
       if (callback) callback(error, result);
       db.close();
     })

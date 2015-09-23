@@ -48,4 +48,14 @@
     "customer_id": "4",
     "movie_id": "3"
   },
+
+  {
+    "checkout_date": "09-20-2015",
+    "returned_date": "nil",
+    "rental_time": "2",
+    "cost": "2.50",
+    "total": "nil",
+    "customer_id": "3",
+    "movie_id": "5"
+  }
 ]
