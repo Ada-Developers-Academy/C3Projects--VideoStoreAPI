@@ -19,6 +19,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+var rentals = require("./routes/rentals_routes");
+app.use("/rentals", rentals);
+
 var zomgRoutes = require('./routes/zomgRoutes');
 app.use('/', zomgRoutes);
 app.use('/zomg', zomgRoutes);

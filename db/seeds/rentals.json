@@ -36,7 +36,28 @@
   },
   {
     "movie_title": "Alien",
-    "customer_id": 60,
+    "customer_id": 61,
+    "returned": 0,
+    "check_out_date": "Thu, 17 Sep 2015 14:00:10 -0700",
+    "return_date": ""
+  },
+  {
+    "movie_title": "Alien",
+    "customer_id": 62,
+    "returned": 0,
+    "check_out_date": "Thu, 17 Sep 2015 14:00:10 -0700",
+    "return_date": ""
+  },
+  {
+    "movie_title": "Alien",
+    "customer_id": 64,
+    "returned": 0,
+    "check_out_date": "Thu, 17 Sep 2015 14:00:10 -0700",
+    "return_date": ""
+  },
+  {
+    "movie_title": "Alien",
+    "customer_id": 65,
     "returned": 0,
     "check_out_date": "Thu, 17 Sep 2015 14:00:10 -0700",
     "return_date": ""
@@ -60,7 +81,77 @@
     "customer_id": 86,
     "returned": 1,
     "check_out_date": "Sat, 12 Sep 2015 12:08:43 -0700",
-    "return_date": "Sat, 19 Sep 2015 07:40:12 -0700"
+    "return_date": "Sat, 19 Sep 2015 17:45:43 -0700"
+  },
+  {
+    "movie_title": "Butch Cassidy and the Sundance Kid",
+    "customer_id": 87,
+    "returned": 0,
+    "check_out_date": "Sat, 12 Sep 2015 12:08:43 -0700",
+    "return_date": ""
+  },
+  {
+    "movie_title": "Butch Cassidy and the Sundance Kid",
+    "customer_id": 88,
+    "returned": 0,
+    "check_out_date": "Sat, 12 Sep 2015 12:08:43 -0700",
+    "return_date": ""
+  },
+  {
+    "movie_title": "Butch Cassidy and the Sundance Kid",
+    "customer_id": 89,
+    "returned": 0,
+    "check_out_date": "Sat, 12 Sep 2015 12:08:43 -0700",
+    "return_date": ""
+  },
+  {
+    "movie_title": "Butch Cassidy and the Sundance Kid",
+    "customer_id": 90,
+    "returned": 0,
+    "check_out_date": "Sat, 12 Sep 2015 12:08:43 -0700",
+    "return_date": ""
+  },
+  {
+    "movie_title": "Butch Cassidy and the Sundance Kid",
+    "customer_id": 91,
+    "returned": 0,
+    "check_out_date": "Sat, 12 Sep 2015 12:08:43 -0700",
+    "return_date": ""
+  },
+  {
+    "movie_title": "Butch Cassidy and the Sundance Kid",
+    "customer_id": 92,
+    "returned": 0,
+    "check_out_date": "Sat, 12 Sep 2015 12:08:43 -0700",
+    "return_date": ""
+  },
+  {
+    "movie_title": "Butch Cassidy and the Sundance Kid",
+    "customer_id": 93,
+    "returned": 0,
+    "check_out_date": "Sat, 12 Sep 2015 12:08:43 -0700",
+    "return_date": ""
+  },
+  {
+    "movie_title": "Butch Cassidy and the Sundance Kid",
+    "customer_id": 94,
+    "returned": 0,
+    "check_out_date": "Sat, 12 Sep 2015 12:08:43 -0700",
+    "return_date": ""
+  },
+  {
+    "movie_title": "Butch Cassidy and the Sundance Kid",
+    "customer_id": 95,
+    "returned": 0,
+    "check_out_date": "Sat, 12 Sep 2015 12:08:43 -0700",
+    "return_date": ""
+  },
+  {
+    "movie_title": "Butch Cassidy and the Sundance Kid",
+    "customer_id": 96,
+    "returned": 0,
+    "check_out_date": "Sat, 12 Sep 2015 12:08:43 -0700",
+    "return_date": ""
   },
   {
     "movie_title": "The Treasure of the Sierra Madre",

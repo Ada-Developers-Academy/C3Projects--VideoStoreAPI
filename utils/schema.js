@@ -7,31 +7,31 @@ var db = new sqlite3.Database('db/' + dbEnv + '.db');
 
 // put column names and data types into array
 var movieFields = [
-  // ['title', 'text'],
-  ['overview', 'text'],
-  ['release_date', 'text'],
-  ['inventory', 'integer']
+  // ['title', 'TEXT'],
+  ['overview', 'TEXT'],
+  ['release_date', 'INTEGER'],
+  ['inventory', 'INTEGER']
 ]
 
 var customerFields = [
-  // ['id', 'integer'],
-  ['name', 'text'],
-  ['registered_at', 'text'],
-  ['address', 'text'],
-  ['city', 'text'],
-  ['state', 'text'],
-  ['postal_code', 'text'],
-  ['phone', 'text'],
-  ['account_credit', 'integer'] // need to convert seeds to cents
+  // ['id', 'INTEGER'],
+  ['name', 'TEXT'],
+  ['registered_at', 'INTEGER'],
+  ['address', 'TEXT'],
+  ['city', 'TEXT'],
+  ['state', 'TEXT'],
+  ['postal_code', 'TEXT'],
+  ['phone', 'TEXT'],
+  ['account_credit', 'INTEGER'] // need to convert seeds to cents
 ]
 
 var rentalFields = [
-  // ['id', 'integer'], // primary key
-  ['movie_title', 'text'],  // foreign key
-  ['customer_id', 'integer'], // foreign key
-  ['returned', 'integer'],  // 0 = false, 1 = true
-  ['check_out_date', 'text'],
-  ['return_date', 'text']
+  // ['id', 'INTEGER'], // primary key
+  ['movie_title', 'TEXT'],  // foreign key
+  ['customer_id', 'INTEGER'], // foreign key
+  ['returned', 'INTEGER'],  // 0 = false, 1 = true
+  ['check_out_date', 'INTEGER'],
+  ['return_date', 'INTEGER']
 ]
 
 db.serialize(function() {
