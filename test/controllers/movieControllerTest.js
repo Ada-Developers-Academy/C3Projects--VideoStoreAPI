@@ -121,7 +121,11 @@ describe('movie controller', function() {
 
   describe('GET /:title/rented/sort_by=:query/:page', function() {
     var title = "Alien";
-    var sorting_hat = ["customer_id", "customer_name", "check_out_date"];
+    var sorting_hat = [
+      "customer_id",
+      "customer_name",
+      "check_out_date"
+    ];
     var customer_movies = [
       'name',
       'check_out_date',
@@ -130,7 +134,6 @@ describe('movie controller', function() {
 
     sorting_hat.forEach(function(query) {
       var uri = '/movies/' + title + '/rented/sort_by=' + query + '/1';
-      console.log(uri);
       it('responds with json format', function(done) {
         console.log(uri);
 
@@ -151,4 +154,48 @@ describe('movie controller', function() {
       })
     }) // forEach loop
   }) // GET /:title/rented/sort_by=:query/:page
+
+  describe('GET /all/sort_by=:sort/:page', function() {
+    var sorting_cap = [
+      'title',
+      'release_date'
+    ];
+
+    var movie_keys = [
+      'title',
+      'release_date',
+      'overview',
+      'inventory'
+    ]
+
+    sorting_cap.forEach(function(sort) {
+      var uri = '/movies/all/sort_by=' + sort + '/1';
+
+      it('responds with a json object', function(done) {
+        agent.get(uri).set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200, function(error, result) {
+          assert.equal(error, undefined);
+          done();
+        })
+      })
+
+      it('responds with an array of movies', function(done) {
+        agent.get(uri).set('Accept', 'application/json')
+        .expect(200, function(error, result) {
+          assert.deepEqual(Object.keys(result.body[0]).sort(), movie_keys.sort())
+          done();
+        })
+      })
+
+      it('responds with 10 movies', function(done) {
+        agent.get(uri).set('Accept', 'application/json')
+        .expect(200, function(error, result) {
+          assert.equal(result.body.length, 10)
+          done();
+        })
+      })
+
+    }) //forEach loop
+  }) // /all/sort_by=:sort/:page
 }) // moviecontroller describe
