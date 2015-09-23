@@ -171,6 +171,53 @@ describe('Movie', function() {
       });
     });
   });
+
+  describe('Movie specific functions', function() {
+    beforeEach(function(done) {
+      seedCustomers(done);
+    });
+
+    describe('#customersCurrent', function() {
+      it('returns a list of customers who currently have checked out a movie given the title', function(done) {
+        movie.customersCurrent('Movie3', function(err, rows) {
+          assert.equal(err, undefined);
+          assert.equal(rows.length, 1);
+          assert.equal(rows[0].rental_id, 4);
+          assert.equal(rows[0].checkout_date, '2015-09-18');
+          done();
+        });
+      });
+    });
+
+    describe('#customersPast', function() {
+      it('returns a list of customers sorted by customer_id who have checked out a movie in the past given the title', function(done) {
+        movie.customersPast('Movie2', 'customer_id', function(err, rows) {
+          assert.equal(err, undefined);
+          assert.equal(rows.length, 1);
+          assert.equal(rows[0].customer_id, 1);
+          done();
+        });
+      });
+
+      it('returns a list of customers sorted by customer name who have checked out a movie in the past given the title', function(done) {
+        movie.customersPast('Movie2', 'name', function(err, rows) {
+          assert.equal(err, undefined);
+          assert.equal(rows.length, 1);
+          assert.equal(rows[0].name, 'Customer1');
+          done();
+        });
+      });
+
+      it('returns a list of customers sorted by checkout_date who have checked out a movie in the past given the title', function(done) {
+        movie.customersPast('Movie2', 'checkout_date', function(err, rows) {
+          assert.equal(err, undefined);
+          assert.equal(rows.length, 1);
+          assert.equal(rows[0].checkout_date, '2015-03-16');
+          done();
+        });
+      });
+    });
+  });
 });
 
 function resetMoviesTable(done) {
@@ -185,6 +232,45 @@ function resetMoviesTable(done) {
       VALUES('Jaws', 'Shark!', '1975-06-19', 10), \
             ('Jaws and Maws', 'Worm!', 'Yesterday', 11), \
             ('The French Connection', 'Bonjour!', '1971-10-07', 8); \
+      COMMIT;",
+      function(err) {
+        db.close();
+        done();
+      }
+    );
+  });
+}
+
+function seedCustomers(done) {
+  var db = new sqlite3.Database('db/test.db');
+  // reset customers
+  db.serialize(function() {
+    db.exec(
+      "BEGIN; \
+      DELETE FROM customers; \
+      INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_balance) \
+      VALUES('Customer1', '01/02/2015', 'Address1', 'City1', 'State1', 'Zip1', 'Phone1', '1250'), \
+            ('Customer2', '12/01/2014', 'Address2', 'City2', 'State2', 'Zip2', 'Phone2', '1000'); \
+      COMMIT;",
+      function(err) {
+        db.close();
+        resetRentalsTable(done); // reset rentals
+      }
+    );
+  });
+}
+
+function resetRentalsTable(done) {
+  var db = new sqlite3.Database('db/test.db');
+  db.serialize(function() {
+    db.exec(
+      "BEGIN; \
+      DELETE FROM rentals; \
+      INSERT INTO rentals(checkout_date, return_date, movie_title, customer_id) \
+      VALUES('2015-09-16', '', 'Movie1', 1), \
+            ('2015-03-16', '2015-03-20', 'Movie2', 1), \
+            ('2015-06-23', '', 'Movie2', 2), \
+            ('2015-09-18', '', 'Movie3', 2); \
       COMMIT;",
       function(err) {
         db.close();
