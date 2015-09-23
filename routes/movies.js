@@ -20,7 +20,8 @@ router.get('/', function(req, res, next) {
 
 router.get('/:title/:order', function(req, res, next) {
   var title = req.params.title;
-  var order = req.params.order;
+  var originalOrder = req.params.order;
+  console.log(originalOrder);
   // sort by customer_id, customer name, and checkout_date
   // var currentRentersArray = [];
   // var pastRentersArray = [];
@@ -34,18 +35,25 @@ router.get('/:title/:order', function(req, res, next) {
   movie.find_by('title', title, function(err, row) {
     movieObject.movie_data = row;
     movieId = row.id;
+    var sortOrder;
 
     var condition = "movie_id = " + movieId;
 
-    if (order = "customer_name") {
-      order = "id"
+    // don't bother sorting rentals if customers should be sorted by customer name
+    if (originalOrder == "customer_name") {
+      sortOrder = "none"
+    } else {
+      sortOrder = originalOrder;
     }
+    console.log(sortOrder);
 
-    rental.order_by(condition, order, function(err, rows) {
+    rental.order_by(condition, sortOrder, function(err, rows) {
       var currentRentersIds = [];
       var pastRentersIds = [];
 
+      console.log(rows);
       for (var i = 0; i < rows.length; i++) {
+
         if (rows[i].returned_date == "") {
           currentRentersIds.push(rows[i].customer_id);
         } else {
@@ -57,6 +65,11 @@ router.get('/:title/:order', function(req, res, next) {
         movieObject.customers.currentRenters = rows;
 
         customer.where_in(['id'], pastRentersIds, function(err, rows) {
+          if (originalOrder == "customer_name") {
+            rows.sort(function(a, b) {
+              return a.name.localeCompare(b.name); // this is a good way to sort strings!
+            }); // sort customers by names ASC
+          }
           movieObject.customers.pastRenters = rows;
           
           res.status(200).json(movieObject);
