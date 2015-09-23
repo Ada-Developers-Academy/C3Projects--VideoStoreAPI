@@ -4,6 +4,6 @@
    this.table_name = "customers";
  }
 
- Customer.prototype = require("../database");
+ Customer.prototype = require("./database");
 
  module.exports = Customer
