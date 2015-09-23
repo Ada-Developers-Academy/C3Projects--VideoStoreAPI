@@ -4,7 +4,7 @@ var request = require('supertest'),
     sqlite3 = require('sqlite3').verbose(),
     agent   = request.agent(app);
 
-describe.only("enpoints with /movies", function() {
+describe("movies controller", function() {
   // beforeEach(function(done) {
   //   db_cleaner = new sqlite3.Database('db/test.db');
   //   db_cleaner.serialize(function() {
@@ -22,7 +22,6 @@ describe.only("enpoints with /movies", function() {
   //     );
   //   });
   // })
-
 
   describe("GET ':title/customers/current'", function() {
 

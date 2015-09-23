@@ -1,8 +1,8 @@
 Movies
 
 🔵 get "/movies" = All movies
- - √ written method 'find_all'; test passed,
- - √ displays all movies on webpage
+ - written method 'find_all'; test passed,
+ - displays all movies on webpage
 
 🔵 get "/movies/sort/title/:limit/:page" = sort title alphabetically. We need movie titles.
   * From Movies table:

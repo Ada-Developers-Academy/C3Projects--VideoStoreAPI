@@ -6,8 +6,8 @@ var Customer = require("../models/customer");
 exports.moviesController = {
   findAllMovies: function(req, res) {
     var dbMovie = new Movie();
-    var result = dbMovie.find_all(function(err,result){
-    return res.status(200).json(result);
+    dbMovie.find_all(function(err,result){
+    res.status(200).json(result);
     });
   },
 
@@ -15,8 +15,8 @@ exports.moviesController = {
     var dbMovie = new Movie();
     var value = req.params.title;
     console.log(value);
-    var result = dbMovie.find_by("title", value, function(err,result){
-    return res.status(200).json(result);
+    dbMovie.find_by("title", value, function(err,result){
+    res.status(200).json(result);
     });
   },
 
@@ -24,8 +24,8 @@ exports.moviesController = {
     var dbMovie = new Movie();
     var limit = req.params.limit;
     var offset = req.params.offset;
-    var result = dbMovie.sort_by("title", limit, offset, function(err,result){
-    return res.status(200).json(result);
+    dbMovie.sort_by("title", limit, offset, function(err,result){
+    res.status(200).json(result);
     });
   },
 
@@ -33,8 +33,8 @@ exports.moviesController = {
     var dbMovie = new Movie();
     var limit = req.params.limit;
     var offset = req.params.offset;
-    var result = dbMovie.sort_by("release_date", limit, offset, function(err,result){
-    return res.status(200).json(result);
+    dbMovie.sort_by("release_date", limit, offset, function(err,result){
+    res.status(200).json(result);
     });
   },
 
@@ -47,6 +47,7 @@ exports.moviesController = {
       console.log(result);
       res.status(200).json(result);
     });
+<<<<<<< HEAD
     // dbMovie.find_by("title", title, function getMovieId(error, result) {
     //   var movieId = result[0].id;
     //   console.log(result);
@@ -63,6 +64,8 @@ exports.moviesController = {
     // });
     //   return res.status(200).json(result);
     // });
+=======
+>>>>>>> e13e95eedddbafb9d6e081a30278a26add36338a
   },
 
   availableMovies: function(req, res) {
@@ -70,9 +73,6 @@ exports.moviesController = {
     var title = req.params.title;
     dbMovie.available(title, function(err,result){
     res.status(200).json(result);
-
     });
   }
 }
-
-// getCustomer
