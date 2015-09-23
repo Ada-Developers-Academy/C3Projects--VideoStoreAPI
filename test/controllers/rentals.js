@@ -148,4 +148,37 @@ describe("Endpoints under /rentals", function() {
         .expect('[{"name":"Adam"}]', done);
     });
   });
+
+  describe('POST /rentals/check_out', function(){
+    var request;
+    beforeEach(function(done) {
+      request = agent
+        .post('/rentals/check_out')
+        .send({ 'customer_id': '1', 'movie_title': 'Jaws' });
+      done();
+    });
+
+    it('responds with json', function(done){
+      request
+        .expect('Content-Type', /application\/json/)
+        .expect(200, done);
+    });
+
+    it('responds with correct data', function(done){
+      request
+        .expect('{}', done);
+    });
+
+    it('creates a new rental in the database', function(done) {
+      var db = new sqlite3.Database('db/test.db');
+
+      request
+        .end(function(err, res) {
+          db.all("SELECT COUNT(*) AS 'num_of_rentals' FROM rentals", function(error, result) {
+            assert.deepEqual([{'num_of_rentals': 6}], result);
+            done();
+          });
+        });
+    });
+  });
 });
