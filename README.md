@@ -2,8 +2,6 @@
 
 ## Notes
 ### Endpoints
-*DONE* ADD PAGINATION
-
 *DONE* GET "/customers"
 // for routes below, will need to return results offset by page number
 *DONE* GET "/customers/:name" // will be dynamic
@@ -26,9 +24,9 @@
 *DONE* GET "/movies/:title"
   // includes synopsis, release date, inventory total, rentable boolean, list of customers that have it currently checkout out ...?
 
-POST "/rentals/:customer_id/:movie_title"
+*DONE* POST "/rentals/:customer_id/:movie_title"
   // create association, checkout date, return date, charge account, returned boolean
-PATCH "/checkin/:customer_id/:movie_title"
+*DONE* PATCH "/checkin/:customer_id/:movie_title"
   // modify returned boolean
 *DONE* GET "/rentals/overdue"
 
