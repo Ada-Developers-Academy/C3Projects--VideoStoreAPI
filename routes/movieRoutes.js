@@ -50,10 +50,10 @@ router.get('/:title/rented/sort_by=:query', function(req, res, next) {
     }
 });
 
-router.get('/all/:page', function(req, res, next) {
+router.get('/all', function(req, res, next) {
   return movieController.all_movies(req, res);
 });
-router.get('/all', function(req, res, next) {
+router.get('/all/:page', function(req, res, next) {
   return movieController.all_movies(req, res);
 });
 
