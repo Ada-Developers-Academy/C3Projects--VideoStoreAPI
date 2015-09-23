@@ -48,12 +48,10 @@ module.exports = {
   customer_history: function(value, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
 
-    var statement = "SELECT 'movies'.'title' FROM 'movies' INNER JOIN 'rentals' ON 'movies'.'id' = 'rentals'.'movie_id' WHERE 'rentals'.'customer_id' = ? AND 'rentals'.'returned_date' != '';";
-    var statement2 = "SELECT 'rentals'.'returned_date' FROM 'rentals' INNER JOIN 'customers' ON 'customers'.'id' = 'rentals'.'customer_id' WHERE 'rentals'.'customer_id' = ? AND 'rentals'.'returned_date' != '';";
+    var statement = "SELECT movies.title, rentals.returned_date FROM movies JOIN rentals ON movies.id = rentals.movie_id WHERE rentals.customer_id = ?;"
 
     db.all(statement, value, function(err, res) {
       if (callback) callback(err, res);
-      console.log(res);
       db.close();
     });
   },
