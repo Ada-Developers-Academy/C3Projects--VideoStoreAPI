@@ -14,7 +14,7 @@ var fixTime = require(helps + "milliseconds_to_date");
 // var validateParams = require(helps + "validate_params");
 var ourWebsite = require(helps + "url_base");
 // var formatMovieInfo = require(rents + "format_movie_info");
-var formatCustomerInfo = require(rents + "format_customer_info");
+// var formatCustomerInfo = require(rents + "format_customer_info");
 
 module.exports = {
   // this is all movies
@@ -23,65 +23,48 @@ module.exports = {
     var movies = new movieTable();
 
     // prepare statement
-    var pageNumber = request.params.page; // we still need to handle for page 1
-    var offset = (pageNumber - 1) * movies.limit;
+    var page = request.params.page || 1;
+    var offset = (page - 1) * movies.limit;
     var statement = "SELECT * FROM movies LIMIT " + movies.limit +
-      " OFFSET " + offset + ";";
+      " OFFSET " + offset;
 
     db.all(statement, function(err, results) { // closure
       if(err) {
         console.log(err); // error handling
         return;
       }
+      results = fixTime(results, 'release_date');
       return response.status(200).json(results);
     });
-
     db.close();
   },
 
   title: function(request, response) {
     var db = new sqlite3.Database("db/" + dbEnv + ".db");
     var movies = new movieTable();
-    var pageNumber = request.params.page || 1;
-    var offset = (pageNumber - 1) * movies.limit;
+    var page = request.params.page || 1;
+    var offset = (page - 1) * movies.limit;
     var statement = "SELECT * FROM movies ORDER BY (title) LIMIT "
-      + movies.limit + " OFFSET " + offset + ";";
+      + movies.limit + " OFFSET " + offset;
 
     db.all(statement, function(err, results) { // closure
       if(err) {
         console.log(err); // error handling
         return;
       }
+      results = fixTime(results, 'release_date');
       return response.status(200).json(results);
     });
-
     db.close();
   },
 
   release_date: function(request, response) {
-    // function convertReleaseDate(arrayOfMovies) {
-    //   arrayOfMovies = arrayOfMovies.map(function(movie) {
-    //     var convertReleaseDate = Number(movie.release_date);
-    //     var dateOfRelease = new Date(convertReleaseDate);
-    //     var humanReadableDate = dateOfRelease.toDateString();
-    //     var humanReadableTime = dateOfRelease.toTimeString();
-    //     movie.release_date = humanReadableDate + " " + humanReadableTime;
-    //
-    //     return movie;
-    //   });
-    //
-    //   return arrayOfMovies;
-    // }
-
-    // fixTime(objectsArray, propertyToConvert)
-    fixTime(asdf, 'release_date');
-
     var db = new sqlite3.Database("db/" + dbEnv + ".db");
     var movies = new movieTable();
 
     // prepare statement
-    var pageNumber = request.params.page; // we still need to handle for page 1
-    var offset = (pageNumber - 1) * movies.limit;
+    var page = request.params.page || 1
+    var offset = (page - 1) * movies.limit;
     var statement =
       "SELECT * FROM movies \
       ORDER BY (release_date) \
@@ -93,8 +76,7 @@ module.exports = {
         console.log(err); // error handling
         return;
       }
-      results = convertReleaseDate(results);
-
+      results = fixTime(results, 'release_date');
       return response.status(200).json(results);
     });
 
@@ -115,6 +97,7 @@ module.exports = {
         console.log(err); // error handling
         return;
       };
+      result = fixTime(result, 'release_date');
       return response.status(200).json(result);
     });
     db.close();
@@ -137,12 +120,13 @@ module.exports = {
         AND rentals.returned = 1 \
         ORDER BY customers.id";
 
-    db.all(statement, function(err, result) {
+    db.all(statement, function(err, results) {
       if(err) {
         console.log(err); // error handling
         return;
       };
-      return response.status(200).json(result);
+      results = fixTime(results, 'check_out_date');
+      return response.status(200).json(results);
 
     });
     db.close();
@@ -197,6 +181,7 @@ module.exports = {
         console.log(err); // error handling
         return;
       };
+      result = fixTime(result, 'check_out_date');
       return response.status(200).json(result);
 
     });
@@ -225,6 +210,7 @@ module.exports = {
         console.log(err); // error handling
         return;
       };
+      result = fixTime(result, 'check_out_date');
       return response.status(200).json(result);
 
     });
