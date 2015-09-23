@@ -18,7 +18,7 @@ var customer_statement = db.prepare(
 
 var rentals = require('./rentals');
 var rental_statement = db.prepare(
-  "INSERT INTO rentals(customer_id, movie_id, checkout_date, return_date, returned) \
+  "INSERT INTO rentals(customer_id, movie_id, checkout_date, due_date, returned_date) \
   VALUES (?, ?, ?, ?, ?);"
   );
 
@@ -62,8 +62,8 @@ db.serialize(function() {
       rental.customer_id,
       rental.movie_id,
       rental.checkout_date,
-      rental.return_date,
-      rental.returned // boolean
+      rental.due_date,
+      rental.returned_date
     );
   }
 

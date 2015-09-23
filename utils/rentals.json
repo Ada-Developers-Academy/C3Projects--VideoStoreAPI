@@ -3,231 +3,231 @@
         "customer_id": 1,
         "movie_id": 5,
         "checkout_date": "29 Apr 2015 07:54:14 -0700",
-        "return_date": "3 May 2015 07:54:14 -0700",
-        "returned": "false"
+        "due_date": "3 May 2015 07:54:14 -0700",
+        "returned_date": ""
     },
     {
         "customer_id": 1,
         "movie_id": 49,
         "checkout_date": "01 Nov 2004 06:19:02",
-        "return_date": "06 Nov 2004 18:19:02",
-        "returned": "false"
+        "due_date": "06 Nov 2004 18:19:02",
+        "returned_date": ""
     },
     {
         "customer_id": 1,
         "movie_id": 72,
         "checkout_date": "03 Dec 2009 02:58:43",
-        "return_date": "08 Dec 2009 06:19:02",
-        "returned": "true"
+        "due_date": "08 Dec 2009 06:19:02",
+        "returned_date": "07 Dec 2009 06:19:02"
     },
     {
         "customer_id": 1,
         "movie_id": 100,
         "checkout_date": "10 May 2011 02:58:43",
-        "return_date": "15 May 2011 02:58:43",
-        "returned": "true"
+        "due_date": "15 May 2011 02:58:43",
+        "returned_date": "14 May 2011 02:58:43"
     },
     {
         "customer_id": 1,
         "movie_id": 99,
         "checkout_date": "03 Oct 2012 00:25:08",
-        "return_date": "11 Oct 2012 07:54:14 -0700",
-        "returned": "false"
+        "due_date": "11 Oct 2012 07:54:14 -0700",
+        "returned_date": ""
     },
     {
         "customer_id": 1,
         "movie_id": 2,
         "checkout_date": "29 Apr 2015 07:54:14 -0700",
-        "return_date": "3 May 2015 07:54:14 -0700",
-        "returned": "false"
+        "due_date": "3 May 2015 07:54:14 -0700",
+        "returned_date": ""
     },
     {
         "customer_id": 1,
         "movie_id": 3,
         "checkout_date": "01 Nov 2004 06:19:02",
-        "return_date": "06 Nov 2004 18:19:02",
-        "returned": "false"
+        "due_date": "06 Nov 2004 18:19:02",
+        "returned_date": ""
     },
     {
         "customer_id": 1,
         "movie_id": 39,
-        "checkout_date": "03 Dec 2009 02:58:43",
-        "return_date": "08 Dec 2009 06:19:02",
-        "returned": "true"
+        "checkout_date": "03 Dec 2008 02:58:43",
+        "due_date": "08 Dec 2008 06:19:02",
+        "returned_date": "07 Dec 2008 06:19:02"
     },
     {
         "customer_id": 1,
         "movie_id": 68,
         "checkout_date": "10 May 2011 02:58:43",
-        "return_date": "15 May 2011 02:58:43",
-        "returned": "true"
+        "due_date": "15 May 2011 02:58:43",
+        "returned_date": "14 May 2011 02:58:43"
     },
     {
         "customer_id": 2,
         "movie_id": 28,
         "checkout_date": "03 Oct 2012 00:25:08",
-        "return_date": "11 Oct 2012 07:54:14 -0700",
-        "returned": "false"
+        "due_date": "11 Oct 2012 07:54:14 -0700",
+        "returned_date": ""
     },
     {
         "customer_id": 2,
         "movie_id": 44,
         "checkout_date": "29 Apr 2015 07:54:14 -0700",
-        "return_date": "3 May 2015 07:54:14 -0700",
-        "returned": "false"
+        "due_date": "3 May 2015 07:54:14 -0700",
+        "returned_date": ""
     },
     {
         "customer_id": 2,
         "movie_id": 41,
         "checkout_date": "01 Nov 2004 06:19:02",
-        "return_date": "06 Nov 2004 18:19:02",
-        "returned": "false"
+        "due_date": "06 Nov 2004 18:19:02",
+        "returned_date": ""
     },
     {
-        "customer_id": 2,
+        "customer_id": 3,
         "movie_id": 89,
         "checkout_date": "03 Dec 2009 02:58:43",
-        "return_date": "08 Dec 2009 06:19:02",
-        "returned": "true"
+        "due_date": "08 Dec 2009 06:19:02",
+        "returned_date": "07 Dec 2009 06:19:02"
     },
     {
         "customer_id": 2,
         "movie_id": 50,
         "checkout_date": "10 May 2011 02:58:43",
-        "return_date": "15 May 2011 02:58:43",
-        "returned": "false"
+        "due_date": "15 May 2011 02:58:43",
+        "returned_date": ""
     },
     {
         "customer_id": 2,
         "movie_id": 51,
         "checkout_date": "03 Oct 2012 00:25:08",
-        "return_date": "11 Oct 2012 07:54:14 -0700",
-        "returned": "false"
+        "due_date": "11 Oct 2012 07:54:14 -0700",
+        "returned_date": ""
     },
     {
         "customer_id": 3,
         "movie_id": 29,
         "checkout_date": "29 Apr 2015 07:54:14 -0700",
-        "return_date": "3 May 2015 07:54:14 -0700",
-        "returned": "false"
+        "due_date": "3 May 2015 07:54:14 -0700",
+        "returned_date": ""
     },
     {
         "customer_id": 3,
         "movie_id": 5,
         "checkout_date": "01 Nov 2004 06:19:02",
-        "return_date": "06 Nov 2004 18:19:02",
-        "returned": "false"
+        "due_date": "06 Nov 2004 18:19:02",
+        "returned_date": ""
     },
     {
         "customer_id": 3,
         "movie_id": 16,
         "checkout_date": "03 Dec 2009 02:58:43",
-        "return_date": "08 Dec 2009 06:19:02",
-        "returned": "true"
+        "due_date": "08 Dec 2009 06:19:02",
+        "returned_date": "07 Dec 2009 06:19:02"
     },
     {
         "customer_id": 3,
         "movie_id": 68,
         "checkout_date": "10 May 2011 02:58:43",
-        "return_date": "15 May 2011 02:58:43",
-        "returned": "true"
+        "due_date": "15 May 2011 02:58:43",
+        "returned_date": "14 May 2011 02:58:43"
     },
     {
-        "customer_id": 3,
+        "customer_id": 2,
         "movie_id": 89,
-        "checkout_date": "03 Oct 2012 00:25:08",
-        "return_date": "11 Oct 2012 07:54:14 -0700",
-        "returned": "true"
+        "checkout_date": "03 Oct 1999 00:25:08",
+        "due_date": "11 Oct 1999 07:54:14 -0700",
+        "returned_date": "10 Oct 1999 07:54:14 -0700"
     },
     {
         "customer_id": 4,
         "movie_id": 89,
         "checkout_date": "29 Apr 2015 07:54:14 -0700",
-        "return_date": "3 May 2015 07:54:14 -0700",
-        "returned": "false"
+        "due_date": "3 May 2015 07:54:14 -0700",
+        "returned_date": ""
     },
     {
         "customer_id": 4,
         "movie_id": 74,
         "checkout_date": "01 Nov 2004 06:19:02",
-        "return_date": "06 Nov 2004 18:19:02",
-        "returned": "false"
+        "due_date": "06 Nov 2004 18:19:02",
+        "returned_date": ""
     },
     {
         "customer_id": 4,
         "movie_id": 54,
         "checkout_date": "03 Dec 2009 02:58:43",
-        "return_date": "08 Dec 2009 06:19:02",
-        "returned": "true"
+        "due_date": "08 Dec 2009 06:19:02",
+        "returned_date": "07 Dec 2009 06:19:02"
     },
     {
         "customer_id": 4,
         "movie_id": 19,
         "checkout_date": "10 May 2011 02:58:43",
-        "return_date": "15 May 2011 02:58:43",
-        "returned": "true"
+        "due_date": "15 May 2011 02:58:43",
+        "returned_date": "14 May 2011 02:58:43"
     },
     {
         "customer_id": 4,
         "movie_id": 87,
         "checkout_date": "03 Oct 2012 00:25:08",
-        "return_date": "11 Oct 2012 07:54:14 -0700",
-        "returned": "false"
+        "due_date": "11 Oct 2012 07:54:14 -0700",
+        "returned_date": ""
     },
     {
         "customer_id": 4,
         "movie_id": 25,
         "checkout_date": "29 Apr 2015 07:54:14 -0700",
-        "return_date": "3 May 2015 07:54:14 -0700",
-        "returned": "false"
+        "due_date": "3 May 2015 07:54:14 -0700",
+        "returned_date": ""
     },
     {
         "customer_id": 4,
         "movie_id": 99,
         "checkout_date": "19 Sep 2015 06:19:02",
-        "return_date": "24 Sep 2004 18:19:02",
-        "returned": "false"
+        "due_date": "24 Sep 2004 18:19:02",
+        "returned_date": ""
     },
     {
         "customer_id": 4,
         "movie_id": 85,
         "checkout_date": "03 Dec 2009 02:58:43",
-        "return_date": "08 Dec 2009 06:19:02",
-        "returned": "true"
+        "due_date": "08 Dec 2009 06:19:02",
+        "returned_date": "07 Dec 2009 06:19:02"
     },
     {
         "customer_id": 4,
         "movie_id": 13,
         "checkout_date": "10 May 2011 02:58:43",
-        "return_date": "15 May 2011 02:58:43",
-        "returned": "true"
+        "due_date": "15 May 2011 02:58:43",
+        "returned_date": "14 May 2011 02:58:43"
     },
     {
         "customer_id": 4,
         "movie_id": 14,
         "checkout_date": "03 Oct 2012 00:25:08",
-        "return_date": "11 Oct 2012 07:54:14 -0700",
-        "returned": "false"
+        "due_date": "11 Oct 2012 07:54:14 -0700",
+        "returned_date": ""
     },
     {
         "customer_id": 4,
         "movie_id": 29,
         "checkout_date": "29 Apr 2015 07:54:14 -0700",
-        "return_date": "3 May 2015 07:54:14 -0700",
-        "returned": "false"
+        "due_date": "3 May 2015 07:54:14 -0700",
+        "returned_date": ""
     },
     {
         "customer_id": 4,
         "movie_id": 5,
         "checkout_date": "01 Nov 2004 06:19:02",
-        "return_date": "06 Nov 2004 18:19:02",
-        "returned": "false"
+        "due_date": "06 Nov 2004 18:19:02",
+        "returned_date": ""
     },
     {
         "customer_id": 4,
         "movie_id": 82,
         "checkout_date": "03 Dec 2009 02:58:43",
-        "return_date": "08 Dec 2009 06:19:02",
-        "returned": "true"
+        "due_date": "08 Dec 2009 06:19:02",
+        "returned_date": "07 Dec 2009 06:19:02"
     }
 ]

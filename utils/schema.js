@@ -26,8 +26,8 @@ var rental_fields = [
   ['customer_id', 'integer'],
   ['movie_id', 'integer'],
   ['checkout_date', 'text'],
-  ['return_date', 'text'],
-  ['returned', 'text'] // boolean
+  ['due_date', 'text'],
+  ['returned_date', 'text']
 ];
 
 function reset(table_name, table_fields) {
