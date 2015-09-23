@@ -5,7 +5,7 @@ var request = require('supertest'),
     agent = request.agent(app),
     Rental = require('../../rentals');
 
-describe("rentals controller", function() {
+describe.only("rentals controller", function() {
   var rental, db_cleaner;
 
   beforeEach(function(done) {
@@ -75,4 +75,35 @@ describe("rentals controller", function() {
         });
     });
   });
-});
+
+  var check_out_path = '/rentals/check_out';
+  describe("POST check_out_path", function() {
+    it("can make a post request", function(done) {
+      agent.post(check_out_path).set('Accept', 'application/json')
+        .field('check_out', '2015-09-23')
+        .field('check_in', null)
+        .field('due_date', '2015-09-26')
+        .field('movie_title', 'Jaws')
+        .field('customer_id', 1)
+
+        .expect(201, function(error, result) {
+          assert.equal(error, undefined);
+          done();
+        });
+    });
+  });
+
+  describe("GET check_out_path", function(){
+    it('should respond with JSON array', function(done) {
+      agent.get(check_out_path).set('Accept', 'application/json')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end(function(err, res) {
+          if (err) return done(err);
+          res.body.should.be.instanceof(Array);
+          done();
+        });
+    });
+  });
+
+}); //final describe close

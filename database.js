@@ -100,5 +100,21 @@ module.exports = {
     AND rentals.overdue=1;", function(res) {
       callback(res);
     });
+  },
+
+ // passing req.body to data
+  check_out: function(data, callback) {
+    // data will be an object with a key value pair with each item for rental
+    console.log(data);
+    var check_out_date = new Date();
+    var due_date = new Date(check_out_date);
+    due_date.setDate(check_out_date.getDate() + 3);
+    var movie_title = data.movie_title;
+    var customer_id = data.customer_id;
+    var statement = "INSERT INTO " + this.table_name + "(check_out, check_in, due_date, overdue, movie_title, customer_id) VALUES(" + check_out_date + ", null, " + due_date + ", 0, " + movie_title + ", " + customer_id +  ")"
+    this.query(statement, function(res) {
+      callback(res);
+    });
+    console.log(statement);
   }
 }
