@@ -2,7 +2,7 @@
 
 var express = require('express');
 var router = express.Router();
-var movieController = require("../controllers/movie_controller");
+var movieController = require("../controllers/movies_controller");
 
 // GET a single movie profile
 router.get('/:title', function(req, res, next) {
