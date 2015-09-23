@@ -4,7 +4,7 @@ Kari & Amira
 
 ##Testing
 To run our test base, you will need to setup your local test.db file with:
-$ DB=test npm reset
+$ DB=test npm run reset
 
 Then you can run our tests with:
 $ npm test
