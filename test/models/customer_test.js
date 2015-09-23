@@ -230,12 +230,14 @@ describe('Customer', function() {
         movies: [
           { title: 'Movie1', overview: 'Descr1', release_date: '1975-06-19', inventory: 10 },
           { title: 'Movie2', overview: 'Descr2', release_date: 'Yesterday', inventory: 11 },
-          { title: 'Movie3', overview: 'Descr3', release_date: 'Yesterday', inventory: 11 }
+          { title: 'Movie3', overview: 'Descr3', release_date: 'Yesterday', inventory: 11 },
+          { title: 'Movie4', overview: 'Descr4', release_date: 'Awhile ago', inventory: 7 }
         ],
         rentals: [
           { checkout_date: '2015-09-16', return_date: '', movie_title: 'Movie1', customer_id: 1 },
           { checkout_date: '2015-03-16', return_date: '2015-03-20', movie_title: 'Movie2', customer_id: 1 },
-          { checkout_date: '2015-09-18', return_date: '', movie_title: 'Movie3', customer_id: 2 }
+          { checkout_date: '2015-09-18', return_date: '', movie_title: 'Movie3', customer_id: 2 },
+          { checkout_date: '2015-02-23', return_date: '', movie_title: 'Movie4', customer_id: 2 }
         ]
       }
 
@@ -244,9 +246,23 @@ describe('Customer', function() {
 
     it('returns all rentals for a given customer, in order by checkout date', function(done) {
       customer.rentals(1, function(err, rows) {
+        assert.equal(err, undefined);
         assert.equal(rows.length, 2);
         assert.equal(rows[0].movie_title, "Movie2");
         assert.equal(rows[1].movie_title, "Movie1");
+        done();
+      });
+    });
+  });
+
+  describe('#overdue', function() {
+    it('returns a list of customers with overdue movies', function(done) {
+      customer.overdue(function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, 1); // this will change to 2 on 2015-09-24 and 3 on 2015-09-26 as our seed data becomes overdue
+        assert.equal(rows[0].name, 'Customer2');
+        assert.equal(rows[0].movie_title, 'Movie4');
+        assert.equal(rows[0].checkout_date, '2015-02-23');
         done();
       });
     });
