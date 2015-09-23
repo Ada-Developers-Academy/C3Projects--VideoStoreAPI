@@ -130,9 +130,17 @@ module.exports = {
   create_rental: function(movie_title, customer_id, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
 
-    var statement = "INSERT INTO rentals(movie_id, customer_id, returned_date, due_date, checked_out) VALUES((select id from movies where title=? COLLATE NOCASE), ?, '2015-12-01', '2015-12-11', '2015-11-15');";
+    var ugly_today = new Date();
 
-    db.all(statement, movie_title, customer_id, function(err, result) {
+    var today = new Date().toISOString().slice(0, 10);
+
+    var date_conversion = ugly_today.setDate(ugly_today.getDate() + 10);
+
+    var due_date = new Date(date_conversion).toISOString().slice(0, 10);
+
+    var statement = "INSERT INTO rentals(movie_id, customer_id, returned_date, due_date, checked_out) VALUES((select id from movies where title=? COLLATE NOCASE), ?, '', ?, ?);";
+
+    db.all(statement, movie_title, customer_id, due_date, today, function(err, result) {
       if (callback) callback(err, result);
       db.close();
     });
