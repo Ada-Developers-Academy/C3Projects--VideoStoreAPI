@@ -56,6 +56,16 @@ module.exports = {
     })
   },
 
+  past_checkout_rentals: function(column, value, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    var statement = "SELECT * FROM rentals WHERE " + column + " = ? AND returned_date != 'nil';";
+
+    db.all(statement, value, function(error, result) {
+      if (callback) callback(error, result);
+      db.close();
+    })
+  },
+
   create_rental: function(data, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
     var statement = "INSERT INTO rentals (checkout_date, returned_date, rental_time, \

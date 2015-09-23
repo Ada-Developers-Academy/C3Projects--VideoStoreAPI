@@ -43,11 +43,11 @@ exports.moviesController = {
     var dbRental = new Rental();
     var dbCustomer = new Customer();
     var title = req.params.title;
-    dbMovie.getRentalCustomer(dbMovie, dbRental, dbCustomer, title, function(error, result) {
+    dbMovie.getCurrentRentalCustomer(dbMovie, dbRental, dbCustomer, title, function(error, result) {
       console.log(result);
       res.status(200).json(result);
     });
-<<<<<<< HEAD
+
     // dbMovie.find_by("title", title, function getMovieId(error, result) {
     //   var movieId = result[0].id;
     //   console.log(result);
@@ -64,8 +64,22 @@ exports.moviesController = {
     // });
     //   return res.status(200).json(result);
     // });
-=======
->>>>>>> e13e95eedddbafb9d6e081a30278a26add36338a
+
+  },
+
+  pastCustomerRentals: function(req, res) {
+    var dbMovie = new Movie();
+    var dbRental = new Rental();
+    var dbCustomer = new Customer();
+    var title = req.params.title;
+    var regex = /[^\/]+$/
+    var sort = regex.exec(req.url)
+    console.log(req.url)
+    dbMovie.getPastRentalCustomer(dbMovie, dbRental, dbCustomer, title, sort[0], function(error, result) {
+      console.log(result);
+      res.status(200).json(result);
+    });
+
   },
 
   availableMovies: function(req, res) {

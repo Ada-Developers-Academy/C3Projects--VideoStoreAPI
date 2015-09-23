@@ -12,21 +12,21 @@ Movies
   * From Movies table:
     - release_date
 
-get "/movies/:title/customers/current" = Customers who currently have this movie checked out.
+🔵 get "/movies/:title/customers/current" = Customers who currently have this movie checked out.
     - From Movies table find movie_id
     - From rentals table find all the same movie_ids
     - if returned_date == nil
     - return customer_id
     - From Customer table find customers with customer_id
 
-get "/movies/:title/customers/past/sort_by_id" = movie title, sorted by customers ids
+🔵 get "/movies/:title/customers/past/sort_by_id" = movie title, sorted by customers ids
   - From Movies Table find movie_id
   - From Rentals table find all the same movie_ids
   - if returned_date != nil
   - return customer_ids
   - From Customers table find customers with customer_id.
 
-get "/movies/:title/customers/past/sort_by_name" = movie title, sorted by customers names
+🔵 get "/movies/:title/customers/past/sort_by_name" = movie title, sorted by customers names
 
 get "/movies/:title/customers/past/sort_by_checkout_date" = movie title, sorted by checkout dates
 
