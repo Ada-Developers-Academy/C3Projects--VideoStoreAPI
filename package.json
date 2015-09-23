@@ -1,0 +1,23 @@
+{
+  "name": "C3Projects--VideoStoreAPI",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./bin/www",
+    "test": "DB=test; clear; mocha --recursive",
+    "test&db:reset": "DB=test npm run db:reset; clear; mocha --recursive",
+    "db:schema": "node ./utils/schema",
+    "db:seeds": "node ./utils/seeds",
+    "db:reset": "npm run db:schema; npm run db:seeds"
+  },
+  "dependencies": {
+    "body-parser": "~1.13.2",
+    "cookie-parser": "~1.3.5",
+    "debug": "~2.2.0",
+    "express": "~4.13.1",
+    "morgan": "~1.6.1",
+    "nodemon": "^1.5.1",
+    "sqlite3": "^3.1.0",
+    "supertest": "^1.1.0"
+  }
+}
