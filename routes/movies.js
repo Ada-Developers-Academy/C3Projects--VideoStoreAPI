@@ -18,8 +18,10 @@ router.get('/', function(req, res, next) {
   });
 });
 
-router.get('/:title', function(req, res, next) {
+router.get('/:title/:order', function(req, res, next) {
   var title = req.params.title;
+  var order = req.params.order;
+  // sort by customer_id, customer name, and checkout_date
   // var currentRentersArray = [];
   // var pastRentersArray = [];
 
@@ -33,7 +35,13 @@ router.get('/:title', function(req, res, next) {
     movieObject.movie_data = row;
     movieId = row.id;
 
-    rental.where(['movie_id'], [movieId], function(err, rows) {
+    var condition = "movie_id = " + movieId;
+
+    if (order = "customer_name") {
+      order = "id"
+    }
+
+    rental.order_by(condition, order, function(err, rows) {
       var currentRentersIds = [];
       var pastRentersIds = [];
 

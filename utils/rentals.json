@@ -84,7 +84,7 @@
         "returned_date": ""
     },
     {
-        "customer_id": 2,
+        "customer_id": 3,
         "movie_id": 89,
         "checkout_date": "03 Dec 2009 02:58:43",
         "due_date": "08 Dec 2009 06:19:02",
@@ -133,11 +133,11 @@
         "returned_date": "14 May 2011 02:58:43"
     },
     {
-        "customer_id": 3,
+        "customer_id": 2,
         "movie_id": 89,
-        "checkout_date": "03 Oct 2012 00:25:08",
-        "due_date": "11 Oct 2012 07:54:14 -0700",
-        "returned_date": "10 Oct 2012 07:54:14 -0700"
+        "checkout_date": "03 Oct 1999 00:25:08",
+        "due_date": "11 Oct 1999 07:54:14 -0700",
+        "returned_date": "10 Oct 1999 07:54:14 -0700"
     },
     {
         "customer_id": 4,
