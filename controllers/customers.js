@@ -4,7 +4,11 @@ var Customer = require('../models/customer');
 
 var Controller = {
   index: function(req, res, next) {
-    new Customer().all(Controller.sendJSON.bind(res));
+    if (req.query.status == 'overdue') {
+      new Customer().overdue(Controller.sendJSON.bind(res));
+    } else {
+      new Customer().all(Controller.sendJSON.bind(res));
+    }
   },
 
   sendJSON: function(err, res) {
