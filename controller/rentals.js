@@ -88,9 +88,9 @@ exports.rentalsController = {
 
           db.run(updateRentalStatement, (new Date()).toString(), rentalId, function(err, rows) {
             res.status(200).json('success');
-          })
+          });
         });
-      })
+      });
     });
   },
 
