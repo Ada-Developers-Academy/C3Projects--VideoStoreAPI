@@ -59,30 +59,6 @@ rentals.movieInfo = function(request, response, next) {
     var rental = new Rental();
     var results = rental.movieInfo(error, data);
 
-    // var results = { meta: {} };
-    //
-    // if (error) { // log error if error
-    //   status = 500; // internal server error
-    //   results.data = error;
-    // } else if (data.length == 0) { // handling for no results
-    //   status = 303; // see other
-    //   results.data = {
-    //     status: status,
-    //     message: "No results found. You must query this endpoint with an exact title."
-    //   };
-    // } else {
-    //   data = fixTime(data, "release_date"); // fixing time
-    //   results.data = {
-    //     movieInfo: formatMovieInfo(data),
-    //     availableToRent: isMovieAvailable(data)
-    //   };
-    //
-    //   results.meta.customersHoldingCopies = ourWebsite + "/rentals/" + title + "/customers";
-    // };
-    //
-    // results.meta.movieInfo = ourWebsite + "/movies/" + title;
-    // results.meta.yourQuery = ourWebsite + "/rentals/" + title;
-    //
     return response.status(results.data.status).json(results);
   });
 
