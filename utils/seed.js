@@ -42,9 +42,9 @@ db.serialize(function() {
       customer.address,
       customer.city,
       customer.state,
-      customer.postal_zip,
-      customer.phone_number,
-      customer.credit
+      customer.postal_code,
+      customer.phone,
+      customer.account_credit
     );
   }
 

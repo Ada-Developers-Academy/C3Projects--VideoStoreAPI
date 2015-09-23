@@ -121,15 +121,21 @@ exports.rentalsController = {
         var updateMovieStatement = "UPDATE movies SET inventory_available=? WHERE id=? ;";
         // update movie inventory_available (+1)
         db.run(updateMovieStatement, newInventory, movieId, function(err, rows) {
-        res.status(200).json('success');
-        });
+
+          var customerStatement = "SELECT * FROM customers WHERE id = " + customerId + ";";
+
+          db.all(customerStatement, function(err, rows){
+            // subtract $1 from customer's credit
+            var updateCustomerStatement = "UPDATE customers SET credit=? WHERE id=?;"
+            var updatedCredit = parseFloat(rows[0].credit) - 1;
+
+            db.run(updateCustomerStatement, updatedCredit, customerId, function(err, rows) {
+              res.status(200).json('success');
+            })
+          });
+
+          })
       });
     });
   }
-  //  ['customer_id', 'integer'] -> in params
-  //  ['movie_id', 'integer'], -> will need to find
-  //  ['return_date', 'text'], -> ''
-  //  ['checkout_date', 'text'], -> today's date
-  //  ['due_date', 'text'] -> today's date + 7 days
-  // subtract $1 from customer's credit
 }
