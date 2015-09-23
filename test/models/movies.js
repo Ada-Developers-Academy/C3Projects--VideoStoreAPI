@@ -4,11 +4,10 @@ var assert = require('assert'),
     sqlite3 = require('sqlite3').verbose();
 
 describe("Movie", function() {
-  var movie, db_cleaner
+  var movie, db_cleaner;
 
   beforeEach(function(done) {
     movie = new Movie();
-
     db_cleaner = new sqlite3.Database('db/test.db');
     db_cleaner.serialize(function() {
       db_cleaner.exec(
@@ -35,16 +34,6 @@ describe("Movie", function() {
 
   describe("instance methods", function() {
     it("retrieves all movie records", function(done) {
-
-      // it("retrieves all movie records", function(done) {
-      //   movie.find_all(function(err, res) {
-      //     assert.equal(err, undefined);
-      //     assert(res instanceof Array);
-      //     assert.equal(res.length, 100);
-      //     assert.equal(res[0].title, 'Psycho');
-      //     done();
-      //   });
-      // });
 
       movie.find_all(function(err, res) {
         assert.equal(err, undefined);

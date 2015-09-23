@@ -25,21 +25,21 @@ describe("Customer", function() {
     });
   });
 
-  it("can be instantiated", function() {
-    assert(customer instanceof Customer);
-  });
-
-  describe("instance methods", function() {
-    context("GET #find_all", function() {
-      it("retrieves all customer records", function(done) {
-        customer.find_all(function(err, res) {
-          assert.equal(err, undefined);
-          assert(res instanceof Array);
-          assert.equal(res.length, 2);
-          assert.equal(res[0].name, 'Beetlejuice');
-          done();
-        });
-      });
-    });
-  });
+  // it("can be instantiated", function() {
+  //   assert(customer instanceof Customer);
+  // });
+  //
+  // describe("instance methods", function() {
+  //   context("GET #find_all", function() {
+  //     it("retrieves all customer records", function(done) {
+  //       customer.find_all(function(err, res) {
+  //         assert.equal(err, undefined);
+  //         assert(res instanceof Array);
+  //         assert.equal(res.length, 2);
+  //         assert.equal(res[0].name, 'Beetlejuice');
+  //         done();
+  //       });
+  //     });
+  //   });
+  // });
 });
