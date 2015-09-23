@@ -3,15 +3,8 @@ var assert  = require('assert');
 var app     = require('../../app');
 var sqlite3 = require('sqlite3').verbose();
 var agent   = request.agent(app);
-// var CustomersController = require("../controllers/customers");
 
 describe("Customers Controller", function() {
-  // var cc = null,
-  //     db = null;
-  // beforeEach(function() {
-  //   db = new Database("db/test.db");
-  //   cc = new CustomerController;
-  // });
   beforeEach(function(done) {
     db_cleaner = new sqlite3.Database('db/test.db');
     db_cleaner.serialize(function() {
