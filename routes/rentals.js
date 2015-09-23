@@ -30,7 +30,7 @@ router.post('/:title/:customer_id/checkin', function(req, res, next) {
 });
 
 // *POST* rental/:title/:customer_id/checkout
-router.post('title/:customer_id/checkout', function(req, res, next) {
+router.post('/:title/:customer_id/checkout', function(req, res, next) {
   return rentals_exports.rentalsController.checkout(req, res);
 });
 
