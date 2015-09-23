@@ -78,24 +78,19 @@ exports.rentalsController = {
       // console.log("DUE: ", due);
 
       db = new sqlite3.Database('db/' + db_env + '.db');
-      db.run("INSERT INTO rentals(customer_id, movie_copy_id, checkout_date, return_date, return_status, cost) \
-      VALUES(" + customer + ", " + movie_copy.id + ", '" + checkout + "', '" + due + "', 0, 5); \
-      COMMIT;", function(err, result) {
-        if (err) {
-          console.log("ERROR: ", err);
-        }
+      db.serialize(function() {
+        db.run("INSERT INTO rentals(customer_id, movie_copy_id, checkout_date, return_date, return_status, cost) \
+                VALUES(" + customer + ", " + movie_copy.id + ", '" + checkout + "', '" + due + "', 0, 5); \
+                COMMIT;", function(err, result) {
+            if (err) {
+              console.log("ERROR: ", err);
+            }
+            return res.status(200).json(result);
+          }); // end first db.run
+          db.run("UPDATE customers SET account_credit = account_credit - 5 WHERE id = " + customer + ";");
+          db.run("UPDATE movie_copies SET is_available = 0 WHERE id = " + movie_copy.id + ";");
+        });
         db.close();
-        return res.status(200).json(result);
       });
-    });
-
-    // INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_credit) \
-    // VALUES('Shelley Rocha', '2015-09-21', '123 Nope St', 'Seattle', 'WA', '98104', '(000) 000-000', '100'), \
-    //       ('Billy Rocha', '2015-09-21', '123 Nope St', 'Seattle', 'WA', '98104', '(000) 000-000', '100'); \
-    // COMMIT;", function(err) {
-
-
-
-  },
-
+  }
 };

@@ -9,7 +9,6 @@ var movie_fields = [
   ['overview', 'text'],
   ['release_date', 'text'],
   ['inventory', 'integer'],
-  ['copies_available', 'integer']
 ];
 
 var movie_copies_fields = [
