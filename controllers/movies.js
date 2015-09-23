@@ -98,7 +98,7 @@ exports.moviesController = {
     db.all("SELECT customers.id, customers.name, customers.phone, rentals.check_out_date FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id INNER JOIN movies ON movies.id = rentals.movie_id WHERE movies.title LIKE ? AND rentals.check_in_date IS NULL", title, function(err, rows) {
       if (err !== null) {
         console.log(err);
-      }
+      }console.log(rows);
       res.status(200).json(rows);
     });
   },
@@ -118,7 +118,7 @@ exports.moviesController = {
     db.all("SELECT customers.id, customers.name, customers.phone, rentals.check_out_date FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id INNER JOIN movies ON movies.id = rentals.movie_id WHERE movies.title LIKE ? AND rentals.check_in_date IS NOT NULL ORDER BY ?", title, order, function(err, rows) {
       if (err !== null) {
         console.log(err);
-      }
+      }console.log(rows);
       res.status(200).json(rows);
     });
   }
