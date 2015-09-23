@@ -29,7 +29,7 @@ describe("Endpoints under /movies", function() {
         'WA', '11111', '(908) 949-6758', 10.00); \
         DELETE FROM rentals; \
         INSERT INTO rentals(checkout_date, return_date, movie_id, customer_id, checked_out) \
-        VALUES('2015-09-23', '2015-09-30', 1, 1, 'true', \
+        VALUES('2015-09-23', '2015-09-30', 1, 1, 'true'), \
               ('2015-09-16', '2015-09-23', 2, 2, 'false'); \
         COMMIT;"
         , function(err) {
@@ -46,7 +46,7 @@ describe("Endpoints under /movies", function() {
 
       beforeEach(function(done) {
         movie_keys = ['id', 'title', 'overview', 'release_date', 'inventory', 'num_available'];
-        customer_keys = ['name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone', 'account_credit'];
+        customer_keys = ['id', 'name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone', 'account_credit'];
         done();
       });
 
@@ -112,28 +112,28 @@ describe("Endpoints under /movies", function() {
       });
 
     context("GET /movies/:column/:p ", function() {
-      it.only("sorted movie column", function(done) {
+      it("sorted movie column", function(done) {
        var movie_request = agent.get('/movies/title/1/1').set('Accept', 'application/json');
         movie_request
           .expect('Content-Type', /application\/json/)
           .expect(200, function(error, result) {
             assert.equal(result.body.length, 1);
             assert.deepEqual(Object.keys(result.body[0]), movie_keys);
-            assert.equal(result.body[0].title, 'Claws');
+            assert.equal(result.body[0].title, 'Gauze');
             done();
           });
         });
       });
 //db run/execute INSERT new values ...db serialize
-    context("GET /movies/:title/customers ", function() {
-      it("can see Jaws customer history", function(done) {
-       var movie_request = agent.get('/movies/Jaws/history').set('Accept', 'application/json');
+    context("GET /movies/:title/customers", function() {
+      it.only("can see current customers for a movie", function(done) {
+       var movie_request = agent.get('/movies/Jaws/customers').set('Accept', 'application/json');
         movie_request
           .expect('Content-Type', /application\/json/)
           .expect(200, function(error, result) {
             assert.equal(result.body.length, 1);
             assert.deepEqual(Object.keys(result.body[0]), customer_keys);
-            assert.equal(result.body[0].name, 'Curran Stout');
+            assert.equal(result.body[0].name, 'BeetleJaws');
             done();
           });
       });
