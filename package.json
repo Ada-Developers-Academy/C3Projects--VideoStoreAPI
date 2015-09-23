@@ -8,6 +8,7 @@
     "db:schema": "node ./utils/schema.js",
     "db:seed": "node ./utils/seed.js",
     "db:reset": "npm run db:schema; npm run db:seed",
+    "db:test:reset": "DB=test npm run db:reset",
     "sqlite": "npm run db:reset; sqlite3 db/development.db"
   },
   "dependencies": {
