@@ -43,26 +43,32 @@ exports.moviesController = {
     var dbRental = new Rental();
     var dbCustomer = new Customer();
     var title = req.params.title;
-    console.log(title);
-    var movieId = dbMovie.find_by("title", title, function(error, result) {
-      result.id
+    dbMovie.find_by("title", title, function getMovieId(error, result) {
+      var movieId = result[0].id;
+      console.log(result);
+      dbRental.current_checkout_rentals("movie_id", movieId, function getCustomerId(error, result) {
+        var customerId = result[0].customer_id;
+        console.log(result)
+        dbCustomer.find_by("id", customerId, function getCustomer(error, result) {
+          res.status(200).json(result);
+        });
+      });
 
     });
-    console.log(movieId);
-    var customerId = dbRental.find_by("movie_id", movieId, function(error, result) {
-      result.customerId
-    });
-    var result = dbCustomer.find_by("id", customerId, function(error, result) {
-      return result
-    )};
+    //   console.log(result[0].customer_id)
+    // });
+    //   return res.status(200).json(result);
+    // });
   },
 
   availableMovies: function(req, res) {
     var dbMovie = new Movie();
     var title = req.params.title;
-    var result = dbMovie.available(title, function(err,result){
-    return res.status(200).json(result);
+    dbMovie.available(title, function(err,result){
+    res.status(200).json(result);
 
     });
   }
 }
+
+// getCustomer
