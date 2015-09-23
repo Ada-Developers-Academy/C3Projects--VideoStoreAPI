@@ -21,21 +21,21 @@ describe("Database", function() {
     assert.equal(db.path, database_path);
   });
 
-  describe("'query' function", function() {
-    before(function() {
-      // create a customers table
-      db.query("CREATE TABLE IF NOT EXISTS customers (name TEXT);");
+  // describe("'query' function", function() {
+  //   before(function() {
+  //     // create a customers table
+  //     db.query("CREATE TABLE IF NOT EXISTS customers (name TEXT);");
 
-      // insert some customers
-    });
+  //     // insert some customers
+  //   });
 
-    it("has a customers table", function(done) {
-      var table_exists = "SELECT count(*) AS table_count FROM sqlite_master WHERE type='table' AND name='customers'; ";
+  //   it("has a customers table", function(done) {
+  //     var table_exists = "SELECT count(*) AS table_count FROM sqlite_master WHERE type='table' AND name='customers'; ";
 
-      db.query(table_exists, function(result) {
-        assert.equal(result[0].table_count, 1);
-        done();
-      });
-    });
+  //     db.query(table_exists, function(result) {
+  //       assert.equal(result[0].table_count, 1);
+  //       done();
+  //     });
+  //   });
   });
 });
