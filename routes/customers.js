@@ -20,10 +20,11 @@ router.get('/', function(req, res, next) {
 router.get('/:id', function(req, res, next) {
   var id = req.params.id;
   var customer_info;
+  var pastRentalsArray = [];
 
   var customerObject = {
     customer_data: undefined,
-    rentals: { current_rentals: undefined, past_rentals: undefined }
+    movies: { pastRentals: pastRentalsArray }
   }
 
   customer.find_by('id', id, function(err, row) {
@@ -36,6 +37,7 @@ router.get('/:id', function(req, res, next) {
     rental.order_by(condition, "checkout_date", function(err, rows) {
       var currentMoviesIDs = [];
       var pastMoviesIDs = [];
+      var pastMoviesObject = {};
 
       for (var i = 0; i < rows.length; i++) {
         // currently checked out movies
@@ -43,16 +45,30 @@ router.get('/:id', function(req, res, next) {
           currentMoviesIDs.push(rows[i].movie_id);
         // returned movies
         } else {
-          pastMoviesIDs.push(rows[i].movie_id);
+          pastMoviesObject[rows[i].movie_id] = rows[i].returned_date;
+          // pastMoviesIDs.push(rows[i].movie_id);
         }
       }
+      console.log(pastMoviesObject);
+      pastMoviesIDs = Object.keys(pastMoviesObject);
+      console.log(pastMoviesIDs);
 
       movie.where_in(['id'], currentMoviesIDs, function(err, rows) {
-        customerObject.rentals.currentRenters = rows;
+        customerObject.movies.currentRentals = rows; // no returned_date
 
         movie.where_in(['id'], pastMoviesIDs, function(err, rows) {
-          customerObject.rentals.pastRenters = rows;
+          console.log(rows);
+          for (var i = 0; i < rows.length; i++) {
+            var movieObject = {};
+            movieObject.movieData = rows[i];
+            movieObject.returnedDate = pastMoviesObject[rows[i].id];
+            pastRentalsArray.push(movieObject);
+          }
+          // customerObject.movies.pastRentals = rows;
+          // add returned_date to each rental
 
+          // brute force: iterate through each movie object,
+          //  run a query on the rentals table, get returned_date for that movie
           
           
           res.status(200).json(customerObject);
