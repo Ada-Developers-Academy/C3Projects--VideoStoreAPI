@@ -6,8 +6,9 @@
     "start": "nodemon ./bin/www",
     "test": "DB=test mocha --recursive",
     "test_schema": "DB=test node ./utils/schema.js",
-    "db:schema": "node ./utils/schema",
-    "db:seed": "node ./utils/seed"
+    "test_seed": "DB=test node ./utils/seed.js",
+    "db:schema": "node ./utils/schema.js",
+    "db:seed": "node ./utils/seed.js"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
