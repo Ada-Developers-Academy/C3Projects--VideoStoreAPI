@@ -1,15 +1,14 @@
 var assert = require('assert'),
-    Movie  = require('../models/movie'),
     sqlite3 = require('sqlite3').verbose(),
     request = require('supertest'),
-    app     = require('../app'),
+    app     = require('../../app'),
+    movie_controller  = require('../../controllers/movies'),
     agent   = request.agent(app);
 
 describe("Endpoints under /movies", function() {
   var movie, db_cleaner;
 
   beforeEach(function(done) {
-    movie = new Movie();
 
     db_cleaner = new sqlite3.Database('db/test.db');
     db_cleaner.serialize(function() {
@@ -57,10 +56,10 @@ describe("Endpoints under /movies", function() {
         });
       });
 
-      it("returns an array of movie objects", function(done) {
+      it.only("returns an array of movie objects", function(done) {
         movie_request
         .expect(200, function(error, result) {
-          assert.equal(result.body.length, 100);
+          assert.equal(result.body.length, 5);
           assert.deepEqual(Object.keys(result.body[0]), keys);
           done();
         });
@@ -116,7 +115,7 @@ describe("Endpoints under /movies", function() {
           });
         });
       });
-
+//db run/execute INSERT new values ...db serialize
     context("GET /movies/:title/customers ", function() {
       it("can see Jaws customer history", function(done) {
        var movie_request = agent.get('/movies/Jaws/history').set('Accept', 'application/json');
