@@ -12,6 +12,10 @@ var movie_fields = [
   ['copies_available', 'integer']
 ];
 
+var movie_copies_fields = [
+  ['is_available', 'integer']
+];
+
 var customer_fields = [
   ['name', 'text'],
   ['registered_at', 'text'],
@@ -64,6 +68,14 @@ db.serialize(function() {
 
     // ALTER TABLE movies ADD COLUMN title text;
     db.run("ALTER TABLE movies ADD COLUMN " + name + " " + type + ";");
+  }
+
+  for(var i = 0; i < movie_copies_fields.length; i++) {
+    var name = movie_copies_fields[i][0],
+        type = movie_copies_fields[i][1];
+
+    // ALTER TABLE movies ADD COLUMN title text;
+    db.run("ALTER TABLE movie_copies ADD COLUMN " + name + " " + type + ";");
   }
 
   for(var i = 0; i < customer_fields.length; i++) {

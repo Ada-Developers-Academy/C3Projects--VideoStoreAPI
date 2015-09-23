@@ -11,8 +11,8 @@ var movie_statement = db.prepare(
 );
 
 var movie_copies_statement = db.prepare(
-  "INSERT INTO movie_copies(movie_id) \
-  VALUES (?);"
+  "INSERT INTO movie_copies(movie_id, is_available) \
+  VALUES (?, ?);"
 );
 
 var customers = require('../formatted_customers');
@@ -51,7 +51,8 @@ db.serialize(function() {
 
     for (var j = 0; j < num_copies; j++) {
       movie_copies_statement.run(
-        i+1
+        i+1,
+        1
       );
     }
   }
