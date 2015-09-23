@@ -74,7 +74,7 @@ Customer.prototype.find_by_sorted_date = function(sort_by, number, pages, callba
       var sorted = res.sort(function(a, b){
         return new Date(a.registered_at) - new Date(b.registered_at)
       });
-      console.log(sorted);
+      // console.log(sorted);
     }
 
     if (callback) callback(err, sorted);

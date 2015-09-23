@@ -57,7 +57,7 @@ exports.customersController = {
           select.push(result[i]);
         }
 
-        console.log(select);
+        // console.log(select);
         return res.status(200).json(select);
       } else {
         return res.status(200).json(result);
