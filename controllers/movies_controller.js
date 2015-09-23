@@ -99,13 +99,15 @@ MoviesController.title = function(request, response) {
     "SELECT * FROM movies \
     WHERE title = '" + queried_title + "'";
 
-  db.all(statement, function(err, result) {
-    if(err) {
-      console.log(err); // error handling
-      return;
-    };
-    result = fixTime(result, 'release_date');
-    return response.status(200).json(result);
+  db.all(statement, function(error, data) {
+    var results = movies.movieInfo(error, data);
+    var status = results.data.status;
+    // if(err) {
+    //   console.log(err); // error handling
+    //   return;
+    // };
+    // result = fixTime(result, 'release_date');
+    return response.status(status).json(results);
   });
 
   db.close();
