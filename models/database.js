@@ -72,19 +72,21 @@ Database.prototype.findBy = function findBy(parameter, value, callback) {
 Database.prototype.sortBy = function sortBy(parameter, n, p, callback) {
   var db = this.openDB();
 
-  if (n == null) {
-    var statement = 'SELECT * FROM ' + this.tableName + ' ORDER BY ?;';
-    var values = parameter;
-  } else if (p > 1){
-    var statement = 'SELECT * FROM ' + this.tableName + ' ORDER BY ? LIMIT ? OFFSET ?;';
-    var offset = n * (p - 1);
-    var values = [parameter, n, offset];
-  } else {
-    var statement = 'SELECT * FROM ' + this.tableName + ' ORDER BY ? LIMIT ?;';
-    var values = [parameter, n];
+  if (!this._validParam(parameter)) {
+    callback(new Error('Error: syntax error. Unrecognized parameter.'));
+    return;
   }
 
-  db.all(statement, values, function(err, rows) {
+  if (n == null) {
+    var statement = 'SELECT * FROM ' + this.tableName + ' ORDER BY ' + parameter + ';';
+  } else if (p > 1){
+    var offset = n * (p - 1);
+    var statement = 'SELECT * FROM ' + this.tableName + ' ORDER BY ' + parameter + ' LIMIT ' + n + ' OFFSET ' + offset + ';';
+  } else {
+    var statement = 'SELECT * FROM ' + this.tableName + ' ORDER BY ' + parameter + ' LIMIT ' + n + ';';
+  }
+
+  db.all(statement, function(err, rows) {
     callback(err, rows);
     db.close();
   });
