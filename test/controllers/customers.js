@@ -6,7 +6,7 @@ var assert = require('assert'),
     agent   = request.agent(app);
     KEYS    = ['id', 'name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone', 'account_credit'];
 
-describe.only("Endpoints under /customers", function() {
+describe("Endpoints under /customers", function() {
   var db_cleaner;
 
   beforeEach(function(done) {
@@ -166,6 +166,93 @@ describe.only("Endpoints under /customers", function() {
         });
       });
 
+    });
+
+    context("GET /customers/:customer_id/history", function() {
+      var customer_request;
+      var movie_and_rental_keys = ['id', 'title', 'overview', 'release_date', 'inventory', 'num_available', 'checkout_date', 'return_date'];
+
+      beforeEach(function(done) {
+        customer_request = agent.get('/customers/1/history').set('Accept', 'application/json');
+        done();
+      });
+
+      it("responds with json", function(done) {
+        customer_request
+        .expect('Content-Type', /application\/json/)
+        .expect(200, done);
+      });
+
+      it('knows about the route', function(done) {
+        customer_request
+        .expect(200, function(err,res) {
+          assert.equal(err, undefined);
+          done();
+          });
+      });
+
+      it('returns an array of movie objects', function(done) {
+        customer_request
+        .expect(200, function(error, result) {
+          assert(result.body instanceof Array);
+          assert.deepEqual(Object.keys(result.body[0]), movie_and_rental_keys);
+          done();
+        });
+      });
+
+      it('contains movies the customer previously checked_out', function(done) {
+        customer_request
+        .expect(200, function(error, result) {
+          assert.equal(result.body.length, 1);
+          assert.equal(result.body[0].title, 'Jaws');
+          done();
+        });
+      });
+
+    });
+
+    context("GET /customers/overdue", function() {
+      var customer_request;
+      var customer_and_rental_keys = KEYS.concat(['checkout_date', 'return_date', 'movie_id', 'customer_id', 'checked_out']);
+
+      beforeEach(function(done) {
+        customer_request = agent.get('/customers/overdue').set('Accept', 'application/json');
+        done();
+      });
+
+      it("responds with json", function(done) {
+        customer_request
+        .expect('Content-Type', /application\/json/)
+        .expect(200, done);
+      });
+
+      it('knows about the route', function(done) {
+        customer_request
+        .expect(200, function(err,res) {
+          assert.equal(err, undefined);
+          done();
+          });
+      });
+
+      it('returns an array of customer objects', function(done) {
+        customer_request
+        .expect(200, function(error, result) {
+          assert(result.body instanceof Array);
+          assert.deepEqual(Object.keys(result.body[0]), customer_and_rental_keys);
+          done();
+        });
+      });
+
+      it('contains customers with overdue movies', function(done) {
+        customer_request
+        .expect(200, function(error, result) {
+          assert.equal(result.body.length, 1);
+          assert.equal(result.body[0].name, 'Beetle Juice');
+          assert.equal(result.body[0].movie_id, 2);
+
+          done();
+        });
+      });
     });
 
   });

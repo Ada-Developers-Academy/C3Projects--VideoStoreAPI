@@ -17,7 +17,7 @@ router.get('/:customer_id/movies', function(req, res, next) {
   return customers_exports.customersController.movies_by_customer_current(req, res);
 });
 
-/* GET /customers/:id/history */
+/* GET /customers/:customer_id/history */
 router.get('/:customer_id/history', function(req, res, next) {
   return customers_exports.customersController.movies_by_customer_history(req, res);
 });
