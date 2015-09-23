@@ -18,6 +18,7 @@ var Rental = function() { // Rental constructor
 
 Rental.prototype.movieInfo = function(error, data) {
   var results = { meta: {} };
+  var status;
   if (error) { // log error if error
     status = 500; // internal server error
     results.data = {
@@ -32,8 +33,9 @@ Rental.prototype.movieInfo = function(error, data) {
     };
   } else {
     data = fixTime(data, "release_date"); // fixing time
+    status = 200; // ok
     results.data = {
-      status: 200,
+      status: status,
       movieInfo: formatMovieInfo(data),
       availableToRent: isMovieAvailable(data)
     };

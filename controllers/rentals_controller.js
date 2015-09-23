@@ -58,8 +58,9 @@ rentals.movieInfo = function(request, response, next) {
   db.all(statement, function(error, data) {
     var rental = new Rental();
     var results = rental.movieInfo(error, data);
+    var status = results.data.status;
 
-    return response.status(results.data.status).json(results);
+    return response.status(status).json(results);
   });
 
   db.close();
