@@ -35,7 +35,7 @@ router.get('/:id', function(req, res, next) {
 
       for (var i = 0; i < rows.length; i++) {
         // currently checked out movies
-        if (rows[i].returned == "false") {
+        if (rows[i].returned_date == "") {
           currentMoviesIDs.push(rows[i].movie_id);
         // returned movies
         } else {

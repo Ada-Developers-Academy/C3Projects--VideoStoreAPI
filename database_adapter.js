@@ -68,6 +68,7 @@ module.exports = {
     });
   },
 
+  //
   order_by: function(condition, column, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
 

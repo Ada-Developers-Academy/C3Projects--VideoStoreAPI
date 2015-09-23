@@ -29,8 +29,8 @@ router.get('/:title', function(request, response, next) {
     },
     // retrieve rental records for that movie
     function(callback) {
-      rental.where(['movie_id', 'returned'], 
-        [movieObject.movie_data.id, 'false'], function(error, rows) {
+      rental.where(['movie_id', 'returned_date'], 
+        [movieObject.movie_data.id, ''], function(error, rows) {
           // turn object of rentals into array of ids
           for (var i = 0; i < rows.length; i++) {
             customerIdList.push(rows[i].customer_id);
@@ -71,7 +71,7 @@ router.post('/checkout/:customer_id/:movie_id', function(request, response, next
   async.waterfall([
     // count total # of checked out copies of movie with id, movie_id
     function(callback) {
-      rental.where(['movie_id', 'returned'], [movie_id, 'false'], function(err, rows) {
+      rental.where(['movie_id', 'returned_date'], [movie_id, ''], function(err, rows) {
         count = rows.length;
         callback(null, count);
       });
@@ -95,13 +95,13 @@ router.post('/checkout/:customer_id/:movie_id', function(request, response, next
         values.push(movie_id);
 
         var checkout_date = new Date();
-        var return_date = new Date();
-        return_date.setDate(return_date.getDate() + RENTAL_PERIOD);
+        var due_date = new Date();
+        due_date.setDate(due_date.getDate() + RENTAL_PERIOD);
 
-        var defaults = [checkout_date, return_date, "false"];
+        var defaults = [checkout_date, due_date, ""];
         values = values.concat(defaults);
 
-        var columns = ['customer_id', 'movie_id', 'checkout_date', 'return_date', 'returned'];
+        var columns = ['customer_id', 'movie_id', 'checkout_date', 'due_date', 'returned_date'];
 
         rental.create(columns, values, function(err, results) {
           response.status(200).json({ success: "Yay! You checked out a movie." });

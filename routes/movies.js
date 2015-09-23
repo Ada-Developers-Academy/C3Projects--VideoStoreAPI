@@ -38,7 +38,7 @@ router.get('/:title', function(req, res, next) {
       var pastRentersIds = [];
 
       for (var i = 0; i < rows.length; i++) {
-        if (rows[i].returned == "false") {
+        if (rows[i].returned_date == "") {
           currentRentersIds.push(rows[i].customer_id);
         } else {
           pastRentersIds.push(rows[i].customer_id);
