@@ -26,7 +26,8 @@ describe.only("Customer", function() {
         VALUES('2015-02-14', '2015-02-21', '1', '1', 'false'), \
               ('2015-09-22', '2015-09-29', '1', '2', 'true'), \
               ('2015-09-22', '2015-09-29', '2', '2', 'true'), \
-              ('2015-07-22', '2015-09-01', '2', '1', 'true'); \
+              ('2015-09-14', '2015-09-20', '1', '1', 'true'), \
+              ('2015-07-22', '2015-09-01', '1', '2', 'true'); \
         COMMIT;"
         , function(err) {
           db_cleaner.close();
@@ -110,7 +111,7 @@ describe.only("Customer", function() {
         customer.movies_by_customer_current(2, function(err, res) {
           assert.equal(err, undefined);
           assert(res instanceof Array);
-          assert.equal(res.length, 2);
+          assert.equal(res.length, 3);
           assert.equal(res[0].title, 'Jaws');
           done();
         });
@@ -134,11 +135,18 @@ describe.only("Customer", function() {
         customer.customers_overdue(function(err, res) {
           assert.equal(err, undefined);
           assert(res instanceof Array);
-          assert.equal(res.length, 1);
-          assert.equal(res[0].name, 'Beetle Juice');
+          assert.equal(res.length, 2);
           done();
         });
       });
+
+      it("customers list is sorted by return_date", function(done) {
+        customer.customers_overdue(function(err, res) {
+          assert.equal(res[0].name, 'Juicy Beetle');
+          done();
+        });
+      });
+
     });
 
   });
