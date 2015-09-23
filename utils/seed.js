@@ -37,9 +37,12 @@ db.serialize(function seedData() {
       for (var i = 0; i < customers.length; i++) {
         var customer = customers[i];
 
+        var date = new Date(customer.registered_at);
+        var date = date.getFullYear() + '-' + to2Digits(date.getMonth() + 1) + '-' + to2Digits(date.getDate());
+
         statement.run(
           customer.name,
-          customer.registered_at,
+          date,
           customer.address,
           customer.city,
           customer.state,
@@ -105,3 +108,8 @@ db.serialize(function seedData() {
 // }
 
 db.close();
+
+function to2Digits(num) {
+  num = num < 10 ? '0' + num : num;
+  return num;
+}
