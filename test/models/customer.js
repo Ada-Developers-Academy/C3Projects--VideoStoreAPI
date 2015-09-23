@@ -23,7 +23,30 @@ describe('Customer', function() {
     assert(customer instanceof Customer);
   });
 
+  describe("instance methods", function() {
+    it("can find all customers", function(done) {
+      customer.find_all(function(err, res) {
+        assert.equal(err, undefined);
+        assert(res instanceof Array);
+        assert.equal(res.length, 2);
 
+        assert.equal(res[0].name, 'Mulder');
+        assert.equal(res[1].name, 'Scully');
 
+        done();
+      });
+    });
 
+    it("can find a subset of customers", function(done) {
+      customer.find_subset('name', 1, 1, function(err, res) {
+        assert.equal(err, undefined);
+        assert(res instanceof Array);
+        assert.equal(res.length, 1);
+
+        assert.equal(res[0].name, 'Scully');
+
+        done();
+      });
+    });
+  });
 });
