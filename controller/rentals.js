@@ -96,12 +96,12 @@ exports.rentalsController = {
 
 
   // *POST* rental/:title/:customer_id/checkout
-  checkout: function(req,res){
+  checkout: function(req, res){
    // select from movies the title to find movie_id
     var statement = "SELECT * FROM movies WHERE title LIKE '%" + req.params.title + "%';";
 
     db.all(statement, function(err, rows){
-      // rows is specific movie, get id 
+      // rows is specific movie, get id
       // update movie inventory_available (-1)
       var movieId = rows[0].id;
       var newInventory = parseInt(rows[0].inventory_available) - 1;
@@ -117,11 +117,11 @@ exports.rentalsController = {
 
 
      db.run(statement, customerId, movieId, returnDate, (checkoutDate).toString(), (dueDate).toString(), function(err, rows){
-        
+
         var updateMovieStatement = "UPDATE movies SET inventory_available=? WHERE id=? ;";
         // update movie inventory_available (+1)
         db.run(updateMovieStatement, newInventory, movieId, function(err, rows) {
-        res.status(200).json('success');  
+        res.status(200).json('success');
         });
       });
     });
