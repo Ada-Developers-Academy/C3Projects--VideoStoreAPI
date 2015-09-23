@@ -58,6 +58,15 @@ var rental_statement = db.prepare(
   "INSERT INTO rentals(checkout_date, return_date, movie_id, customer_id, checked_out) \
   VALUES (?, ?, ?, ?, ?);"
 );
+// var adjust_num_available_statement = db.prepare(
+//   "CASE WHEN rentals.checked_out = 'true' AND rentals.movie_id = 1 THEN UPDATE movies SET num_available = (num_available - 1) WHERE id = 1; "
+//
+//   "UPDATE movies SET num_available = CASE WHEN (SELECT * FROM movies INNER JOIN rentals ON movies.id = rentals.movie_id WHERE checked_out = 'true' AND movie_id = 1 LIMIT 1) THEN (num_available - 1) ELSE num_available END WHERE id = 1; "
+
+  // SELECT * FROM movies INNER JOIN rentals ON movies.id = rentals.movie_id WHERE checked_out = 'true'
+
+  // UPDATE movies SET num_available = (num_available - 1) WHERE id = 1 AND  (SELECT checked_out FROM rentals WHERE rentals.movie_id = 1 AND rentals.checked_out = 'true');
+);
 
 db.serialize(function() {
   // loop through rentals
@@ -71,8 +80,11 @@ db.serialize(function() {
       rental.customer_id,
       rental.checked_out
     );
+    // decrease number of copies available in movies table if checked out.
+    // adjust_num_available_statement.run(rental.movie_id);
   }
   rental_statement.finalize();
+  // adjust_num_available_statement.finalize();
 });
 
 // close db

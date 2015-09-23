@@ -36,17 +36,6 @@ var Database = {
     });
   },
 
-  // movie_info: function(title, callback) {
-  //   var db = new sqlite3.Database('db/' + db_env + '.db');
-  //   // information about specified movie
-  //   var statement = "SELECT 'movies'.* FROM movies where movies.title = ? COLLATE NOCASE LIMIT 1; ";
-  //
-  //   db.all(statement, title, function(err, rows) {
-  //     callback(err, rows);
-  //     db.close();
-  //   });
-  // },
-
   customers_by_movie_history: function(title, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
     // all customers who have checked out this movie in the past
@@ -95,7 +84,7 @@ var Database = {
 
   customers_overdue: function(callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
-    // all customers who currently have the movie checked out
+    // all customers who currently have the movie checked out and past return_date
     var statement = "SELECT * FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id WHERE date(rentals.return_date) < date('now') AND rentals.checked_out = 'true'; ";
 
     db.all(statement, function(err, rows) {

@@ -20,15 +20,18 @@ Rental.prototype = {
 
     var charge_statement = "UPDATE customers SET account_credit = (account_credit - " + rental_cost + ") WHERE ID = " + customer_id + " ;";
 
-    db.run(create_statement, function(err) {
-      callback(err, { inserted_id: this.lastID, changed: this.changes });
+    var availability_statement = "UPDATE movies SET num_available = (num_available - 1) WHERE id = (SELECT id FROM movies WHERE title = '" + movie_title + "');";
+
+    db.serialize(function(err) {
+      db.run(create_statement, function(err) {
+        callback(err, { inserted_id: this.lastID, changed: this.changes });
+      });
+      db.run(charge_statement);
+      db.run(availability_statement);
+
       db.close();
     });
 
-    db.run(charge_statement, function(err) {
-      callback(err, { changed: this.changes });
-      db.close();
-    });
   }
 };
 
