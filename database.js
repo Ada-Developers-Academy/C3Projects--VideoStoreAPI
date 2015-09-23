@@ -114,5 +114,17 @@ module.exports = {
       if (callback) callback(err, res);
       db.close();
     });
+  },
+
+  check_movie_availability: function(value, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+
+    console.log(value);
+    var statement = 'SELECT movies.available FROM movies where title = ? COLLATE NOCASE;';
+
+    db.all(statement, value, function(err, result) {
+      if (callback) callback(err, result);
+      db.close();
+    });
   }
 }
