@@ -8,7 +8,7 @@ var agent = request.agent(app);
 
 var resetTables = require('../dbCleaner');
 
-describe.only('/customers', function() {
+describe('/customers', function() {
   describe("GET '/'", function() {
     var numCustomersSeeded;
     var request;
