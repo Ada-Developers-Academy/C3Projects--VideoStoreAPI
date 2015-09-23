@@ -1,81 +1,80 @@
-
 [
   {
-    "check_out": "2015-06-16",
-    "check_in": "2015-06-17",
-    "due_date": "2015-06-19",
+    "check_out": 20150616,
+    "check_in": 20150617,
+    "due_date": 20150619,
     "overdue": 0,
     "customer_id": 1,
     "movie_title": "Jaws"
   },
   {
-    "check_out": "2015-04-27",
-    "check_in": "2015-05-12",
-    "due_date": "2015-04-30",
+    "check_out": 20150427,
+    "check_in": 20150512,
+    "due_date": 20150430,
     "overdue": 1,
     "customer_id": 7,
     "movie_title": "Alien"
   },
   {
-    "check_out": "2015-05-14",
-    "check_in": "2015-05-16",
-    "due_date": "2015-04-17",
+    "check_out": 20150514,
+    "check_in": 20150516,
+    "due_date": 20150417,
     "overdue": 0,
     "customer_id": 12,
     "movie_title": "Psycho"
   },
   {
-    "check_out": "2015-06-03",
-    "check_in": "2015-06-07",
-    "due_date": "2015-06-06",
+    "check_out": 20150603,
+    "check_in": 20150607,
+    "due_date": 20150606,
     "overdue": 1,
     "customer_id": 1,
     "movie_title": "The Birds"
   },
   {
-    "check_out": "2015-07-03",
-    "check_in": "2015-07-06",
-    "due_date": "2015-07-06",
+    "check_out": 20150703,
+    "check_in": 20150706,
+    "due_date": 20150706,
     "overdue": 0,
     "customer_id": 8,
     "movie_title": "The Godfather"
   },
   {
-    "check_out": "2015-07-03",
-    "check_in": "",
-    "due_date": "2015-07-06",
+    "check_out": 20150703,
+    "check_in" : null,
+    "due_date": 20150706,
     "overdue": 1,
     "customer_id": 8,
     "movie_title": "King Kong"
   },
   {
-    "check_out": "2015-07-03",
-    "check_in": "",
-    "due_date": "2015-07-06",
+    "check_out": 20150703,
+    "check_in" : null,
+    "due_date": 20150706,
     "overdue": 0,
     "customer_id": 9,
     "movie_title": "King Kong"
   },
   {
-    "check_out": "2015-07-03",
-    "check_in": "",
-    "due_date": "2015-07-06",
+    "check_out": 20150703,
+    "check_in" : null,
+    "due_date": 20150706,
     "overdue": 1,
     "customer_id": 9,
     "movie_title": "King Kong"
   },
   {
-    "check_out": "2013-07-03",
-    "check_in": "2013-07-06",
-    "due_date": "2013-07-06",
+    "check_out": 20130703,
+    "check_in": 20130706,
+    "due_date": 20130706,
     "overdue": 0,
     "customer_id": 9,
     "movie_title": "King Kong"
   },
   {
-    "check_out": "2014-07-03",
-    "check_in": "2014-07-06",
-    "due_date": "2014-07-06",
+    "check_out": 20140703,
+    "check_in": 20140706,
+    "due_date": 20140706,
     "overdue": 0,
     "customer_id": 3,
     "movie_title": "King Kong"

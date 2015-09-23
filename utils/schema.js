@@ -24,9 +24,9 @@ var customer_fields = [
 ]
 
 var rental_fields = [
-  ['check_out', 'text'],
-  ['check_in', 'text'],
-  ['due_date', 'text'],
+  ['check_out', 'integer'],
+  ['check_in', 'integer'],
+  ['due_date', 'integer'],
   ['overdue', 'integer', 'DEFAULT 0'], // 0 for false 1 for true
   ['movie_title', 'string'],
   ['customer_id', 'integer']

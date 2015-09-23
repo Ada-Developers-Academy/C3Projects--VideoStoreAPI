@@ -92,15 +92,34 @@ module.exports = {
 
   // RENTALS
   overdue: function(callback) {
-    this.query("SELECT customers.id, customers.name, customers.registered_at, \
+    var newDate = new Date();
+    var today = formatDate(newDate);
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+
+    db.exec("BEGIN; \
+    UPDATE rentals SET overdue=1 WHERE due_date<" + today + " \
+    AND check_in IS NULL; \
+    SELECT customers.id, customers.name, customers.registered_at, \
     customers.address, customers.city, customers.state, \
     customers.postal_code, customers.phone, customers.account_credit \
     FROM customers, rentals \
     WHERE customers.id=rentals.customer_id \
-    AND rentals.overdue=1 AND rentals.check_in IS NULL;", function(res) {
-      callback(res);
-    });
+    AND rentals.overdue=1 AND rentals.check_in IS NULL; \
+    COMMIT;");
+    // console.log(today);
+
+    db.close();
   },
+
+  // update_overdue: function(callback) {
+  //   var newDate = new Date();
+  //   var today = formatDate(newDate);
+  //   this.query("UPDATE rentals SET overdue=1 WHERE due_date<" + today + " \
+  //     AND check_in IS NULL;",
+  //     function(res) {
+  //       callback(res);
+  //     });
+  // },
 
  // passing req.body to data
   check_out: function(data, callback) {
@@ -160,4 +179,4 @@ var formatDate = function(date) {
   }
 
   return parseInt(year + month + day);
-}
+};
