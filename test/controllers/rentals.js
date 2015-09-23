@@ -27,11 +27,11 @@ describe("Endpoints for /rentals", function() {
               (5, 'Steve', 'Fri, 18 Aug 2015 07:00:00 -0700', '123 Fake St.', 'Seattle', 'WA', 98102, '123-444-5555', 2.34);\
         DELETE FROM rentals; \
         INSERT INTO rentals(id, customer_id, customer_name, movie_id, return_date, checkout_date, due_date) \
-        VALUES(1, 1, 2, 'Alice', 'Fri, 18 Aug 2015 07:00:00 -0700', 'Wed, 14 Aug 2015 10:00:00 -0700', 'Wed, 21 Aug 2015 10:00:00 -0700'), \
-              (2, 1, 2, 'Alice', '', 'Wed, 22 Jul 2015 10:00:00 -0700', 'Wed, 29 Jul 2015 10:00:00 -0700'), \
-              (3, 2, 2, 'Shanna', '', 'Tue, 7 Sep 2015 10:00:00 -0700', 'Tue, 14 Sep 2015 10:00:00 -0700'), \
-              (4, 2, 5, 'Shanna', 'Tue, 7 Sep 2015 10:00:00 -0700', 'Tue, 1 Sep 2015 10:00:00 -0700', 'Tue, 8 Sep 2015 10:00:00 -0700'), \
-              (5, 3, 1, 'Marleigh', '', 'Fri, 18 Sep 2015 10:00:00 -0700', 'Fri, 25 Sep 2015 10:00:00 -0700'); \
+        VALUES(1, 1, 'Alice', 2, 'Fri, 18 Aug 2015 07:00:00 -0700', 'Wed, 14 Aug 2015 10:00:00 -0700', 'Wed, 21 Aug 2015 10:00:00 -0700'), \
+              (2, 1, 'Alice', 2, '', 'Wed, 22 Jul 2015 10:00:00 -0700', 'Wed, 29 Jul 2015 10:00:00 -0700'), \
+              (3, 2, 'Shanna', 2, '', 'Tue, 7 Sep 2015 10:00:00 -0700', 'Tue, 14 Sep 2015 10:00:00 -0700'), \
+              (4, 2, 'Shanna', 5, 'Tue, 7 Sep 2015 10:00:00 -0700', 'Tue, 1 Sep 2015 10:00:00 -0700', 'Tue, 8 Sep 2015 10:00:00 -0700'), \
+              (5, 3, 'Marleigh', 1, '', 'Fri, 18 Sep 2015 10:00:00 -0700', 'Fri, 25 Sep 2015 10:00:00 -0700'); \
         COMMIT;",
           function(err) {
             db_cleaner.close();
@@ -52,14 +52,37 @@ describe("Endpoints for /rentals", function() {
            .expect(200, done);
     })
 
-    // it('returns an array of rental objects', function(done){
-    //
-    // });
-    //
-    // it('returns an array of rental objects sorted by customer id', function(done){
-    //
-    // });
-    //
+    it('returns an array of rental objects', function(done){
+      agent.get('/rentals/Psycho/current/customer_id')
+           .set('Accept', 'application/json')
+           .expect(200, function(error, result) {
+              assert.equal(result.body.length, 2);
+
+            var keys = ['id', 'customer_id', 'customer_name', 'movie_id', 'return_date', 'checkout_date', 'due_date'];
+            assert.deepEqual(Object.keys(result.body[0]), keys);
+            done();
+     })
+    });
+
+    it('returns an array of rental objects sorted by customer id', function(done){
+      agent.get('/rentals/Psycho/current/customer_id')
+           .set('Accept', 'application/json')
+           .expect(200, function(error, result) {
+              assert.equal(result.body.length, 2);
+
+            var expectedNames = ['Alice', 'Shanna'];
+            var actualNames = [];
+
+
+            for(var i = 0; i < result.body.length; i++) {
+              actualNames.push(result.body[i].customer_name);
+            }
+
+            assert.deepEqual(expectedNames, actualNames);
+            done();
+     })
+    });
+
     // it('returns an array of rental objects sorted by customer name', function(done){
     //
     // });
