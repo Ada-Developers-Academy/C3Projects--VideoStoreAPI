@@ -13,6 +13,24 @@ var Customer = require('../models/customer'),
 
 var RENTAL_PERIOD = 5; // 5 days
 
+router.get('/overdue', function(req, res, next) {
+  var today = new Date();
+  var overdueCustomerIds = [];
+
+  rental.where(['returned_date'], [''], function(err, rows) {
+    for (var i = 0; i < rows.length; i++) {
+      var dueDate = new Date(rows[i].due_date);
+      if (dueDate < today) { // overdue!
+        overdueCustomerIds.push(rows[i].customer_id);
+      }
+    }
+
+    customer.where_in("id", overdueCustomerIds, function(err, rows) {
+      res.status(200).json({ overdue_customers: rows });
+    });
+  });
+});
+
 router.get('/:title', function(request, response, next) {
   var title = request.params.title;
   var rentedCount;
@@ -109,5 +127,6 @@ router.post('/checkout/:customer_id/:movie_id', function(request, response, next
       }
   });
 });
+
 
 module.exports = router;
