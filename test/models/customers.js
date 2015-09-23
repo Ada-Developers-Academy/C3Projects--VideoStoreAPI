@@ -117,8 +117,29 @@ describe.only("Customer", function() {
       });
     });
 
-    // context("GET #movies_by_customer_history", function() { });
-    // context("GET #customers_overdue", function() { });
+    context("GET #movies_by_customer_history", function() {
+      it("retrieves customer's previously checked out movies", function(done) {
+        customer.movies_by_customer_history(1, function(err, res) {
+          assert.equal(err, undefined);
+          assert(res instanceof Array);
+          assert.equal(res.length, 1);
+          assert.equal(res[0].title, 'Jaws');
+          done();
+        });
+      });
+    });
+
+    context("GET #customers_overdue", function() {
+      it("retrieves list of customers with overdue movies", function(done) {
+        customer.customers_overdue(function(err, res) {
+          assert.equal(err, undefined);
+          assert(res instanceof Array);
+          assert.equal(res.length, 1);
+          assert.equal(res[0].name, 'Beetle Juice');
+          done();
+        });
+      });
+    });
 
   });
 });
