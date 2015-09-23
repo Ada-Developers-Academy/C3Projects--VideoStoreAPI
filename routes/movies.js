@@ -21,7 +21,6 @@ router.get('/', function(req, res, next) {
 router.get('/:title/:order', function(req, res, next) {
   var title = req.params.title;
   var originalOrder = req.params.order;
-  console.log(originalOrder);
   // sort by customer_id, customer name, and checkout_date
   // var currentRentersArray = [];
   // var pastRentersArray = [];
@@ -45,13 +44,11 @@ router.get('/:title/:order', function(req, res, next) {
     } else {
       sortOrder = originalOrder;
     }
-    console.log(sortOrder);
 
     rental.order_by(condition, sortOrder, function(err, rows) {
       var currentRentersIds = [];
       var pastRentersIds = [];
 
-      console.log(rows);
       for (var i = 0; i < rows.length; i++) {
 
         if (rows[i].returned_date == "") {

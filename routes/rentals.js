@@ -110,4 +110,16 @@ router.post('/checkout/:customer_id/:movie_id', function(request, response, next
   });
 });
 
+router.get('/overdue', function(req, res, next) {
+  var today = new Date();
+  var overdues = [];
+  rentals.where('due_date', condition, function(err, rows) {
+    for (var i = 0; i < rows.length; i++) {
+      if (rows[i].due_date > today) {
+        response.status(200).json({ overdue_customers: overdues })
+      }
+    }
+  });
+});
+
 module.exports = router;
