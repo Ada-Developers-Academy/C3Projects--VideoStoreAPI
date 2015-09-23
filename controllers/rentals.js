@@ -15,7 +15,8 @@ var rentalsController = {
       WHERE rentals.movie_id = movies.id AND movies.title LIKE '%" + title + "%' \
       ORDER BY " + column + " ASC;";
 
-    var db = new Database('db/development.db');
+    var db_env = process.env.DB || 'development',
+        db = new Database('db/' + db_env + '.db');
 
     db.query(statement, function(err, result) {
 
@@ -61,8 +62,9 @@ var rentalsController = {
         AND rentals.return_date IS NULL \
       ORDER BY rentals.due_date ASC;"; 
 
-    var db = new Database('db/development.db'); 
-    
+    var db_env = process.env.DB || 'development',
+        db = new Database('db/' + db_env + '.db');
+
     db.query(statement, function(err, result) {
 
       var json_result = {
@@ -85,8 +87,9 @@ var rentalsController = {
       ORDER BY rentals.id DESC \
       LIMIT 1";
 
-    var db = new Database('db/development.db');         
-      
+    var db_env = process.env.DB || 'development',
+        db = new Database('db/' + db_env + '.db');
+              
     db.query(select_name_and_title, function(err, result) {
       var customer_name = result[0].name;
       var movie_title = result[0].title;
@@ -126,8 +129,8 @@ var rentalsController = {
       WHERE movie_id = " + movie_id + " AND customer_id = " + customer_id + " \
       ORDER BY return_date DESC;";
 
-    var db = new Database('db/development.db');
-
+    var db_env = process.env.DB || 'development',
+        db = new Database('db/' + db_env + '.db');
 
     db.multi_query(return_movie_statement, function(err) {
       db.query(select_last_rental_statement, function(err, result) {

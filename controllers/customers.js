@@ -3,9 +3,6 @@
 var Database = require('../database'); // Node module; Pulling in db object we made in a dif file
 
 var customersController = {
-
-  // maybe move the var db = ... out here?
-
   // ALL CUSTOMERS SEARCH...  "/customers?order_by=name"
   // PAGINATION...            "/customers?number=25&page=2"  => customers 26-50
   all_customers: function(req, callback) {
@@ -19,7 +16,8 @@ var customersController = {
       var statement = "SELECT * FROM customers ORDER BY " + column + " ASC;";
     }
     
-    var db = new Database('db/development.db');
+    var db_env = process.env.DB || 'development',
+        db = new Database('db/' + db_env + '.db');
 
     db.query(statement, function(err, result) {
 
@@ -34,7 +32,9 @@ var customersController = {
 
   customer: function(req, callback) {
     var statement = "SELECT * FROM customers, rentals WHERE customers.id = " + req.params.id + " AND rentals.customer_id = " + req.params.id + " ORDER BY rentals.checkout_date ASC;";    
-    var db = new Database('db/development.db');
+    
+    var db_env = process.env.DB || 'development',
+        db = new Database('db/' + db_env + '.db');
 
     db.query(statement, function(err, result) {
       

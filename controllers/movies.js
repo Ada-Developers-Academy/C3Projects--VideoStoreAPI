@@ -15,7 +15,8 @@ var moviesController = {
       var statement = "SELECT * FROM movies ORDER BY " + column + " ASC;";
     }
 
-    var db = new Database('db/development.db');
+    var db_env = process.env.DB || 'development',
+        db = new Database('db/' + db_env + '.db');
 
     db.query(statement, function(err, result) {
       var json_result = {
@@ -31,7 +32,8 @@ var moviesController = {
     var title = req.params.title   
     var statement = "SELECT * FROM movies WHERE title LIKE '%" + title + "%' ORDER BY " + column + " ASC;";
 
-    var db = new Database('db/development.db');
+    var db_env = process.env.DB || 'development',
+        db = new Database('db/' + db_env + '.db');
 
     db.query(statement, function(err, result) {
 
