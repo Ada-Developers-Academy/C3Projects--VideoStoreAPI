@@ -15,53 +15,46 @@ var RENTAL_PERIOD = 5; // 5 days
 
 router.get('/:title', function(request, response, next) {
   var title = request.params.title;
-  var rentedCount, inventory;
+  var rentedCount;
   var customerIdList = [];
   var movieObject = {};
 
   async.waterfall([
-    // query db for movie
+    // query db for movie and get inventory
     function(callback) {
       movie.find_by('title', title, function(error, row) {
-        movieObject.movie = row;
-        inventory = row.inventory;
-        callback(null, inventory, movieObject);
+        movieObject.movie_data = row;
+        callback(null);
       });
     },
     // retrieve rental records for that movie
-    function(movieInventory, movieObject, callback) {
+    function(callback) {
       rental.where(['movie_id', 'returned'], 
-        [movieObject.movie.id, 'false'], function(error, rows) {
-          callback(null, movieInventory, rows, movieObject);
+        [movieObject.movie_data.id, 'false'], function(error, rows) {
+          // turn object of rentals into array of ids
+          for (var i = 0; i < rows.length; i++) {
+            customerIdList.push(rows[i].customer_id);
+          }
+          callback(null);
       });
     },
     // get count of rentals
-    function(movieInventory, rentals, movieObject, callback) {
+    function(callback) {
       // check how many copies of that movie are checked out
-      rentedCount = rentals.length;
-      callback(null, movieInventory, rentedCount, rentals, movieObject);
-    },
-    // calculate availability
-    function(movieInventory, rentedCount, rentals, movieObject, callback) {
-      var availableBool = (rentedCount < movieInventory) ? true : false;
-      var availableCount = (rentedCount < movieInventory) ? (movieInventory - rentedCount) : 0;
+      rentedCount = customerIdList.length;
+      var inventory = movieObject.movie_data.inventory;
+
+      var availableBool = (rentedCount < inventory) ? true : false;
+      var availableCount = (rentedCount < inventory) ? (inventory - rentedCount) : 0;
       movieObject.availability = {
         available: availableBool,
         copiesAvailable: availableCount
       };
-      callback(null, rentals, movieObject);
-    },
-    // turn object of rentals into array of ids
-    function(rentals, movieObject, callback) {
-      for (var i = 0; i < rentals.length; i++) {
-        customerIdList.push(rentals[i].customer_id);
-      }
-      callback(null, customerIdList, movieObject);
+      callback(null);
     },
     // query DB for full customer data
-    // parameter is movieObject with movie and availability objects
-    function(customerIDs, movieObject, callback) {
-      customer.where_in('id', customerIDs, function(error, rows) {
+    function(callback) {
+      customer.where_in('id', customerIdList, function(error, rows) {
         movieObject.currentRenters = rows;
         callback(null, movieObject);
       });
