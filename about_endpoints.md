@@ -37,6 +37,7 @@ other data:
       - customer name `http://wobsite.url/movies/<title>/rented?sort=customer_name&page=2`
       - check out date `http://wobsite.url/movies/<title>/rented?sort=check_out_date&page=2`
 
+
 3. Rentals - this is the interface used when talking to customers
   - GET `http://wobsite.url/rentals/movies/<title>`
     - returns
@@ -45,14 +46,13 @@ other data:
       - inventory total
       - whether title is available for rent
   - see all customers who currently have a copy `http://wobsite.url/rentals/movies/<title>/customers/all`
-  - `http://wobsite.url/rentals/movies/<title>/customers/:id`
-    - POST check out a title
-      - create return date
-      - create charge customer's account
-    - PATCH check in a title
-      - update record
-        - returned = true
-      - update movie's inventory
-      - update returned date
   - GET a list of customers with overdue movies
     - `http://wobsite.url/rentals/overdue`
+  - POST check out a title `http://wobsite.url/rentals/movies/<title>/customers/:id`
+    - create return date
+    - create charge customer's account
+  - PATCH check in a title `http://wobsite.url/rentals/movies/<title>/customers/:id`
+    - update record
+      - returned = true
+    - update movie's inventory
+    - update returned date
