@@ -68,6 +68,17 @@ module.exports = {
     });
   },
 
+  order_by: function(column, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+
+    var statement = "SELECT * FROM " + this.table_name + " ORDER BY " + column;
+
+    db.all(statement, function(err, res) {
+      if (callback) { callback(err, res); }
+      db.close();
+    });
+  },
+
   // Example route:
   // customers/create/:name/:registered_at/:address/:city/:state/:postal_code/:phone
   create: function(columns, values, callback) {
