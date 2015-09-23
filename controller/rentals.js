@@ -75,19 +75,38 @@ exports.rentalsController = {
       var movieId = rows[0].id;
       var newInventory = parseInt(rows[0].inventory_available) + 1;
       var updateMovieStatement = "UPDATE movies SET inventory_available=? WHERE id=? ;";
+      var customerId = req.params.customer_id;
       // update movie inventory_available (+1)
       db.run(updateMovieStatement, newInventory, movieId, function(err, rows) {
 
-        var statement = "SELECT * FROM rentals WHERE customer_id = " + req.params.customer_id + " AND movie_id = " + movieId + " AND return_date = '';";
+        var statement = "SELECT * FROM rentals WHERE customer_id = " + customerId + " AND movie_id = " + movieId + " AND return_date = '';";
 
         db.all(statement, function(err, rows){
           // rows is specific rental entry
           var rentalId = rows[0].id;
           // change return_date to current date
-          var updateRentalStatement = "UPDATE rentals SET return_date=? WHERE id=? ;";
+          var returnDate = new Date();
+          var dueDate = new Date(rows[0].due_date);
 
-          db.run(updateRentalStatement, (new Date()).toString(), rentalId, function(err, rows) {
-            res.status(200).json('success');
+          var updateRentalStatement = "UPDATE rentals SET return_date=? WHERE id=? ;";
+          db.run(updateRentalStatement, returnDate.toString(), rentalId, function(err, rows) {
+            // if return_date is > due_date, charge $1 per day late fee
+            if (returnDate > dueDate){
+              // converting milliseconds to days the brute force way :(
+              var lateFee = parseInt((returnDate - dueDate)/1000/60/60/24);
+              var customerStatement = "SELECT * FROM customers WHERE id = " + customerId + ";";
+
+              db.all(customerStatement, function(err, rows){
+                var updatedCredit = parseInt(rows[0].credit) - lateFee;
+                var updateCustomerStatement = "UPDATE customers SET credit=? WHERE id=?;";
+
+                db.run(updateCustomerStatement, updatedCredit, customerId, function(err, rows){
+                  res.status(200).json('Movie checked in. Charged late fee.');
+                });
+              });
+            } else {
+              res.status(200).json('Movie checked in.');
+            }
           });
         });
       });
@@ -116,7 +135,7 @@ exports.rentalsController = {
       dueDate.setDate(checkoutDate.getDate() + 7);
 
 
-     db.run(statement, customerId, movieId, returnDate, (checkoutDate).toString(), (dueDate).toString(), function(err, rows){
+      db.run(statement, customerId, movieId, returnDate, (checkoutDate).toString(), (dueDate).toString(), function(err, rows){
 
         var updateMovieStatement = "UPDATE movies SET inventory_available=? WHERE id=? ;";
         // update movie inventory_available (+1)
@@ -130,11 +149,10 @@ exports.rentalsController = {
             var updatedCredit = parseFloat(rows[0].credit) - 1;
 
             db.run(updateCustomerStatement, updatedCredit, customerId, function(err, rows) {
-              res.status(200).json('success');
+              res.status(200).json('Movie checked out.');
             })
           });
-
-          })
+        });
       });
     });
   }
