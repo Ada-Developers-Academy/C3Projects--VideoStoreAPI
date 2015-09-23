@@ -10,7 +10,7 @@ describe("Movie", function() {
 
     db_cleaner = new sqlite3.Database('db/test.db');
     db_cleaner.serialize(function() {
-      db_cleaner.exec("BEGIN; DELETE FROM movies; INSERT INTO movies(title, overview, release_date, inventory, available) VALUES('X-files: I want to believe', 'Mulder and Scully rock it', '1999', 4, 4), ('The Lone Gunmen', 'misadventures of the best nerds', '2001', 5, 5); COMMIT;"
+      db_cleaner.exec("BEGIN; DELETE FROM movies; DELETE FROM rentals; INSERT INTO movies(title, overview, release_date, inventory, available) VALUES('X-files: I want to believe', 'Mulder and Scully rock it', '1999', 4, 4), ('The Lone Gunmen', 'misadventures of the best nerds', '2001', 5, 5); INSERT INTO rentals(movie_id, customer_id, returned_date, due_date, checked_out) VALUES(1, 1, '', '2015-09-10', '2015-09-01'), (2, 2, '2015-09-30', '2015-10-01', '2015-09-15'); COMMIT;"
         , function(err) {
           db_cleaner.close();
           done();
@@ -44,6 +44,30 @@ describe("Movie", function() {
         assert.equal(res.length, 1);
 
         assert.equal(res[0].title, 'X-files: I want to believe');
+
+        done();
+      });
+    });
+
+    it("can find customers who currently have a rental for that movie", function(done) {
+      movie.movie_current_customers('X-files: I want to believe', function(err, res) {
+        assert.equal(err, undefined);
+        assert(res instanceof Array);
+        assert.equal(res.length, 1);
+
+        assert.equal(res[0].name, 'Mulder');
+
+        done();
+      });
+    });
+
+    it("can find customers who have a past rental for that movie", function(done) {
+      movie.movie_past_customers('The Lone Gunmen', 'name', function(err, res) {
+        assert.equal(err, undefined);
+        assert(res instanceof Array);
+        assert.equal(res.length, 1);
+
+        assert.equal(res[0].name, 'Scully');
 
         done();
       });
