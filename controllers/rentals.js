@@ -27,6 +27,24 @@ function findCopy(movie_title, callback) {
   });
 }
 
+function findRental(movie_title, customer, callback) {
+  db = new sqlite3.Database('db/' + db_env + '.db');
+  db.get("SELECT movie_copies.id FROM rentals \
+          INNER JOIN movie_copies ON movie_copies.id = rentals.movie_copy_id \
+          INNER JOIN movies ON movies.id = movie_copies.movie_id \
+          WHERE movies.title LIKE ? AND rentals.customer_id = ? AND rentals.return_status = 0;",
+    movie_title, customer, function(err, result) {
+      if (err) {
+        db.close();
+        console.log("ERROR: ", err);
+      }
+      else {
+        db.close();
+        callback(result);
+      }
+  });
+}
+
 exports.rentalsController = {
   rentals: function(req, res) {
     db = new sqlite3.Database('db/' + db_env + '.db');
@@ -71,14 +89,40 @@ exports.rentalsController = {
       db.serialize(function() {
         db.run("INSERT INTO rentals(customer_id, movie_copy_id, checkout_date, return_date, return_status, cost) \
                 VALUES(" + customer + ", " + movie_copy.id + ", '" + checkout + "', '" + due + "', 0, 5); \
-                COMMIT;", function(err, result) {
+                COMMIT;"); // end first db.run
+        db.run("UPDATE customers SET account_credit = account_credit - 5 WHERE id = ?;", customer);
+        db.run("UPDATE movie_copies SET is_available = 0 WHERE id = ?;", movie_copy.id);
+        db.get("SELECT * FROM rentals WHERE customer_id = ? ORDER BY checkout_date DESC;", customer, function(err, result) {
+          if (err) {
+            console.log("ERROR: ", err);
+          }
+          return res.status(200).json(result);
+          });
+      });
+      db.close();
+    });
+  },
+
+  return_rental: function(req, res) {
+    var customer = req.params.customer_id,
+        movie = req.params.movie_title;
+        movie = addPercents(movie);
+    findRental(movie, customer, function(rental_copy) {
+      if(rental_copy === undefined) {
+        return res.status(204).send({status: 204, message: "NO RENTAL FOUND"});
+      }
+
+      db = new sqlite3.Database('db/' + db_env + '.db');
+      db.serialize(function() {
+
+          db.run("UPDATE rentals SET return_status = 1 WHERE customer_id = " + customer + ";");
+          db.run("UPDATE movie_copies SET is_available = 1 WHERE id = " + rental_copy.id + ";");
+          db.get("SELECT * FROM rentals WHERE customer_id = ? ORDER BY checkout_date DESC", customer, function(err, result) {
             if (err) {
               console.log("ERROR: ", err);
             }
             return res.status(200).json(result);
-          }); // end first db.run
-          db.run("UPDATE customers SET account_credit = account_credit - 5 WHERE id = " + customer + ";");
-          db.run("UPDATE movie_copies SET is_available = 0 WHERE id = " + movie_copy.id + ";");
+          });
         });
         db.close();
       });

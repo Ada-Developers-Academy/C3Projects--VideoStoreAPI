@@ -15,4 +15,8 @@ router.get('/:customer_id/:movie_title', function(req, res, next) {
   return rentals_exports.rentalsController.create_rental(req, res);
 });
 
+router.get('/return/:customer_id/:movie_title', function(req, res, next) {
+  return rentals_exports.rentalsController.return_rental(req, res);
+});
+
 module.exports = router;
