@@ -7,7 +7,7 @@ var sqlite3 = require('sqlite3').verbose();
 var agent = request.agent(app);
 var movieController = require('../../controllers/movieController');
 
-// Run  `DB=test npm run db:schema` to seed before running these tests
+// Run  `DB=test npm run db:schema' and 'DB=test npm run db:seeds` to seed before running these tests
 
 describe('movie controller', function() {
   describe('GET /all/:page', function() {
@@ -20,14 +20,14 @@ describe('movie controller', function() {
       })
     })
 
-    // it('responds with 10 movie results', function(done) {
-    //   agent.get('/movies/all/1').set('Accept', 'application/json')
-    //     .expect('Content-Length', '10')
-    //     .expect(200, function(error, result) {
-    //       assert.equal(error, undefined);
-    //       done();
-    //     })
-    // })
+    it('responds with 10 movie results', function(done) {
+      agent.get('/movies/all/1').set('Accept', 'application/json')
+        .expect(200, function(error, result) {
+          assert.equal(result.body.length, 10);
+          assert.equal(error, undefined);
+          done();
+        })
+    })
 
     it("responds with keys of 'id', \
       'title', 'overview', 'release_date' and 'inventory'",
@@ -50,8 +50,10 @@ describe('movie controller', function() {
 
   describe("GET /:title", function() {
     var title = "Alien";
+    var uri = '/movies/' + title;
+
     it('responds with json format', function(done) {
-      agent.get('/movies/:title').set('Accept', 'application/json')
+      agent.get(uri).set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200, function(error, result) {
         assert.equal(error, undefined);
@@ -60,10 +62,10 @@ describe('movie controller', function() {
     })
 
     it('responds with 1 movie result', function(done) {
-      agent.get('/movies/:title').set('Accept', 'application/json')
-        // .expect('Content-Length', '1')
+      agent.get(uri).set('Accept', 'application/json')
         .expect(200, function(error, result) {
           assert.equal(error, undefined);
+          assert.equal(result.body.length, 1);
           done();
         })
     })
@@ -77,10 +79,8 @@ describe('movie controller', function() {
         'inventory'
       ];
 
-      agent.get('/movies/:title').set('Accept', 'application/json')
+      agent.get(uri).set('Accept', 'application/json')
         .expect(200, function(error, result) {
-          console.log("INSIDZZ");
-          console.log("RESULT : " + result); //result.body is undefined
           assert.deepEqual(Object.keys(result.body[0]), movie_keys);
           done();
         })
@@ -120,6 +120,7 @@ describe('movie controller', function() {
     // sorting_hat = ["customer_id", "customer_name", "check_out_date"];
 
     it('responds with json format', function(done) {
+      // CHANGE
       agent.get('/movies/:title/rented/sort_by=customer_id/1').set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200, function(error, result) {
