@@ -154,6 +154,7 @@ module.exports = {
         console.log(err); // error handling
         return;
       };
+      result = fixTime(result, 'check_out_date');
       return response.status(200).json(result);
     });
     db.close();
