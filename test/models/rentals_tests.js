@@ -15,11 +15,7 @@ describe("Rental", function() {
   it("has a 'customersRentalHistory' property that is a function", function() {
     assert.equal(typeof rental.customersRentalHistory, "function");
   })
-  //
-  // it("has a 'find_all' property that is a function", function() {
-  //   assert.equal(typeof movie.find_all, "function");
-  // })
-  //
+
   // it("has a 'sort_by' property that is a function", function() {
   //   assert.equal(typeof movie.sort_by, "function");
   // });
@@ -50,8 +46,11 @@ describe("Rental", function() {
 
     it("displays all customers rental history", function(done) {
       rental.customersRentalHistory(function(err, result){
-        console.log(result)
         assert.equal(result[0].name, 'Another Shelley Rocha');
+        assert.equal(result[0].checkout_date, '09-25-2015');
+        assert.equal(result[0].returned_date, '09-25-2015');
+        assert.equal(result[0].rental_time, 1);
+        assert.equal(result.length, 4);
         done();
       });
     });
