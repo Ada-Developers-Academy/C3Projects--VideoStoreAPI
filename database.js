@@ -144,5 +144,29 @@ module.exports = {
       if (callback) callback(err, result);
       db.close();
     });
-  }
+  },
+
+  charge_customer: function(customer_id, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+
+    // We're charging a dollar
+    var statement = "UPDATE customers SET account_credit = account_credit - 1.0 WHERE id = ?";
+
+    db.all(statement, customer_id, function(err, result) {
+      if (callback) callback(err, result);
+      db.close();
+    });
+  },
+
+
+  update_availabile_movies: function(movie_title, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+
+    var statement = "UPDATE movies SET available = available - 1 WHERE title = ? COLLATE NOCASE";
+
+    db.all(statement, movie_title, function(err, result) {
+      if (callback) callback(err, result);
+      db.close();
+    });
+  },
 }
