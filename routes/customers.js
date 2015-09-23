@@ -5,11 +5,11 @@ var router  = express.Router();
 var Customer = require('../models/customer'),
     customer = new Customer();
 
-var Rental   = require('../models/rental'),
-    rental   = new Rental();
+var Rental = require('../models/rental'),
+    rental = new Rental();
 
-var Movie    = require('../models/movie'),
-    movie    = new Movie();
+var Movie = require('../models/movie'),
+    movie = new Movie();
 
 router.get('/', function(req, res, next) {
   customer.find_all(function(err, rows) {
@@ -49,28 +49,19 @@ router.get('/:id', function(req, res, next) {
           // pastMoviesIDs.push(rows[i].movie_id);
         }
       }
-      console.log(pastMoviesObject);
       pastMoviesIDs = Object.keys(pastMoviesObject);
-      console.log(pastMoviesIDs);
 
-      movie.where_in(['id'], currentMoviesIDs, function(err, rows) {
+      movie.where_in('id', currentMoviesIDs, function(err, rows) {
         customerObject.movies.currentRentals = rows; // no returned_date
 
-        movie.where_in(['id'], pastMoviesIDs, function(err, rows) {
-          console.log(rows);
+        movie.where_in('id', pastMoviesIDs, function(err, rows) {
           for (var i = 0; i < rows.length; i++) {
             var movieObject = {};
             movieObject.movieData = rows[i];
             movieObject.returnedDate = pastMoviesObject[rows[i].id];
             pastRentalsArray.push(movieObject);
           }
-          // customerObject.movies.pastRentals = rows;
-          // add returned_date to each rental
 
-          // brute force: iterate through each movie object,
-          //  run a query on the rentals table, get returned_date for that movie
-          
-          
           res.status(200).json(customerObject);
         });
       });
@@ -89,33 +80,20 @@ router.get('/:sort_by/:limit/:offset', function(req, res, next) {
   });
 });
 
-router.post('/create/:name/:registered_at/:address/:city/:state/:postal_code/:phone', function(req, res, next) {
-  var values = [];
-  values.push(req.params.name);
-  values.push(req.params.registered_at);
-  values.push(req.params.address);
-  values.push(req.params.city);
-  values.push(req.params.state);
-  values.push(req.params.postal_code);
-  values.push(req.params.phone);
-  var columns = ['name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone']
+// router.post('/create/:name/:registered_at/:address/:city/:state/:postal_code/:phone', function(req, res, next) {
+//   var values = [];
+//   values.push(req.params.name);
+//   values.push(req.params.registered_at);
+//   values.push(req.params.address);
+//   values.push(req.params.city);
+//   values.push(req.params.state);
+//   values.push(req.params.postal_code);
+//   values.push(req.params.phone);
+//   var columns = ['name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone']
 
-  customer.create(columns, values, function(err, res) {
-    res.status(200).json(res);
-  });
-});
-
-// DEBUGGER ROUTE
-
-router.get('/where/:city', function(req, res, next) {
-  var values = [];
-  values.push(req.params.city);
-  console.log(values);
-
-  customer.where(['city'], values, function(err, rows) {
-    console.log(rows.length);
-    res.status(200).json({ customers: rows} );
-  });
-});
+//   customer.create(columns, values, function(err, res) {
+//     res.status(200).json(res);
+//   });
+// });
 
 module.exports = router;
