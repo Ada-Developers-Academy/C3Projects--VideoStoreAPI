@@ -14,7 +14,6 @@ router.get('/:title/past/:sort_option', function(req, res, next) {
 });
 
 // '/rentals/overdue'
-// *GET*  rental/customers/overdue
 router.get('/overdue', function(req, res, next) {
   return rentals_exports.rentalsController.overdue(req, res);
 });
