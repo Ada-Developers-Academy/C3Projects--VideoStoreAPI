@@ -114,5 +114,59 @@ module.exports = {
       if (callback) callback(err, res);
       db.close();
     });
-  }
+  },
+
+  check_movie_availability: function(value, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+
+    var statement = 'SELECT movies.available FROM movies where title = ? COLLATE NOCASE;';
+
+    db.all(statement, value, function(err, result) {
+      if (callback) callback(err, result);
+      db.close();
+    });
+  },
+
+  create_rental: function(movie_title, customer_id, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+
+    var ugly_today = new Date();
+
+    var today = new Date().toISOString().slice(0, 10);
+
+    var date_conversion = ugly_today.setDate(ugly_today.getDate() + 10);
+
+    var due_date = new Date(date_conversion).toISOString().slice(0, 10);
+
+    var statement = "INSERT INTO rentals(movie_id, customer_id, returned_date, due_date, checked_out) VALUES((select id from movies where title=? COLLATE NOCASE), ?, '', ?, ?);";
+
+    db.all(statement, movie_title, customer_id, due_date, today, function(err, result) {
+      if (callback) callback(err, result);
+      db.close();
+    });
+  },
+
+  charge_customer: function(customer_id, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+
+    // We're charging a dollar
+    var statement = "UPDATE customers SET account_credit = account_credit - 1.0 WHERE id = ?";
+
+    db.all(statement, customer_id, function(err, result) {
+      if (callback) callback(err, result);
+      db.close();
+    });
+  },
+
+
+  update_availabile_movies: function(movie_title, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+
+    var statement = "UPDATE movies SET available = available - 1 WHERE title = ? COLLATE NOCASE";
+
+    db.all(statement, movie_title, function(err, result) {
+      if (callback) callback(err, result);
+      db.close();
+    });
+  },
 }

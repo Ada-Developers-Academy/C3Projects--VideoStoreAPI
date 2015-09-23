@@ -27,6 +27,7 @@ var rental_fields = [
   ['movie_id', 'integer'],
   ['customer_id', 'integer'],
   ['returned_date', 'text'],
+  ['due_date', 'text'],
   ['checked_out', 'text']
 ]
 
