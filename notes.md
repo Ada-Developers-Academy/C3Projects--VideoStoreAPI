@@ -49,7 +49,7 @@ Customers
 
 🔵 get "/customers/sort/postal_code/:limit/:page" = returns all customers sorted by postal_code.
 
-get "/customers/:id/movies/current" = show all the movies that this customer is renting currently.
+🔵 get "/customers/:id/movies/current" = show all the movies that this customer is renting currently.
   - From Rentals table find all of one customer's current rentals
 
 
