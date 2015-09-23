@@ -47,7 +47,6 @@ exports.moviesController = {
       console.log(result);
       res.status(200).json(result);
     });
-<<<<<<< HEAD
     // dbMovie.find_by("title", title, function getMovieId(error, result) {
     //   var movieId = result[0].id;
     //   console.log(result);
@@ -64,8 +63,7 @@ exports.moviesController = {
     // });
     //   return res.status(200).json(result);
     // });
-=======
->>>>>>> e13e95eedddbafb9d6e081a30278a26add36338a
+
   },
 
   availableMovies: function(req, res) {

@@ -79,9 +79,9 @@ The API you build should have the following capabilities. The schema of your dat
 - Given a customer's `id` and a movie's `title` ...
   - "check out" one of the movie's inventory to the customer
     - Establish a return date
-    - Charge the customer's account (cost up to you)
   - "check in" one of customer's rentals
     - return the movie to its inventory
+    - Charge the customer's account (cost up to you)
 - See a list of customers with overdue movies
 
 ### Interface

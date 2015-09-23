@@ -48,7 +48,6 @@ module.exports = {
     var db = new sqlite3.Database('db/' + db_env + '.db');
     var statement = "SELECT * FROM rentals WHERE " + column + " = ? AND returned_date = 'nil';";
 
-
     db.all(statement, value, function(error, result) {
 
       if (callback) callback(error, result);
@@ -80,6 +79,25 @@ module.exports = {
   customersRentalHistory: function(callback){
     var db = new sqlite3.Database('db/' + db_env + '.db');
     var statement = "SELECT name, checkout_date, returned_date, rental_time FROM customers, rentals WHERE customers.id = rentals.customer_id ORDER BY checkout_date DESC;"; //[ { customer_id: 1 }, { customer_id: 2 }, { customer_id: 3 }, { customer_id: 4 } ]
+    db.all(statement, function(err, res) {
+      if (callback) callback(err, res);
+      db.close();
+    });
+  },
+
+  checkin: function(data, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    // {"name": "vika", "returned_date": "09-25-2015"}
+    UPDATE customers, rentals
+    SET account_credit = account_credit - (select total from rentals where rentals.customer_id = customers.id),
+        returned_date = data.returned_date,
+       c = c + (select c from table1 where table1.f = table2.f),
+       d = d + (select d from table1 where table1.f = table2.f),
+       e = e + (select e from table1 where table1.f = table2.f)
+    WHERE RowId IN (Select table2.RowId from table1 where table1.f = table2.f)
+
+    var statement = "SELECT name, checkout_date, returned_date, rental_time, cost, total FROM customers, rentals WHERE customers.id = rentals.customer_id AND returned_date = 'nil' ORDER BY checkout_date DESC;"; //[ { customer_id: 1 }, { customer_id: 2 }, { customer_id: 3 }, { customer_id: 4 } ]
+    // var statement = "SELECT * FROM rentals WHERE returned_date = nil;";
     db.all(statement, function(err, res) {
       if (callback) callback(err, res);
       db.close();

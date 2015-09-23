@@ -72,6 +72,8 @@ put "/rent/checkin" = Checks in the movie to the customer. changes the available
  * Update Rentals table:
    - returned_date :string
    - total :integer
+ * Update Customers table;  
+   - account_credit
 
 🔵 get "/rent/overdue" = All customers with overdue movies. *Added extra feature: returns not just customers with overdue movies, but also overdue days*
  * From Rentals table
