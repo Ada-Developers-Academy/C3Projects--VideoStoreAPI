@@ -94,7 +94,7 @@ describe("Endpoints under /movies", function() {
     });
 
     context("GET /movies/:title ", function() {
-      it.only("can find Jaws", function(done) {
+      it("can find Jaws", function(done) {
         movie_keys;
         var movie_request = agent.get('/movies/Jaws').set('Accept', 'application/json');
           movie_request
@@ -109,7 +109,7 @@ describe("Endpoints under /movies", function() {
     });
 
     context("GET /movies/:title/history ", function() {
-      it.only("can see Jaws customer history", function(done) {
+      it("can see Jaws customer history", function(done) {
         customer_keys;
         var movie_request = agent.get('/movies/Maws/history').set('Accept', 'application/json');
         movie_request
