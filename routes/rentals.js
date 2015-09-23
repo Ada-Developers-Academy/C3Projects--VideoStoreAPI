@@ -22,4 +22,12 @@ router.post('/check_out', function(req, res, next) {
   return rental_exports.rentalsController.check_out(req, res);
 });
 
+router.get('/check_in', function(req, res, next) {
+  return rental_exports.rentalsController.check_in(req, res);
+});
+
+router.post('/check_in', function(req, res, next) {
+  return rental_exports.rentalsController.check_in(req, res);
+});
+
 module.exports = router;

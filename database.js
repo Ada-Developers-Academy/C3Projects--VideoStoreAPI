@@ -116,13 +116,34 @@ module.exports = {
     var db = new sqlite3.Database('db/' + db_env + '.db');
     db.exec(
     "BEGIN; \
-    INSERT INTO " + this.table_name + "(check_out, check_in, due_date, overdue, movie_title, customer_id) VALUES(" + check_out + ", null, " + due + ", 0, '" + title + "', " + customer_id +  "); \
+    INSERT INTO " + this.table_name + "(check_out, check_in, due_date, overdue, movie_title, customer_id) \
+    VALUES(" + check_out + ", null, " + due + ", 0, '" + title + "', " + customer_id +  "); \
     UPDATE movies SET inventory_available=inventory_available - 1 WHERE title='" + title + "'; \
     UPDATE customers SET account_credit=account_credit - 3 WHERE id=" + customer_id + "; \
     COMMIT;");
     db.close();
+  },
+
+  // data will include movie_title and customer_id
+  check_in: function(data, callback) {
+    var check_in_date = new Date();
+    var check_in = formatDate(check_in_date);
+    var title = data.movie_title;
+    var customer_id = data.customer_id;
+
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    db.exec(
+    // update rental: check_in_date and overdue
+    // update movie: inventory_available
+      "BEGIN; \
+      UPDATE rentals SET check_in=" + check_in + ", overdue=0 WHERE movie_title='" + title + "'; \
+      UPDATE movies SET inventory_available=inventory_available + 1 WHERE title='" + title + "'; \
+      COMMIT;"
+    );
+
+    db.close();
   }
-}
+};
 
 var formatDate = function(date) {
   var dateObj = new Date(date);

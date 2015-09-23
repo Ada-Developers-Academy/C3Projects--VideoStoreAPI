@@ -20,7 +20,13 @@ exports.rentalsController = {
   check_out: function check_out(req, res) {
     rental.check_out(req.body, function(check_out) {
       return res.status(200).json(check_out);
-    })
+    });
+  },
+
+  check_in: function check_in(req, res) {
+    rental.check_in(req.body, function(check_in) {
+      return res.status(200).json(check_in);
+    });
   }
 
 }
