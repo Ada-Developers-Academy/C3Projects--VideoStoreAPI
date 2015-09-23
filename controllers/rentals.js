@@ -70,16 +70,6 @@ exports.rentalsController = {
   checkIn:function(id, title, res) {
     var now = new Date();
     var late_fee = 3;
-    //TODO: See if we can limit this to updating one row if multiple match
-    // (The same customer had checked out multiple copies of the same movie)
-    // db.run("UPDATE rentals SET check_in_date=? WHERE customer_id=? AND movie_id=(SELECT id FROM movies where title LIKE ?)", yyyymmdd(now), id, title, function(err, result) {
-    //   if (err !== null) {
-    //     console.log(err);
-    //   }
-    //   else {
-    //     res.status(200).json([]);
-    //   }
-    // });
     var statement = "SELECT id FROM rentals WHERE customer_id=? \
       AND movie_id=(SELECT id FROM movies where title LIKE ?) \
       AND check_in_date IS NULL;"
