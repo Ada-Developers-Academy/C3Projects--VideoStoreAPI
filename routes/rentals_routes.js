@@ -13,8 +13,6 @@ router.get("/:title", controller.movieInfo);
 
 // GET a list of all customers who currently have a copy of a given title
 router.get("/:title/customers", controller.customers);
-// controller.customers is executing in the context of the .get, not in the context of controller
-// using controller.customers.bind(controller) will bind the context to the controller object
 
 // // PATCH to /:title/customer/:id to check in a title
 // router.patch("/:title/customers/:id", controller.return);

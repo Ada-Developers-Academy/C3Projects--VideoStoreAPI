@@ -42,12 +42,10 @@ rentals.movieInfo = function(request, response, next) {
   // basic handling for attempted sql injection
   var callbackFxn = rentals.fixParamsOrReturnError(response);
   var title = validateParams(request, "title", callbackFxn);
-  if (!title) { /*console.log("attempted SQL injection");*/ return; }
+  if (!title) { console.log("attempted SQL injection"); return; }
 
   var status = 200; // ok
 
-  // SELECT movies.title, movies.overview, movies.release_date, movies.inventory, rentals.returned
-  // FROM rentals LEFT JOIN movies ON rentals.movie_title = movies.title WHERE movies.title = 'Alien';
   var movieFields = ["title", "overview", "release_date", "inventory"];
   var statement = "SELECT movies." + movieFields.join(", movies.") + ", rentals.returned "
                 + "FROM rentals "
@@ -56,8 +54,8 @@ rentals.movieInfo = function(request, response, next) {
                 + "WHERE movies.title = '" + title + "';";
 
   // query database
-  var db = new sqlite3.Database("db/" + dbEnv + ".db"); // grab the database
-  db.all(statement, function(error, data) { // query the database
+  var db = new sqlite3.Database("db/" + dbEnv + ".db");
+  db.all(statement, function(error, data) {
     var results = { meta: {} };
 
     if (error) { // log error if error
@@ -91,6 +89,7 @@ rentals.movieInfo = function(request, response, next) {
 rentals.overdue = function(request, response, next) {
   // var db = new sqlite3.Database("db/" + dbEnv + ".db");
   var page = Number(request.params.page) || 1;
+  var offset = (page - 1) * 10;
   var status = 200; // ok
 
   var customerFields = ["id", "name", "city", "state", "postal_code"];
@@ -100,11 +99,12 @@ rentals.overdue = function(request, response, next) {
                 + "LEFT JOIN customers "
                 + "ON customers.id = rentals.customer_id "
                 + "WHERE rentals.returned = 0 " // we only want customers that haven't returned a copy.
-                + "AND rentals.check_out_date + " + hoursInMilliseconds(72) + " < " + Date.now() + ";";
+                + "AND rentals.check_out_date + " + hoursInMilliseconds(72) + " < " + Date.now() + " "
+                + "LIMIT 10 OFFSET " + offset + ";";
 
   // query database
-  var db = new sqlite3.Database("db/" + dbEnv + ".db"); // grab the database
-  db.all(statement, function(error, data) { // query the database
+  var db = new sqlite3.Database("db/" + dbEnv + ".db");
+  db.all(statement, function(error, data) {
     var results = { meta: {} };
 
     if (error) { // log error if error
@@ -125,22 +125,33 @@ rentals.overdue = function(request, response, next) {
 
     results.meta.yourQuery = ourWebsite + "/rentals/overdue";
 
-    if (page >= 1)
-      results.meta.nextPage = results.meta.yourQuery + "/" + (page + 1);
-    if (page >= 2)
-      results.meta.prevPage = results.meta.yourQuery + "/" + (page - 1);
-    if (page != 1)
-      results.meta.yourQuery += "/" + page;
+    // page meta data handling
+    // we only want customers that haven't returned a copy
+    // and we only want records that are past due
+    var countStatement = "SELECT count(*) FROM rentals WHERE returned = 0 " // now it is easy to change the day
+                       + "AND check_out_date + " + hoursInMilliseconds(24 * 3) + " < " + Date.now() + ";";
+    db.get(countStatement, function(countError, countData) {
+      var totalResults = countData["count(*)"];
+      results.meta.totalResults = totalResults;
+      if (page >= 1 && totalResults > 10 * page)
+        results.meta.nextPage = results.meta.yourQuery + "/" + (page + 1);
+      if (page >= 2)
+        results.meta.prevPage = results.meta.yourQuery + "/" + (page - 1);
+      if (page != 1)
+        results.meta.yourQuery += "/" + page;
 
-    return response.status(status).json(results);
+      return response.status(status).json(results);
+    })
   })
+
+  db.close();
 }
 
 
 rentals.customers = function(request, response, next) {
   var callbackFxn = rentals.fixParamsOrReturnError(response);
   var title = validateParams(request, "title", callbackFxn);
-  if (!title) { /*console.log("attempted SQL injection");*/ return; }
+  if (!title) { console.log("attempted SQL injection"); return; }
 
   var status = 200; // ok
   var db = new sqlite3.Database("db/" + dbEnv + ".db");
@@ -179,13 +190,15 @@ rentals.customers = function(request, response, next) {
 
     return response.status(status).json(results);
   })
+
+  db.close();
 }
 
 rentals.checkOut = function(request, response, next) {
   // post request, check out a title
 }
 
-rentals.checkIn = function(request, response, next) {
+rentals.return = function(request, response, next) {
   // patch request, check in a title
 }
 

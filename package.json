@@ -5,7 +5,7 @@
   "scripts": {
     "start": "nodemon ./bin/www",
     "test": "DB=test; clear; mocha --recursive",
-    "test&db:reset": "DB=test npm run db:reset; clear; mocha --recursive",
+    "db-test": "DB=test npm run db:reset; clear; mocha --recursive",
     "db:schema": "node ./utils/schema",
     "db:seeds": "node ./utils/seeds",
     "db:reset": "npm run db:schema; npm run db:seeds"

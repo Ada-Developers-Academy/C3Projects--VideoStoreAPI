@@ -17,8 +17,6 @@ other data:
 
 -->
 
-# `DB=test npm run db:schema`
-
 1. Customers
   - GET all customers `http://wobsite.url/customers/all`
     - GET subset of customers, sorted by a passed in attribute

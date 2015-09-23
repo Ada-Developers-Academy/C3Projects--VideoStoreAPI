@@ -7,10 +7,6 @@ var agent   = request.agent(app); // supertest magic
 var assert  = require("assert");
 var sqlite3 = require("sqlite3").verbose();
 
-// wrap seeds & schema in module.exports
-// that annoying line is definitely supertest
-// - actually turns out it's morgan
-
 describe("RentalsController", function() {
 //---------------------------------------------------------------------------------------------------------------------
 //--------- GET /:title -----------------------------------------------------------------------------------------------
