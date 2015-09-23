@@ -91,7 +91,7 @@ describe('Movie', function() {
       var data = {
         movies: [
           { title: 'Jaws', overview: 'Shark!', release_date: '1975-06-19', inventory: 10 },
-          { title: 'Jaws and Maws', overview: 'Worm!', release_date: 'Yesterday', inventory: 11 },
+          { title: 'Jaws and Maws', overview: 'Worm!', release_date: '2015-09-12', inventory: 11 },
           { title: 'The French Connection', overview: 'Bonjour!', release_date: '1971-10-07', inventory: 8 }
         ]
       }
@@ -117,7 +117,7 @@ describe('Movie', function() {
           // NOTE: we need to maintain these titles (where 'Jaws' is in both)
           //       in order to test that only exact matches are returned
           { title: 'Jaws', overview: 'Shark!', release_date: '1975-06-19', inventory: 10 },
-          { title: 'Jaws and Maws', overview: 'Worm!', release_date: 'Yesterday', inventory: 11 },
+          { title: 'Jaws and Maws', overview: 'Worm!', release_date: '2015-09-12', inventory: 11 },
           { title: 'The French Connection', overview: 'Bonjour!', release_date: '1971-10-07', inventory: 8 }
         ]
       }
@@ -154,8 +154,7 @@ describe('Movie', function() {
     });
   });
 
-  // FIXME: Database#sortBy is broken!!
-  describe.skip('#sortBy', function() {
+  describe('#sortBy', function() {
     var numMoviesSeeded;
 
     beforeEach(function(done) {
@@ -185,12 +184,12 @@ describe('Movie', function() {
       movie.sortBy('release_date', null, null, function(err, rows) {
         assert.equal(err, undefined);
         assert.equal(rows.length, numMoviesSeeded);
-        assert.equal(rows[0].release_date, '1975-06-19');
+        assert.equal(rows[0].release_date, '1971-10-07');
         done();
       });
     });
 
-    it('returns 1 movies sorted by title', function(done) {
+    it('returns 1 movie sorted by title', function(done) {
       movie.sortBy('title', 1, null, function(err, rows) {
         assert.equal(err, undefined);
         assert.equal(rows.length, 1);
@@ -203,7 +202,7 @@ describe('Movie', function() {
       movie.sortBy('release_date', 1, null, function(err, rows) {
         assert.equal(err, undefined);
         assert.equal(rows.length, 1);
-        assert.equal(rows[0].release_date, '1975-06-19');
+        assert.equal(rows[0].release_date, '1971-10-07');
         done();
       });
     });
@@ -225,12 +224,12 @@ describe('Movie', function() {
           // NOTE: we need to maintain these titles (where 'Jaws' is in both)
           //       in order to test that only exact matches are returned in #findBy
           { title: 'Jaws', overview: 'Shark!', release_date: '1975-06-19', inventory: 10 },
-          { title: 'Jaws and Maws', overview: 'Worm!', release_date: 'Yesterday', inventory: 11 },
+          { title: 'Jaws and Maws', overview: 'Worm!', release_date: '2015-09-12', inventory: 11 },
           { title: 'The French Connection', overview: 'Bonjour!', release_date: '1971-10-07', inventory: 8 }
         ],
         customers: [
-          { name: 'Customer1', registered_at: '01-02-2015', address: 'Address1', city: 'City1', state: 'State1', postal_code: 'Zip1', phone: 'Phone1', account_balance: '1250' },
-          { name: 'Customer2', registered_at: '12-01-2014', address: 'Address2', city: 'City2', state: 'State2', postal_code: 'Zip2', phone: 'Phone2', account_balance: '1000' },
+          { name: 'Customer1', registered_at: '2015-01-02', address: 'Address1', city: 'City1', state: 'State1', postal_code: 'Zip1', phone: 'Phone1', account_balance: '1250' },
+          { name: 'Customer2', registered_at: '2014-12-01', address: 'Address2', city: 'City2', state: 'State2', postal_code: 'Zip2', phone: 'Phone2', account_balance: '1000' },
         ],
         rentals: [
           { checkout_date: '2015-09-16', return_date: '', movie_title: 'Movie1', customer_id: 1 },

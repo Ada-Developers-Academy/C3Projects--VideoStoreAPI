@@ -168,8 +168,7 @@ describe('Rental', function() {
     });
   });
 
-  // FIXME: Database#sortBy is broken!!
-  describe.skip('#sortBy', function() {
+  describe('#sortBy', function() {
     var numRentalsSeeded;
 
     beforeEach(function(done) {
@@ -190,8 +189,8 @@ describe('Rental', function() {
       rental.sortBy('return_date', null, null, function(err, rows) {
         assert.equal(err, undefined);
         assert.equal(rows.length, numRentalsSeeded);
-        assert.equal(rows[0].return_date, "2015-03-20");
-        assert.equal(rows[0].movie_title, 'North by Northwest');
+        assert.equal(rows[0].return_date, "");
+        assert.equal(rows[0].movie_title, 'Wait Until Dark');
         done();
       });
     });
@@ -200,7 +199,8 @@ describe('Rental', function() {
       rental.sortBy('customer_id', 1, null, function(err, rows) {
         assert.equal(err, undefined);
         assert.equal(rows.length, 1);
-        assert.equal(rows[0].customer_id, 2);
+        assert.equal(rows[0].id, 3)
+        assert.equal(rows[0].customer_id, 1);
         done();
       });
     });
@@ -209,7 +209,7 @@ describe('Rental', function() {
       rental.sortBy('customer_id', 1, 2, function(err, rows) {
         assert.equal(err, undefined);
         assert.equal(rows.length, 1);
-        assert.equal(rows[0].customer_id, 9);
+        assert.equal(rows[0].customer_id, 2);
         done();
       });
     });

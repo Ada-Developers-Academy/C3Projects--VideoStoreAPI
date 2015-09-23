@@ -89,9 +89,9 @@ describe('Customer', function() {
     beforeEach(function(done) {
       var data = {
         customers: [
-          { name: 'Customer1', registered_at: '01-02-2015', address: 'Address1', city: 'City1', state: 'State1', postal_code: 'Zip1', phone: 'Phone1', account_balance: '1250' },
-          { name: 'Customer2', registered_at: '12-01-2014', address: 'Address2', city: 'City2', state: 'State2', postal_code: 'Zip2', phone: 'Phone2', account_balance: '1000' },
-          { name: 'Customer3', registered_at: '01-25-2014', address: 'Address3', city: 'City3', state: 'State3', postal_code: 'Zip3', phone: 'Phone3', account_balance: '3000' }
+          { name: 'Customer1', registered_at: '2015-01-02', address: 'Address1', city: 'City1', state: 'State1', postal_code: 'Zip1', phone: 'Phone1', account_balance: '1250' },
+          { name: 'Customer2', registered_at: '2014-12-01', address: 'Address2', city: 'City2', state: 'State2', postal_code: 'Zip2', phone: 'Phone2', account_balance: '1000' },
+          { name: 'Customer3', registered_at: '2014-01-25', address: 'Address3', city: 'City3', state: 'State3', postal_code: 'Zip3', phone: 'Phone3', account_balance: '3000' }
         ]
       }
 
@@ -115,9 +115,9 @@ describe('Customer', function() {
     beforeEach(function(done) {
       var data = {
         customers: [
-          { name: 'Customer1', registered_at: '01-02-2015', address: 'Address1', city: 'City1', state: 'State1', postal_code: 'Zip1', phone: 'Phone1', account_balance: '1250' },
-          { name: 'Customer2', registered_at: '12-01-2014', address: 'Address2', city: 'City2', state: 'State2', postal_code: 'Zip2', phone: 'Phone2', account_balance: '1000' },
-          { name: 'Customer3', registered_at: '01-25-2014', address: 'Address3', city: 'City3', state: 'State3', postal_code: 'Zip3', phone: 'Phone3', account_balance: '3000' }
+          { name: 'Customer1', registered_at: '2015-01-02', address: 'Address1', city: 'City1', state: 'State1', postal_code: 'Zip1', phone: 'Phone1', account_balance: '1250' },
+          { name: 'Customer2', registered_at: '2014-12-01', address: 'Address2', city: 'City2', state: 'State2', postal_code: 'Zip2', phone: 'Phone2', account_balance: '1000' },
+          { name: 'Customer3', registered_at: '2014-01-25', address: 'Address3', city: 'City3', state: 'State3', postal_code: 'Zip3', phone: 'Phone3', account_balance: '3000' }
         ]
       }
 
@@ -163,17 +163,16 @@ describe('Customer', function() {
     });
   });
 
-  // FIXME: Database#sortBy is broken!!
-  describe.skip('#sortBy', function() {
+  describe('#sortBy', function() {
     var numCustomersSeeded;
 
     beforeEach(function(done) {
       var data = {
         customers: [
           // intentionally out of order in order to test sorting
-          { name: 'Customer2', registered_at: '12-01-2014', address: 'Address2', city: 'City2', state: 'State2', postal_code: 'Zip2', phone: 'Phone2', account_balance: '1000' },
-          { name: 'Customer3', registered_at: '01-25-2014', address: 'Address3', city: 'City3', state: 'State3', postal_code: 'Zip3', phone: 'Phone3', account_balance: '3000' },
-          { name: 'Customer1', registered_at: '01-02-2015', address: 'Address1', city: 'City1', state: 'State1', postal_code: 'Zip1', phone: 'Phone1', account_balance: '1250' }
+          { name: 'Customer2', registered_at: '2014-12-01', address: 'Address2', city: 'City2', state: 'State2', postal_code: 'Zip2', phone: 'Phone2', account_balance: '1000' },
+          { name: 'Customer3', registered_at: '2014-01-25', address: 'Address3', city: 'City3', state: 'State3', postal_code: 'Zip3', phone: 'Phone3', account_balance: '3000' },
+          { name: 'Customer1', registered_at: '2015-01-02', address: 'Address1', city: 'City1', state: 'State1', postal_code: 'Zip1', phone: 'Phone1', account_balance: '1250' }
         ]
       }
 
@@ -191,20 +190,20 @@ describe('Customer', function() {
       });
     });
 
-    it('returns all customers sorted by postal_code', function(done) {
-      customer.sortBy('postal_code', null, null, function(err, rows) {
+    it('returns 1 customer sorted by postal_code', function(done) {
+      customer.sortBy('postal_code', 1, null, function(err, rows) {
         assert.equal(err, undefined);
-        assert.equal(rows.length, numCustomersSeeded);
+        assert.equal(rows.length, 1);
         assert.equal(rows[0].postal_code, 'Zip1');
         done();
       });
     });
 
-    it('returns 1 customer sorted by registered_at', function(done) {
-      customer.sortBy('registered_at', 1, null, function(err, rows) {
+    it('returns all customers sorted by registered_at', function(done) {
+      customer.sortBy('registered_at', null, null, function(err, rows) {
         assert.equal(err, undefined);
-        assert.equal(rows.length, 1);
-        assert.equal(rows[0].registered_at, '01-02-2015');
+        assert.equal(rows.length, numCustomersSeeded);
+        assert.equal(rows[0].registered_at, '2014-01-25');
         done();
       });
     });
@@ -217,21 +216,30 @@ describe('Customer', function() {
         done();
       });
     });
+
+    it('returns an error when an unrecognized column is provided', function(done) {
+      customer.sortBy('badColumnName', null, null, function(err, rows) {
+        assert(err);
+        assert.equal(err.message, 'Error: syntax error. Unrecognized parameter.');
+        assert.equal(rows, undefined);
+        done();
+      });
+    });
   });
 
   describe('#rentals', function() {
     before(function(done) {
       var data = {
         customers: [
-          { name: 'Customer1', registered_at: '01-02-2015', address: 'Address1', city: 'City1', state: 'State1', postal_code: 'Zip1', phone: 'Phone1', account_balance: '1250' },
-          { name: 'Customer2', registered_at: '12-01-2014', address: 'Address2', city: 'City2', state: 'State2', postal_code: 'Zip2', phone: 'Phone2', account_balance: '1000' },
-          { name: 'Customer3', registered_at: '01-25-2014', address: 'Address3', city: 'City3', state: 'State3', postal_code: 'Zip3', phone: 'Phone3', account_balance: '3000' }
+          { name: 'Customer1', registered_at: '2015-01-02', address: 'Address1', city: 'City1', state: 'State1', postal_code: 'Zip1', phone: 'Phone1', account_balance: '1250' },
+          { name: 'Customer2', registered_at: '2014-12-01', address: 'Address2', city: 'City2', state: 'State2', postal_code: 'Zip2', phone: 'Phone2', account_balance: '1000' },
+          { name: 'Customer3', registered_at: '2014-01-25', address: 'Address3', city: 'City3', state: 'State3', postal_code: 'Zip3', phone: 'Phone3', account_balance: '3000' }
         ],
         movies: [
           { title: 'Movie1', overview: 'Descr1', release_date: '1975-06-19', inventory: 10 },
-          { title: 'Movie2', overview: 'Descr2', release_date: 'Yesterday', inventory: 11 },
-          { title: 'Movie3', overview: 'Descr3', release_date: 'Yesterday', inventory: 11 },
-          { title: 'Movie4', overview: 'Descr4', release_date: 'Awhile ago', inventory: 7 }
+          { title: 'Movie2', overview: 'Descr2', release_date: '2005-05-12', inventory: 11 },
+          { title: 'Movie3', overview: 'Descr3', release_date: '2012-10-16', inventory: 11 },
+          { title: 'Movie4', overview: 'Descr4', release_date: '1985-03-22', inventory: 7 }
         ],
         rentals: [
           { checkout_date: '2015-09-16', return_date: '', movie_title: 'Movie1', customer_id: 1 },
