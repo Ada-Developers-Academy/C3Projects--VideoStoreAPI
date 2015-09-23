@@ -28,13 +28,16 @@ describe("Endpoints under /movies", function() {
   });
 
   describe("movie instance methods", function() {
-    context("GET #INDEX", function() {
+    context("GET /movies", function() {
       var movie_request;
+      var keys;
+
       beforeEach(function(done) {
         movie_request = agent.get('/movies').set('Accept', 'application/json');
+        keys = ['id', 'title', 'overview', 'release_date', 'inventory', 'num_available'];
         done();
       });
-      
+
       it("can be instantiated", function() {
         assert(movie instanceof Movie);
       });
@@ -69,12 +72,12 @@ describe("Endpoints under /movies", function() {
         .expect(200, function(error, result) {
           console.log(result.body);
           assert.equal(result.body.length, 100);
-          var keys = ['id', 'title', 'overview', 'release_date', 'inventory', 'num_available'];
           assert.deepEqual(Object.keys(result.body[0]), keys);
           done();
         });
       });
     });
+
     context("POST", function() {
       it ("can make a post", function(done) {
         agent.post('/movies').set('Accept', 'application/json')
@@ -85,13 +88,69 @@ describe("Endpoints under /movies", function() {
       });
     });
 
-    context("GET #movies_by_customer_history", function() {
-      it("retrieves all past movie records from that customer", function(done) {
+    context("GET /movies/:title ", function() {
+      var keys;
+      beforeEach(function(done) {
+        keys = ['id', 'title', 'overview', 'release_date', 'inventory', 'num_available'];
+        done();
+      });
+
+      it("can find Jaws", function(done) {
+       var movie_request = agent.get('/movies/Jaws').set('Accept', 'application/json');
         movie_request
-        movie.movies_by_customer_history(function(err,res) {
+          .expect('Content-Type', /application\/json/)
+          .expect(200, function(error, result) {
+            assert.equal(result.body.length, 1);
+            assert.deepEqual(Object.keys(result.body[0]), keys);
+            assert.equal(result.body[0].title, 'Jaws');
+            done();
+          });
+        });
+      });
+
+    context("GET /movies/:title/history ", function() {
+      it("can see Jaws customer history", function(done) {
+       var movie_request = agent.get('/movies/Jaws/history').set('Accept', 'application/json');
           done();
+        movie_request
+          .expect('Content-Type', /application\/json/)
+          .expect(200, function(error, result) {
+            assert.equal(result.body.length, 1);
+            assert.deepEqual(Object.keys(result.body[0]), keys);
+            assert.equal(result.body[0].title, 'Jaws');
+            done();
+          });
+        });
+      });
+
+    context("GET /movies/:column/:p ", function() {
+      it("can see Jaws customer history", function(done) {
+       var movie_request = agent.get('/movies/title/1').set('Accept', 'application/json');
+          done();
+        movie_request
+          .expect('Content-Type', /application\/json/)
+          .expect(200, function(error, result) {
+            assert.equal(result.body.length, 1);
+            assert.deepEqual(Object.keys(result.body[0]), keys);
+            assert.equal(result.body[0].title, 'Jaws');
+            done();
+          });
+        });
+      });
+
+    context("GET /movies/:title/customers ", function() {
+      it("can see Jaws customer history", function(done) {
+       var movie_request = agent.get('/movies/Jaws/history').set('Accept', 'application/json');
+          done();
+        movie_request
+          .expect('Content-Type', /application\/json/)
+          .expect(200, function(error, result) {
+            assert.equal(result.body.length, 1);
+            assert.deepEqual(Object.keys(result.body[0]), keys);
+            assert.equal(result.body[0].title, 'Jaws');
+            done();
+          });
         });
       });
     });
-  });
 });
