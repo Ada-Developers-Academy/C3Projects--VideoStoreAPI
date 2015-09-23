@@ -2,8 +2,9 @@
 GET '/customers'
   // => [{<customer>}, {<customer>}] <-- includes customer attributes
   // OPTIONAL
-    // ?&n=12&p=2&sort=_____&status=_____
+    // ?&status=_____
       // status options: overdue
+    // ?&n=12&p=2&sort=_____
       // sort options: name, registered_at, postal_code
   - See a list of customers with overdue movies
   - Retrive a subset of customers
