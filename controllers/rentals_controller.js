@@ -1,12 +1,8 @@
 "use strict";
 
-// ----------------- rental model ----------------- //
-var rentalTable = require('../models/rental');
-
 // ------------------- database ------------------- //
 var sqlite3 = require("sqlite3").verbose();
 var dbEnv = process.env.DB || "development";
-var noDb = "no database table connected yet";
 
 // --------------- helper functions --------------- //
 var helps = "../helpers/";
@@ -14,17 +10,17 @@ var rents = helps + "rentals/";
 var fixTime = require(helps + "milliseconds_to_date");
 var validateParams = require(helps + "validate_params");
 var ourWebsite = require(helps + "url_base");
+var formatCustomerInfo = require(helps + "format_customer_info");
 var formatMovieInfo = require(rents + "format_movie_info");
-var formatCustomerInfo = require(rents + "format_customer_info");
 var addMovieMetadata = require(rents + "add_movie_to_customer_metadata");
 var isMovieAvailable = require(rents + "is_movie_available");
 var hoursInMilliseconds = require(rents + "convert_hours_to_milliseconds");
 
-// ------------ begin controller object ------------ //
-var rentals = {};
+// ------------ begin RentalsController object ------------ //
+var RentalsController = {};
 
 
-rentals.fixParamsOrReturnError = function(response) {
+RentalsController.fixParamsOrReturnError = function(response) {
   // this is where @jnf was using function sharing
   // Controller.send_json.bind(response);
   return function(error, validParams) {
@@ -37,10 +33,9 @@ rentals.fixParamsOrReturnError = function(response) {
   }
 }
 
-
-rentals.movieInfo = function(request, response, next) {
+RentalsController.movieInfo = function(request, response, next) {
   // basic handling for attempted sql injection
-  var callbackFxn = rentals.fixParamsOrReturnError(response);
+  var callbackFxn = RentalsController.fixParamsOrReturnError(response);
   var title = validateParams(request, "title", callbackFxn);
   if (!title) { console.log("attempted SQL injection"); return; }
 
@@ -86,7 +81,7 @@ rentals.movieInfo = function(request, response, next) {
   db.close();
 }
 
-rentals.overdue = function(request, response, next) {
+RentalsController.overdue = function(request, response, next) {
   // var db = new sqlite3.Database("db/" + dbEnv + ".db");
   var page = Number(request.params.page) || 1;
   var offset = (page - 1) * 10;
@@ -131,9 +126,12 @@ rentals.overdue = function(request, response, next) {
     var countStatement = "SELECT count(*) FROM rentals WHERE returned = 0 " // now it is easy to change the day
                        + "AND check_out_date + " + hoursInMilliseconds(24 * 3) + " < " + Date.now() + ";";
     db.get(countStatement, function(countError, countData) {
+      // handling for total results meta data
       var totalResults = countData["count(*)"];
       results.meta.totalResults = totalResults;
-      if (page >= 1 && totalResults > 10 * page)
+
+      // handling for page meta data
+      if (page >= 1 && totalResults > (10 * page))
         results.meta.nextPage = results.meta.yourQuery + "/" + (page + 1);
       if (page >= 2)
         results.meta.prevPage = results.meta.yourQuery + "/" + (page - 1);
@@ -147,9 +145,8 @@ rentals.overdue = function(request, response, next) {
   db.close();
 }
 
-
-rentals.customers = function(request, response, next) {
-  var callbackFxn = rentals.fixParamsOrReturnError(response);
+RentalsController.customers = function(request, response, next) {
+  var callbackFxn = RentalsController.fixParamsOrReturnError(response);
   var title = validateParams(request, "title", callbackFxn);
   if (!title) { console.log("attempted SQL injection"); return; }
 
@@ -194,12 +191,12 @@ rentals.customers = function(request, response, next) {
   db.close();
 }
 
-rentals.checkOut = function(request, response, next) {
+RentalsController.checkOut = function(request, response, next) {
   // post request, check out a title
 }
 
-rentals.return = function(request, response, next) {
+RentalsController.return = function(request, response, next) {
   // patch request, check in a title
 }
 
-module.exports = rentals;
+module.exports = RentalsController;

@@ -4,7 +4,7 @@ var express = require('express');
 var router = express.Router();
 var controller = require("../controllers/rentals_controller");
 
-// GET a list of customers with overdue movies
+// GET a paginated list of customers with overdue movies
 router.get("/overdue", controller.overdue);
 router.get("/overdue/:page", controller.overdue);
 
