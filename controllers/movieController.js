@@ -39,7 +39,6 @@ module.exports = {
         console.log(err); // error handling
         return;
       }
-
       return response.status(200).json(results);
     });
 
