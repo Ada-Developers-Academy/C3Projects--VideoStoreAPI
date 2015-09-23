@@ -128,25 +128,22 @@ describe('movie controller', function() {
       'movie_title'
     ];
 
-    for(var i = 0; i < sorting_hat.length; i ++) {
-      var uri = '/movies/' + title + '/rented/sort_by=' + sorting_hat[i] + '/1';
-      it('responds with json format', function(done) {
-        agent.get(uri).set('Accept', 'application/json')
-          .expect('Content-Type', /json/)
-          .expect(200, function(error, result) {
-            assert.equal(error, undefined);
-            done();
-          })
-        })
+    var uri = title + '/rented/sort_by=' + sorting_hat[i] +'/1';
 
-      it('responds with an array of customers', function(done) {
+    function makeTest(query) {
+      console.log(uri);
+      it('returns an array of customers', function(done) {
         agent.get(uri).set('Accept', 'application/json')
-          .expect(200, function(error, result) {
-            assert.equal(error, undefined);
-            assert.deepEqual(Object.keys(result.body[0]), customer_movies);
-            done();
-          })
+        .expect(200, function(error, result) {
+          assert.equal(error, undefined);
+          assert.deepEqual(Object.keys(result.body[0]), customer_movies);
+          done();
+        })
       })
+    } //function
+
+    for(var i = 0; i < sorting_hat.length; i ++) {
+      makeTest(sorting_hat);
     } // for loop
   }) // GET /:title/rented/sort_by=:query/:page
 }) // moviecontroller describe
