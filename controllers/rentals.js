@@ -11,10 +11,15 @@ function addPercents(variable) {
 
 function findCopy(movie_title, callback) {
   db = new sqlite3.Database('db/' + db_env + '.db');
-  db.all("SELECT rentals.movie_copy_id, movies.id FROM rentals \
+  // this would be better if we added return_status to the movie_copies table too
+  // SELECT movie_copies.id FROM movie_copies
+  // INNER JOIN movies ON movie_copies.movie_id = movies.id
+  // WHERE movies.title LIKE ? AND movie_copies.return_status = 1
+  db.get("SELECT rentals.movie_copy_id, movies.id FROM rentals \
           INNER JOIN movie_copies ON rentals.movie_copy_id = movie_copies.id \
           INNER JOIN movies ON movie_copies.movie_id = movies.id \
-          WHERE movies.title LIKE ? AND rentals.return_status = 1;", movie_title, function(err, rental) {
+          WHERE movies.title LIKE ? AND (rentals.return_status = 1 OR rentals.id IS NULL) \
+          ORDER BY rentals.return_date DESC;", movie_title, function(err, result) {
             if (err) {
               console.log("ERROR:", err);
             }
@@ -24,10 +29,9 @@ function findCopy(movie_title, callback) {
       console.log("ERROR: ", err);
     }
     else {
-      console.log("RENTAL: ", rental);
-      var movie_data = rental;
-      console.log("MOVIE DATA: ", movie_data);
-      callback(movie_data);
+      // var movie_data = result;
+      console.log("MOVIE DATA: ", result);
+      callback(result);
     }
   });
 }
@@ -68,11 +72,11 @@ exports.rentalsController = {
     due = due.toISOString().split("T")[0];
 
     findCopy(movie, function(movie_data) {
-      console.log("COPY ID: ", movie_data[0].movie_copy_id);
+      console.log("COPY ID: ", movie_data.movie_copy_id);
 
       db = new sqlite3.Database('db/' + db_env + '.db');
       db.run("INSERT INTO rentals(customer_id, movie_copy_id, checkout_date, return_date, return_status, cost) \
-      VALUES(" + customer + ", " + movie_data[0].movie_copy_id + ", " + checkout + ", " + due + ", 0, 5); \
+      VALUES(" + customer + ", " + movie_data.movie_copy_id + ", " + checkout + ", " + due + ", 0, 5); \
       COMMIT;", function(err, result) {
         db.close();
         return res.status(200).json(result);
