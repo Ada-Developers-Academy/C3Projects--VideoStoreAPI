@@ -5,7 +5,7 @@ var assert = require('assert');
 var app = require('../../app');
 var sqlite3 = require('sqlite3').verbose();
 var agent = request.agent(app);
-var movieController = require('../../controllers/movieController');
+var movieController = require('../../controllers/movie_controller');
 
 // Run  `DB=test npm run db:schema' and 'DB=test npm run db:seeds` to seed before running these tests
 
