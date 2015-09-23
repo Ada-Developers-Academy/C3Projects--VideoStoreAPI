@@ -31,7 +31,7 @@ describe("Movie", function() {
         DELETE FROM rentals; \
         INSERT INTO rentals(checkout_date, return_date, movie_id, customer_id, checked_out) \
         VALUES('2015-09-23', '2015-09-30', 1, 1, 'true'), \
-              ('2015-09-16', '2015-09-01', 2, 2, 'false'); \
+              ('2015-09-16', '2015-09-01', 2, 2, 'false'), \
               ('2015-09-14', '2015-09-05', 2, 3, 'false'); \
         COMMIT;"
         , function(err) {
@@ -68,7 +68,6 @@ describe("Movie", function() {
           done();
         });
       });
-    });
 
       it("retrieves records sorted by title column", function(done) {
         movie.by_column("title", 2, 0, function(err, res) {
@@ -77,7 +76,7 @@ describe("Movie", function() {
           assert.equal(res[1].title, 'Gauze');
           done();
         });
-    });
+      });
 
       it("retrieves records sorted by release date", function(done) {
         movie.by_column("release_date", 2, 0, function(err, res) {
@@ -95,84 +94,45 @@ describe("Movie", function() {
           done();
         });
       });
+    });
 
-      context("GET #customers_by_movie_current", function() {
-        it("gets customers that have currently checked out a copy of the film", function(done) {
-          movie.customers_by_movie_current("Jaws", function(err, res) {
-            assert.equal(err, undefined);
-            assert(res instanceof Array);
-            assert.equal(res.length, 1);
-            assert.equal(res[0].name, 'BeetleJaws');
-            done();
-          });
+    context("GET #customers_by_movie_current", function() {
+      it("gets customers that have currently checked out a copy of the film", function(done) {
+        movie.customers_by_movie_current("Jaws", function(err, res) {
+          assert.equal(err, undefined);
+          assert(res instanceof Array);
+          assert.equal(res.length, 1);
+          assert.equal(res[0].name, 'BeetleJaws');
+          done();
         });
       });
+    });
 
-      context("GET customers_by_movie_history", function() {
-        it("gets customers that have checked out a copy of the film in the past", function(done) {
-          movie.customers_by_movie_history("Maws", function(err, res) {
-            assert.equal(err, undefined);
-            assert(res instanceof Array);
-            assert.equal(res.length, 1);
-            assert.equal(res[0].name, 'JuiceMaws');
-            done();
-          });
+    context("GET customers_by_movie_history", function() {
+      it("gets customers that have checked out a copy of the film in the past", function(done) {
+        movie.customers_by_movie_history("Maws", function(err, res) {
+          assert.equal(err, undefined);
+          assert(res instanceof Array);
+          assert.equal(res.length, 2);
+          console.log(res);
+          assert.equal(res[0].name, 'JuiceMaws');
+          assert.equal(res[1].name, 'SecondMaws');
+          done();
         });
       });
+    });
 
-      context("GET customers_by_movie_history_sorted", function() {
-        it.only("gets customers that have checked out a copy of the film in the past", function(done) {
-          movie.customers_by_movie_history_sorted("Maws", "rentals", "checkout_date", function(err, res) {
-            assert.equal(err, undefined);
-            assert(res instanceof Array);
-            assert.equal(res.length, 1);
-            assert.equal(res[0].name, 'JuiceMaws');
-            done();
-          });
+    context("GET customers_by_movie_history_sorted", function() {
+      it("gets customers that have checked out a copy of the film in the past", function(done) {
+        movie.customers_by_movie_history_sorted("Maws", "rentals", "checkout_date", function(err, res) {
+          assert.equal(err, undefined);
+          assert(res instanceof Array);
+          assert.equal(res.length, 2);
+          assert.equal(res[0].name, 'SecondMaws');
+          assert.equal(res[1].name, 'JuiceMaws');
+          done();
         });
       });
-
-      // it("can save changes to a movie", function(done) {
-      //   movie.find_by("title", "Jaws", function(err, res) {
-      //     var original_title = res[0].title;
-      //     var id = res[0].id;
-      //     movie.save({title: "Jaws 2: Jawsier", id: id}, function(err, res) {
-      //       assert.equal(err, undefined);
-      //       assert.equal(res.inserted_id, 0); //it didn't insert any records
-      //       assert.equal(res.changed, 1); //it updated one record
-      //       done();
-      //     });
-      //   });
-      // });
-    //
-    // context("POST", function() {
-    //   it ("can make a post", function(done) {
-    //     agent.post('/movies').set('Accept', 'application/json')
-    //     .field('title', 'RoboJaws')
-    //     .field('release_date', 'Tomorrow')
-    //     .expect();
-    //     done();
-    //   });
-    // });
-
-//     it("can save a new movie to the database", function(done) {
-//       var data = {
-//         title: "RoboJaws",
-//         overview: "Jaws is hunted by RoboJaws",
-//         release_date: "Tomorrow",
-//         inventory: 10
-//       }
-// // insert into mocha tests
-//       movie.create(data, function(err, res) {
-//         assert.equal(res.inserted_id, 6); //it inserted a new record
-//         assert.equal(res.changed, 1); //one record was changed
-//
-//         movie.find_by("title", "RoboJaws", function(err, res) {
-//           assert.equal(res.length, 1);
-//           assert.equal(res[0].title, 'RoboJaws'); //we found our new movie
-//           done();
-//         });
-//       });
-//     });
+    });
   });
 });
