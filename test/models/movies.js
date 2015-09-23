@@ -25,11 +25,14 @@ describe("Movie", function() {
         VALUES('BeetleJaws', '2015-01-01', '123 street', 'Burlington', \
               'WA', '98233', '(908) 949-6758', 5.25), \
               ('JuiceMaws', '2010-10-10', '123 Lane', 'Mt. Vernon', \
+              'WA', '11111', '(908) 949-6758', 10.00), \
+              ('SecondMaws', '2010-10-10', '123 Lane', 'Mt. Vernon', \
               'WA', '11111', '(908) 949-6758', 10.00); \
         DELETE FROM rentals; \
         INSERT INTO rentals(checkout_date, return_date, movie_id, customer_id, checked_out) \
         VALUES('2015-09-23', '2015-09-30', 1, 1, 'true'), \
-              ('2015-09-16', '2015-09-23', 2, 2, 'false'); \
+              ('2015-09-16', '2015-09-01', 2, 2, 'false'); \
+              ('2015-09-14', '2015-09-05', 2, 3, 'false'); \
         COMMIT;"
         , function(err) {
           db_cleaner.close();
@@ -43,7 +46,7 @@ describe("Movie", function() {
     assert(movie instanceof Movie);
   });
 
-  describe.only("instance methods", function() {
+  describe("instance methods", function() {
     context("GET #find_all", function() {
       it("retrieves all movie records", function(done) {
         movie.find_all(function(err, res) {
@@ -118,8 +121,8 @@ describe("Movie", function() {
       });
 
       context("GET customers_by_movie_history_sorted", function() {
-        it("gets customers that have checked out a copy of the film in the past", function(done) {
-          movie.customers_by_movie_history("Maws", function(err, res) {
+        it.only("gets customers that have checked out a copy of the film in the past", function(done) {
+          movie.customers_by_movie_history_sorted("Maws", "rentals", "checkout_date", function(err, res) {
             assert.equal(err, undefined);
             assert(res instanceof Array);
             assert.equal(res.length, 1);
@@ -128,7 +131,6 @@ describe("Movie", function() {
           });
         });
       });
-
 
       // it("can save changes to a movie", function(done) {
       //   movie.find_by("title", "Jaws", function(err, res) {
