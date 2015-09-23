@@ -24,9 +24,9 @@ describe("customers controller", function() {
       db_cleaner.exec(
         "BEGIN; \
         DELETE FROM movies; \
-        INSERT INTO movies(title, overview, release_date, inventory, copies_available) \
-        VALUES('Jaws', 'Shark!', '2015-09-22', 1, 1), \
-              ('Maws', 'Worm!', '2015-09-22', 1, 1); \
+        INSERT INTO movies(title, overview, release_date, inventory) \
+        VALUES('Jaws', 'Shark!', '2015-09-22', 1), \
+              ('Maws', 'Worm!', '2015-09-22', 1); \
         COMMIT;", function(err) {
           // db_cleaner.close();
           // done();
@@ -36,9 +36,9 @@ describe("customers controller", function() {
       db_cleaner.exec(
         "BEGIN; \
         DELETE FROM movie_copies; \
-        INSERT INTO movie_copies(movie_id) \
-        VALUES(1), \
-              (2); \
+        INSERT INTO movie_copies(movie_id, is_available) \
+        VALUES(1, 0), \
+              (2, 0); \
         COMMIT;", function(err) {
           // db_cleaner.close();
           // done();

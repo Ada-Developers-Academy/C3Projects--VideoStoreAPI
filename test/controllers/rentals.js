@@ -23,9 +23,9 @@ describe("customers controller", function() {
       db_cleaner.exec(
         "BEGIN; \
         DELETE FROM movies; \
-        INSERT INTO movies(title, overview, release_date, inventory, copies_available) \
-        VALUES('Jaws', 'Shark!', '2015-09-22', 1, 1), \
-              ('Maws', 'Worm!', '2015-09-22', 1, 1); \
+        INSERT INTO movies(title, overview, release_date, inventory) \
+        VALUES('Jaws', 'Shark!', '2015-09-22', 1), \
+              ('Maws', 'Worm!', '2015-09-22', 1); \
         COMMIT;", function(err) {
 
         }
@@ -34,9 +34,9 @@ describe("customers controller", function() {
       db_cleaner.exec(
         "BEGIN; \
         DELETE FROM movie_copies; \
-        INSERT INTO movie_copies(movie_id) \
-        VALUES(1), \
-              (2); \
+        INSERT INTO movie_copies(movie_id, is_available) \
+        VALUES(1, 0), \
+              (2, 1); \
         COMMIT;", function(err) {
 
         }
@@ -80,4 +80,29 @@ describe("GET '/'", function() {
      });
    }); // returns array objects
   }); // end describe 'get' block
-}); // end describe 'customers controller' block
+
+describe("POST '/'", function() {
+  it("knows about the route", function(done) {
+    agent.post('/rentals/1/Maws').set('Accept', 'application/json')
+      .expect('Content-Type', /application\/json/)
+      .expect(200, function(err, res) {
+      assert.equal(err, undefined);
+
+      done();
+      });
+  });
+
+  it("returns the rental object", function(done) {
+   agent.post('/rentals/1/Maws').set('Accept', 'application/json')
+     .expect(200, function(err, result) {
+      console.log(" type of ", typeof result);
+      assert.equal(result.body.length, 1);
+
+      var keys = ['id', 'movie_copy_id', 'customer_id', 'checkout_date', 'return_date', 'return_status', 'cost'];
+      assert.deepEqual(Object.keys(result.body[0]), keys);
+
+      done();
+     });
+   }); // returns array objects
+  });
+}); // end describe 'rentals controller' block

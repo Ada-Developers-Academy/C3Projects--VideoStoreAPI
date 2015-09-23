@@ -11,11 +11,11 @@ router.get('/overdue', function(req, res, next) {
   return rentals_exports.rentalsController.overdue_rentals(req, res);
 });
 
-router.get('/:customer_id/:movie_title', function(req, res, next) {
+router.post('/:customer_id/:movie_title', function(req, res, next) {
   return rentals_exports.rentalsController.create_rental(req, res);
 });
 
-router.get('/return/:customer_id/:movie_title', function(req, res, next) {
+router.patch('/return/:customer_id/:movie_title', function(req, res, next) {
   return rentals_exports.rentalsController.return_rental(req, res);
 });
 
