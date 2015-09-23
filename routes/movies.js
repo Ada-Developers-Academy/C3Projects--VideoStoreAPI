@@ -20,12 +20,12 @@ router.get('/', function(req, res, next) {
 
 router.get('/:title', function(req, res, next) {
   var title = req.params.title;
-  var currentRentersArray = [];
-  var pastRentersArray = [];
+  // var currentRentersArray = [];
+  // var pastRentersArray = [];
 
   var movieObject = { 
     movie_data: undefined, 
-    customers: { currentRenters: currentRentersArray, pastRenters: pastRentersArray } 
+    customers: { currentRenters: undefined, pastRenters: undefined } 
   };
   var movieId;
 
@@ -34,15 +34,26 @@ router.get('/:title', function(req, res, next) {
     movieId = row.id;
 
     rental.where(['movie_id'], [movieId], function(err, rows) {
+      var currentRentersIds = [];
+      var pastRentersIds = [];
+
       for (var i = 0; i < rows.length; i++) {
         if (rows[i].returned == "false") {
-          movieObject.customers.currentRenters.push(rows[i]);
+          currentRentersIds.push(rows[i].customer_id);
         } else {
-          movieObject.customers.pastRenters.push(rows[i]);
+          pastRentersIds.push(rows[i].customer_id);
         }
       }
 
-      res.status(200).json(movieObject);
+      customer.where_in(['id'], currentRentersIds, function(err, rows) {
+        movieObject.customers.currentRenters = rows;
+
+        customer.where_in(['id'], pastRentersIds, function(err, rows) {
+          movieObject.customers.pastRenters = rows;
+          
+          res.status(200).json(movieObject);
+        });
+      });
     });
   });
 });
