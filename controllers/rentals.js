@@ -30,7 +30,7 @@ exports.rentalsController = {
     })
   },
 
-  new_rental: function new_rental(req, res, id, movie_title) {
+  new_rental: function new_rental(req, res, customer_id, movie_title) {
 
     var rental = new Rental();
 
@@ -38,7 +38,12 @@ exports.rentalsController = {
     rental.check_movie_availability(movie_title, function(err, record) {
       if (record[0].available > 0) {
         console.log("we're getting somewhere");
-         // insert new rental into rental table
+
+        // insert new rental into rental table
+        rental.create_rental(movie_title, customer_id, function(err, record) {
+          console.log("Maybe there's something in the database! Go check.")
+        });
+
       // charge customer and update customer table
       // change inventory and available in movies table
       } else {

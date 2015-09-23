@@ -119,10 +119,20 @@ module.exports = {
   check_movie_availability: function(value, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
 
-    console.log(value);
     var statement = 'SELECT movies.available FROM movies where title = ? COLLATE NOCASE;';
 
     db.all(statement, value, function(err, result) {
+      if (callback) callback(err, result);
+      db.close();
+    });
+  },
+
+  create_rental: function(movie_title, customer_id, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+
+    var statement = "INSERT INTO rentals(movie_id, customer_id, returned_date, due_date, checked_out) VALUES((select id from movies where title=? COLLATE NOCASE), ?, '2015-12-01', '2015-12-11', '2015-11-15');";
+
+    db.all(statement, movie_title, customer_id, function(err, result) {
       if (callback) callback(err, result);
       db.close();
     });
