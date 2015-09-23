@@ -42,7 +42,7 @@ rentals.movieInfo = function(request, response, next) {
   // basic handling for attempted sql injection
   var callbackFxn = rentals.fixParamsOrReturnError(response);
   var title = validateParams(request, "title", callbackFxn);
-  if (!title) { console.log("attempted SQL injection"); return; }
+  if (!title) { /*console.log("attempted SQL injection");*/ return; }
 
   var status = 200; // ok
 
@@ -79,7 +79,7 @@ rentals.movieInfo = function(request, response, next) {
       results.meta.customersHoldingCopies = ourWebsite + "/rentals/" + title + "/customers";
     };
 
-    results.meta.searchMovies = ourWebsite + "/movies/" + title;
+    results.meta.movieInfo = ourWebsite + "/movies/" + title;
     results.meta.yourQuery = ourWebsite + "/rentals/" + title;
 
     return response.status(status).json(results);
@@ -140,7 +140,7 @@ rentals.overdue = function(request, response, next) {
 rentals.customers = function(request, response, next) {
   var callbackFxn = rentals.fixParamsOrReturnError(response);
   var title = validateParams(request, "title", callbackFxn);
-  if (!title) { console.log("attempted SQL injection"); return; }
+  if (!title) { /*console.log("attempted SQL injection");*/ return; }
 
   var status = 200; // ok
   var db = new sqlite3.Database("db/" + dbEnv + ".db");
@@ -174,7 +174,7 @@ rentals.customers = function(request, response, next) {
       results.meta.moreRentalInfo = ourWebsite + "/rentals/" + title;
     };
 
-    results.meta.searchMovies = ourWebsite + "/movies/" + title;
+    results.meta.movieInfo = ourWebsite + "/movies/" + title;
     results.meta.yourQuery = ourWebsite + "/rentals/" + title + "/customers";
 
     return response.status(status).json(results);
