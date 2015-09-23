@@ -97,7 +97,7 @@ module.exports = {
     customers.postal_code, customers.phone, customers.account_credit \
     FROM customers, rentals \
     WHERE customers.id=rentals.customer_id \
-    AND rentals.overdue=1;", function(res) {
+    AND rentals.overdue=1 AND rentals.check_in IS NULL;", function(res) {
       callback(res);
     });
   },

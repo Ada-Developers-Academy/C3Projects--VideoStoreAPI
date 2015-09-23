@@ -52,6 +52,14 @@
     "check_out": "2015-07-03",
     "check_in": "",
     "due_date": "2015-07-06",
+    "overdue": 0,
+    "customer_id": 9,
+    "movie_title": "King Kong"
+  },
+  {
+    "check_out": "2015-07-03",
+    "check_in": "",
+    "due_date": "2015-07-06",
     "overdue": 1,
     "customer_id": 9,
     "movie_title": "King Kong"
