@@ -25,19 +25,20 @@ exports.rentalsController = {
       checkoutDates.push(checkoutDate);
       returnedDates.push(returnedDate);
 
-      if(returnedDate != 'nil') {
-        var checkoutDateArray = checkoutDate.split("-"); // ["01", "26", "2015"]
-        var returnedDateArray = returnedDate.split("-"); // ["01", "23", "2015"]
+      var checkoutDateArray = checkoutDate.split("-"); // ["01", "26", "2015"]
 
-        overdue = returnedDateArray[1] - checkoutDateArray[1];
+      if(returnedDate != 'nil') {
+        var returnedDateArray = returnedDate.split("-"); // ["01", "23", "2015"]
+        overdue = returnedDateArray[1] - checkoutDateArray[1] - "3";
+        overdue = overdue < 0 ? 0:overdue;
         overdues.push(overdue);
-        console.log("got here");
       } else {
-        console.log("got here 2");
         var date = new Date();
         var dateString = date.getMonth() + "-" + date.getDate() + "-" + date.getFullYear();
         var dateStringArray = dateString.split("-");
-        overdue = dateStringArray[1] - checkoutDateArray[1];
+
+        overdue = dateStringArray[1] - checkoutDateArray[1] - "3";
+        overdue = overdue < 0 ? 0:overdue;
         overdues.push(overdue);
       }
 
