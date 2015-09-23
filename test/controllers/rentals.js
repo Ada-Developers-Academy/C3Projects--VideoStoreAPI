@@ -181,4 +181,25 @@ describe("Endpoints under /rentals", function() {
         });
     });
   });
+
+
+  describe('PATCH /rentals/check_in', function(){
+    var request;
+    beforeEach(function(done) {
+      request = agent
+        .patch('/rentals/check_in?id=3&title=Jaws');
+      done();
+    });
+
+    it('responds with json', function(done){
+      request
+        .expect('Content-Type', /application\/json/)
+        .expect(200, done);
+    });
+
+    it('responds with correct data', function(done){
+      request
+        .expect('[]', done);
+    });
+  });
 });
