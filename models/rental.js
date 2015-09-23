@@ -16,6 +16,8 @@ var Rental = function() { // Rental constructor
   this.foo = "bar";
 }
 
+// Rental.prototype.formatMovieInfo 
+
 Rental.prototype.movieInfo = function(error, data) {
   var results = { meta: {} };
   var status;
