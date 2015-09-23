@@ -73,8 +73,8 @@ exports.rentalsController = {
     db.all(statement, function(err, rows){
       // rows is specific movie
       var movieId = rows[0].id;
-      var newInventory = parseInt(rows[0].current_inventory) + 1;
-      var updateMovieStatement = "UPDATE movies SET current_inventory=? WHERE id=? ;";
+      var newInventory = parseInt(rows[0].inventory_available) + 1;
+      var updateMovieStatement = "UPDATE movies SET inventory_available=? WHERE id=? ;";
       // update movie inventory_available (+1)
       db.run(updateMovieStatement, newInventory, movieId, function(err, rows) {
 
@@ -97,14 +97,14 @@ exports.rentalsController = {
 
   // *POST* rental/:title/:customer_id/checkout
   checkout: function(req,res){
-   // select from movies the title to fid movie_id
+   // select from movies the title to find movie_id
     var statement = "SELECT * FROM movies WHERE title LIKE '%" + req.params.title + "%';";
 
     db.all(statement, function(err, rows){
       // rows is specific movie, get id 
       // update movie inventory_available (-1)
       var movieId = rows[0].id;
-      var newInventory = parseInt(rows[0].current_inventory) - 1;
+      var newInventory = parseInt(rows[0].inventory_available) - 1;
 
 
       // create new rental entry
@@ -118,14 +118,14 @@ exports.rentalsController = {
 
      db.run(statement, customerId, movieId, returnDate, (checkoutDate).toString(), (dueDate).toString(), function(err, rows){
         
-        var updateMovieStatement = "UPDATE movies SET current_inventory=? WHERE id=? ;";
+        var updateMovieStatement = "UPDATE movies SET inventory_available=? WHERE id=? ;";
         // update movie inventory_available (+1)
         db.run(updateMovieStatement, newInventory, movieId, function(err, rows) {
         res.status(200).json('success');  
         });
       });
     });
-  },
+  }
   //  ['customer_id', 'integer'] -> in params
   //  ['movie_id', 'integer'], -> will need to find
   //  ['return_date', 'text'], -> ''
