@@ -111,16 +111,6 @@ exports.rentalsController = {
     })
   },
 
-
-    // TODO: Charge a late fee if now > expected_return_date
-    /*
-    db.run("UPDATE customers SET account_credit=(account_credit-5) WHERE id=?", id, function(err, rows) {
-        if (err !== null) {
-          console.log(err);
-        }
-    });
-    */
-
   // POST /rentals/check_out(cust id, movie title) (math for checkout cost)
   // creating a new rental with no returned date
   checkOut:function(req, res) {
