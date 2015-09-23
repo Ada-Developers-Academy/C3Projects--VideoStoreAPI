@@ -29,8 +29,25 @@ Rental.prototype = {
 
       db.close();
     });
+  },
 
-  }
+  check_in: function(customer_id, movie_title, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    var return_date = new Date(Date.now());
+
+    var update_statement = "UPDATE " + this.table_name + " SET return_date = " + return_date + " checked_out = 'false' ) WHERE movie_id = (SELECT id FROM movies WHERE title = '" + movie_title + "')";
+
+    var availability_statement = "UPDATE movies SET num_available = (num_available + 1) WHERE id = (SELECT id FROM movies WHERE title = '" + movie_title + "');";
+
+    db.serialize(function(err) {
+      db.run(update_statement, function(err) {
+        callback(err, { updated_id: this.lastID, changed: this.changes });
+      });
+      db.run(availability_statement);
+
+      db.close();
+    });
+  },
 };
 
 module.exports = Rental;
