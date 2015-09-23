@@ -81,15 +81,11 @@ db.serialize(function() {
   for(var k = 0; k < rentals.length; k++) {
     var rental = rentals[k];
 
-    var formattedCheckOutDate = formatDate(rental.check_out);
-    var formattedCheckInDate = formatDate(rental.check_in);
-    var formattedDueDate = formatDate(rental.due_date);
-
     // insert each rental into the db
     rental_statement.run(
-      formattedCheckOutDate,
-      formattedCheckInDate,
-      formattedDueDate,
+      rental.check_out,
+      rental.check_in,
+      rental.due_date,
       rental.overdue,
       rental.customer_id,
       rental.movie_title

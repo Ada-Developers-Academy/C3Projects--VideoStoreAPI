@@ -9,8 +9,8 @@ module.exports = {
     db.serialize(function() {
       // below: this is the callback pattern...parameters(ERRORS, RESULT)
       db.all(statement, function(err, res) {
-        console.log(statement);
-        console.log(err);
+        // console.log(statement);
+        // console.log(err);
         // error handling looks like -> if (err) { };
         if (callback) { callback(res); }
       });
@@ -97,16 +97,19 @@ module.exports = {
     var db = new sqlite3.Database('db/' + db_env + '.db');
 
     db.exec("BEGIN; \
-    UPDATE rentals SET overdue=1 WHERE due_date<" + today + " \
+    UPDATE rentals SET overdue=1 WHERE due_date < " + today + " \
     AND check_in IS NULL; \
-    SELECT customers.id, customers.name, customers.registered_at, \
-    customers.address, customers.city, customers.state, \
-    customers.postal_code, customers.phone, customers.account_credit \
-    FROM customers, rentals \
-    WHERE customers.id=rentals.customer_id \
-    AND rentals.overdue=1 AND rentals.check_in IS NULL; \
-    COMMIT;");
-    // console.log(today);
+    COMMIT;", function() {
+      db.all(
+        "SELECT customers.id, customers.name, customers.registered_at, \
+        customers.address, customers.city, customers.state, \
+        customers.postal_code, customers.phone, customers.account_credit \
+        FROM customers, rentals \
+        WHERE customers.id=rentals.customer_id \
+        AND rentals.overdue=1 AND rentals.check_in IS NULL;", function(err, res) {
+          if (callback) { callback(res); }
+        });
+    });
 
     db.close();
   },
