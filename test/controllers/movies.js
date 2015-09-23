@@ -35,7 +35,6 @@ describe("Endpoints under /movies", function() {
               (5, '2015-09-19', null, '2015-09-23', 4, 5); \
         COMMIT;",
          function(err) {
-          console.log(err);
           db_cleaner.close();
           done();
         }
