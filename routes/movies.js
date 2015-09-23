@@ -1,8 +1,16 @@
+var async = require('async');
+
 var express = require('express');
 var router = express.Router();
 
 var Movie = require('../models/movie'),
     movie = new Movie();
+
+var Customer = require('../models/customer'),
+    customer = new Customer();
+
+  var Rental = require('../models/rental'),
+    rental = new Rental();
 
 router.get('/', function(req, res, next) {
   movie.find_all(function(err, rows) {
@@ -12,9 +20,41 @@ router.get('/', function(req, res, next) {
 
 router.get('/:title', function(req, res, next) {
   var title = req.params.title;
+  // var currentRentersArray = [];
+  // var pastRentersArray = [];
+
+  var movieObject = { 
+    movie_data: undefined, 
+    customers: { currentRenters: undefined, pastRenters: undefined } 
+  };
+  var movieId;
 
   movie.find_by('title', title, function(err, row) {
-    res.status(200).json({ movie: row} );
+    movieObject.movie_data = row;
+    movieId = row.id;
+
+    rental.where(['movie_id'], [movieId], function(err, rows) {
+      var currentRentersIds = [];
+      var pastRentersIds = [];
+
+      for (var i = 0; i < rows.length; i++) {
+        if (rows[i].returned == "false") {
+          currentRentersIds.push(rows[i].customer_id);
+        } else {
+          pastRentersIds.push(rows[i].customer_id);
+        }
+      }
+
+      customer.where_in(['id'], currentRentersIds, function(err, rows) {
+        movieObject.customers.currentRenters = rows;
+
+        customer.where_in(['id'], pastRentersIds, function(err, rows) {
+          movieObject.customers.pastRenters = rows;
+          
+          res.status(200).json(movieObject);
+        });
+      });
+    });
   });
 });
 
