@@ -74,11 +74,16 @@ exports.rentalsController = {
 
     findCopy(movie, function(movie_data) {
       console.log("COPY ID: ", movie_data.id);
+      console.log("CHECKOUT: ", checkout);
+      console.log("DUE: ", due);
 
       db = new sqlite3.Database('db/' + db_env + '.db');
       db.run("INSERT INTO rentals(customer_id, movie_copy_id, checkout_date, return_date, return_status, cost) \
-      VALUES(" + customer + ", " + movie_data.id + ", " + checkout + ", " + due + ", 0, 5); \
+      VALUES(" + customer + ", " + movie_data.id + ", '" + checkout + "', '" + due + "', 0, 5); \
       COMMIT;", function(err, result) {
+        if (err) {
+          console.log("ERROR: ", err);
+        }
         db.close();
         return res.status(200).json(result);
       });
