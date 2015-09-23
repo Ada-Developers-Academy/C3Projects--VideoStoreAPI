@@ -13,8 +13,9 @@ var Customer = require('../models/customer'),
 
 var RENTAL_PERIOD = 5; // 5 days
 
+var today = new Date();
+
 router.get('/overdue', function(req, res, next) {
-  var today = new Date();
   var overdueCustomerIds = [];
 
   rental.where(['returned_date'], [''], function(err, rows) {
@@ -125,6 +126,32 @@ router.post('/checkout/:customer_id/:movie_id', function(request, response, next
           response.status(200).json({ success: "Yay! You checked out a movie." });
         });
       }
+  });
+});
+
+router.put('/checkin/:customer_id/:movie_title', function(req, res, next) {
+  var customerId = req.params.customer_id;
+  var movieTitle = req.params.movie_title;
+  var movieId;
+
+  // retrieve rental record which corresponds to customer id and movie title,
+  // AND which is not already returned
+
+  // translate movie title to movie id
+  movie.find_by("title", movieTitle, function(err, row) {
+    movieId = row.id;
+    var columns = ["customer_id", "movie_id", "returned_date"];
+    var values = [customerId, movieId, ""];
+
+    rental.where(columns, values, function(err, rows) {
+      var rentalId = rows[0].id;
+
+      var message = "Congratulations, you have checked in: ";
+
+      rental.update(rentalId, ["returned_date"], [today], function(err, result) {
+        res.status(200).json(message + movieTitle);
+      })
+    });
   });
 });
 
