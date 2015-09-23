@@ -1,7 +1,20 @@
 "use strict";
+
+// ----------------- movie model ----------------- //
 var movieTable = require('../models/movie');
+
+// ------------------- database ------------------- //
 var sqlite3 = require("sqlite3").verbose();
 var dbEnv = process.env.DB || "development";
+
+// --------------- helper functions --------------- //
+var helps = "../helpers/";
+var fixTime = require(helps + "milliseconds_to_date");
+// var rents = helps + "movies/";
+// var validateParams = require(helps + "validate_params");
+var ourWebsite = require(helps + "url_base");
+// var formatMovieInfo = require(rents + "format_movie_info");
+var formatCustomerInfo = require(rents + "format_customer_info");
 
 module.exports = {
   // this is all movies
@@ -46,19 +59,22 @@ module.exports = {
   },
 
   release_date: function(request, response) {
-    function convertReleaseDate(arrayOfMovies) {
-      arrayOfMovies = arrayOfMovies.map(function(movie) {
-        var convertReleaseDate = Number(movie.release_date);
-        var dateOfRelease = new Date(convertReleaseDate);
-        var humanReadableDate = dateOfRelease.toDateString();
-        var humanReadableTime = dateOfRelease.toTimeString();
-        movie.release_date = humanReadableDate + " " + humanReadableTime;
+    // function convertReleaseDate(arrayOfMovies) {
+    //   arrayOfMovies = arrayOfMovies.map(function(movie) {
+    //     var convertReleaseDate = Number(movie.release_date);
+    //     var dateOfRelease = new Date(convertReleaseDate);
+    //     var humanReadableDate = dateOfRelease.toDateString();
+    //     var humanReadableTime = dateOfRelease.toTimeString();
+    //     movie.release_date = humanReadableDate + " " + humanReadableTime;
+    //
+    //     return movie;
+    //   });
+    //
+    //   return arrayOfMovies;
+    // }
 
-        return movie;
-      });
-
-      return arrayOfMovies;
-    }
+    // fixTime(objectsArray, propertyToConvert)
+    fixTime(asdf, 'release_date');
 
     var db = new sqlite3.Database("db/" + dbEnv + ".db");
     var movies = new movieTable();
