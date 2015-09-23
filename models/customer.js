@@ -28,7 +28,17 @@ Customer.prototype.rentals = function rentals(customerID, callback) {
 
     callback(err, rows);
     db.close();
-  })
+  });
+}
+
+Customer.prototype.overdue = function overdue(callback) {
+  var db = this.openDB();
+  var statement = "SELECT customers.id, customers.name, rentals.movie_title, rentals.checkout_date FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id WHERE rentals.return_date = '' AND date('now') > DATETIME(rentals.checkout_date, '+7 days');";
+
+  db.all(statement, function(err, rows) {
+    callback(err, rows);
+    db.close();
+  });
 }
 
 // Customer.prototype.movies = function movies(customerID, callback) {
