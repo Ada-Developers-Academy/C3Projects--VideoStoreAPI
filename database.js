@@ -85,7 +85,7 @@ var Database = {
   customers_overdue: function(callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
     // all customers who currently have the movie checked out and past return_date
-    var statement = "SELECT * FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id WHERE date(rentals.return_date) < date('now') AND rentals.checked_out = 'true'; ";
+    var statement = "SELECT * FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id WHERE date(rentals.return_date) < date('now') AND rentals.checked_out = 'true' ORDER BY rentals.return_date; ";
 
     db.all(statement, function(err, rows) {
       callback(err, rows);

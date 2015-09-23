@@ -66,7 +66,7 @@ var rental_statement = db.prepare(
   // SELECT * FROM movies INNER JOIN rentals ON movies.id = rentals.movie_id WHERE checked_out = 'true'
 
   // UPDATE movies SET num_available = (num_available - 1) WHERE id = 1 AND  (SELECT checked_out FROM rentals WHERE rentals.movie_id = 1 AND rentals.checked_out = 'true');
-);
+// );
 
 db.serialize(function() {
   // loop through rentals
