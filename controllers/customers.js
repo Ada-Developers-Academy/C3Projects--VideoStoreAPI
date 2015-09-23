@@ -1,26 +1,38 @@
 "use strict";
-
-var sqlite3 = require('sqlite3').verbose(),
-  db_env = process.env.DB || 'development';
+var shared = require('./shared_functions');
+// var all_call = new all_call,
+    // db = new db;
+//
+// var sqlite3 = require('sqlite3').verbose(),
+//   db_env = process.env.DB || 'development';
+// var db = new sqlite3.Database('./db/' + db_env + '.db');
+// var results = [];
+// function all_call(db, results, statement, res) {db.all(statement, function(err, rows) {
+//     rows.forEach(function (row) {
+//       results.push(row);
+//     });
+//     db.close();
+//     return res.status(200).json(results);
+//   });
+// }
 
 exports.customersController = {
 
   index: function index(req, res, callback) {
-    var db = new sqlite3.Database('./db/' + db_env + '.db');
-    var all_customers = [];
     var statement = "SELECT * from customers;";
+    // all_call(db, results, statement, res);
         db.all(statement, function(err, rows) {
           rows.forEach(function (row) {
-            all_customers.push(row);
+            results.push(row);
           });
           db.close();
-          return res.status(200).json(all_customers);
+          return res.status(200).json(results);
         });
       // all customers
   },
   name: function name(req,res) {
-    var db = new sqlite3.Database('./db/' + db_env + '.db');
-    var customer_names = [];
+    // var db = new sqlite3.Database('./db/' + db_env + '.db');
+    // var customer_names = [];
     var records = req.params.records,
         offset = req.params.offset;
     var statement = "SELECT * FROM customers ORDER BY name ASC LIMIT ? OFFSET ?;";
