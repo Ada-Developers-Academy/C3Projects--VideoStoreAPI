@@ -24,6 +24,16 @@ module.exports = {
       if (callback) callback(err, res);
       db.close();
     })
+  },
+
+  find_by: function(column, query, value, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    var statement = "SELECT * FROM rentals WHERE " + column + "=? AND " + query;
+
+    db.all(statement, value, function(err, res) {
+      if (callback) callback(err, res);
+      db.close();
+    });
   }
 
 //,
