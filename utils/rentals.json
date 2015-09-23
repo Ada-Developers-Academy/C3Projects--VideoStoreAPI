@@ -51,9 +51,9 @@
     {
         "customer_id": 1,
         "movie_id": 39,
-        "checkout_date": "03 Dec 2009 02:58:43",
-        "due_date": "08 Dec 2009 06:19:02",
-        "returned_date": "07 Dec 2009 06:19:02"
+        "checkout_date": "03 Dec 2008 02:58:43",
+        "due_date": "08 Dec 2008 06:19:02",
+        "returned_date": "07 Dec 2008 06:19:02"
     },
     {
         "customer_id": 1,
