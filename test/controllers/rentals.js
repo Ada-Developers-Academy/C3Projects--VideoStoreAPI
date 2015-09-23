@@ -95,7 +95,6 @@ describe("POST '/'", function() {
   it("returns the rental object", function(done) {
    agent.post('/rentals/1/Maws').set('Content-Type', 'application/json')
      .expect(200, function(err, res) {
-      console.log("RESPONSE ", res.body );
       assert.equal(res.body.movie_copy_id, 2);
 
       var keys = ['id', 'movie_copy_id', 'customer_id', 'checkout_date', 'return_date', 'return_status', 'cost'];
@@ -120,7 +119,6 @@ describe("PATCH '/'", function() {
   it("returns the rental object", function(done) {
    agent.patch('/rentals/return/1/Jaws').set('Accept', 'application/json')
      .expect(200, function(err, res) {
-      console.log("RESPONSE ", res.body );
       assert.equal(res.body.return_status, 1);
 
       var keys = ['id', 'movie_copy_id', 'customer_id', 'checkout_date', 'return_date', 'return_status', 'cost'];
