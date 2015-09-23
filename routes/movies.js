@@ -1,24 +1,18 @@
-var express = require('express');
-var router = express.Router();
-var movies_exports = require('../controllers/movies')
+"use strict";
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  return movies_exports.moviesController.index(req, res);
-});
+var express = require('express'),
+    router = express.Router(),
+    Controller = require('../controllers/movies');
+
+router.get('/', Controller.index);
 // sort by movie title
-router.get('/title/:records/:offset', function(req, res, next) {
-  return movies_exports.moviesController.title(req, res);
-});
-
+router.get('/title/:records/:offset', Controller.title);
 // sort by movie release date
-router.get('/released/:records/:offset', function(req, res, next) {
-  return movies_exports.moviesController.released(req, res);
-});
+router.get('/released/:records/:offset', Controller.released);
 
 // get movie info and whether has inventory
 router.get('/:title', function(req, res, next) {
- return movies_exports.moviesController.movie_available(req, res);
+  return Controller.movie_available(req, res);
 });
 
 module.exports = router;
