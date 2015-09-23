@@ -12,7 +12,7 @@ Movies
   * From Movies table:
     - release_date
 
-get "/movies/:title/customers/current" = Customers who currently have this movie checked out.
+🔵 get "/movies/:title/customers/current" = Customers who currently have this movie checked out.
     - From Movies table find movie_id
     - From rentals table find all the same movie_ids
     - if returned_date == nil
@@ -49,7 +49,7 @@ Customers
 
 🔵 get "/customers/sort/postal_code/:limit/:page" = returns all customers sorted by postal_code.
 
-🔵 get "/customers/:id/movies/current" = show all the movies that this customer is renting currently.
+get "/customers/:id/movies/current" = show all the movies that this customer is renting currently.
   - From Rentals table find all of one customer's current rentals
 
 
