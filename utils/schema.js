@@ -51,6 +51,7 @@ db.serialize(function() {
 
 var rental_fields = [
   ['customer_id', 'integer'],
+  ['customer_name', 'text'],
   ['movie_id', 'integer'],
   ['return_date', 'text'],
   ['checkout_date', 'text'],

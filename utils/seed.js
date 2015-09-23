@@ -53,8 +53,8 @@ db.serialize(function() {
 
 var rentals = require('./rentals');
 var rental_statement = db.prepare(
-  "INSERT INTO rentals(customer_id, movie_id, return_date, checkout_date, due_date) \
-  VALUES (?, ?, ?, ?, ?);"
+  "INSERT INTO rentals(customer_id, customer_name, movie_id, return_date, checkout_date, due_date) \
+  VALUES (?, ?, ?, ?, ?, ?);"
 );
 
 db.serialize(function() {
@@ -63,6 +63,7 @@ db.serialize(function() {
 
     rental_statement.run(
       rental.customer_id,
+      rental.customer_name,
       rental.movie_id,
       rental.return_date,
       rental.checkout_date,
