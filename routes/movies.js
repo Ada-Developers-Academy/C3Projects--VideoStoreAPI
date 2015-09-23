@@ -7,6 +7,7 @@ var express = require('express'),
 router.get('/', Controller.index);
 router.get('/title/:records/:offset', Controller.title);
 router.get('/released/:records/:offset', Controller.released);
+router.get('/:title', Controller.movie_available);
 
 module.exports = router;
 

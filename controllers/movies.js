@@ -3,25 +3,30 @@
 var Movie = require('../models/movies');
 
 var Controller = {
-  index: function(request, response, next) {
-    new Movie().all(Controller.send_json.bind(response))
+  index: function(req, res, next) {
+    new Movie().all(Controller.send_json.bind(res))
   },
 
-  title: function(request, response, next) {
-    new Movie().some(request.params.records, request.params.offset, 'title',
-                     Controller.send_json.bind(response));
+  title: function(req, res, next) {
+    new Movie().some(req.params.records, req.params.offset, 'title',
+                     Controller.send_json.bind(res));
   },
 
-  released: function(request, response, next) {
-    new Movie().some(request.params.records, request.params.offset, 'release_date DESC',
-                     Controller.send_json.bind(response));
+  released: function(req, res, next) {
+    new Movie().some(req.params.records, req.params.offset, 'release_date DESC',
+                     Controller.send_json.bind(res));
   },
 
-  send_json: function(error, result) {
+  movie_available: function(req, res, next) {
+    new Movie().movie_info(req.params.title,
+                     Controller.send_json.bind(res));
+  },
+
+  send_json: function(error, res) {
     if (error) {
       this.status(500).json(error);
     } else {
-      this.status(200).json(result);
+      this.status(200).json(res);
     }
   }
 }
@@ -29,7 +34,7 @@ var Controller = {
 module.exports = Controller
 
 
-//
+// ORIGINAL CODE
 // var sqlite3 = require('sqlite3').verbose(),
 //   db_env = process.env.DB || 'development';
 //
@@ -95,7 +100,6 @@ module.exports = Controller
 //                 var movie = rows[0],
 //                     available = movie.inventory;
 //               results.push(movie, {'Available': available});
-//               console.log(results);
 //               db.close();
 //               return res.status(200).json(results);
 //               });
