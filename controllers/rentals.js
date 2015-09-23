@@ -11,29 +11,19 @@ function addPercents(variable) {
 
 function findCopy(movie_title, callback) {
   db = new sqlite3.Database('db/' + db_env + '.db');
-  // old statement
-  // "SELECT rentals.movie_copy_id, movies.id FROM rentals \
-  //         INNER JOIN movie_copies ON rentals.movie_copy_id = movie_copies.id \
-  //         INNER JOIN movies ON movie_copies.movie_id = movies.id \
-  //         WHERE movies.title LIKE ? AND (rentals.return_status = 1 OR rentals.id IS NULL) \
-  //         ORDER BY rentals.return_date DESC;"
 
   db.get("SELECT movie_copies.id FROM movie_copies \
           INNER JOIN movies ON movie_copies.movie_id = movies.id \
-          WHERE movies.title LIKE ? AND movie_copies.is_available = 1;", movie_title, function(err, result) {
-            if (err) {
-              console.log("ERROR:", err);
-            }
-          db.close();
-    if(err) {
-      // return res.status(204).json("No copies available");
-      console.log("ERROR: ", err);
-    }
-    else {
-      // var movie_copy = result;
-      // console.log("MOVIE COPY: ", result);
-      callback(result);
-    }
+          WHERE movies.title LIKE ? AND movie_copies.is_available = 1;",
+    movie_title, function(err, result) {
+      if (err) {
+        db.close();
+        return ("NO COPIES AVAILABLE ", err);
+      }
+      else {
+        db.close();
+        callback(result);
+      }
   });
 }
 
@@ -73,9 +63,9 @@ exports.rentalsController = {
     due = due.toISOString().split("T")[0];
 
     findCopy(movie, function(movie_copy) {
-      console.log("MOVIE COPY ID: ", movie_copy.id);
-      // console.log("CHECKOUT: ", checkout);
-      // console.log("DUE: ", due);
+      if(movie_copy === undefined) {
+        return res.status(204).send({status: 204, message: "NO COPIES AVAILABLE"});
+      }
 
       db = new sqlite3.Database('db/' + db_env + '.db');
       db.serialize(function() {
