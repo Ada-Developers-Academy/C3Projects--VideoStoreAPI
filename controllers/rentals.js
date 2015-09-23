@@ -30,8 +30,8 @@ function findCopy(movie_title, callback) {
       console.log("ERROR: ", err);
     }
     else {
-      // var movie_data = result;
-      console.log("MOVIE DATA: ", result);
+      // var movie_copy = result;
+      // console.log("MOVIE COPY: ", result);
       callback(result);
     }
   });
@@ -72,14 +72,14 @@ exports.rentalsController = {
     checkout = checkout.toISOString().split("T")[0];
     due = due.toISOString().split("T")[0];
 
-    findCopy(movie, function(movie_data) {
-      console.log("COPY ID: ", movie_data.id);
-      console.log("CHECKOUT: ", checkout);
-      console.log("DUE: ", due);
+    findCopy(movie, function(movie_copy) {
+      console.log("MOVIE COPY ID: ", movie_copy.id);
+      // console.log("CHECKOUT: ", checkout);
+      // console.log("DUE: ", due);
 
       db = new sqlite3.Database('db/' + db_env + '.db');
       db.run("INSERT INTO rentals(customer_id, movie_copy_id, checkout_date, return_date, return_status, cost) \
-      VALUES(" + customer + ", " + movie_data.id + ", '" + checkout + "', '" + due + "', 0, 5); \
+      VALUES(" + customer + ", " + movie_copy.id + ", '" + checkout + "', '" + due + "', 0, 5); \
       COMMIT;", function(err, result) {
         if (err) {
           console.log("ERROR: ", err);
