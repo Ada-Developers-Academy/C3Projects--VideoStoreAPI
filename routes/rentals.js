@@ -8,5 +8,9 @@ router.get('/', function(req, res, next) {
   return rental_exports.rentalsController.customersRentalHistory(req, res);
 });
 
+router.get('/overdue', function(req, res, next) {
+  return rental_exports.rentalsController.customersOverdue(req, res);
+});
+
 module.exports = router;
 // title?page=:page&number=:number

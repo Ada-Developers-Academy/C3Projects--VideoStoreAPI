@@ -50,6 +50,7 @@ describe("Rental", function() {
 
     it("displays all customers rental history", function(done) {
       rental.customersRentalHistory(function(err, result){
+        console.log(result)
         assert.equal(result[0].name, 'Another Shelley Rocha');
         done();
       });
