@@ -115,7 +115,7 @@ db.serialize(function() {
     );
 
   rental_statement.run(
-    9,
+    10,
     1,
     "2015-09-19",
     "2015-09-30",
@@ -133,7 +133,7 @@ db.serialize(function() {
     );
 
   rental_statement.run(
-    9,
+    11,
     6,
     "2015-09-19",
     "2015-09-20",

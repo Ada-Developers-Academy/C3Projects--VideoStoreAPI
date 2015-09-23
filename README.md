@@ -2,35 +2,35 @@
 
 ## Notes
 ### Endpoints
-** ADD PAGINATION **
+*DONE* ADD PAGINATION
 
-**DONE** GET "/customers"
+*DONE* GET "/customers"
 // for routes below, will need to return results offset by page number
-**DONE** GET "/customers/:name" // will be dynamic
-**DONE** GET "/customers/:registered_at"
-**DONE** GET "/customers/:postal_code"
+*DONE* GET "/customers/:name" // will be dynamic
+*DONE* GET "/customers/:registered_at"
+*DONE* GET "/customers/:postal_code"
 
-**DONE** GET "/customers/:id/current_movies"
-**DONE** GET "/customers/:id/past_movies" // order by checkout date, include return date
+*DONE* GET "/customers/:id/current_movies"
+*DONE* GET "/customers/:id/past_movies" // order by checkout date, include return date
 
-**DONE** GET "/movies"
+*DONE* GET "/movies"
 // for routes below, will need to return results offset by page number
-**DONE** GET "/movies/:title" // will be dynamic
-**DONE** GET "/movies/:release_date"
+*DONE* GET "/movies/:title" // will be dynamic
+*DONE* GET "/movies/:release_date"
 
 // for routes below, will need to pass an ordering parameter to order by customer id, name, or checkout date
-**DONE** GET "/movies/:title/current_customers/:order"
-**DONE** GET "/movies/:title/past_customers/:order"
+*DONE* GET "/movies/:title/current_customers/:order"
+*DONE* GET "/movies/:title/past_customers/:order"
 
 // normalize database or join everything???
-**DONE** GET "/movies/:title"
+*DONE* GET "/movies/:title"
   // includes synopsis, release date, inventory total, rentable boolean, list of customers that have it currently checkout out ...?
 
 POST "/rentals/:customer_id/:movie_title"
   // create association, checkout date, return date, charge account, returned boolean
 PATCH "/checkin/:customer_id/:movie_title"
   // modify returned boolean
-**DONE** GET "/rentals/overdue"
+*DONE* GET "/rentals/overdue"
 
 ---
 The overall goal of this project is to create a system that a video store (remember those?) could use to track their inventory of rental videos and their collection of customers.

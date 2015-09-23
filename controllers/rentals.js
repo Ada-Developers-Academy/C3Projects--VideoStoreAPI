@@ -9,19 +9,25 @@ function addPercents(variable) {
     return percented;
   }
 
-function findCopy(movie_title) {
+function findCopy(movie_title, callback) {
   db = new sqlite3.Database('db/' + db_env + '.db');
-  db.get("SELECT movie_copies.id FROM rentals \
+  db.all("SELECT rentals.movie_copy_id, movies.id FROM rentals \
           INNER JOIN movie_copies ON rentals.movie_copy_id = movie_copies.id \
           INNER JOIN movies ON movie_copies.movie_id = movies.id \
-          WHERE rentals.return_status = 1 AND movies.title LIKE ?;", movie_title, function(err, rental) {
+          WHERE movies.title LIKE ? AND rentals.return_status = 1;", movie_title, function(err, rental) {
+            if (err) {
+              console.log("ERROR:", err);
+            }
           db.close();
     if(err) {
-      return res.status(204).json("No copies available");
+      // return res.status(204).json("No copies available");
+      console.log("ERROR: ", err);
     }
     else {
-      console.log("from find copy " + rental);
-      return rental.id;
+      console.log("RENTAL: ", rental);
+      var movie_data = rental;
+      console.log("MOVIE DATA: ", movie_data);
+      callback(movie_data);
     }
   });
 }
@@ -55,17 +61,31 @@ exports.rentalsController = {
     var customer = req.params.customer_id,
         movie = req.params.movie_title;
         movie = addPercents(movie);
-        console.log(movie);
-        console.log(customer);
-    var copy_id = findCopy(movie);
-    console.log("from create_rental " + copy_id);
+    var checkout = new Date();
+    var due = new Date(checkout);
+    due.setDate(checkout.getDate()+7);
+    checkout = checkout.toISOString().split("T")[0];
+    due = due.toISOString().split("T")[0];
 
-    // db = new sqlite3.Database('db/' + db_env + '.db');
-    // db.run("SELECT * FROM rentals", function(err, all_rentals) {
-    //   db.close();
-      // return res.status(200).json(all_rentals);
-    // });
+    findCopy(movie, function(movie_data) {
+      console.log("COPY ID: ", movie_data[0].movie_copy_id);
+
+      db = new sqlite3.Database('db/' + db_env + '.db');
+      db.run("INSERT INTO rentals(customer_id, movie_copy_id, checkout_date, return_date, return_status, cost) \
+      VALUES(" + customer + ", " + movie_data[0].movie_copy_id + ", " + checkout + ", " + due + ", 0, 5); \
+      COMMIT;", function(err, result) {
+        db.close();
+        return res.status(200).json(result);
+      });
+    });
+
+    // INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_credit) \
+    // VALUES('Shelley Rocha', '2015-09-21', '123 Nope St', 'Seattle', 'WA', '98104', '(000) 000-000', '100'), \
+    //       ('Billy Rocha', '2015-09-21', '123 Nope St', 'Seattle', 'WA', '98104', '(000) 000-000', '100'); \
+    // COMMIT;", function(err) {
+
+
+
   },
 
 };
-
