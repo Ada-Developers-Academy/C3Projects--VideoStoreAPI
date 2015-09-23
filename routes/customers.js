@@ -29,7 +29,11 @@ router.get('/:id', function(req, res, next) {
   customer.find_by('id', id, function(err, row) {
     customerObject.customer_data = row;
 
-    rental.where(['customer_id'], [id], function(err, rows) {
+    var condition = "customer_id = " + id;
+
+    // order_by returns a collection of records matching the condition,
+    // ordered by the column
+    rental.order_by(condition, "checkout_date", function(err, rows) {
       var currentMoviesIDs = [];
       var pastMoviesIDs = [];
 
