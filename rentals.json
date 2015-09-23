@@ -12,6 +12,12 @@
         "checked_out": "2015-06-11"
     },
     {
+        "movie_id": 7,
+        "customer_id": 7,
+        "returned_date": "2015-07-18",
+        "checked_out": "2015-06-11"
+    },
+    {
         "movie_id": 3,
         "customer_id": 1,
         "returned_date": "",
