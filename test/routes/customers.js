@@ -29,18 +29,58 @@ describe("customers routes", function() {
     });
   });
 
-  describe("GET /", function(){
+  describe("GET /customers", function() {
     it("responds with json", function(done) {
       agent.get('/customers').set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
-          var customers = response.body.customers;
           assert.equal(error, undefined);
-          assert(customers instanceof Array);
-          assert.equal(customers.length, 2);
-          assert.equal(customers[0].name, "Dana Scully");
           done();
         });
     });
+
+    it("returns an array of objects", function(done) {
+      agent.get('/customers').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, response) {
+          var customers = response.body.customers;
+
+          assert(customers instanceof Array);
+          done();
+      });
+    });
+
+    it("returns as many customers as there are in the table: 2", function(done) {
+      agent.get('/customers').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, response) {
+          var customers = response.body.customers;
+
+          assert.equal(customers.length, 2);
+          done();
+      });
+    });
+
+    it("the customer objects contain customer data", function(done) {
+      agent.get('/customers').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, response) {
+          var customer = response.body.customers[0];
+
+          assert.equal(customer.name, "Dana Scully");
+          assert.equal(customer.registered_at, 'Wed, 16 Apr 2014 21:40:20 -0700');
+          assert.equal(customer.address, 'P.O. Box 887, 4257 Lorem Rd.');
+          assert.equal(customer.city, "Columbus");
+          assert.equal(customer.state, "Ohio");
+          assert.equal(customer.postal_code, "43201");
+          assert.equal(customer.phone, "(371) 627-1105");
+          assert.equal(customer.account_credit, 1234);
+          done();
+      });
+    });
   });
+
+  // describe("GET /customers/:id", function() {
+  //   it("res")
+  // });
 });
