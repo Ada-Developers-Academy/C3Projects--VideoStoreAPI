@@ -62,7 +62,6 @@ router.get("/all/sort_by=:sort/:page", function(req, res, next) {
 
   switch (sort) {
     case "release_date":
-      console.log("sort: " + sort);
       return movieController.release_date(req, res);
       break;
     case "title":

@@ -34,7 +34,4 @@
 //     });
 //   })
 //
-//   it("can be instantiated", function() {
-//     assert(movie instanceof Movie);
-//   })
 // })

@@ -30,7 +30,6 @@ module.exports = {
     var db = new sqlite3.Database("db/" + dbEnv + ".db");
     var movies = new movieTable();
     var pageNumber = request.params.page || 1;
-    console.log(pageNumber);
     var offset = (pageNumber - 1) * movies.limit;
     var statement = "SELECT * FROM movies ORDER BY (title) LIMIT "
       + movies.limit + " OFFSET " + offset + ";";
@@ -73,7 +72,6 @@ module.exports = {
       ORDER BY (release_date) \
       LIMIT " + movies.limit + " \
       OFFSET " + offset + ";";
-    console.log(statement);
 
     db.all(statement, function(err, results) { // closure
       if(err) {
