@@ -177,9 +177,23 @@ describe('Customer', function() {
 
     it('returns all rentals for a given customer, in order by checkout date', function(done) {
       customer.rentals(1, function(err, rows) {
+        assert.equal(err, undefined);
         assert.equal(rows.length, 2);
         assert.equal(rows[0].movie_title, "Movie2");
         assert.equal(rows[1].movie_title, "Movie1");
+        done();
+      });
+    });
+  });
+
+  describe('#overdue', function() {
+    it('returns a list of customers with overdue movies', function(done) {
+      customer.overdue(function(err, rows) {
+        assert.equal(err, undefined);
+        assert.equal(rows.length, 1); // this will change to 2 on 2015-09-24 and 3 on 2015-09-26 as our seed data becomes overdue
+        assert.equal(rows[0].name, 'Customer2');
+        assert.equal(rows[0].movie_title, 'Movie4');
+        assert.equal(rows[0].checkout_date, '2015-02-23');
         done();
       });
     });
@@ -233,7 +247,8 @@ function seedRentals(done) {
       INSERT INTO movies(title, overview, release_date, inventory) \
       VALUES('Movie1', 'Descr1', '1975-06-19', 10), \
             ('Movie2', 'Descr2', 'Yesterday', 11), \
-            ('Movie3', 'Descr3', 'Yesterday', 11); \
+            ('Movie3', 'Descr3', 'Yesterday', 11), \
+            ('Movie4', 'Descr4', 'Awhile ago', 7); \
       COMMIT;",
       function(err) {
         db.close();
@@ -252,7 +267,8 @@ function resetRentalsTable(done) {
       INSERT INTO rentals(checkout_date, return_date, movie_title, customer_id) \
       VALUES('2015-09-16', '', 'Movie1', 1), \
             ('2015-03-16', '2015-03-20', 'Movie2', 1), \
-            ('2015-09-18', '', 'Movie3', 2); \
+            ('2015-09-18', '', 'Movie3', 2), \
+            ('2015-02-23', '', 'Movie4', 2); \
       COMMIT;",
       function(err) {
         db.close();
