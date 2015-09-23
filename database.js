@@ -79,19 +79,7 @@ module.exports = {
 
   customersRentalHistory: function(callback){
     var db = new sqlite3.Database('db/' + db_env + '.db');
-
-    // SELECT c.name,
-    // CASE WHEN r.returned_date is NULL THEN "-" ELSE r.returned_date END,
-    // CASE WHEN r.checkout_date is NULL THEN "-" ELSE r.checkout_date END,
-    // CASE WHEN r.rental_time is NULL THEN "-" ELSE r.rental_time END
-    // FROM customers AS c
-    // LEFT JOIN rentals AS r ON r.customer_id = c.id
-    // GROUP BY c.name
-    // ORDER BY r.returned_date DESC
-
-    // var statement = "SELECT c.name, CASE WHEN r.returned_date is NULL THEN "-" ELSE r.returned_date END, CASE WHEN r.checkout_date is NULL THEN "-" ELSE r.checkout_date END, CASE WHEN r.rental_time is NULL THEN "-" ELSE r.rental_time END FROM customers AS c LEFT JOIN rentals AS r ON r.customer_id = c.id GROUP BY c.name ORDER BY r.returned_date DESC;";
     var statement = "SELECT name, checkout_date, returned_date, rental_time FROM customers, rentals WHERE customers.id = rentals.customer_id ORDER BY checkout_date DESC;"; //[ { customer_id: 1 }, { customer_id: 2 }, { customer_id: 3 }, { customer_id: 4 } ]
-
     db.all(statement, function(err, res) {
       if (callback) callback(err, res);
       db.close();
