@@ -89,7 +89,6 @@ module.exports = {
   },
 
   by_title: function(request, response) {
-    console.log("INSIDE BY_TITLE");
     var db = new sqlite3.Database("db/" + dbEnv + ".db");
     var movies = new movieTable();
     var queried_title = request.params.title;
@@ -98,16 +97,12 @@ module.exports = {
       "SELECT * FROM movies \
       WHERE title = '" + queried_title + "'";
 
-      console.log(statement);
-
-
     db.all(statement, function(err, result) {
       if(err) {
         console.log(err); // error handling
         return;
       };
       return response.status(200).json(result);
-
     });
     db.close();
   },
@@ -126,7 +121,7 @@ module.exports = {
         FROM rentals LEFT JOIN customers \
         ON rentals.customer_id = customers.id \
         WHERE rentals.movie_title = '" + title + "' \
-        AND rentals.returned = 0 \
+        AND rentals.returned = 1 \
         ORDER BY customers.id";
 
     db.all(statement, function(err, result) {
@@ -154,7 +149,7 @@ module.exports = {
       FROM rentals LEFT JOIN customers \
       ON rentals.customer_id = customers.id \
       WHERE rentals.movie_title = '" + title + "' \
-      AND rentals.returned = 0 \
+      AND rentals.returned = 1 \
       ORDER BY customers.name";
 
     db.all(statement, function(err, result) {
@@ -181,7 +176,7 @@ module.exports = {
       FROM rentals LEFT JOIN customers \
       ON rentals.customer_id = customers.id \
       WHERE rentals.movie_title = '" + title + "' \
-      AND rentals.returned = 0 \
+      AND rentals.returned = 1 \
       ORDER BY check_out_date";
 
     db.all(statement, function(err, result) {
@@ -203,9 +198,12 @@ module.exports = {
     var offset = (page - 1) * movies.limit;
 
     var statement =
-      "SELECT * FROM rentals \
-      WHERE movie_title = '" + title + "' \
-      AND returned = 0 \
+      "SELECT customers.name, rentals.check_out_date, \
+      rentals.movie_title \
+      FROM rentals LEFT JOIN customers \
+      ON rentals.customer_id = customers.id \
+      WHERE rentals.movie_title = '" + title + "' \
+      AND rentals.returned = 0 \
       LIMIT " + movies.limit + " \
       OFFSET " + offset;
 
