@@ -48,6 +48,8 @@ router.get('/:id', function(req, res, next) {
 
         movie.where_in(['id'], pastMoviesIDs, function(err, rows) {
           customerObject.rentals.pastRenters = rows;
+
+          
           
           res.status(200).json(customerObject);
         });
