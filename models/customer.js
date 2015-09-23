@@ -8,5 +8,6 @@ function Customer() {
 }
 
 Customer.prototype = require('../database');
+// Customer.prototype.
 
 module.exports = Customer;
