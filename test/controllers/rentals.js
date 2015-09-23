@@ -65,7 +65,7 @@ describe("GET '/'", function() {
       assert.equal(err, undefined);
 
       done();
-      });
+    });
   });
 
   it("returns an array of movie objects", function(done) {
@@ -78,7 +78,7 @@ describe("GET '/'", function() {
 
       done();
      });
-   }); // returns array objects
+    }); // returns array objects
   }); // end describe 'get' block
 
 describe("POST '/'", function() {
@@ -89,20 +89,20 @@ describe("POST '/'", function() {
       assert.equal(err, undefined);
 
       done();
-      });
+    });
   });
 
   it("returns the rental object", function(done) {
-   agent.post('/rentals/1/Maws').set('Accept', 'application/json')
-     .expect(200, function(err, result) {
-      console.log(" type of ", typeof result);
-      assert.equal(result.body.length, 1);
+   agent.post('/rentals/1/Maws').set('Content-Type', 'application/json')
+     .expect(200, function(err, res) {
+      console.log("RESPONSE ", res.body );
+      assert.equal(res.body.movie_copy_id, 2);
 
       var keys = ['id', 'movie_copy_id', 'customer_id', 'checkout_date', 'return_date', 'return_status', 'cost'];
-      assert.deepEqual(Object.keys(result.body[0]), keys);
+      assert.deepEqual(Object.keys(res.body), keys);
 
       done();
      });
    }); // returns array objects
-  });
+  }); // end post block
 }); // end describe 'rentals controller' block
