@@ -105,4 +105,29 @@ describe("POST '/'", function() {
      });
    }); // returns array objects
   }); // end post block
+
+describe("PATCH '/'", function() {
+  it("knows about the route", function(done) {
+    agent.patch('/rentals/return/1/Jaws').set('Accept', 'application/json')
+      .expect('Content-Type', /application\/json/)
+      .expect(200, function(err, res) {
+      assert.equal(err, undefined);
+
+      done();
+    });
+  });
+
+  it("returns the rental object", function(done) {
+   agent.patch('/rentals/return/1/Jaws').set('Accept', 'application/json')
+     .expect(200, function(err, res) {
+      console.log("RESPONSE ", res.body );
+      assert.equal(res.body.return_status, 1);
+
+      var keys = ['id', 'movie_copy_id', 'customer_id', 'checkout_date', 'return_date', 'return_status', 'cost'];
+      assert.deepEqual(Object.keys(res.body), keys);
+
+      done();
+     });
+   }); // returns array objects
+  }); // end patch block
 }); // end describe 'rentals controller' block
