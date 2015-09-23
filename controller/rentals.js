@@ -92,16 +92,44 @@ exports.rentalsController = {
         });
       })
     });
-  }
+  },
 
 
   // *POST* rental/:title/:customer_id/checkout
-  // create new rental entry
+  checkout: function(req,res){
+   // select from movies the title to fid movie_id
+    var statement = "SELECT * FROM movies WHERE title LIKE '%" + req.params.title + "%';";
+
+    db.all(statement, function(err, rows){
+      // rows is specific movie, get id 
+      // update movie inventory_available (-1)
+      var movieId = rows[0].id;
+      var newInventory = parseInt(rows[0].current_inventory) - 1;
+
+
+      // create new rental entry
+      var statement = "INSERT INTO rentals VALUES (?, ?, ?, ?, ?);";
+      var customerId = req.params.customer_id;
+      var returnDate = '';
+      var checkoutDate = new Date();
+      var dueDate = new Date(checkoutDate);
+      dueDate.setDate(checkoutDate.getDate() + 7);
+
+
+     db.run(statement, customerId, movieId, returnDate, (checkoutDate).toString(), (dueDate).toString(), function(err, rows){
+        
+        var updateMovieStatement = "UPDATE movies SET current_inventory=? WHERE id=? ;";
+        // update movie inventory_available (+1)
+        db.run(updateMovieStatement, newInventory, movieId, function(err, rows) {
+        res.status(200).json('success');  
+        });
+      });
+    });
+  },
   //  ['customer_id', 'integer'] -> in params
   //  ['movie_id', 'integer'], -> will need to find
   //  ['return_date', 'text'], -> ''
   //  ['checkout_date', 'text'], -> today's date
   //  ['due_date', 'text'] -> today's date + 7 days
-  // update movie inventory_available (-1)
   // subtract $1 from customer's credit
 }
