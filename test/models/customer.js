@@ -65,9 +65,9 @@ describe("Customer", function() {
     });
 
     it("can find all customers with specified column=value(s)", function(done) {
-      var city = 'city';
+      var column = 'city';
       var values = ['Seattle'];
-      customer.where_in(city, values, function(err, res) {
+      customer.where_in(column, values, function(err, res) {
         assert.equal(err, undefined);
         assert(res instanceof Array);
         assert.equal(res.length, 2);
