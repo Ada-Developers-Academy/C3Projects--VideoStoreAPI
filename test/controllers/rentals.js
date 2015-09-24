@@ -151,7 +151,11 @@ describe("/rentals", function() {
       rental_request = agent.post('/rentals/checkout/alien/1').set('Accept', 'application/json');
       rental_request
       .expect(200, function(err, res) {
+<<<<<<< HEAD
+        assert.equal(res.body.length, 1);
+=======
         assert.equal(err, undefined);
+>>>>>>> kn+eg/master
 
         var keys = ['message', 'movie_title', 'customer_id'];
         assert.deepEqual(Object.keys(res.body), keys);
