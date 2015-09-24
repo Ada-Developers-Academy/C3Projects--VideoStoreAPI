@@ -49,15 +49,12 @@ router.get('/:id', function(req, res, next) {
           // pastMoviesIDs.push(rows[i].movie_id);
         }
       }
-      console.log(pastMoviesObject);
       pastMoviesIDs = Object.keys(pastMoviesObject);
-      console.log(pastMoviesIDs);
 
       movie.where_in(['id'], currentMoviesIDs, function(err, rows) {
         customerObject.movies.currentRentals = rows; // no returned_date
 
         movie.where_in(['id'], pastMoviesIDs, function(err, rows) {
-          console.log(rows);
           for (var i = 0; i < rows.length; i++) {
             var movieObject = {};
             movieObject.movieData = rows[i];
