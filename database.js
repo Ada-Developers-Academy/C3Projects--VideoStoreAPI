@@ -170,4 +170,26 @@ module.exports = {
       db.close();
     });
   },
+
+  update_return_date: function(customer_id, movie_title, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+
+    var statement = "UPDATE rentals SET returned_date = date('now') WHERE customer_id = ? AND movie_id = (SELECT id FROM movies WHERE title = ? COLLATE NOCASE) AND returned_date ='' ;";
+
+    db.all(statement, customer_id, movie_title, function(err, result) {
+      if (callback) callback(err, result);
+      db.close();
+    });
+  },
+
+  check_movie_in: function(movie_title, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+
+    var statement = "UPDATE movies SET available = available + 1 WHERE title = ? COLLATE NOCASE";
+
+    db.all(statement, movie_title, function(err, result) {
+      if (callback) callback(err, result);
+      db.close();
+    });
+  },
 }

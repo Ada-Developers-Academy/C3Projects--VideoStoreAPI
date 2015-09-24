@@ -10,9 +10,9 @@ router.post('/new_rental/:customer_id/:movie_title', function(req, res, next) {
 });
 
 //rentals/check_in/:id/:title
-router.get('/check_in/:customer_id/:movie_title', function(req, res, next) {
+router.put('/check_in/:customer_id/:movie_title', function(req, res, next) {
   //return list of all movies
-  return rental_exports.rentalsController.find_customers(req, res, req.params.customer_id, req.params.movie_title);
+  return rental_exports.rentalsController.check_in(req, res, req.params.customer_id, req.params.movie_title);
 });
 
 //rentals/overdue

@@ -58,5 +58,23 @@ exports.rentalsController = {
       }
     })
 
+  },
+
+  check_in: function check_in(req, res, customer_id, movie_title) {
+
+    var rental = new Rental();
+
+
+    // update the movie's available column
+    rental.check_movie_in(movie_title, function(err, record) {
+      // update today's date to return Date
+
+      res.status(200).json({ new_rental: "You've successfully updated the availability." });
+
+      rental.update_return_date(customer_id, movie_title, function(err, record) {
+      });
+
+    })
+
   }
 }
