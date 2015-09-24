@@ -11,6 +11,22 @@ exports.rentalsController = {
     });
   },
 
+  current_customers: function current_customers(req, res) {
+    var movie_title = req.params.movie_title;
+
+    rental.current_customers(movie_title, function(current_customers){
+      return res.status(200).json(current_customers);
+    })
+  },
+
+  rental_log: function rental_log(req, res) {
+    var movie_title = req.params.movie_title;
+
+    rental.rental_log(movie_title, function(rental_log){
+      return res.status(200).json(rental_log);
+    })
+  },
+
   overdue: function overdue(req, res) {
     rental.overdue(function(overdue) {
       return res.status(200).json(overdue);

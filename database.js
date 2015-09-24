@@ -9,8 +9,8 @@ module.exports = {
     db.serialize(function() {
       // below: this is the callback pattern...parameters(ERRORS, RESULT)
       db.all(statement, function(err, res) {
-        // console.log(statement);
-        // console.log(err);
+        console.log(statement);
+        console.log(err);
         // error handling looks like -> if (err) { };
         if (callback) { callback(res); }
       });
@@ -107,6 +107,14 @@ module.exports = {
     });
 
     db.close();
+  },
+
+  rental_log: function(movie_title, callback) {
+    movie_title = movie_title.toLowerCase();
+    var capitalize_title = movie_title[0].toUpperCase() + movie_title.substring(1);
+    this.query("SELECT * FROM rentals WHERE movie_title ='" + capitalize_title + "';", function(res) {
+      callback(res);
+    });
   },
 
   overdue: function(callback) {

@@ -5,7 +5,7 @@ var request = require('supertest'),
     agent = request.agent(app),
     Rental = require('../../rentals');
 
-describe.only("rentals controller", function() {
+describe("rentals controller", function() {
   var rental, db_cleaner;
 
   beforeEach(function(done) {
