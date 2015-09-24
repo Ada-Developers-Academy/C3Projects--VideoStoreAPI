@@ -184,7 +184,6 @@ describe("GET /movies/:sort_by/:number/:offset", function() {
       agent.get('/movies/title/1/1').set('Accept', 'application/json')
         .expect(200, function(error, response) {
           var movies = response.body.movies;
-          console.log(movies);
 
            // this is the second movie alphabetically
           assert(movies[0].title, "Fight the Future");
