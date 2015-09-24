@@ -13,7 +13,8 @@ var Controller = {
 
   sendJSON: function(err, res) {
     if (err) {
-      this.status(500).json(err);
+      var status = err.status == 400 ? 400 : 500;
+      this.status(status).json(err.message);
     } else {
       this.status(200).json(res);
     }

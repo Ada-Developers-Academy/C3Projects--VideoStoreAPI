@@ -70,22 +70,26 @@ Database.prototype.findBy = function findBy(parameter, value, callback) {
 }
 
 Database.prototype.sortBy = function sortBy(parameter, n, p, callback) {
-  var db = this.openDB();
-
   if (!this._validParam(parameter)) {
-    callback(new Error('Error: syntax error. Unrecognized parameter.'));
+    var error = new Error('Bad request');
+    error.status = 400;
+    callback(error);
     return;
   }
 
-  if (n == null) {
+  n = parseInt(n);
+  p = parseInt(p);
+
+  if (!n) { // if n is NaN/null/undefined
     var statement = 'SELECT * FROM ' + this.tableName + ' ORDER BY ' + parameter + ';';
-  } else if (p > 1){
+  } else if (p > 1) {
     var offset = n * (p - 1);
     var statement = 'SELECT * FROM ' + this.tableName + ' ORDER BY ' + parameter + ' LIMIT ' + n + ' OFFSET ' + offset + ';';
   } else {
     var statement = 'SELECT * FROM ' + this.tableName + ' ORDER BY ' + parameter + ' LIMIT ' + n + ';';
   }
 
+  var db = this.openDB();
   db.all(statement, function(err, rows) {
     callback(err, rows);
     db.close();
