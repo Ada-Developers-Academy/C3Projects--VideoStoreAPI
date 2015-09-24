@@ -125,6 +125,58 @@ describe("rentals routes", function() {
           });
     });
   });
+
+  describe("PUT /rentals/checkin/:customer_id/:movie_title", function() {
+    it("responds with json", function(done) {
+      agent.put('/rentals/checkin/2/Fight the Future').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, response) {
+          assert.equal(error, undefined);
+          done();
+        });
+    });
+
+    it("returns a message that you checked in that movie", function(done) {
+      agent.put('/rentals/checkin/2/Fight the Future').set('Accept', 'application/json')
+        .expect(200, function(error, response) {
+          assert.equal(response.body, "Congratulations, you have checked in: Fight the Future");
+          done();
+        });
+    });
+
+    it("updates the rental record with the returned_date", function(done) {
+      var statement = 
+        "SELECT * FROM rentals JOIN movies \
+        ON rentals.movie_id = movies.id \
+        WHERE movies.title = ? \
+        AND rentals.customer_id = ? \
+        AND rentals.returned_date = '';";
+
+      var values = ['Fight the Future', 2];
+      var rentalsBeforeCheckin,
+          rentalsAfterCheckin;
+
+      var db = new sqlite3.Database('db/test.db');
+
+      db.all(statement, values, function(err, rows) {
+        rentalsBeforeCheckin = rows;
+        db.close();
+
+        agent.put('/rentals/checkin/2/Fight the Future').set('Accept', 'application/json')
+          .expect(200, function(error, response) {
+            var db = new sqlite3.Database('db/test.db');
+
+            db.all(statement, values, function(err, rows) {
+              rentalsAfterCheckin = rows;
+              db.close();
+
+              assert(rentalsBeforeCheckin.length > rentalsAfterCheckin.length);
+              done();
+            });
+          });
+      });
+    });
+  });
 });
 
 
