@@ -203,7 +203,18 @@ __Response__
 __Endpoint__  
 `GET /rentals/title/{:title}`  
 
-Returns an array of the given movie's rental history, grouping them in two sub arrays of 'current_rentals' and 'previous_rentals'. If there are multiple matched movies for the {:title} search, it will pull in all matching results.    
+Returns an array of the given movie's rental history, grouping them in two sub arrays of `current_rentals` and `previous_rentals`. 
+
+If there are multiple matched movies for the {:title} search, it will pull in all matching results. 
+
+The results are automatically ordered by `customer_id` but can also be ordered by `name` (customer's name), `checkout_date`, `due_date`,  `return_date`.
+
+__Request Parameters__  
+
+| Path Parameter     | Value                    |
+| :------------------| :------------------------|
+| `title`            |  The title of the movie. |
+| `order_by`         | _Optional._ Provide this parameter if you would like the rentals sorted. Options include: `name` (for customer name), `checkout_date`, `due_date`, or `return_date`.        |
 
 __Response__
 

@@ -66,37 +66,28 @@ describe("/rentals endpoints", function() {
         done();
       }) 
     })
-    // it("can be ordered by title", function(done) {
-    //   movie_request_title = agent.get('/movies?order_by=title').set('Accept', 'application/json');
+
+    it("can be ordered by name (customer's name)", function(done) {
+      rental_request = agent.get('/rentals/title/bring?order_by=name').set('Accept', 'application/json');
       
-    //   movie_request_title.expect(200, function(error, result) {
-    //     assert.equal(result.body.movies[0].title, "Bring It On");
-    //     assert.equal(result.body.movies[1].title, "Bring It On 2");
-    //     assert.equal(result.body.movies[2].title, "Maws");
-    //     done();
-    //   })
-    // })
+      rental_request.expect(200, function(error, result) {
+        assert.equal(result.body.previous_rentals[0].customer_name, "Jane");
+        assert.equal(result.body.previous_rentals[1].customer_name, "Sarah");
+        assert.equal(result.body.previous_rentals[2].customer_name, "Sarah");
+        done();
+      })
+    })
 
-    // it("can be ordered by release_date", function(done) {
-    //   movie_request_date = agent.get('/movies?order_by=release_date').set('Accept', 'application/json');
-
-    //   movie_request_date.expect(200, function(error, result) {
-    //     assert.equal(result.body.movies[0].release_date, "1990-04-12");
-    //     assert.equal(result.body.movies[1].release_date, "1998-02-11");
-    //     assert.equal(result.body.movies[2].release_date, "2000-08-22");
-    //     done();
-    //   })
-    // })
-
-    // it("can determine the number of returned records per page and which page is returned", function(done) {
-    //   movie_request = agent.get('/movies?number=1&page=2').set('Accept', 'application/json');
-
-    //   movie_request.expect(200, function(error, result) {
-    //     assert.equal(result.body.movies.length, 1);
-    //     assert.equal(result.body.movies[0].title, "Maws");
-    //     done();
-    //   })
-    // })
+    it("can be ordered by return_date", function(done) {
+      rental_request = agent.get('/rentals/title/bring?order_by=return_date').set('Accept', 'application/json');
+      
+      rental_request.expect(200, function(error, result) {
+        assert.equal(result.body.previous_rentals[0].return_date, "2015-07-09");
+        assert.equal(result.body.previous_rentals[1].return_date, "2015-07-15");
+        assert.equal(result.body.previous_rentals[2].return_date, "2015-07-21");
+        done();
+      })
+    })
   })
 
   describe('GET /rentals/overdue', function() {
