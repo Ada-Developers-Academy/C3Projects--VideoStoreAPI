@@ -102,11 +102,7 @@ MoviesController.title = function(request, response) {
   db.all(statement, function(error, data) {
     var results = movies.movieInfo(error, data);
     var status = results.data.status;
-    // if(err) {
-    //   console.log(err); // error handling
-    //   return;
-    // };
-    // result = fixTime(result, 'release_date');
+    
     return response.status(status).json(results);
   });
 
