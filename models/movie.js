@@ -152,4 +152,108 @@ Movie.prototype.all_by_release_date = function(page, callback) {
   this.close();
 }
 
+Movie.prototype.title = function(title, callback) {
+  function formatData(err, res) {
+    if (err) {return callback(err);}
+
+    var data = fixTime(res, 'release_date');
+    var results = {};
+
+    results.meta = {
+      status: 200,
+      yourQuery: ourWebsite + '/movies/' + title
+    }
+
+    results.data = {
+      movies: data
+    }
+
+    return callback(null, results);
+  }
+
+  var statement =
+    "SELECT * FROM movies \
+    WHERE title = '" + title + "'";
+
+  this.open();
+  this.db.all(statement, function(error, data) {
+    return sqlErrorHandling(error, data, formatData);
+  })
+  this.close();
+}
+
+Movie.prototype.rentals_by_customer_id = function(title, callback) {
+  function formatData(err, res) {
+    if (err) { return callback(err); }
+
+    var data = fixTime(res, 'check_out_date');
+    var results = {};
+
+    results.meta = {
+      status: 200,
+      yourQuery: ourWebsite + '/movies/' + title + '/rented/sort_by=customer_id'
+    }
+
+    results.data = {
+      movies: data
+    }
+
+    return callback(null, results);
+  }
+
+  var statement =
+    "SELECT customers.name, rentals.check_out_date, \
+    rentals.movie_title \
+    FROM rentals LEFT JOIN customers \
+    ON rentals.customer_id = customers.id \
+    WHERE rentals.movie_title = '" + title + "' \
+    AND rentals.returned = 1 \
+    ORDER BY customers.id";
+
+  this.open();
+  console.log("INSIDE PROTOTYPE");
+  console.log(statement);
+  this.db.all(statement, function(error, data) {
+    return sqlErrorHandling(error, data, formatData);
+  })
+  this.close();
+}
+
+Movie.prototype.rentals_by_customer_name = function(title, callback) {
+  function formatData(err, res) {
+    if (err) { return callback(err); }
+
+    var data = fixTime(res, 'check_out_date');
+    var results = {};
+
+    results.meta = {
+      status: 200,
+      yourQuery: ourWebsite + '/movies/' + title + '/rented/sort_by=customer_name'
+    }
+
+    results.data = {
+      movies: data
+    }
+
+    return callback(null, results);
+  }
+
+  var statement =
+    "SELECT customers.name, rentals.check_out_date, \
+    rentals.movie_title \
+    FROM rentals LEFT JOIN customers \
+    ON rentals.customer_id = customers.id \
+    WHERE rentals.movie_title = '" + title + "' \
+    AND rentals.returned = 1 \
+    ORDER BY customers.name";
+
+  this.open();
+  console.log("INSIDE PROTOTYPE");
+  console.log(statement);
+  this.db.all(statement, function(error, data) {
+    return sqlErrorHandling(error, data, formatData);
+  })
+  this.close();
+}
+
 module.exports = Movie;

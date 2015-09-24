@@ -49,88 +49,42 @@ MoviesController.all_by_release_date = function(request, response) {
 
     return response.status(result.meta.status).json(result);
   })
-
 }
 
 //--------- GET /:title, aka Movie#show ----------------------------------------
 MoviesController.title = function(request, response) {
-  var db = new sqlite3.Database("db/" + dbEnv + ".db");
   var movies = new movieTable();
   var queried_title = request.params.title;
 
-  var statement =
-    "SELECT * FROM movies \
-    WHERE title = '" + queried_title + "'";
+  movies.title(queried_title, function(error, result) {
+    if (error) { result = error; }
 
-  db.all(statement, function(error, data) {
-    var results = movies.movieInfo(error, data);
-    var status = results.data.status;
-
-    return response.status(status).json(results);
-  });
-
-  db.close();
+    return response.status(result.meta.status).json(result);
+  })
 }
 
 //--------- GET rentals of :title, sorted by customer_id -----------------------
 MoviesController.rentals_by_customer_id =  function(request, response) {
-  var db = new sqlite3.Database("db/" + dbEnv + ".db");
   var movies = new movieTable();
   var title = request.params.title;
-  var query = request.params.query;
-  var page = request.params.page || 1;
-  var offset = (page - 1) * movies.limit;
 
-    var statement =
-      "SELECT customers.name, rentals.check_out_date, \
-      rentals.movie_title \
-      FROM rentals LEFT JOIN customers \
-      ON rentals.customer_id = customers.id \
-      WHERE rentals.movie_title = '" + title + "' \
-      AND rentals.returned = 1 \
-      ORDER BY customers.id";
+  movies.rentals_by_customer_id(title, function(error, result) {
+    if (error) { result = error; }
 
-  db.all(statement, function(err, results) {
-    if(err) {
-      console.log(err); // error handling
-      return;
-    };
-    results = fixTime(results, 'check_out_date');
-    return response.status(200).json(results);
-
-  });
-
-  db.close();
+    return response.status(result.meta.status).json(result);
+  })
 }
 
 //--------- GET rentals of :title, sorted by customer_name ---------------------
 MoviesController.rentals_by_customer_name = function(request, response) {
-  var db = new sqlite3.Database("db/" + dbEnv + ".db");
   var movies = new movieTable();
   var title = request.params.title;
-  var query = request.params.query;
-  var page = request.params.page || 1;
-  var offset = (page - 1) * movies.limit;
 
-  var statement =
-    "SELECT customers.name, rentals.check_out_date, \
-    rentals.movie_title \
-    FROM rentals LEFT JOIN customers \
-    ON rentals.customer_id = customers.id \
-    WHERE rentals.movie_title = '" + title + "' \
-    AND rentals.returned = 1 \
-    ORDER BY customers.name";
+  movies.rentals_by_customer_name(title, function(error, result) {
+    if (error) { result = error; }
 
-  db.all(statement, function(err, result) {
-    if(err) {
-      console.log(err); // error handling
-      return;
-    };
-    result = fixTime(result, 'check_out_date');
-    return response.status(200).json(result);
-  });
-
-  db.close();
+    return response.status(result.meta.status).json(result);
+  })
 }
 
 //--------- GET rentals of :title, sorted by check_out_date --------------------
