@@ -134,7 +134,7 @@ describe("movies routes", function() {
         .expect(200, function(error, response) {
           var pastRenters = response.body.customers.pastRenters;
 
-          assert(pastRenters[0].name, 'Alex Krychek');
+          assert(pastRenters[0].customer_data.name, 'Alex Krychek');
           done();
       });
     });
