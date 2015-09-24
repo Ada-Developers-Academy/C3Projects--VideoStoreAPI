@@ -11,7 +11,7 @@ describe('Customer', function() {
 
    db_cleaner = new sqlite3.Database('db/test.db');
    db_cleaner.serialize(function() {
-     db_cleaner.exec("BEGIN; DELETE FROM customers; DELETE FROM rentals; INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_credit) VALUES('Mulder', 'yesterday', '123', 'DC', 'DC', '834885', '49583', 5), ('Scully', 'last week', '12 blah','DC', 'DC', '2342', '534', 7); INSERT INTO rentals(movie_id, customer_id, returned_date, due_date, checked_out) VALUES(1, 1, '', '2015-09-10', '2015-09-01'), (2, 2, '2015-09-30', '2015-10-01', '2015-09-15'); COMMIT;", function(err) {
+     db_cleaner.exec("BEGIN; DELETE FROM customers; DELETE FROM rentals; INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_credit) VALUES('Mulder', 'yesterday', '123', 'DC', 'DC', '834885', '49583', 5), ('Scully', 'last week', '12 blah','DC', 'DC', '2342', '534', 7); INSERT INTO rentals(movie_id, customer_id, returned_date, due_date, checked_out) VALUES(1, 1, '', '2015-09-10', '2015-09-01'), (2, 2, '2015-09-30', '2015-10-01', '2015-09-15'), (2, 1, '', '2015-09-01', '2015-08-22'); COMMIT;", function(err) {
          db_cleaner.close();
          done();
        }
@@ -53,7 +53,7 @@ describe('Customer', function() {
       customer.customer_rentals(1, function(err, res) {
         assert.equal(err, undefined);
         assert(res instanceof Array);
-        assert.equal(res.length, 1);
+        assert.equal(res.length, 2);
 
         assert.equal(res[0].title, 'X-files: I want to believe');
 
