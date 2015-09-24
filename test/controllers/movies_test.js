@@ -454,7 +454,7 @@ describe('/movies', function() {
       });
     });
 
-    describe("GET '/dog'", function() {
+    describe("GET '/dog' (movie does not exist)", function() {
       var numMoviesSeeded;
       var request;
 
