@@ -48,7 +48,6 @@ describe("rentals routes", function() {
   });
 
   describe("GET /rentals/overdue", function() {
-
     it("responds with json", function(done) {
       agent.get('/rentals/overdue').set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
@@ -65,7 +64,7 @@ describe("rentals routes", function() {
 
           assert(overdueCustomers instanceof Array);
           done();
-      });
+        });
     });
 
     it("returns a list of the customers with overdue books", function(done) {
@@ -76,11 +75,59 @@ describe("rentals routes", function() {
            // only two of the three customers with rental records have overdue
           assert.equal(overdueCustomers.length, 2);
           done();
-      });
+          });
     });
   });
 
-  // describe('GET /rentals/:title', function() {
+  describe('GET /rentals/:title', function() {
+    it("responds with json", function(done) {
+      agent.get('/rentals/Fight the Future').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, response) {
+          assert.equal(error, undefined);
+          done();
+        });
+    });
 
-  // });
+    it("returns an object", function(done) {
+        agent.get('/rentals/Fight the Future').set('Accept', 'application/json')
+          .expect(200, function(error, response) {
+            assert(response.body instanceof Object);
+            done();
+          });
+    });
+
+    it("returns movie info: overview, release_date, inventory", function(done) {
+        agent.get('/rentals/Fight the Future').set('Accept', 'application/json')
+          .expect(200, function(error, response) {
+            assert.equal(response.body.movie_data.overview, "first xfiles movie");
+            assert.equal(response.body.movie_data.release_date, "1998");
+            assert.equal(response.body.movie_data.inventory, 2);            
+            done();
+          });
+    });
+
+    it("returns availability info: yes/no, and copies available", function(done) {
+        agent.get('/rentals/Fight the Future').set('Accept', 'application/json')
+          .expect(200, function(error, response) {
+            assert.equal(response.body.availability.available, true);
+            assert.equal(response.body.availability.copiesAvailable, 1);
+            done();
+          });
+    });
+
+    it("returns a list of customers who have currently rented the movie", function(done) {
+        agent.get('/rentals/Fight the Future').set('Accept', 'application/json')
+          .expect(200, function(error, response) {
+            assert(response.body.currentRenters instanceof Object);
+            assert.equal(response.body.currentRenters[0].name, "Fox Mulder");
+            done();
+          });
+    });
+  });
 });
+
+
+
+
+
