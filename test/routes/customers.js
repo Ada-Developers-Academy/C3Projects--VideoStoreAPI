@@ -19,8 +19,10 @@ describe("customers routes", function() {
         VALUES ('Alex Krychek', 'Wed, 16 Apr 2014 21:40:20 -0700', \
           'P.O. Box 887, 4257 Lorem Rd.', 'Columbus', 'Ohio', '43201', \
           '(371) 627-1105', 1234), \
-        ('Fox Mulder', 'Fri, 10 Jul 2015 15:23:06 -0700', '152-525 Odio St.', \
-          'Seattle', 'Washington', '98109', '(206) 329-4928', 293); \
+          ('Fox Mulder', 'Fri, 10 Jul 2015 15:23:06 -0700', '152-525 Odio St.', \
+          'Seattle', 'Washington', '98109', '(206) 329-4928', 293), \
+          ('Walter Skinner', 'Fri, 10 Jul 2000 15:23:06 -0700', '456 Director Ln', \
+          'Washington', 'DC', '01234', '(234) 567-8901', 4000); \
         DELETE FROM movies; \
         INSERT INTO movies (title, overview, release_date, inventory) \
         VALUES ('Fight the Future', 'first xfiles movie', '1998', 2), \
@@ -62,13 +64,13 @@ describe("customers routes", function() {
       });
     });
 
-    it("returns as many customers as there are in the table: 2", function(done) {
+    it("returns as many customers as there are in the table: 3", function(done) {
       agent.get('/customers').set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
           var customers = response.body.customers;
 
-          assert.equal(customers.length, 2);
+          assert.equal(customers.length, 3);
           done();
       });
     });
@@ -184,6 +186,58 @@ describe("customers routes", function() {
           assert.equal(movie2ReturnDate, 2013);
           done();
         });
+    });
+  });
+
+  describe("GET /customers/:sort_by/:number/:offset", function() {
+    it("responds with json", function(done) {
+      agent.get('/customers/name/1/1').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, response) {
+          assert.equal(error, undefined);
+          done();
+        });
+    });
+
+    it("returns an object", function(done) {
+      agent.get('/customers/name/1/1').set('Accept', 'application/json')
+        .expect(200, function(error, response) {
+          var customers = response.body;
+          assert(customers instanceof Object);
+          done();
+      });
+    });
+
+    it("returns the number of customers in the number parameter", function(done) {
+      agent.get('/customers/name/2/0').set('Accept', 'application/json')
+        .expect(200, function(error, response) {
+          var customers = response.body.customers;
+
+          assert.equal(customers.length, 2);
+          done();
+      });
+    });
+
+    it("returns customers ordered, here by registered_at (date)", function(done) {
+      agent.get('/customers/registered_at/2/0').set('Accept', 'application/json')
+        .expect(200, function(error, response) {
+          var customers = response.body.customers;
+
+          // this is the third movie by id, but the first by registered_at
+          assert(customers[0].name, "Walter Skinner");
+          done();
+      });
+    });
+
+    it("returns customers starting from the id listed in the offset", function(done) {
+      agent.get('/customers/registered_at/1/1').set('Accept', 'application/json')
+        .expect(200, function(error, response) {
+          var customers = response.body.customers;
+
+           // this is the second movie alphabetically
+          assert(customers[0].name, "Alex Krychek");
+          done();
+      });
     });
   });
 });
