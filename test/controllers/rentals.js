@@ -147,12 +147,11 @@ describe("/rentals", function() {
   describe("POST /checkout/:title/:customer_id", function() {
     var rental_request;
 
-    it.only("checks out a movie to a given customer", function(done) {
+    it("checks out a movie to a given customer", function(done) {
       rental_request = agent.post('/rentals/checkout/alien/1').set('Accept', 'application/json');
       rental_request
       .expect(200, function(err, res) {
         assert.equal(res.body.length, 1);
-        console.log(res);
 
         var keys = ['message', 'movie_title', 'customer_id'];
         assert.deepEqual(Object.keys(res.body[0]), keys);
