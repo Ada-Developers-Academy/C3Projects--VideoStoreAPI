@@ -31,4 +31,18 @@ describe("rentals controller", function(){
           done();
       });
     });
+
+    it("returns movie details", function(done) {
+      agent.get("/rentals/X-files:%20I%20want%20to%20believe/customers").set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result){
+          assert.equal(error, undefined);
+          assert.equal(result.body.rental_customers.length, 1);
+          var keys = ["id", "name", "registered_at", "address", "city", "state", "postal_code", "phone", "account_credit"];
+          assert.deepEqual(Object.keys(result.body.rental_customers[0]), keys);
+          assert.equal(result.body.rental_customers[0].name, "Mulder")
+          // assert.equal(result.body.customers[0].overview,'misadventures of the best nerds')
+          done();
+      });
+    });
 });
