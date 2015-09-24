@@ -57,9 +57,9 @@ exports.rentalsController = {
     var statement = "SELECT * FROM movies WHERE title LIKE '%" + req.params.title + "%';";
 
     db.all(statement, function(err, rows) {
-      var inventory = { "title"    : rows[0].title,
+      var inventory = [{ "title"    : rows[0].title,
                         "inventory_available": rows[0].inventory_available
-                      }
+                      }]
 
       res.status(200).json(inventory);
     });
