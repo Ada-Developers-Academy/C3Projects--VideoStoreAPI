@@ -39,19 +39,17 @@ exports.rentalsController = {
       if (record[0].available > 0) {
         console.log("we're getting somewhere");
 
-        // insert new rental into rental table
-        rental.create_rental(movie_title, customer_id, function(err, record) {
-          console.log("Maybe there's something in the database! Go check.")
-        });
+        //nested function inception :(
 
-        // charge customer and update customer table
-        rental.charge_customer(customer_id, function(err, record) {
-          res.status(200).json({ new_rental: "You've successfully charged the customer." });
-        });
-
-        // change available in movies table
+         // change available in movies table
         rental.update_availabile_movies(movie_title, function(err, record) {
-          console.log("Maybe you updated your availability. Go check!")
+          // insert new rental into rental table
+          rental.create_rental(movie_title, customer_id, function(err, record)
+            // charge customer and update customer table
+           {rental.charge_customer(customer_id, function(err, record) {
+            res.status(200).json({ new_rental: "You've successfully charged the customer." });
+            });
+          });
         });
 
       } else {

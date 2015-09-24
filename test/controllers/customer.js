@@ -41,7 +41,7 @@ describe("customers controller", function(){
     })
 
 
-    it.only("finds customer subset pages sorted by column", function(done) {
+    it("finds customer subset pages sorted by column", function(done) {
       agent.get("/customers/name/1").set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result){

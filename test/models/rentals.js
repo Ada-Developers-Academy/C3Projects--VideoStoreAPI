@@ -56,16 +56,5 @@ describe('Rental', function() {
         done();
       });
     });
-
-    it("can find customers with overdue accounts", function(done) {
-      rental.check_movie_availability("The Lone Gunmen", function(err, res) {
-        assert.equal(err, undefined);
-        assert(res instanceof Array);
-        assert.equal(res.length, 1);
-
-        assert.equal(res[0].available, 'Scully');
-        done();
-      });
-    });
   });
 });

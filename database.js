@@ -109,10 +109,10 @@ module.exports = {
     var overdue_date = new Date(date_conversion).toISOString().slice(0, 10);
     console.log(overdue_date);
 
-    var statement = "SELECT 'customers'.* FROM 'customers' INNER JOIN 'rentals' ON 'customers'.'id' = 'rentals'.'customer_id' WHERE 'rentals'.'returned_date' = '' AND 'rentals'.'checked_out' < '" + overdue_date + "';";
+    var statement = 'SELECT customers.* FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id WHERE rentals.returned_date = "" AND rentals.checked_out < ? ;';
 
-    db.all(statement, function(err, res) {
-      if (callback) callback(err, res);
+    db.all(statement, overdue_date, function(err, result) {
+      if (callback) callback(err, result);
       db.close();
     });
   },
