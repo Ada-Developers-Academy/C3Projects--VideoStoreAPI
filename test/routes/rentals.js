@@ -79,4 +79,8 @@ describe("rentals routes", function() {
       });
     });
   });
+
+  // describe('GET /rentals/:title', function() {
+
+  // });
 });
