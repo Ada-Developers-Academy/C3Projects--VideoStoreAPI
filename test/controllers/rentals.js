@@ -102,12 +102,12 @@ describe("rentals controller", function() {
   var check_out_path = '/rentals/check_out';
   var new_rental = { movie_title: 'Jaws', customer_id: 1};
   describe("POST check_out_path", function(){
-    it("creates a new rental record", function(){
-      request(check_out_path)
-     .post(check_out_path)
+    it("creates a new rental record", function(done){
+      agent.post(check_out_path).set('Accept', 'application/json')
      .send(new_rental)
      .expect(200)
      .expect(rental.all.length, 3);
+     done();
     });
   });
 
@@ -115,11 +115,11 @@ describe("rentals controller", function() {
   var update_rental = { movie_title: 'Alien', customer_id: 1};
   describe("PUT check_in_path", function(){
     it("updates an existing rental record", function(done){
-      request(check_in_path)
-     .put(check_in_path)
+      agent.put(check_in_path).set('Accept', 'application/json')
      .send(update_rental)
      .expect(200)
-     .expect("Alien is updated", done);
+     .expect("Alien is updated");
+      done();
     });
   });
 
