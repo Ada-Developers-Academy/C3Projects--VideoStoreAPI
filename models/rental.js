@@ -188,29 +188,59 @@ Rental.prototype.customers = function(title, callback) {
 
 Rental.prototype.checkOut = function(movie_title, customer_id, outerCallback) {
   // NOTE: maybe update to check if stock, then if stock, continue
-  console.log("here")
+  console.log("in checkOut here")
+  var that = this;
 
   // validateMovie
   var movie = this.movieInfo(movie_title, function(error, result) {
-    if (error) { console.log("oh crap"); return false; }
+    if (error) { console.log("oh crap moviez"); return false; }
     return result.data.availableToRent;
   });
 
   // validateCustomer
   var statement = "SELECT * FROM customers WHERE id=" + customer_id + ";";
-  this.open();
-  var customer = this.db.all(statement, function(error, result, callback) {
-    if (error) { console.log("oh crap"); return false; }
-    return callback(result.length > 0);
-  });
 
-  console.log(customer);
+  function validateCustomer(callback) {
+    that.open();
+    that.db.all(statement, function(error, result) {
+      if (error) { console.log("oh crap customerz"); return false; }
+      return callback(result.length > 0);
+    });
+    that.close();
+  }
 
-  this.close();
+  // 3. create a rental transaction STATEMENT
+  var statement = "INSERT INTO rentals( \
+    movie_title,  \
+    customer_id, \
+    returned, \
+    check_out_date, \
+    return_date) \
+    VALUES (?, ?, ?, ?, ?);"
 
+  var values = [movie_title, customer_id, 0, Date.now(), ""];
 
+  function checkOut(boolean) {
+    if (!boolean) {
+      console.log("Falsey");
+      return false;
+    }
 
+    that.open();
+    that.db.run(statement, values, function(error, results) {
+      if (error) { console.log("oh crap rentalz"); return false; }
+      console.log("RESULTZ: " + results);
+      return stepFour(results);
+    })
+    that.close();
+  }
 
+  function stepFour(results) {
+    console.log("STEP 4");
+    console.log("RESUTLS IN step 4: " + results);
+  }
+
+  validateCustomer(checkOut);
   // 1. find a movie w/ movie_title STATEMENT
   // 2. find customer w/ id STATEMENT
   // create a rental transaction after validating presence of above

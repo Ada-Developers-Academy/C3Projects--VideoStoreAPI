@@ -89,7 +89,8 @@ RentalsController.customers = function(request, response, next) {
 RentalsController.checkOut = function(request, response, next) {
   // post request, check out a title
   var Rental = new RentalModel();
-  Rental.checkOut("Alien", 1, function(error, result) {
+  // change hard code!!
+  Rental.checkOut("Jaws", 1, function(error, result) {
     if (error) { result = error; }
 
     // var msg = result.meta.message;
