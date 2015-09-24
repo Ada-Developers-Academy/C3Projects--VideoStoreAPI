@@ -40,10 +40,7 @@ describe("Endpoints for /rentals", function() {
     });
   })
 
-
-  // '/rentals/:title/current/:sort_option'
   describe('GET /rentals/:title/current/:sort_option', function(){
-
     it('responds with json', function(done){
       agent.get('/rentals/Psycho/current/customer_id')
            .set('Accept', 'application/json')
@@ -104,7 +101,6 @@ describe("Endpoints for /rentals", function() {
       })
     });
 
-
     it('returns an array of rental objects sorted by checkout date', function(done){
       agent.get('/rentals/Psycho/current/checkout_date')
            .set('Accept', 'application/json')
@@ -124,9 +120,6 @@ describe("Endpoints for /rentals", function() {
     });
   });
 
-
-
-  // '/rentals/:title/past/:sort_option'
   describe('GET /rentals/:title/past/:sort_option', function(){
     it('responds with json', function(done){
       agent.get('/rentals/christine/past/customer_id')
@@ -207,7 +200,6 @@ describe("Endpoints for /rentals", function() {
     });
   });
 
-  // '/rentals/overdue'
   describe('GET rentals/overdue', function(){
     it('responds with json', function(done){
       agent.get('/rentals/overdue')
@@ -232,7 +224,6 @@ describe("Endpoints for /rentals", function() {
     });
   });
 
-  // *GET*  rental/:title/available
   describe('GET rentals/:title/available', function(){
     it('responds with json', function(done){
       agent.get('/rentals/psycho/available')
@@ -257,7 +248,6 @@ describe("Endpoints for /rentals", function() {
     });
   });
 
-  // *POST* rentals/:title/:customer_id/checkin
   describe('POST rentals/:title/:customer_id/checkin', function(){
     it('responds with json', function(done){
       agent.post('/rentals/psycho/2/checkin')
@@ -280,7 +270,6 @@ describe("Endpoints for /rentals", function() {
     });
   });
 
-  // *POST* rentals/:title/:customer_id/checkout
   describe('POST rentals/:title/:customer_id/checkout', function(){
     it('responds with json', function(done){
       agent.post('/rentals/christine/4/checkout')
