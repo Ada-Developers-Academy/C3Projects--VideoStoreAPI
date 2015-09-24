@@ -2,6 +2,19 @@ var express = require('express');
 var router = express.Router();
 var Controller = require('../controllers/rentals');
 
+router.get('/customers/current', Controller.customers_current);
+router.get('/checkedout/:title', Controller.checkedout);
+router.get('/history/:title', Controller.title_history);
+router.get('/history/id/:title', Controller.id_history);
+router.get('/history/name/:title', Controller.name_history);
+
+router.get('/checkin/:title/:customer_id', Controller.checkin);
+router.put('/checkin/:title/:customer_id', Controller.checkin);
+
+router.get('/checkout/:title/:customer_id', Controller.checkout);
+router.post('/checkout/:title/:customer_id', Controller.checkout);
+
+router.get('/customers/overdue', Controller.overdue);
 // /* GET all customers for all currently checkout out movies */
 // router.get('/customers/current', function(req, res, next) {
 //  return rentals_exports.rentalsController.customers_current(req, res);
@@ -33,9 +46,7 @@ var Controller = require('../controllers/rentals');
 //   return rentals_exports.rentalsController.checkout(req, res);
 // });
 
-router.get('/checkin/:title/:customer_id', Controller.checkin);
 
-router.put('/checkin/:title/:customer_id', Controller.checkin);
 
 // router.put('/checkin/:title/:customer_id', function(req, res) {
 //  return rentals_exports.rentalsController.checkin(req, res);
