@@ -28,9 +28,9 @@
         "movie_id": 33
     },
     {
-        "check_out_date": "1989-10-01",
-        "check_in_date": "1989-10-02",
-        "expected_return_date": "1989-11-01",
+        "check_out_date": "1999-10-01",
+        "check_in_date": "1999-10-02",
+        "expected_return_date": "1999-11-01",
         "customer_id": 5,
         "movie_id": 1
     },
@@ -42,9 +42,9 @@
         "movie_id": 1
     },
     {
-        "check_out_date": "1989-10-01",
-        "check_in_date": "1989-10-02",
-        "expected_return_date": "1989-11-01",
+        "check_out_date": "2000-10-01",
+        "check_in_date": "2000-10-02",
+        "expected_return_date": "2000-11-01",
         "customer_id": 10,
         "movie_id": 1
     },

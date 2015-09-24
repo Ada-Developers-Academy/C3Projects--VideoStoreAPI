@@ -108,14 +108,23 @@ exports.moviesController = {
   getCheckedOutHistoryByTitle: function(title, ordered_by, res) {
 
     var order = "customers.id";
-    if (ordered_by == "id")
+    if (ordered_by == "id") {
       order = "customers.id";
+    }
     else if (ordered_by == "name")
       order = "customers.name";
+    else if (ordered_by == "check_out_date" || ordered_by == "checkout_date")
+      order = "rentals.check_out_date";
     else if (ordered_by !== undefined)
       order = ordered_by;
 
-    db.all("SELECT customers.id, customers.name, customers.phone, rentals.check_out_date FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id INNER JOIN movies ON movies.id = rentals.movie_id WHERE movies.title LIKE ? AND rentals.check_in_date IS NOT NULL ORDER BY ?", title, order, function(err, rows) {
+    var statement =
+      "SELECT customers.id, customers.name, customers.phone, rentals.check_out_date \
+      FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id INNER JOIN movies ON movies.id = rentals.movie_id \
+      WHERE movies.title LIKE ? AND rentals.check_in_date IS NOT NULL ORDER BY " + order;
+
+// SELECT customers.id, customers.name, customers.phone, rentals.check_out_date FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id INNER JOIN movies ON movies.id = rentals.movie_id WHERE movies.title LIKE 'psycho' AND rentals.check_in_date IS NOT NULL ORDER BY customers.id;
+    db.all(statement, title, function(err, rows) {
       if (err !== null) {
         console.log(err);
       }console.log(rows);
