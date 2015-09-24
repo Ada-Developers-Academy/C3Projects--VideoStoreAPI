@@ -25,14 +25,11 @@ describe("customers routes", function() {
         INSERT INTO movies (title, overview, release_date, inventory) \
         VALUES ('Fight the Future', 'first xfiles movie', '1998', 2), \
           ('I Want to Believe', 'second xfiles movie', '2008', 4), \
-          ('XFiles movie 3', 'third xfiles movie', '2010', 3); \
         DELETE FROM rentals; \
         INSERT INTO rentals (customer_id, movie_id, checkout_date, due_date, \
           returned_date) \
         VALUES (1, 1, '2012', '2013', '2013'), \
           (1, 2, '2008', '2009', '2009'), \
-          (1, 3, '2011', '2012', '2012'), \
-          (1, 1, '1998', '1999', '1999'), \
           (1, 2, '2014', '2015', ''); \
         COMMIT;"
         , function(err) {
@@ -76,7 +73,7 @@ describe("customers routes", function() {
       });
     });
 
-    it("the customer objects contain customer data", function(done) {
+    it.only("the customer objects contain customer data", function(done) {
       agent.get('/customers').set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
@@ -162,12 +159,15 @@ describe("customers routes", function() {
         });
     });
 
-    it.only("sorts past rentals by checkout date", function(done) {
+    it("sorts past rentals by checkout date", function(done) {
       agent.get('/customers/1').set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
-          var pastRentals = response.body.movies;
-          console.log(pastRentals);
+          var pastRental1 = response.body.movies.pastRentals[0].movie_data;
+          var pastRental2 =  response.body.movies.pastRentals[1].movie_data;
+
+          assert.equal(pastRental1.title, "Fight the Future");
+          assert.equal(pastRental2.title, "I Want to Believe");
           done();
         });
     });
