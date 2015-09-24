@@ -99,7 +99,7 @@ describe('/customers', function() {
         .expect(200, function(err, res) {
           assert.equal(err, undefined);
 
-          var keys = [ 'id', 'name', 'movie_title', 'checkout_date' ];
+          var keys = [ 'customer_id', 'name', 'movie_title', 'checkout_date', 'rental_id' ];
           assert.deepEqual(Object.keys(res.body[0]), keys);
           done();
         });
