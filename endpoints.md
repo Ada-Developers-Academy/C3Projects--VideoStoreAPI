@@ -170,7 +170,7 @@ __Response__
 __Endpoint__  
 `POST ./rentals/{:customer_id}/checkout/{:movie_id}`  
 
-Checks out the given movie for the given customer, automatically setting the rental's return date to 7 days after checkout.  
+Checks out the given movie for the given customer, automatically setting the rental's return date to 7 days after checkout. It reduces that movie's inventory_avail by 1 and deducts a $3 rental fee from the customer's account_credit.  
 
 __Request Parameters__  
 
@@ -199,7 +199,7 @@ __Response__
 __Endpoint__  
 `PUT ./rentals/{:customer_id}/return/{:movie_id}`  
 
-Returns the updated rental information for that checked in movie and all previously returned movies in descending order of `return_date`.  
+Returns the updated rental information for that checked in movie and that movie's previous rental history in descending order of `return_date`.  
 
 __Request Parameters__  
 
@@ -227,18 +227,74 @@ __Response__
 __Endpoint__  
 `GET /rentals/overdue`  
 
-Returns an array of rentals that are currently overdue.  
+Returns an array of all rentals that are currently overdue.  
 
 __Response__
 
     {
       "overdue_movies": [
-        {
-
-        },
-        {
-
+      { 
+        "id": 3,
+        "title": "Frankenstein",
+        "customer_id": 1,
+        "name": "Shelley Rocha",
+        "checkout_date": "2014-09-19",
+        "due_date": "2014-09-26",
+        "return_date": null
+      },
+      {
+        "id": 6,
+        "title": "The Night of the Hunter",
+        "customer_id": 2,
+        "name": "Curran Stout",
+        "checkout_date": "2014-09-19",
+        "due_date": "2014-09-26",
+        "return_date": null
         },
         …
+      ]
+    }
+
+***
+
+__Endpoint__  
+`GET /rentals/title/{:title}`  
+
+Returns an array of the given movie's rental history, grouping them in two sub arrays of 'current_rentals' and 'previous_rentals'. If there are multiple matched movies for the {:title} search, it will pull in all matching results.    
+
+__Response__
+
+    {
+      "current_rentals": [
+        { 
+          "rental_id": 6,
+          "movie_title": "The Night of the Hunter",
+          "customer_id": 2,
+          "customer_name": "Curran Stout",
+          "checkout_date": "2014-09-19",
+          "due_date": "2014-09-26",
+          "return_date": null
+        },
+        {
+          "rental_id": 51,
+          "movie_title": "The Night of the Hunter",
+          "customer_id": 17,
+          "customer_name": "Ginger Heath",
+          "checkout_date": "2014-09-19",
+          "due_date": "2014-09-26",
+          "return_date": null
+        }
+      ],
+      "previous_rentals": [
+        {
+          "rental_id": 17,
+          "movie_title": "The Night of the Hunter",
+          "customer_id": 6,
+          "customer_name": "Phyllis Russell",
+          "checkout_date": "2014-09-09",
+          "due_date": "2014-09-16",
+          "return_date": "2014-09-10"
+        },
+        ...
       ]
     }
