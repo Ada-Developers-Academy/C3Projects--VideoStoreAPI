@@ -223,7 +223,7 @@ describe("customers routes", function() {
         .expect(200, function(error, response) {
           var customers = response.body.customers;
 
-          // this is the third movie by id, but the first by registered_at
+          // this is the third customer by id, but the first by registered_at
           assert(customers[0].name, "Walter Skinner");
           done();
       });
@@ -234,7 +234,7 @@ describe("customers routes", function() {
         .expect(200, function(error, response) {
           var customers = response.body.customers;
 
-           // this is the second movie alphabetically
+           // this is the second customer by registered_at
           assert(customers[0].name, "Alex Krychek");
           done();
       });
