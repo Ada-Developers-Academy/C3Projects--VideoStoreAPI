@@ -1,5 +1,19 @@
 [
     {
+        "check_out_date": "2015-09-19",
+        "check_in_date": null,
+        "expected_return_date": "2015-10-01",
+        "customer_id": 1,
+        "movie_id": 20
+    },
+    {
+        "check_out_date": "2015-09-19",
+        "check_in_date": "2015-10-01",
+        "expected_return_date": "2015-10-01",
+        "customer_id": 1,
+        "movie_id": 21
+    },
+    {
         "check_out_date": "1988-07-07",
         "check_in_date": "1988-07-17",
         "expected_return_date": "1988-08-07",
