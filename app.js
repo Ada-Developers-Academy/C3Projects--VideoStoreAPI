@@ -22,7 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // ------ ROUTES ---------------------------------------------------------------
 app.use("/rentals", require("./routes/rentals_routes"));
 app.use("/customers", require("./routes/customers_routes"));
-app.use('/movies', require('./routes/movieRoutes'));
+app.use('/movies', require('./routes/movie_routes'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
