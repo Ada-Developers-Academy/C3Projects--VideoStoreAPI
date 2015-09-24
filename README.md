@@ -76,14 +76,14 @@ DONE- Retrieve a subset of movies
   - release date
   - and inventory total
 - DONE Know if a movie has any inventory available to rent
-- See a list of customers that have _currently_ checked out any of the movie's inventory
-- Given a customer's `id` and a movie's `title` ...
+- DONE See a list of customers that have _currently_ checked out any of the movie's inventory
+- DONE Given a customer's `id` and a movie's `title` ...
   - "check out" one of the movie's inventory to the customer
     - Establish a return date
     - Charge the customer's account (cost up to you)
-  - "check in" one of customer's rentals
+  - DONE "check in" one of customer's rentals
     - return the movie to its inventory
-- See a list of customers with overdue movies
+- DONE See a list of customers with overdue movies
 
 ### Interface
 - This part of the project is purely an API; all interactions should happen over HTTP requests. There is no front-end, user-facing interface.
@@ -92,3 +92,11 @@ DONE- Retrieve a subset of movies
 - All endpoints must be tested.
 - We will use [Mocha](https://mochajs.org/) for tests.
 - There isn't a coverage requirement for this project, beyond demonstrating that every endpoint is covered by some manner of tests.
+
+### Things to fix
+- accomadate white space in 'given a movie's title' endpoints
+- account for negative customer balances
+- add late fees?
+- account for negative availability
+- possibly refactor database.js
+
