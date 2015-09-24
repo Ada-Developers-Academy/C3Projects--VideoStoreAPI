@@ -41,28 +41,15 @@ MoviesController.all_by_title =  function(request, response) {
 
 //--------- GET /all, sort by release_date -------------------------------------
 MoviesController.all_by_release_date = function(request, response) {
-  var db = new sqlite3.Database("db/" + dbEnv + ".db");
   var movies = new movieTable();
-
-  // prepare statement
   var page = request.params.page || 1
-  var offset = (page - 1) * movies.limit;
-  var statement =
-    "SELECT * FROM movies \
-    ORDER BY (release_date) \
-    LIMIT " + movies.limit + " \
-    OFFSET " + offset + ";";
 
-  db.all(statement, function(err, results) { // closure
-    if(err) {
-      console.log(err); // error handling
-      return;
-    }
-    results = fixTime(results, 'release_date');
-    return response.status(200).json(results);
-  });
+  movies.all_by_release_date(page, function(error, result) {
+    if (error) { result = error; }
 
-  db.close();
+    return response.status(result.meta.status).json(result);
+  })
+
 }
 
 //--------- GET /:title, aka Movie#show ----------------------------------------

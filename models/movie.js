@@ -53,7 +53,7 @@ Movie.prototype.movieInfo = function(error, data) {
 
 }
 
-Movie.prototype.all  = function(page, callback) {
+Movie.prototype.all = function(page, callback) {
 
   function formatData(err, res) {
     if (err) {return callback(err);}
@@ -111,6 +111,41 @@ Movie.prototype.all_by_title  = function(page, callback) {
     + this.limit + " OFFSET " + offset;
 
   this.open();
+  this.db.all(statement, function(error, data) {
+    return sqlErrorHandling(error, data, formatData);
+  })
+  this.close();
+}
+
+Movie.prototype.all_by_release_date = function(page, callback) {
+  function formatData(err, res) {
+    if (err) { return callback(err); }
+
+    var data = fixTime(res, 'release_date');
+    var results = {};
+
+    results.meta = {
+      status: 200,
+      yourQuery: ourWebsite + '/movies/all/sort_by=release_date'
+    }
+
+    results.data = {
+      movies: data
+    }
+
+    return callback(null, results);
+  }
+
+  var offset = (page - 1) * this.limit;
+  var statement =
+    "SELECT * FROM movies \
+    ORDER BY (release_date) \
+    LIMIT " + this.limit + " \
+    OFFSET " + offset + ";";
+
+  this.open();
+  console.log("INSIDE PROTOTYPE");
+  console.log(statement);
   this.db.all(statement, function(error, data) {
     return sqlErrorHandling(error, data, formatData);
   })
