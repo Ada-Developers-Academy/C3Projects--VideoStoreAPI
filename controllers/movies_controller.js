@@ -10,12 +10,7 @@ var dbEnv = process.env.DB || "development";
 // --------------- helper functions --------------- //
 var helps = "../helpers/";
 var fixTime = require(helps + "milliseconds_to_date");
-// var rents = helps + "movies/";
-// var validateParams = require(helps + "validate_params");
 var ourWebsite = require(helps + "url_base");
-// var formatMovieInfo = require(rents + "format_movie_info");
-// var formatCustomerInfo = require(rents + "format_customer_info");
-
 
 var MoviesController = {};
 
@@ -26,7 +21,6 @@ MoviesController.all = function(request, response) {
   // prepare statement
   var page = request.params.page || 1;
   movies.all(page, function(error, result) {
-  console.log("INSIDE ALL ");
     if (error) { result = error; }
 
     return response.status(result.meta.status).json(result);
@@ -35,23 +29,14 @@ MoviesController.all = function(request, response) {
 
 //--------- GET /all, sort by title --------------------------------------------
 MoviesController.all_by_title =  function(request, response) {
-  var db = new sqlite3.Database("db/" + dbEnv + ".db");
   var movies = new movieTable();
   var page = request.params.page || 1;
-  var offset = (page - 1) * movies.limit;
-  var statement = "SELECT * FROM movies ORDER BY (title) LIMIT "
-    + movies.limit + " OFFSET " + offset;
 
-  db.all(statement, function(err, results) { // closure
-    if(err) {
-      console.log(err); // error handling
-      return;
-    }
-    results = fixTime(results, 'release_date');
-    return response.status(200).json(results);
-  });
+  movies.all_by_title(page, function(error, result) {
+    if (error) { result  = error; }
 
-  db.close();
+    return response.status(result.meta.status).json(result);
+  })
 }
 
 //--------- GET /all, sort by release_date -------------------------------------

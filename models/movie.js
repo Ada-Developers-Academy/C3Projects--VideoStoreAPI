@@ -85,4 +85,36 @@ Movie.prototype.all  = function(page, callback) {
   this.close();
 }
 
+Movie.prototype.all_by_title  = function(page, callback) {
+
+  function formatData(err, res) {
+    if (err) {return callback(err);}
+
+    var data = fixTime(res, 'release_date');
+
+    var results = {};
+
+    results.meta = {
+      status: 200,
+      yourQuery: ourWebsite + '/movies/all/sort_by=title'
+    }
+
+    results.data = {
+      movies: data
+    }
+
+    return callback(null, results);
+  }
+
+  var offset = (page - 1) * this.limit;
+  var statement = "SELECT * FROM movies ORDER BY (title) LIMIT "
+    + this.limit + " OFFSET " + offset;
+
+  this.open();
+  this.db.all(statement, function(error, data) {
+    return sqlErrorHandling(error, data, formatData);
+  })
+  this.close();
+}
+
 module.exports = Movie;

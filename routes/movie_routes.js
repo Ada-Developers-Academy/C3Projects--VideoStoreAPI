@@ -8,9 +8,6 @@ var movieController = require("../controllers/movies_controller");
 router.get('/all', function(req, res, next) {
   return movieController.all(req, res);
 });
-router.get('/all/:page', function(req, res, next) {
-  return movieController.all(req, res);
-});
 
 // GET all movies sorted by release_date or title
 router.get("/all/sort_by=:sort/:page", function(req, res, next) {
@@ -29,6 +26,9 @@ router.get("/all/sort_by=:sort/:page", function(req, res, next) {
   }
 });
 
+router.get('/all/:page', function(req, res, next) {
+  return movieController.all(req, res);
+});
 // GET a single movie profile
 router.get('/:title', function(req, res, next) {
   return movieController.title(req, res);
@@ -78,7 +78,5 @@ router.get('/:title/rented/sort_by=:query', function(req, res, next) {
       break;
     }
 });
-
-
 
 module.exports = router;
