@@ -149,7 +149,7 @@ describe("Endpoints under /movies", function() {
         .set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200)
-        .expect('[{"title":"Jaws","release_date":"Yesterday"},{"title":"Maws","release_date":"Yesterday"},{"title":"Claws","release_date":"Yesterday"},{"title":"Paws","release_date":"Yesterday"},{"title":"Gauze","release_date":"Yesterday"}]', done);
+        .expect('[{"title":"Jaws","overview":"Shark!","release_date":"Yesterday","inventory":10},{"title":"Maws","overview":"Worm!","release_date":"Yesterday","inventory":11},{"title":"Claws","overview":"Cat!","release_date":"Yesterday","inventory":12},{"title":"Paws","overview":"Bear!","release_date":"Yesterday","inventory":13},{"title":"Gauze","overview":"Ouch!","release_date":"Yesterday","inventory":14}]', done);
     });
 
     it('handles n=0', function(done){
@@ -167,7 +167,7 @@ describe("Endpoints under /movies", function() {
         .set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200)
-        .expect('[{"title":"Jaws","release_date":"Yesterday"}]', done);
+        .expect('[{"title":"Jaws","overview":"Shark!","release_date":"Yesterday","inventory":10}]', done);
     });
 
     it('handles n=2', function(done){
@@ -176,7 +176,7 @@ describe("Endpoints under /movies", function() {
         .set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200)
-        .expect('[{"title":"Jaws","release_date":"Yesterday"},{"title":"Maws","release_date":"Yesterday"}]', done);
+        .expect('[{"title":"Jaws","overview":"Shark!","release_date":"Yesterday","inventory":10},{"title":"Maws","overview":"Worm!","release_date":"Yesterday","inventory":11}]', done);
     });
 
     it('handles n=0, p=1', function(done){
