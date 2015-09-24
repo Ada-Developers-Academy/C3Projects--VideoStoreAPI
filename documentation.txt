@@ -40,7 +40,7 @@ GET 'movies/:title/customers'
   - Given a movies `title`...
     + include rental ids
     - Get a list of customers that have _currently_ checked out a copy of the film
-    - See a list of customers that have _currently_ checked out any of the movie''s inventory
+    - See a list of customers that have _currently_ checked out any of the movie's inventory
 
     - Get a list of customers that have checked out a copy _in the past_
       - ordered by customer `id`
@@ -56,12 +56,12 @@ GET '/movies/:title'
     - Know if a movie has any inventory available to rent (num avail, num checked out, which/whatever)
 
 ### Rental
-- Given a customer''s `id` and a movie''s `title` ...
-POST '/rentals/new'
+- Given a customer's `id` and a movie's `title` ...
+POST '/rentals'
   // in the body, include customer/movie details
   - "check out" one of the movies inventory to the customer
     - Establish a return date
     - Charge the customers account (cost up to you)
-PATCH '/rentals/:id/edit'
+PATCH '/rentals/:id'
   - "check in" one of customers rentals
     - return the movie to its inventory
