@@ -32,7 +32,7 @@ var request = require('supertest'),
         var movieRequest;
 
         beforeEach(function(done){
-          movieRequest = get('/movies').set('Accept', 'application/json');
+          movieRequest = agent.get('/movies').set('Accept', 'application/json');
           done();
         })
 
