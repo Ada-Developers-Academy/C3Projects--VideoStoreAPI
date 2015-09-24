@@ -32,7 +32,7 @@ exports.moviesController = {
     })
   },
 
-  past_rentals: function current_rentals(req, res, movie_title, column) {
+  past_rentals: function past_rentals(req, res, movie_title, column) {
 
     var movie = new Movie();
 
