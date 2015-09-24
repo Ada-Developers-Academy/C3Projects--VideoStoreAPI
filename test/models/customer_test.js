@@ -220,7 +220,7 @@ describe('Customer', function() {
     it('returns an error when an unrecognized column is provided', function(done) {
       customer.sortBy('badColumnName', null, null, function(err, rows) {
         assert(err);
-        assert.equal(err.message, 'Error: syntax error. Unrecognized parameter.');
+        assert.equal(err.message, 'Bad request');
         assert.equal(rows, undefined);
         done();
       });
