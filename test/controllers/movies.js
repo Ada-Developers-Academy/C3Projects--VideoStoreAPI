@@ -53,4 +53,16 @@ describe("movies controller", function(){
           done();
       });
   });
+
+  it("creates a new movie rental", function(done) {
+      agent.get("/movies/title/1").set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result){
+          assert.equal(error, undefined);
+          assert.equal(result.body.movie_subset.length, 2);
+          var keys = ["id", "title", "overview", "release_date", "inventory", "available"];
+          assert.deepEqual(Object.keys(result.body.movie_subset[0]), keys);
+          done();
+      });
+  });
 });
