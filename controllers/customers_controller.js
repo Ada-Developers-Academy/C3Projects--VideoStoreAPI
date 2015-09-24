@@ -1,19 +1,14 @@
 "use strict";
 
-// ------------------- database ------------------- //
-var sqlite3 = require("sqlite3").verbose();
-var dbEnv = process.env.DB || "development";
+// ---------------- customer model ---------------- //
+var CustomerModel = require("../models/customer");
 
 // --------------- helper functions --------------- //
 var helps = "../helpers/";
-var custs = helps + "customers/";
-var fixTime = require(helps + "milliseconds_to_date");
 var validateParams = require(helps + "validate_params");
 var ourWebsite = require(helps + "url_base");
-var formatCustomerInfo = require(helps + "format_customer_info");
 
-
-// ------------ begin controller object ------------ //
+// ----------- begin controller object ------------ //
 var CustomersController = {};
 
 CustomersController.all = function(request, response, next) {
@@ -24,12 +19,30 @@ CustomersController.all = function(request, response, next) {
 }
 
 CustomersController.allSorted = function(request, response, next) {
-  var results = { meta: {}, data: {} };
+  var Customer = new CustomerModel();
+  var page = Number(request.params.page) || 1;
   var sort = request.params.sort_by;
   var validSorts = ["registered_at", "name", "postal_code"];
 
   if (validSorts.indexOf(sort) < 0)
-    return response.status(400).json({ message: "request malformed or sort method not recognized"});
+    return response.status(400).json({ message: "Request malformed or sort method not recognized."});
+
+  Customer.allSorted(sort, page, function(error, result) {
+    if (error) { result = error; }
+
+    var msg = result.meta.message;
+    if (typeof msg == "string") {
+      result.meta.message = Customer.noOverdueMsg;
+      result.meta.yourQuery =  ourWebsite + "/customers/all/" + sort;
+    }
+
+    return response.status(result.meta.status).json(result);
+  })
+
+  return;
+
+
+  var results = { meta: {}, data: {} };
 
   results.meta.yourQuery = ourWebsite + "/customers" + "/all/" + sort;
 
@@ -38,9 +51,6 @@ CustomersController.allSorted = function(request, response, next) {
   var offset = (page - 1) * 10;
 
   var db = new sqlite3.Database("db/" + dbEnv + ".db");
-  var customerKeys = ["id", "name", "postal_code", "registered_at"];
-  var statement = "SELECT " + customerKeys.join(", ") + " FROM customers "
-                + "ORDER BY " + sort + " ASC LIMIT 10 OFFSET " + offset + ";";
   db.all(statement, function(error, result) {
     // converting time back into human readable format
     result = fixTime(result, "registered_at");

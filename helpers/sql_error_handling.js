@@ -4,10 +4,12 @@ function sqlErrorHandling(error, data, callback) {
   var results = {};
 
   if (error) { // handling for sqlite3 error
+    console.log("here sql")
     results.meta = {
       status: 500, // internal server error
       message: error
     }
+
   } else if (data.length == 0) { // handling for no results
     results.meta = {
       status: 303, // see other

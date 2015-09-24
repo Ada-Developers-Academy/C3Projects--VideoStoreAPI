@@ -7,7 +7,6 @@ var sqlite3 = require("sqlite3").verbose();
 var helps = "../helpers/";
 var rents = helps + "rentals/";
 var fixTime = require(helps + "milliseconds_to_date");
-var validateParams = require(helps + "validate_params");
 var ourWebsite = require(helps + "url_base");
 var sqlErrorHandling =  require(helps + "sql_error_handling");
 var formatCustomerInfo = require(helps + "format_customer_info");
@@ -17,9 +16,11 @@ var isMovieAvailable = require(rents + "is_movie_available");
 var hoursInMilliseconds = require(rents + "convert_hours_to_milliseconds");
 
 
-// ------------ begin model definition ------------ //
+//------------------------------------------------------------------------------
+//--------- begin Rental model -------------------------------------------------
+
 var Rental = function() { // Rental constructor
-  // rental DB connections
+  // DB connections
   var dbEnv = process.env.DB || "development";
   this.db;
   this.open = function() { this.db = new sqlite3.Database("db/" + dbEnv + ".db"); }
@@ -33,6 +34,10 @@ var Rental = function() { // Rental constructor
   this.noCustomersMsg = "No results found. You must query this endpoint with an exact title. "
                       + "If you are using an exact title, no customers have a copy checked out."
 }
+
+
+//------------------------------------------------------------------------------
+//--------- SQL statements -----------------------------------------------------
 
 Rental.prototype.movieInfoStatement = function(title) {
   var movieFields = ["title", "overview", "release_date", "inventory"];
@@ -75,25 +80,22 @@ Rental.prototype.customersStatement = function(title) {
   return statement;
 }
 
+//------------------------------------------------------------------------------
+//--------- DB interactions ----------------------------------------------------
+
 Rental.prototype.movieInfo = function(title, callback) {
   function formatData(err, res) {
     if (err) { return callback(err); }
 
-    var data = fixTime(res, "release_date"); // fixing time
-
     var results = {};
-
-    results.data = {
-      movie: formatMovieInfo(data),
-      availableToRent: isMovieAvailable(data)
-    }
-
+    var data = fixTime(res, "release_date");
     results.meta = {
       status: 200, // ok
       customersHoldingCopies: ourWebsite + "/rentals/" + title + "/customers",
       moreMovieInfo: ourWebsite + "/movies/" + title,
       yourQuery: ourWebsite + "/rentals/" + title
     }
+    results.data = { movie: formatMovieInfo(data), availableToRent: isMovieAvailable(data) }
 
     return callback(null, results);
   }
@@ -107,6 +109,30 @@ Rental.prototype.movieInfo = function(title, callback) {
   this.close();
 }
 
+Rental.prototype.overdue = function(page, callback) {
+  var that = this;
+  function formatData(err, res) {
+    if (err) { return callback(err); }
+
+    var results = {};
+    var data = fixTime(res, "check_out_date");
+    results.meta = { status: 200, yourQuery: ourWebsite + "/rentals/overdue" }
+    results.data = { customers: formatCustomerInfo(data) }
+    results = addMovieMetadata(results);
+
+    return that.addPageInfo(results, page, callback);
+  }
+
+  var statement = this.overdueStatement(page);
+
+  this.open();
+  this.db.all(statement, function(error, data) {
+    return sqlErrorHandling(error, data, formatData);
+  })
+  this.close();
+}
+
+// overdue page helper
 Rental.prototype.addPageInfo = function(results, page, callback) {
   function formatData(result) {
     var totalResults = result["count(*)"];
@@ -134,56 +160,19 @@ Rental.prototype.addPageInfo = function(results, page, callback) {
   this.close();
 }
 
-Rental.prototype.overdue = function(page, callback) {
-  var that = this;
-  function formatData(err, res) {
-    if (err) { return callback(err); }
-
-    var data = fixTime(res, "check_out_date"); // fixing time
-
-    var results = {};
-
-    results.meta = {
-      status: 200, // ok
-      yourQuery: ourWebsite + "/rentals/overdue"
-    }
-
-    results.data = {
-      customers: formatCustomerInfo(data)
-    }
-
-    results = addMovieMetadata(results);
-
-    return that.addPageInfo(results, page, callback);
-  }
-
-  var statement = this.overdueStatement(page);
-
-  this.open();
-  this.db.all(statement, function(error, data) {
-    return sqlErrorHandling(error, data, formatData);
-  })
-  this.close();
-}
-
 Rental.prototype.customers = function(title, callback) {
   function formatData(err, res) {
     if (err) { return callback(err); }
 
-    var data = fixTime(res, "check_out_date"); // fixing time
-
     var results = {};
-
+    var data = fixTime(res, "check_out_date");
     results.meta = {
-      status: 200, // ok
+      status: 200,
       moreMovieInfo: ourWebsite + "/movies/" + title,
       moreRentalInfo: ourWebsite + "/rentals/" + title,
       yourQuery: ourWebsite + "/rentals/" + title + "/customers"
     }
-
-    results.data = {
-      customers: formatCustomerInfo(data)
-    }
+    results.data = { customers: formatCustomerInfo(data) }
 
     return callback(null, results);
   }

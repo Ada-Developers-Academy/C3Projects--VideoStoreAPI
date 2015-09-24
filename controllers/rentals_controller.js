@@ -1,14 +1,14 @@
 "use strict";
 
 // ----------------- rental model ----------------- //
-var RentalModel = require('../models/rental');
+var RentalModel = require("../models/rental");
 
 // --------------- helper functions --------------- //
 var helps = "../helpers/";
 var validateParams = require(helps + "validate_params");
 var ourWebsite = require(helps + "url_base");
 
-// ------------ begin RentalsController object ------------ //
+// -------- begin RentalsController object -------- //
 var RentalsController = {};
 
 

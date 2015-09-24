@@ -5,24 +5,99 @@ var sqlite3 = require("sqlite3").verbose();
 
 // --------------- helper functions --------------- //
 var helps = "../helpers/";
-var rents = helps + "rentals/";
 var fixTime = require(helps + "milliseconds_to_date");
-var validateParams = require(helps + "validate_params");
 var ourWebsite = require(helps + "url_base");
 var sqlErrorHandling =  require(helps + "sql_error_handling");
 var formatCustomerInfo = require(helps + "format_customer_info");
-var formatMovieInfo = require(rents + "format_movie_info");
-var addMovieMetadata = require(rents + "add_movie_to_customer_metadata");
-var isMovieAvailable = require(rents + "is_movie_available");
-var hoursInMilliseconds = require(rents + "convert_hours_to_milliseconds");
 
+//------------------------------------------------------------------------------
+//--------- begin Customer model -----------------------------------------------
 
 var Customer = function() { // Customer constructor
+  // DB connections
+  var dbEnv = process.env.DB || "development";
+  this.db;
+  this.open = function() { this.db = new sqlite3.Database("db/" + dbEnv + ".db"); }
+  this.close = function() { this.db.close(); }
+
   this.limit = 10; // we like ten
+
+  // this.noMoviesMsg = "No results found. You must query this endpoint with an exact title.";
+  // this.noOverdueMsg = "No results found. We either have a loose database connection or "
+  //                   + "it is that magical time when NO CUSTOMERS ARE HOLDING OVERDUE FILMS!";
+  // this.noCustomersMsg = "No results found. You must query this endpoint with an exact title. "
+  //                     + "If you are using an exact title, no customers have a copy checked out."
+}
+
+//------------------------------------------------------------------------------
+//--------- SQL statements -----------------------------------------------------
+
+Customer.prototype.allSortedStatement = function(sort, page) {
+  var offset = (page - 1) * this.limit;
+  var customerKeys = ["id", "name", "postal_code", "registered_at"];
+  var statement = "SELECT " + customerKeys.join(", ") + " FROM customers "
+                + "ORDER BY " + sort + " ASC LIMIT 10 OFFSET " + offset + ";";
+  return statement;
+}
+
+Customer.prototype.allSortedCountStatement = function() {
+  return "SELECT count(*) FROM customers";
 }
 
 
+//------------------------------------------------------------------------------
+//--------- DB interactions ----------------------------------------------------
 
+Customer.prototype.allSorted = function(sort, page, callback) {
+  var that = this;
+  function formatData(err, res) {
+    if (err) { return callback(err); }
+
+    var results = {};
+    var data = fixTime(res, "registered_at");
+    results.meta = { status: 200, yourQuery: ourWebsite + "/customers/all/" + sort }
+    results.data = { customers: formatCustomerInfo(data) }
+    results.temp = { page: page, statement: "allSortedCountStatement" }
+
+    return that.addPageInfo(results, callback);
+  }
+
+  var statement = this.allSortedStatement(sort, page);
+  this.open();
+  this.db.all(statement, function(error, data) {
+    return sqlErrorHandling(error, data, formatData);
+  })
+  this.close();
+
+}
+
+Customer.prototype.addPageInfo = function(results, callback) {
+  function formatData(result) {
+    var totalResults = result["count(*)"];
+    results.meta.totalResults = totalResults;
+
+    if (page >= 1 && totalResults > (10 * page))
+      results.meta.nextPage = results.meta.yourQuery + "/" + (page + 1);
+    if (page >= 2)
+      results.meta.prevPage = results.meta.yourQuery + "/" + (page - 1);
+    if (page != 1)
+      results.meta.yourQuery += "/" + page;
+
+    delete results.temp;
+
+    return results;
+  }
+
+  var page = results.temp.page;
+  var statement = this[results.temp.statement]();
+
+  this.open();
+  this.db.get(statement, function(error, result) {
+    if (error) { return callback(error); }
+    return callback(null, formatData(result));
+  });
+  this.close();
+}
 
 // all w/ sort by field
 // - SELECT * FROM customers ORDER BY (columnName);
