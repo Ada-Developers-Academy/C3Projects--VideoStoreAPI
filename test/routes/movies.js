@@ -30,7 +30,9 @@ describe("movies routes", function() {
           returned_date) \
         VALUES (1, 1, '2012', '2013', '2013'), \
           (1, 2, '2008', '2009', '2009'), \
-          (1, 2, '2014', '2015', ''); \
+          (1, 2, '2014', '2015', ''), \
+          (2, 1, '2005', '2006', '2006'), \
+          (2, 1, '2015', '2016', ''); \
         COMMIT;"
         , function(err) {
           db_cleaner.close();
@@ -53,7 +55,6 @@ describe("movies routes", function() {
 
     it("returns an array of objects", function(done) {
       agent.get('/movies').set('Accept', 'application/json')
-        .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
           var movies = response.body.movies;
 
@@ -64,7 +65,6 @@ describe("movies routes", function() {
 
     it("returns as many movies as there are in the table: 2", function(done) {
       agent.get('/movies').set('Accept', 'application/json')
-        .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
           var movies = response.body.movies;
 
@@ -75,7 +75,6 @@ describe("movies routes", function() {
 
     it("the movie objects contain movie data", function(done) {
       agent.get('/movies').set('Accept', 'application/json')
-        .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
           var movie = response.body.movies[0];
 
@@ -89,14 +88,105 @@ describe("movies routes", function() {
     });
   });
 
-  // describe("GET /customers/:id", function() {
-  //   it("responds with json", function(done) {
-  //     agent.get('/customers/1').set('Accept', 'application/json')
-  //       .expect('Content-Type', /application\/json/)
-  //       .expect(200, function(error, response) {
-  //         assert.equal(error, undefined);
-  //         done();
-  //       });
-  //   });
-  // });
+  describe("GET /movies/:title/:order", function() {
+    it("responds with json", function(done) {
+      agent.get('/movies/Fight the Future/customer_id').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, response) {
+          assert.equal(error, undefined);
+          done();
+        });
+    });
+
+    it("returns an object", function(done) {
+      agent.get('/movies/Fight the Future/customer_id').set('Accept', 'application/json')
+        .expect(200, function(error, response) {
+          var movie = response.body;
+
+          assert(movie instanceof Object);
+          done();
+      });
+    });
+
+    it("returns the movie with the title from the url", function(done) {
+      agent.get('/movies/Fight the Future/customer_id').set('Accept', 'application/json')
+        .expect(200, function(error, response) {
+          var movieData = response.body.movie_data;
+
+          assert.equal(movieData.title, 'Fight the Future');
+          done();
+      });
+    });
+
+    it("returns a currentRenters object with a list of current renters", function(done) {
+      agent.get('/movies/Fight the Future/customer_id').set('Accept', 'application/json')
+        .expect(200, function(error, response) {
+          var currentRenters = response.body.customers.currentRenters;
+
+          assert(currentRenters[0].name, 'Fox Mulder');
+          done();
+      });
+    });
+
+    it("returns a pastRenters object with a list of past renters sorted by the order variable", function(done) {
+      agent.get('/movies/Fight the Future/customer_id').set('Accept', 'application/json')
+        .expect(200, function(error, response) {
+          var pastRenters = response.body.customers.pastRenters;
+
+          assert(pastRenters[0].name, 'Alex Krychek');
+          done();
+      });
+    });
+  });
+
+describe("GET /movies/:sort_by/:number/:offset", function() {
+    it("responds with json", function(done) {
+      agent.get('/movies/title/1/1').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, response) {
+          assert.equal(error, undefined);
+          done();
+        });
+    });
+
+    it("returns an object", function(done) {
+      agent.get('/movies/title/2/0').set('Accept', 'application/json')
+        .expect(200, function(error, response) {
+          var movies = response.body;
+          console.log(movies);
+          assert(movies instanceof Object);
+          done();
+      });
+    });
+
+    // it("returns the number of movies in the number parameter", function(done) {
+    //   agent.get('/movies/title/2/0').set('Accept', 'application/json')
+    //     .expect(200, function(error, response) {
+    //       var movieData = response.body.movie_data;
+
+    //       assert.equal(movieData.title, 'Fight the Future');
+    //       done();
+    //   });
+    // });
+
+    // it("returns a currentRenters object with a list of current renters", function(done) {
+    //   agent.get('/movies/title/5/5').set('Accept', 'application/json')
+    //     .expect(200, function(error, response) {
+    //       var currentRenters = response.body.customers.currentRenters;
+
+    //       assert(currentRenters[0].name, 'Fox Mulder');
+    //       done();
+    //   });
+    // });
+
+    // it("returns a pastRenters object with a list of past renters sorted by the order variable", function(done) {
+    //   agent.get('/movies/title/5/5').set('Accept', 'application/json')
+    //     .expect(200, function(error, response) {
+    //       var pastRenters = response.body.customers.pastRenters;
+
+    //       assert(pastRenters[0].name, 'Alex Krychek');
+    //       done();
+    //   });
+    // });
+  });
 });
