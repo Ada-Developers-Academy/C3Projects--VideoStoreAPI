@@ -260,15 +260,15 @@ describe("Endpoints for /rentals", function() {
 
   // *POST* rental/:title/:customer_id/checkin
   describe('POST rentals/:title/:customer_id/checkin', function(){
-    it('responds with json', function(done){
-      agent.post('/rentals/psycho/available')
-           .set('Accept', 'application/json')
-           .expect('Content-Type', /application\/json/)
-           .expect(200, function(error, result) {
-              assert.equal(error, undefined);
-              done();
-            });
-    });
+    // it('responds with json', function(done){
+    //   agent.post('/rentals/psycho/available')
+    //        .set('Accept', 'application/json')
+    //        .expect('Content-Type', /application\/json/)
+    //        .expect(200, function(error, result) {
+    //           assert.equal(error, undefined);
+    //           done();
+    //         });
+    // });
 
     // it('returns an object with keys title and inventory_available', function(done){
     //   agent.get('/rentals/psycho/available')
