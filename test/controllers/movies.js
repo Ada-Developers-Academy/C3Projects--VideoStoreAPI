@@ -42,15 +42,28 @@ describe("movies controller", function(){
       });
   });
 
-  it("returns subset of movies", function(done) {
+  it("returns subset of movies sorted by title", function(done) {
       agent.get("/movies/title/1").set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result){
           assert.equal(error, undefined);
           assert.equal(result.body.movie_subset.length, 2);
-          var keys = ["id", "title", "overview", "release_date", "inventory", "available"];
-          assert.deepEqual(Object.keys(result.body.movie_subset[0]), keys);
+          assert.equal(result.body.movie_subset[0].title, "The Lone Gunmen")
+          assert.equal(result.body.movie_subset[1].title, "X-files: I want to believe")
           done();
       });
   });
+
+  it("returns subset of movies sorted by release_date", function(done) {
+      agent.get("/movies/release_date/1").set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result){
+          assert.equal(error, undefined);
+          assert.equal(result.body.movie_subset.length, 2);
+          assert.equal(result.body.movie_subset[0].release_date, "1999")
+          assert.equal(result.body.movie_subset[1].release_date, "2001")
+          done();
+      });
+  });
+
 });
