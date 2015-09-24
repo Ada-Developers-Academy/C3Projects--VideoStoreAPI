@@ -21,25 +21,16 @@ var MoviesController = {};
 
 //--------- GET /all -----------------------------------------------------------
 MoviesController.all = function(request, response) {
-  var db = new sqlite3.Database("db/" + dbEnv + ".db");
   var movies = new movieTable();
 
   // prepare statement
   var page = request.params.page || 1;
-  var offset = (page - 1) * movies.limit;
-  var statement = "SELECT * FROM movies LIMIT " + movies.limit +
-    " OFFSET " + offset;
+  movies.all(page, function(error, result) {
+  console.log("INSIDE ALL ");
+    if (error) { result = error; }
 
-  db.all(statement, function(err, results) { // closure
-    if(err) {
-      console.log(err); // error handling
-      return;
-    }
-    results = fixTime(results, 'release_date');
-    return response.status(200).json(results);
-  });
-
-  db.close();
+    return response.status(result.meta.status).json(result);
+  })
 }
 
 //--------- GET /all, sort by title --------------------------------------------
@@ -102,7 +93,7 @@ MoviesController.title = function(request, response) {
   db.all(statement, function(error, data) {
     var results = movies.movieInfo(error, data);
     var status = results.data.status;
-    
+
     return response.status(status).json(results);
   });
 
