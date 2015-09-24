@@ -51,38 +51,22 @@ describe("Customer", function() {
       });
     });
 
-    it("can return a subset of customers sorted by name", function(done){
-      var queries = [1, 0]
-      customer.subset("name", queries, function(err, res) {
-        assert.equal(err, undefined);
-        assert(res instanceof Array);
-        assert.equal(res[0].id, 1);
-        assert.equal(res[0].name, "Dana Scully")
-        done();
-      });
-    });
+    var sorted_by = ["name", "registered_at", "postal_code"];
 
-    it("can return a subset of customers sorted by registered_at", function(done){
-      var queries = [1, 0]
-      customer.subset("registered_at", queries, function(err, res) {
-        assert.equal(err, undefined);
-        assert(res instanceof Array);
-        assert.equal(res[0].id, 2);
-        assert.equal(res[0].name, "Fox Mulder")
-        done();
-      });
-    });
+    for (var i = 0; i < sorted_by.length; i++) {
+      var column = sorted_by[i];
 
-    it("can return a subset of customers sorted by postal_code", function(done){
-      var queries = [1, 1]
-      customer.subset("postal_code", queries, function(err, res) {
-        assert.equal(err, undefined);
-        assert(res instanceof Array);
-        assert.equal(res[0].id, 2);
-        assert.equal(res[0].name, "Fox Mulder")
-        done();
+      it("can return a subset of customers sorted by " + column, function(done) {
+        var queries = [1, 0];
+        customer.subset(column, queries, function(err, res) {
+          assert.equal(err, undefined);
+          assert(res instanceof Array);
+          assert.equal(res[0].id, 1);
+          assert.equal(res[0].name, "Dana Scully")
+          done();
+        });
       });
-    });
+    }
   }); // end of describe instance methods
 
   describe("class methods", function() {
@@ -120,18 +104,5 @@ describe("Customer", function() {
       });
     });
   });
-
-    // it("can save changes to a customer", function(done) {
-    //   customer.find_by("name", "Fox Mulder", function(err, res) {
-    //     var original_name = res.name;
-    //     var id = res.id;
-    //     customer.save({name: "Foxy Mulder", id: id}, function(err, res) {
-    //       assert.equal(err, undefined);
-    //       assert.equal(res.inserted_id, 0); //it didn't insert any records
-    //       assert.equal(res.changed, 1); //it updated one record
-    //       done();
-    //     })
-    //   })
-    // });
 
 });

@@ -19,7 +19,8 @@
     "mocha": "^2.3.2",
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0",
-    "sqlite3": "^3.1.0"
+    "sqlite3": "^3.1.0",
+    "supertest": "^1.1.0"
   },
   "devDependencies": {
     "should": "^7.1.0"

@@ -61,7 +61,7 @@ router.get('/:id', function(req, res, next) {
             movieObject.returnedDate = pastMoviesObject[rows[i].id];
             pastRentalsArray.push(movieObject);
           }
-
+          
           res.status(200).json(customerObject);
         });
       });
@@ -80,20 +80,20 @@ router.get('/:sort_by/:limit/:offset', function(req, res, next) {
   });
 });
 
-// router.post('/create/:name/:registered_at/:address/:city/:state/:postal_code/:phone', function(req, res, next) {
-//   var values = [];
-//   values.push(req.params.name);
-//   values.push(req.params.registered_at);
-//   values.push(req.params.address);
-//   values.push(req.params.city);
-//   values.push(req.params.state);
-//   values.push(req.params.postal_code);
-//   values.push(req.params.phone);
-//   var columns = ['name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone']
+router.post('/create/:name/:registered_at/:address/:city/:state/:postal_code/:phone', function(req, res, next) {
+  var values = [];
+  values.push(req.params.name);
+  values.push(req.params.registered_at);
+  values.push(req.params.address);
+  values.push(req.params.city);
+  values.push(req.params.state);
+  values.push(req.params.postal_code);
+  values.push(req.params.phone);
+  var columns = ['name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone']
 
-//   customer.create(columns, values, function(err, res) {
-//     res.status(200).json(res);
-//   });
-// });
+  customer.create(columns, values, function(err, res) {
+    res.status(200).json(res);
+  });
+});
 
 module.exports = router;
