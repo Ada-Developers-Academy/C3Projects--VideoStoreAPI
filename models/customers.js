@@ -9,25 +9,31 @@ function Customer() {
 
 Customer.prototype = require('../database');
 
-Customer.prototype.find_checked_out = function(id, callback) {
+Customer.prototype.find_current = function(id, callback) {
   var db = new sqlite3.Database('db/' + db_env + '.db');
-  var currently_checked_out_movies_statement =
-    "SELECT * FROM rentals WHERE customer_id = " + id +
-    " AND check_in_date IS NULL;";
-  var returned_movies_statement =
-    "SELECT * FROM rentals WHERE customer_id = " + id +
-    " AND check_in_date IS NOT NULL;";
+  var statement =
+    "SELECT movies.id AS movie_id, movies.title, rentals.check_out_date, rentals.expected_return_date \
+    FROM rentals INNER JOIN movies ON movies.id = rentals.movie_id \
+    WHERE customer_id=" + id + " AND check_in_date IS NULL \
+    ORDER BY date(check_out_date);";
 
-  db.all(currently_checked_out_movies_statement, function(err, res1) {
-    db.all(returned_movies_statement, function(err, res2) {
-      var result = {
-        "checked_out_movies": res1,
-        "returned_movies": res2
-      };
-      if (callback) callback(err, result);
+  db.all(statement, function(err, res) {
+    if (callback) callback(err, res);
+    db.close();
+  });
+};
 
-      db.close();
-    });
+Customer.prototype.find_history = function(id, callback) {
+  var db = new sqlite3.Database('db/' + db_env + '.db');
+  var statement =
+    "SELECT movies.id AS movie_id, movies.title, rentals.check_out_date, rentals.check_in_date, rentals.expected_return_date \
+    FROM rentals INNER JOIN movies ON movies.id = rentals.movie_id \
+    WHERE customer_id=" + id + " AND check_in_date IS NOT NULL \
+    ORDER BY date(check_out_date);";
+
+  db.all(statement, function(err, res) {
+    if (callback) callback(err, res);
+    db.close();
   });
 };
 

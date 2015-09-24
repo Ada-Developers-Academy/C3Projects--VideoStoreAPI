@@ -76,12 +76,12 @@ describe("Customers Controller", function() {
     });
   });
 
-  describe("GET /customers/:id", function() {
+  describe("GET /customers/:id/current", function() {
     var customer_request;
 
     beforeEach(function(done) {
       customer_request = agent
-                         .get('/customers/1')
+                         .get('/customers/1/current')
                          .set('Accept', 'application/json');
       done();
     })
@@ -96,14 +96,42 @@ describe("Customers Controller", function() {
       customer_request
         .expect('Content-Type', /application\/json/)
         .expect(200, function(err, res) {
-          var keys = ['checked_out_movies', 'returned_movies'];
-          assert.deepEqual(Object.keys(res.body), keys);
+          var keys = ['movie_id', 'title', "check_out_date", "expected_return_date"];
+          assert.deepEqual(Object.keys(res.body[0]), keys);
 
-          assert.equal(res.body.checked_out_movies.length, 1);
-          assert.equal(res.body.returned_movies.length, 1);
+          assert.equal(res.body.length, 1);
+          assert.equal(res.body[0].movie_id, 2);
 
-          assert.deepEqual(res.body.checked_out_movies[0].id, 2);
-          assert.deepEqual(res.body.returned_movies[0].id, 1);
+          done();
+        })
+    });
+  });
+
+  describe("GET /customers/:id/history", function() {
+    var customer_request;
+
+    beforeEach(function(done) {
+      customer_request = agent
+                         .get('/customers/1/history')
+                         .set('Accept', 'application/json');
+      done();
+    })
+
+    it("responds with json", function(done) {
+      customer_request
+        .expect('Content-Type', /application\/json/)
+        .expect(200, done);
+    });
+
+    it("can find customer with id 1", function(done) {
+      customer_request
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(err, res) {
+          var keys = ['movie_id', 'title', "check_out_date", "check_in_date", "expected_return_date"];
+          assert.deepEqual(Object.keys(res.body[0]), keys);
+
+          assert.equal(res.body.length, 1);
+          assert.equal(res.body[0].movie_id, 1);
 
           done();
         })
