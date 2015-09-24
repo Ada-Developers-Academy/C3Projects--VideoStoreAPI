@@ -12,7 +12,7 @@ var Controller = {
   },
 
   show: function(req, res, next) {
-    new Movie().findBy(Object.keys(req.params)[0], req.params.title ,Controller.sendJSON.bind(res));
+    new Movie().findBy('title', req.params.title, Controller.sendJSON.bind(res));
   },
 
   sendJSON: function(err, res) {
