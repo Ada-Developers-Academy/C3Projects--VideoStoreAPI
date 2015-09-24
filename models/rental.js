@@ -16,6 +16,8 @@ var addMovieMetadata = require(rents + "add_movie_to_customer_metadata");
 var isMovieAvailable = require(rents + "is_movie_available");
 var hoursInMilliseconds = require(rents + "convert_hours_to_milliseconds");
 
+
+// ------------ begin model definition ------------ //
 var Rental = function() { // Rental constructor
   // rental DB connections
   var dbEnv = process.env.DB || "development";
@@ -25,11 +27,11 @@ var Rental = function() { // Rental constructor
 
   // rental page limit
   this.limit = 10;
-  this.noMovieMsg = "No results found. You must query this endpoint with an exact title.";
+  this.noMoviesMsg = "No results found. You must query this endpoint with an exact title.";
   this.noOverdueMsg = "No results found. We either have a loose database connection or "
                     + "it is that magical time when NO CUSTOMERS ARE HOLDING OVERDUE FILMS!";
   this.noCustomersMsg = "No results found. You must query this endpoint with an exact title. "
-                      + "If you queried with an exact title, then no customers are holding copies."
+                      + "If you are using an exact title, no customers have a copy checked out."
 }
 
 Rental.prototype.movieInfoStatement = function(title) {
@@ -82,14 +84,14 @@ Rental.prototype.movieInfo = function(title, callback) {
     var results = {};
 
     results.data = {
-      movieInfo: formatMovieInfo(data),
+      movie: formatMovieInfo(data),
       availableToRent: isMovieAvailable(data)
     }
 
     results.meta = {
       status: 200, // ok
       customersHoldingCopies: ourWebsite + "/rentals/" + title + "/customers",
-      movieInfo: ourWebsite + "/movies/" + title,
+      moreMovieInfo: ourWebsite + "/movies/" + title,
       yourQuery: ourWebsite + "/rentals/" + title
     }
 

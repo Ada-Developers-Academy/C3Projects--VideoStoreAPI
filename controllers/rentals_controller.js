@@ -5,15 +5,8 @@ var RentalModel = require('../models/rental');
 
 // --------------- helper functions --------------- //
 var helps = "../helpers/";
-var rents = helps + "rentals/";
-var fixTime = require(helps + "milliseconds_to_date");
 var validateParams = require(helps + "validate_params");
 var ourWebsite = require(helps + "url_base");
-var formatCustomerInfo = require(helps + "format_customer_info");
-var formatMovieInfo = require(rents + "format_movie_info");
-var addMovieMetadata = require(rents + "add_movie_to_customer_metadata");
-var isMovieAvailable = require(rents + "is_movie_available");
-var hoursInMilliseconds = require(rents + "convert_hours_to_milliseconds");
 
 // ------------ begin RentalsController object ------------ //
 var RentalsController = {};
@@ -46,6 +39,8 @@ RentalsController.movieInfo = function(request, response, next) {
     var msg = result.meta.message;
     if (typeof msg == "string") {
       result.meta.message = Rental.noMoviesMsg;
+      result.meta.moreMovieInfo = ourWebsite + "/movies/" + title;
+      result.meta.yourQuery = ourWebsite + "/rentals/" + title;
     }
 
     return response.status(result.meta.status).json(result);
@@ -62,6 +57,7 @@ RentalsController.overdue = function(request, response, next) {
     var msg = result.meta.message;
     if (typeof msg == "string") {
       result.meta.message = Rental.noOverdueMsg;
+      result.meta.yourQuery =  ourWebsite + "/rentals/overdue/" + page;
     }
 
     return response.status(result.meta.status).json(result);
@@ -82,6 +78,8 @@ RentalsController.customers = function(request, response, next) {
     var msg = result.meta.message;
     if (typeof msg == "string") {
       result.meta.message = Rental.noCustomersMsg;
+      result.meta.moreMovieInfo = ourWebsite + "/movies/" + title;
+      result.meta.yourQuery = ourWebsite + "/rentals/" + title + "/customers";
     }
 
     return response.status(result.meta.status).json(result);
