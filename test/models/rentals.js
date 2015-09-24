@@ -1,6 +1,7 @@
 var assert = require('assert'),
     Rental  = require('../../models/rental'),
     app     = require('../../app'),
+    request = require('supertest'),
     sqlite3 = require('sqlite3').verbose();
 
 describe("Rental", function() {
@@ -52,17 +53,49 @@ describe("Rental", function() {
         });
       });
 
-      it("returns a json object with expected keys", function(done) {
-        rental.check_out(1, "Jaws", function(err, res) {
-          // assert(res instanceof Array); // returns a json response...
-          assert.equal(res.inserted_id, 6);
-          assert.equal(res.changed, 1);
+      it("returns an object with the expected keys", function(done) {
+        var keys = [  "inserted_rental_id",
+                      "movie",
+                      "customer_id",
+                      "checked_out_on",
+                      "due_on",
+                      "number_of_records_changed" ];
+          rental.check_out(1, "Jaws", function(err, res) {
+          assert.deepEqual(Object.keys(res), keys);
+          assert.equal(res.inserted_rental_id, 6);
+          assert.equal(res.movie, "Jaws");
+          assert.equal(res.customer_id, 1);
+          assert.equal(res.number_of_records_changed, 1);
           done();
         });
       });
     });
 
+    context("GET #check_in", function() {
 
+      it("is successful", function(done) {
+        rental.check_in(1, "Jaws", function(err, res) {
+          assert.equal(err, undefined);
+          done();
+        });
+      });
+
+      it("returns an object with the expected keys", function(done) {
+        var keys = [  "movie",
+                      "customer_id",
+                      "checked_in_on",
+                      "number_of_records_changed" ];
+
+        rental.check_in(2, "Jaws", function(err, res) {
+          assert.deepEqual(Object.keys(res), keys);
+          assert.equal(res.movie, "Jaws");
+          assert.equal(res.customer_id, "2");
+          // below is 2 because we have two rentals for same movie and customer.
+          assert.equal(res.number_of_records_changed, 2);
+          done();
+        });
+      });
+    });
 
   });
 });
