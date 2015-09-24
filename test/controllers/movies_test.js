@@ -57,7 +57,7 @@ describe('/movies', function() {
     });
   });
 
-  describe("GET '/?sort=title'", function() {
+  describe("GET '?sort=title'", function() {
     var numMoviesSeeded;
     var request;
 
@@ -74,7 +74,7 @@ describe('/movies', function() {
     });
 
     beforeEach(function() {
-      request = agent.get('/movies/?sort=title').set('Accept', 'application/json');
+      request = agent.get('/movies?sort=title').set('Accept', 'application/json');
     });
 
     it('responds with json', function(done) {
@@ -97,7 +97,7 @@ describe('/movies', function() {
     });
   });
 
-  describe("GET '/?sort=release_date'", function() {
+  describe("GET '?sort=release_date'", function() {
     var numMoviesSeeded;
     var request;
 
@@ -114,7 +114,7 @@ describe('/movies', function() {
     });
 
     beforeEach(function() {
-      request = agent.get('/movies/?sort=release_date').set('Accept', 'application/json');
+      request = agent.get('/movies?sort=release_date').set('Accept', 'application/json');
     });
 
     it('responds with json', function(done) {
@@ -137,7 +137,7 @@ describe('/movies', function() {
     });
   });
 
-  describe("GET '/?sort=puppies' (sort parameter is invalid)", function() {
+  describe("GET '?sort=puppies' (sort parameter is invalid)", function() {
     var numMoviesSeeded;
     var request;
 
@@ -154,7 +154,7 @@ describe('/movies', function() {
     });
 
     beforeEach(function() {
-      request = agent.get('/movies/?sort=puppies').set('Accept', 'application/json');
+      request = agent.get('/movies?sort=puppies').set('Accept', 'application/json');
     });
 
     it('responds with json and a status code of 400', function(done) {
@@ -175,7 +175,7 @@ describe('/movies', function() {
     });
   });
 
-  describe("GET '/?sort=release_date&n=2'", function() {
+  describe("GET '?sort=release_date&n=2'", function() {
     var numMoviesSeeded;
     var request;
 
@@ -192,7 +192,7 @@ describe('/movies', function() {
     });
 
     beforeEach(function() {
-      request = agent.get('/movies/?sort=release_date&n=2').set('Accept', 'application/json');
+      request = agent.get('/movies?sort=release_date&n=2').set('Accept', 'application/json');
     });
 
     it('responds with json', function(done) {
@@ -214,7 +214,7 @@ describe('/movies', function() {
     });
   });
 
-  describe("GET '/?sort=release_date&n=dog' (n is invalid)", function() {
+  describe("GET '?sort=release_date&n=dog' (n is invalid)", function() {
     var numMoviesSeeded;
     var request;
 
@@ -231,7 +231,7 @@ describe('/movies', function() {
     });
 
     beforeEach(function() {
-      request = agent.get('/movies/?sort=release_date&n=dog').set('Accept', 'application/json');
+      request = agent.get('/movies?sort=release_date&n=dog').set('Accept', 'application/json');
     });
 
     it('responds with json', function(done) {
@@ -252,7 +252,7 @@ describe('/movies', function() {
     });
   });
 
-  describe("GET '/?sort=title&n=1&p=2'", function() {
+  describe("GET '?sort=title&n=1&p=2'", function() {
     var numMoviesSeeded;
     var request;
 
@@ -269,7 +269,7 @@ describe('/movies', function() {
     });
 
     beforeEach(function() {
-      request = agent.get('/movies/?sort=title&n=1&p=2').set('Accept', 'application/json');
+      request = agent.get('/movies?sort=title&n=1&p=2').set('Accept', 'application/json');
     });
 
     it('responds with json', function(done) {
@@ -290,7 +290,7 @@ describe('/movies', function() {
     });
   });
 
-  describe("GET '/?sort=title&n=2&p=dog' (p is invalid)", function() {
+  describe("GET '?sort=title&n=2&p=dog' (p is invalid)", function() {
     var numMoviesSeeded;
     var request;
 
@@ -307,7 +307,7 @@ describe('/movies', function() {
     });
 
     beforeEach(function() {
-      request = agent.get('/movies/?sort=title&n=2&p=dog').set('Accept', 'application/json');
+      request = agent.get('/movies?sort=title&n=2&p=dog').set('Accept', 'application/json');
     });
 
     it('responds with json', function(done) {
@@ -329,7 +329,7 @@ describe('/movies', function() {
     });
   });
 
-  describe("GET '/?sort=title&p=3' (n is missing)", function() {
+  describe("GET '?sort=title&p=3' (n is missing)", function() {
     var numMoviesSeeded;
     var request;
 
@@ -346,7 +346,7 @@ describe('/movies', function() {
     });
 
     beforeEach(function() {
-      request = agent.get('/movies/?sort=title&p=dog').set('Accept', 'application/json');
+      request = agent.get('/movies?sort=title&p=dog').set('Accept', 'application/json');
     });
 
     it('responds with json', function(done) {
@@ -366,6 +366,130 @@ describe('/movies', function() {
           done();
         }
       );
+    });
+  });
+
+  describe("GET '/:title'", function() {
+    describe("GET '/Jaws'", function() {
+      var numMoviesSeeded;
+      var request;
+
+      before(function(done) {
+        var data = {
+          movies: [
+            { title: 'Jaws and Maws', overview: 'Worm!', release_date: '2015-09-12', inventory: 11 },
+            { title: 'Jaws', overview: 'Shark!', release_date: '1975-06-19', inventory: 10 },
+            { title: 'The French Connection', overview: 'Bonjour!', release_date: '1971-10-07', inventory: 8 }
+          ]
+        }
+        numMoviesSeeded = data.movies.length;
+        resetTables(data, done);
+      });
+
+      beforeEach(function() {
+        request = agent.get('/movies/Jaws').set('Accept', 'application/json');
+      });
+
+      it('responds with json', function(done) {
+        request
+          .expect('Content-Type', /application\/json/)
+          .expect(200, done);
+      });
+
+      it('returns a single movie object with a title of Jaws', function(done){
+        request
+          .expect(200, function(err, res) {
+            assert.equal(err, undefined);
+            assert.equal(res.body.length, 1);
+            assert.equal(res.body[0].id, 2);
+            assert.equal(res.body[0].title, 'Jaws');
+            assert.equal(res.body[0].overview, 'Shark!');
+            assert.equal(res.body[0].release_date, '1975-06-19');
+            assert.equal(res.body[0].inventory, 10);
+            done();
+          }
+        );
+      });
+    });
+
+    describe("GET '/JAWS'", function() {
+      var numMoviesSeeded;
+      var request;
+
+      before(function(done) {
+        var data = {
+          movies: [
+            { title: 'Jaws and Maws', overview: 'Worm!', release_date: '2015-09-12', inventory: 11 },
+            { title: 'Jaws', overview: 'Shark!', release_date: '1975-06-19', inventory: 10 },
+            { title: 'The French Connection', overview: 'Bonjour!', release_date: '1971-10-07', inventory: 8 }
+          ]
+        }
+        numMoviesSeeded = data.movies.length;
+        resetTables(data, done);
+      });
+
+      beforeEach(function() {
+        request = agent.get('/movies/JAWS').set('Accept', 'application/json');
+      });
+
+      it('responds with json', function(done) {
+        request
+          .expect('Content-Type', /application\/json/)
+          .expect(200, done);
+      });
+
+      it('returns a single movie object with a title of Jaws', function(done){
+        request
+          .expect(200, function(err, res) {
+            assert.equal(err, undefined);
+            assert.equal(res.body.length, 1);
+            assert.equal(res.body[0].id, 2);
+            assert.equal(res.body[0].title, 'Jaws');
+            assert.equal(res.body[0].overview, 'Shark!');
+            assert.equal(res.body[0].release_date, '1975-06-19');
+            assert.equal(res.body[0].inventory, 10);
+            done();
+          }
+        );
+      });
+    });
+
+    describe("GET '/dog'", function() {
+      var numMoviesSeeded;
+      var request;
+
+      before(function(done) {
+        var data = {
+          movies: [
+            { title: 'Jaws and Maws', overview: 'Worm!', release_date: '2015-09-12', inventory: 11 },
+            { title: 'Jaws', overview: 'Shark!', release_date: '1975-06-19', inventory: 10 },
+            { title: 'The French Connection', overview: 'Bonjour!', release_date: '1971-10-07', inventory: 8 }
+          ]
+        }
+        numMoviesSeeded = data.movies.length;
+        resetTables(data, done);
+      });
+
+      beforeEach(function() {
+        request = agent.get('/movies/dog').set('Accept', 'application/json');
+      });
+
+      it('responds with json', function(done) {
+        request
+          .expect('Content-Type', /application\/json/)
+          .expect(200, done);
+      });
+
+      it('returns an empty array', function(done){
+        request
+          .expect(200, function(err, res) {
+            assert.equal(err, undefined);
+            assert.equal(res.body.length, 0);
+            assert.deepEqual(res.body, []);
+            done();
+          }
+        );
+      });
     });
   });
 });
