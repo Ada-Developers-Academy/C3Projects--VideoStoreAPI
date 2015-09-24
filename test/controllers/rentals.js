@@ -33,7 +33,7 @@ describe("rentals controller", function(){
     });
 
     it("returns movie details", function(done) {
-      agent.get("/rentals/X-files:%20I%20want%20to%20believe/customers").set('Accept', 'application/json')
+      agent.post("/rentals/X-files:%20I%20want%20to%20believe/customers").set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result){
           assert.equal(error, undefined);

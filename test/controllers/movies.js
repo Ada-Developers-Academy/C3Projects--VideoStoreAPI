@@ -65,5 +65,4 @@ describe("movies controller", function(){
           done();
       });
   });
-
 });
