@@ -53,7 +53,6 @@ router.get('/:title/:order', function(req, res, next) {
           pastRentersIds.push(rows[i].customer_id);
         }
       }
-      console.log(pastRenters);
 
       customer.where_in('id', currentRentersIds, function(err, rows) {
         movieObject.customers.currentRenters = rows;
@@ -61,7 +60,6 @@ router.get('/:title/:order', function(req, res, next) {
 
         customer.where_in('id', pastRentersIds, function(err, rows) {
           for (var i = 0; i < rows.length; i++) {
-            console.log(rows[i].id);
             pastRenters[rows[i].id].customer_data = rows[i];
             pastRentersArray.push(pastRenters[rows[i].id]);
           }
