@@ -222,5 +222,17 @@ describe("Endpoints under /rentals", function() {
       request
         .expect('[]', done);
     });
+
+    it('updates the rental in the database', function(done) {
+      var db = new sqlite3.Database('db/test.db');
+
+      request
+        .end(function(err, res) {
+          db.all("SELECT COUNT(*) AS num_of_checked_out_movies FROM rentals WHERE check_in_date IS NULL", function(error, result) {
+            assert.deepEqual([{'num_of_checked_out_movies': 1}], result);
+            done();
+          });
+        });
+    });
   });
 });
