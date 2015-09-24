@@ -6,6 +6,8 @@ var Controller = {
   index: function(req, res, next) {
     if (req.query.status == 'overdue') {
       new Customer().overdue(Controller.sendJSON.bind(res));
+    } else if (req.query.sort) {
+      new Customer().sortBy(req.query.sort, req.query.n, req.query.p, Controller.sendJSON.bind(res));
     } else {
       new Customer().all(Controller.sendJSON.bind(res));
     }
