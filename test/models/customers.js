@@ -69,20 +69,17 @@ describe("Customer Model", function() {
     });
   });
 
-  describe("instance methods: find_checked_out", function() {
+  describe("instance methods: find_current", function() {
     it("finds the checked out movies for the customer", function(done) {
-      a_customer.find_checked_out(1, function(err, res) {
-        var keys = ['checked_out_movies', 'returned_movies'];
+      a_customer.find_current(1, function(err, res) {
+        var keys = ['movie_id', 'title', "check_out_date", "expected_return_date"];
         assert.equal(err, undefined);
         assert(res instanceof Object);
 
-        assert.deepEqual(Object.keys(res), keys);
+        assert.deepEqual(Object.keys(res[0]), keys);
 
-        assert.equal(res.checked_out_movies.length, 1);
-        assert.equal(res.returned_movies.length, 1);
-
-        assert.deepEqual(res.checked_out_movies[0].id, 2);
-        assert.deepEqual(res.returned_movies[0].id, 1);
+        assert.equal(res.length, 1);
+        assert.equal(res[0].movie_id, 2);
 
         done();
       });

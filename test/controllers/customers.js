@@ -97,7 +97,7 @@ describe("Customers Controller", function() {
         .expect('Content-Type', /application\/json/)
         .expect(200, function(err, res) {
           var keys = ['movie_id', 'title', "check_out_date", "expected_return_date"];
-          assert.deepEqual(Object.keys(res.body), keys);
+          assert.deepEqual(Object.keys(res.body[0]), keys);
 
           assert.equal(res.body.length, 1);
           assert.equal(res.body[0].movie_id, 2);
@@ -128,7 +128,7 @@ describe("Customers Controller", function() {
         .expect('Content-Type', /application\/json/)
         .expect(200, function(err, res) {
           var keys = ['movie_id', 'title', "check_out_date", "check_in_date", "expected_return_date"];
-          assert.deepEqual(Object.keys(res.body), keys);
+          assert.deepEqual(Object.keys(res.body[0]), keys);
 
           assert.equal(res.body.length, 1);
           assert.equal(res.body[0].movie_id, 1);
