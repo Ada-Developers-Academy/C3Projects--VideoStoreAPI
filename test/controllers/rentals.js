@@ -258,36 +258,48 @@ describe("Endpoints for /rentals", function() {
     });
   });
 
-  // *POST* rental/:title/:customer_id/checkin
+  // *POST* rentals/:title/:customer_id/checkin
   describe('POST rentals/:title/:customer_id/checkin', function(){
-    // it('responds with json', function(done){
-    //   agent.post('/rentals/psycho/available')
-    //        .set('Accept', 'application/json')
-    //        .expect('Content-Type', /application\/json/)
-    //        .expect(200, function(error, result) {
-    //           assert.equal(error, undefined);
-    //           done();
-    //         });
-    // });
+    it('responds with json', function(done){
+      agent.post('/rentals/psycho/2/checkin')
+           .set('Accept', 'application/json')
+           .expect('Content-Type', /application\/json/)
+           .expect(200, function(error, result) {
+              assert.equal(error, undefined);
+              done();
+            });
+    });
 
-    // it('returns an object with keys title and inventory_available', function(done){
-    //   agent.get('/rentals/psycho/available')
-    //        .set('Accept', 'application/json')
-    //        .expect(200, function(error, result) {
-    //           assert.equal(result.body.length, 1);
-    //
-    //         var keys = ['title', 'inventory_available'];
-    //         assert.deepEqual(Object.keys(result.body[0]), keys);
-    //         done();
-    //   })
-    // });
+    it('returns an object with keys title and inventory_available', function(done){
+      agent.post('/rentals/psycho/2/checkin')
+           .set('Accept', 'application/json')
+           .expect(200, function(error, result) {
+              assert.equal(result.body, 'Movie checked in. Charged late fee.');
+
+            done();
+      })
+    });
   });
-  // *POST* rental/:title/:customer_id/checkout
 
+  // *POST* rentals/:title/:customer_id/checkout
+  describe('POST rentals/:title/:customer_id/checkout', function(){
+    it('responds with json', function(done){
+      agent.post('/rentals/christine/4/checkout')
+           .set('Accept', 'application/json')
+           .expect('Content-Type', /application\/json/)
+           .expect(200, function(error, result) {
+              assert.equal(error, undefined);
+              done();
+            });
+    });
 
-
-
-
-
-
+    it('returns an object with keys title and inventory_available', function(done){
+      agent.post('/rentals/christine/4/checkout')
+           .set('Accept', 'application/json')
+           .expect(200, function(error, result) {
+              assert.equal(result.body, 'Movie checked out.');
+              done();
+            })
+    });
+  });
 });
