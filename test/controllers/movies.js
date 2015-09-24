@@ -26,7 +26,6 @@ var request = require('supertest'),
         });
       })
 
-      // '/movies'
       describe('GET /movies', function(){
         var movieRequest;
 
@@ -55,8 +54,6 @@ var request = require('supertest'),
         });
       });
 
-
-      // '/movies/:sort_by/:results_per_page/:page_number'
       describe('GET /movies/:sort_by/:results_per_page/:page_number', function(){
         it('responds with json', function(done){
           agent.get('/movies/title/4/1')
@@ -144,8 +141,6 @@ var request = require('supertest'),
         })
       });
 
-
-      // '/movies/:title'
       describe("GET /movies/:title", function(){
         var movieRequest;
 
