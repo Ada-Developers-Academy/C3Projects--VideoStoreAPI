@@ -32,21 +32,53 @@ var Customer = function() { // Customer constructor
 //------------------------------------------------------------------------------
 //--------- SQL statements -----------------------------------------------------
 
+Customer.prototype.allStatement = function(page) {
+  var offset = (page - 1) * this.limit;
+  var customerKeys = ["id", "name", "postal_code", "registered_at"];
+  var statement = "SELECT " + customerKeys.join(", ") + " FROM customers "
+                + "LIMIT " + this.limit + " OFFSET " + offset + ";";
+  return statement;
+}
+
+Customer.prototype.allCountStatement = function() {
+  return "SELECT count(*) FROM customers";
+}
+
 Customer.prototype.allSortedStatement = function(sort, page) {
   var offset = (page - 1) * this.limit;
   var customerKeys = ["id", "name", "postal_code", "registered_at"];
   var statement = "SELECT " + customerKeys.join(", ") + " FROM customers "
-                + "ORDER BY " + sort + " ASC LIMIT 10 OFFSET " + offset + ";";
+                + "ORDER BY " + sort + " ASC LIMIT " + this.limit
+                + " OFFSET " + offset + ";";
   return statement;
 }
 
-Customer.prototype.allSortedCountStatement = function() {
-  return "SELECT count(*) FROM customers";
-}
 
 
 //------------------------------------------------------------------------------
 //--------- DB interactions ----------------------------------------------------
+
+Customer.prototype.all = function(page, callback) {
+  var that = this;
+  function formatData(err, res) {
+    if (err) { return callback(err); }
+
+    var results = {};
+    var data = fixTime(res, "registered_at");
+    results.meta = { status: 200, yourQuery: ourWebsite + "/customers/all" }
+    results.data = { customers: formatCustomerInfo(data) }
+    results.temp = { page: page, statement: "allCountStatement" }
+
+    return that.addPageInfo(results, callback);
+  }
+
+  var statement = this.allStatement(page);
+  this.open();
+  this.db.all(statement, function(error, data) {
+    return sqlErrorHandling(error, data, formatData);
+  })
+  this.close();
+}
 
 Customer.prototype.allSorted = function(sort, page, callback) {
   var that = this;
@@ -57,7 +89,7 @@ Customer.prototype.allSorted = function(sort, page, callback) {
     var data = fixTime(res, "registered_at");
     results.meta = { status: 200, yourQuery: ourWebsite + "/customers/all/" + sort }
     results.data = { customers: formatCustomerInfo(data) }
-    results.temp = { page: page, statement: "allSortedCountStatement" }
+    results.temp = { page: page, statement: "allCountStatement" }
 
     return that.addPageInfo(results, callback);
   }
@@ -68,7 +100,6 @@ Customer.prototype.allSorted = function(sort, page, callback) {
     return sqlErrorHandling(error, data, formatData);
   })
   this.close();
-
 }
 
 Customer.prototype.addPageInfo = function(results, callback) {
