@@ -7,7 +7,7 @@ var agent = request.agent(app);
 
 var resetTables = require('../dbCleaner');
 
-describe.only('/movies', function() {
+describe('/movies', function() {
   describe("GET '/'", function() {
     var numMoviesSeeded;
     var request;
