@@ -2,8 +2,7 @@ var request = require('supertest'),
     assert = require('assert'),
     app = require('../../app'),
     sqlite3 = require('sqlite3').verbose(),
-    agent = request.agent(app),
-    express = require('express');
+    agent = request.agent(app);
 
 describe("Endpoints for /rentals", function() {
   beforeEach(function(done){
