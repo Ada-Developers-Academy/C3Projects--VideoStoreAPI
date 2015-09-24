@@ -120,7 +120,7 @@ describe("Movie", function() {
     });
 
     it("can update a movie record", function(done) {
-      var id = 1;
+      var id = 3;
       var columns = ['title', 'release_date'];
       var values = ['The X-Files: I Want to Believe', '2008'];
 
