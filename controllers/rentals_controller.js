@@ -54,23 +54,21 @@ RentalsController.movieInfo = function(request, response, next) {
 
 RentalsController.overdue = function(request, response, next) {
   var Rental = new RentalModel();
+  var page = request.params.page || 1;
 
-  // basic handling for attempted sql injection
-  var callbackFxn = RentalsController.fixParamsOrReturnError(response);
-  var page = validateParams(request, "page", callbackFxn);
-  if (!page) { console.log("attempted SQL injection"); return; }
 
   Rental.overdue(page, function(error, result) {
     if (error) { result = error; }
 
     var msg = result.meta.message;
     if (typeof msg == "string") {
-      result.meta.message = Rental.noMoviesMsg;
+      result.meta.message = Rental.noOverdueMsg;
     }
 
     return response.status(result.meta.status).json(result);
   })
-
+  
+  return;
 
 
   // var db = new sqlite3.Database("db/" + dbEnv + ".db");

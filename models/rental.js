@@ -50,7 +50,7 @@ Rental.prototype.overdueStatement = function(page) {
                 + "ON customers.id = rentals.customer_id "
                 + "WHERE rentals.returned = 0 " // we only want customers that haven't returned a copy.
                 + "AND rentals.check_out_date + " + hoursInMilliseconds(72) + " < " + Date.now() + " "
-                + "LIMIT " + Rental.limit + " OFFSET " + offset + ";";
+                + "LIMIT " + this.limit + " OFFSET " + offset + ";";
   return statement;
 }
 
@@ -69,7 +69,7 @@ Rental.prototype.movieInfo = function(title, callback) {
 
     var data = fixTime(res, "release_date"); // fixing time
 
-    var results = {}
+    var results = {};
 
     results.data = {
       movieInfo: formatMovieInfo(data),
@@ -95,12 +95,29 @@ Rental.prototype.movieInfo = function(title, callback) {
   this.close();
 }
 
-Rental.prototype.overdue = function(somethingUnknown, callback) {
+Rental.prototype.overdue = function(page, callback) {
   function formatData(err, res) {
+    if (err) { return callback(err); }
 
+    var data = fixTime(res, "check_out_date"); // fixing time
+
+    var results = {};
+
+    results.meta = {
+      status: 200, // ok
+      yourQuery: ourWebsite + "/rentals/overdue/" + page
+    }
+
+    results.data = {
+      customers: formatCustomerInfo(data)
+    }
+
+    results = addMovieMetadata(results);
+
+    return callback(null, results);
   }
 
-  var statement = this.overdueStatement;
+  var statement = this.overdueStatement(page);
 
   this.open();
   this.db.all(statement, function(error, data) {
