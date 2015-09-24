@@ -61,12 +61,6 @@ router.get('/:id', function(req, res, next) {
             movieObject.returnedDate = pastMoviesObject[rows[i].id];
             pastRentalsArray.push(movieObject);
           }
-          // customerObject.movies.pastRentals = rows;
-          // add returned_date to each rental
-
-          // brute force: iterate through each movie object,
-          //  run a query on the rentals table, get returned_date for that movie
-          
           
           res.status(200).json(customerObject);
         });
