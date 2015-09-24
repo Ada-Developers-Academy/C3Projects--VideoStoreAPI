@@ -14,10 +14,12 @@ router.get("/:title", controller.movieInfo);
 // GET a list of all customers who currently have a copy of a given title
 router.get("/:title/customers", controller.customers);
 
-// // PATCH to /:title/customer/:id to check in a title
-// router.patch("/:title/customers/:id", controller.return);
-//
-// // POST to /:title/customer/:id to check out a title
-// router.post("/:title/customers/:id", controller.checkOut);
+// POST to /:title/customer/:id to check out a title
+// http://www.wobsite.com/rentals/Alien/customers/184
+router.get("/:title/customers/:id", controller.checkOut);
+
+// PATCH to /:title/customer/:id to return a title
+router.patch("/:title/customers/:id", controller.return);
+
 
 module.exports = router;

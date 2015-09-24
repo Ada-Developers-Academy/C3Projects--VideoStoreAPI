@@ -53,7 +53,9 @@ Customer.prototype.allSortedStatement = function(sort, page) {
   return statement;
 }
 
-
+Customer.prototype.showStatement = function(id) {
+  return "SELECT * FROM customers WHERE id=" + id + ";";
+}
 
 //------------------------------------------------------------------------------
 //--------- DB interactions ----------------------------------------------------
@@ -130,11 +132,26 @@ Customer.prototype.addPageInfo = function(results, callback) {
   this.close();
 }
 
-// all w/ sort by field
-// - SELECT * FROM customers ORDER BY (columnName);
+Customer.prototype.show = function(id, callback) {
+  function formatData(err, res) {
+    if (err) { return callback(err); }
 
-// all w/ pagination /customers/all&pagination=1
-// - first page: SELECT * FROM customers ORDER BY (columnName) LIMIT pageLimit;
-// - second page: SELECT * FROM customers ORDER BY (columnName) LIMIT pageLimit OFFSET offsetAmount;
+    var results = {};
+    var data = fixTime(res, "registered_at");
+    results.meta = { status: 200, yourQuery: ourWebsite + "/customers/all/" + sort }
+    results.data = { customers: formatCustomerInfo(data) }
+    results.temp = { page: page, statement: "allCountStatement" }
+
+    return that.addPageInfo(results, callback);
+  }
+
+  var statement = this.showStatement(id);
+  this.open();
+  this.db.all(statement, function(error, data) {
+    return sqlErrorHandling(error, data, formatData);
+  })
+  this.close();
+}
+
 
 module.exports = Customer;

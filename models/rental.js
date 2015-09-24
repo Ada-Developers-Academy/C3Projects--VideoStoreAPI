@@ -186,4 +186,44 @@ Rental.prototype.customers = function(title, callback) {
   this.close();
 }
 
+Rental.prototype.checkOut = function(movie_title, customer_id, outerCallback) {
+  // NOTE: maybe update to check if stock, then if stock, continue
+  console.log("here")
+
+  // validateMovie
+  var movie = this.movieInfo(movie_title, function(error, result) {
+    if (error) { console.log("oh crap"); return false; }
+    return result.data.availableToRent;
+  });
+
+  // validateCustomer
+  var statement = "SELECT * FROM customers WHERE id=" + customer_id + ";";
+  this.open();
+  var customer = this.db.all(statement, function(error, result, callback) {
+    if (error) { console.log("oh crap"); return false; }
+    return callback(result.length > 0);
+  });
+
+  console.log(customer);
+
+  this.close();
+
+
+
+
+  // 1. find a movie w/ movie_title STATEMENT
+  // 2. find customer w/ id STATEMENT
+  // create a rental transaction after validating presence of above
+  // 3. create a rental transaction STATEMENT
+    // id INTEGER PRIMARY KEY // autopopulate
+    // movie_title TEXT // from URL
+    // customer_id INTEGER // from URL
+    // returned INTEGER // 0
+    // check_out_date INTEGER // we need to populate from Date.now?
+    // return_date INTEGER // ""
+  // 4. charge the customer's account STATEMENT
+    // id INTEGER
+    // account_credit INTEGER // somehow it is a magical 13.15 dollars and cents amt
+}
+
 module.exports = Rental;

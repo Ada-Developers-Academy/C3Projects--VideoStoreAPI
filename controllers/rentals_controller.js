@@ -88,6 +88,19 @@ RentalsController.customers = function(request, response, next) {
 
 RentalsController.checkOut = function(request, response, next) {
   // post request, check out a title
+  var Rental = new RentalModel();
+  Rental.checkOut("Alien", 1, function(error, result) {
+    if (error) { result = error; }
+
+    // var msg = result.meta.message;
+    // if (typeof msg == "string") {
+    //   result.meta.message = Rental.noCustomersMsg;
+    //   result.meta.moreMovieInfo = ourWebsite + "/movies/" + title;
+    //   result.meta.yourQuery = ourWebsite + "/rentals/" + title + "/customers";
+    // }
+
+    return response.status(200).json(result);
+  })
 }
 
 RentalsController.return = function(request, response, next) {
