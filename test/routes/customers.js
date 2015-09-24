@@ -24,7 +24,7 @@ describe("customers routes", function() {
         DELETE FROM movies; \
         INSERT INTO movies (title, overview, release_date, inventory) \
         VALUES ('Fight the Future', 'first xfiles movie', '1998', 2), \
-          ('I Want to Believe', 'second xfiles movie', '2008', 4), \
+          ('I Want to Believe', 'second xfiles movie', '2008', 4); \
         DELETE FROM rentals; \
         INSERT INTO rentals (customer_id, movie_id, checkout_date, due_date, \
           returned_date) \
@@ -73,7 +73,7 @@ describe("customers routes", function() {
       });
     });
 
-    it.only("the customer objects contain customer data", function(done) {
+    it("the customer objects contain customer data", function(done) {
       agent.get('/customers').set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
@@ -148,13 +148,13 @@ describe("customers routes", function() {
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
           var pastRentals = response.body.movies.pastRentals;
-          var movie = pastRentals[0].movieData;
+          var movie = pastRentals[0].movie_data;
 
           assert.equal(pastRentals.length, 2);
-          assert.equal(movie.title, "Fight the Future"); 
-          assert.equal(movie.overview, "first xfiles movie"); 
-          assert.equal(movie.release_date, "1998");
-          assert.equal(movie.inventory, 2);
+          assert.equal(movie.title, "I Want to Believe"); 
+          assert.equal(movie.overview, "second xfiles movie"); 
+          assert.equal(movie.release_date, "2008");
+          assert.equal(movie.inventory, 4);
           done();
         });
     });
