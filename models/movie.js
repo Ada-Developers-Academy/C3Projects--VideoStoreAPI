@@ -256,4 +256,74 @@ Movie.prototype.rentals_by_customer_name = function(title, callback) {
   this.close();
 }
 
+Movie.prototype.rentals_by_check_out_date = function(title, callback) {
+  function formatData(err, res) {
+    if (err) { return callback(err); }
+
+    var data = fixTime(res, 'check_out_date');
+    var results = {};
+
+    results.meta = {
+      status: 200,
+      yourQuery: ourWebsite + '/movies/' + title + '/rented/sort_by=check_out_date'
+    }
+
+    results.data = {
+      movies: data
+    }
+
+    return callback(null, results);
+  }
+
+  var statement =
+    "SELECT customers.name, rentals.check_out_date, \
+    rentals.movie_title \
+    FROM rentals LEFT JOIN customers \
+    ON rentals.customer_id = customers.id \
+    WHERE rentals.movie_title = '" + title + "' \
+    AND rentals.returned = 1 \
+    ORDER BY check_out_date";
+
+  this.open();
+  this.db.all(statement, function(error, data) {
+    return sqlErrorHandling(error, data, formatData);
+  })
+  this.close();
+}
+
+Movie.prototype.whos_renting = function(title, callback) {
+  function formatData(err, res) {
+    if (err) { return callback(err); }
+
+    var data = fixTime(res, 'check_out_date');
+    var results = {};
+
+    results.meta = {
+      status: 200,
+      yourQuery: ourWebsite + '/movies/' + title + '/renting'
+    }
+
+    results.data = {
+      movies: data
+    }
+
+    return callback(null, results);
+  }
+
+  var statement =
+    "SELECT customers.name, rentals.check_out_date, \
+    rentals.movie_title \
+    FROM rentals LEFT JOIN customers \
+    ON rentals.customer_id = customers.id \
+    WHERE rentals.movie_title = '" + title + "' \
+    AND rentals.returned = 0";
+
+  this.open();
+  this.db.all(statement, function(error, data) {
+    return sqlErrorHandling(error, data, formatData);
+  })
+  this.close();
+}
+
+
 module.exports = Movie;

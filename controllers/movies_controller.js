@@ -89,64 +89,38 @@ MoviesController.rentals_by_customer_name = function(request, response) {
 
 //--------- GET rentals of :title, sorted by check_out_date --------------------
 MoviesController.rentals_by_check_out_date = function(request, response) {
-  var db = new sqlite3.Database("db/" + dbEnv + ".db");
   var movies = new movieTable();
   var title = request.params.title;
-  var query = request.params.query;
-  var page = request.params.page || 1;
-  var offset = (page - 1) * movies.limit;
 
-  var statement =
-    "SELECT customers.name, rentals.check_out_date, \
-    rentals.movie_title \
-    FROM rentals LEFT JOIN customers \
-    ON rentals.customer_id = customers.id \
-    WHERE rentals.movie_title = '" + title + "' \
-    AND rentals.returned = 1 \
-    ORDER BY check_out_date";
+  movies.rentals_by_check_out_date(title, function(error, result) {
+    if (error) { result = error; }
 
-  db.all(statement, function(err, result) {
-    if(err) {
-      console.log(err); // error handling
-      return;
-    };
-    result = fixTime(result, 'check_out_date');
-    return response.status(200).json(result);
-
-  });
-
-  db.close();
+    return response.status(result.meta.status).json(result);
+  })
 }
 
 //--------- GET a list of customers who have rented :title ---------------------
 MoviesController.whos_renting = function(request, response) {
-  var db = new sqlite3.Database("db/" + dbEnv + ".db");
   var movies = new movieTable();
   var title = request.params.title;
-  var page = request.params.page || 1;
-  var offset = (page - 1) * movies.limit;
+  // var page = request.params.page || 1;
+  // var offset = (page - 1) * movies.limit;
 
-  var statement =
-    "SELECT customers.name, rentals.check_out_date, \
-    rentals.movie_title \
-    FROM rentals LEFT JOIN customers \
-    ON rentals.customer_id = customers.id \
-    WHERE rentals.movie_title = '" + title + "' \
-    AND rentals.returned = 0 \
-    LIMIT " + movies.limit + " \
-    OFFSET " + offset;
+  movies.whos_renting(title, function(error, result) {
+    if (error) { result = error; }
 
-  db.all(statement, function(err, result) {
-    if(err) {
-      console.log(err); // error handling
-      return;
-    };
-    result = fixTime(result, 'check_out_date');
-    return response.status(200).json(result);
+    return response.status(result.meta.status).json(result);
+  })
 
-  });
-
-  db.close();
+  // var statement =
+  //   "SELECT customers.name, rentals.check_out_date, \
+  //   rentals.movie_title \
+  //   FROM rentals LEFT JOIN customers \
+  //   ON rentals.customer_id = customers.id \
+  //   WHERE rentals.movie_title = '" + title + "' \
+  //   AND rentals.returned = 0 \
+  //   LIMIT " + movies.limit + " \
+  //   OFFSET " + offset;
 }
 
 module.exports = MoviesController;
