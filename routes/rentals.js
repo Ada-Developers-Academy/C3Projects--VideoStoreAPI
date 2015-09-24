@@ -1,4 +1,4 @@
-var async = require('async');
+// var async = require('async');
 var express = require('express');
 var router = express.Router();
 
@@ -38,48 +38,28 @@ router.get('/:title', function(request, response, next) {
   var customerIdList = [];
   var movieObject = {};
 
-  async.waterfall([
-    // query db for movie and get inventory
-    function(callback) {
-      movie.find_by('title', title, function(error, row) {
-        movieObject.movie_data = row;
-        callback(null);
-      });
-    },
+  // query db for movie and get inventory
+  movie.find_by('title', title, function(error, row) {
+    movieObject.movie_data = row;
+
     // retrieve rental records for that movie
-    function(callback) {
-      rental.where(['movie_id', 'returned_date'], 
-        [movieObject.movie_data.id, ''], function(error, rows) {
-          // turn object of rentals into array of ids
-          for (var i = 0; i < rows.length; i++) {
-            customerIdList.push(rows[i].customer_id);
-          }
-          callback(null);
-      });
-    },
-    // get count of rentals
-    function(callback) {
-      // check how many copies of that movie are checked out
+    rental.where(['movie_id', 'returned_date'], [movieObject.movie_data.id, ''], function(error, rows) {
+      // turn object of rentals into array of ids
+      for (var i = 0; i < rows.length; i++) {
+        customerIdList.push(rows[i].customer_id);
+      }
+
       rentedCount = customerIdList.length;
       var inventory = movieObject.movie_data.inventory;
-
       var availableBool = (rentedCount < inventory) ? true : false;
       var availableCount = (rentedCount < inventory) ? (inventory - rentedCount) : 0;
-      movieObject.availability = {
-        available: availableBool,
-        copiesAvailable: availableCount
-      };
-      callback(null);
-    },
-    // query DB for full customer data
-    function(callback) {
+      movieObject.availability = { available: availableBool, copiesAvailable: availableCount }
+
       customer.where_in('id', customerIdList, function(error, rows) {
         movieObject.currentRenters = rows;
-        callback(null, movieObject);
+        response.status(200).json(movieObject);
       });
-    }
-  ], function(error, result) {
-    response.status(200).json(result);
+    });
   });
 });
 
