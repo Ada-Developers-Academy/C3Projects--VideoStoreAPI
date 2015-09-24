@@ -11,6 +11,10 @@ var Controller = {
     }
   },
 
+  show: function(req, res, next) {
+    new Movie().findBy(Object.keys(req.params)[0], req.params.title ,Controller.sendJSON.bind(res));
+  },
+
   sendJSON: function(err, res) {
     if (err) {
       var status = err.status == 400 ? 400 : 500;
