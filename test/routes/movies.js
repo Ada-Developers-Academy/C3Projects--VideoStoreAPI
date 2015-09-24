@@ -24,7 +24,8 @@ describe("movies routes", function() {
         DELETE FROM movies; \
         INSERT INTO movies (title, overview, release_date, inventory) \
         VALUES ('Fight the Future', 'first xfiles movie', '1998', 2), \
-          ('I Want to Believe', 'second xfiles movie', '2008', 4); \
+          ('I Want to Believe', 'second xfiles movie', '2008', 4), \
+          ('A Movie', 'some plot', '2009', 3); \
         DELETE FROM rentals; \
         INSERT INTO rentals (customer_id, movie_id, checkout_date, due_date, \
           returned_date) \
@@ -63,12 +64,12 @@ describe("movies routes", function() {
       });
     });
 
-    it("returns as many movies as there are in the table: 2", function(done) {
+    it("returns as many movies as there are in the table: 3", function(done) {
       agent.get('/movies').set('Accept', 'application/json')
         .expect(200, function(error, response) {
           var movies = response.body.movies;
 
-          assert.equal(movies.length, 2);
+          assert.equal(movies.length, 3);
           done();
       });
     });
@@ -150,43 +151,44 @@ describe("GET /movies/:sort_by/:number/:offset", function() {
     });
 
     it("returns an object", function(done) {
-      agent.get('/movies/title/2/0').set('Accept', 'application/json')
+      agent.get('/movies/title/1/1').set('Accept', 'application/json')
         .expect(200, function(error, response) {
           var movies = response.body;
-          console.log(movies);
           assert(movies instanceof Object);
           done();
       });
     });
 
-    // it("returns the number of movies in the number parameter", function(done) {
-    //   agent.get('/movies/title/2/0').set('Accept', 'application/json')
-    //     .expect(200, function(error, response) {
-    //       var movieData = response.body.movie_data;
+    it("returns the number of movies in the number parameter", function(done) {
+      agent.get('/movies/title/2/0').set('Accept', 'application/json')
+        .expect(200, function(error, response) {
+          var movies = response.body.movies;
 
-    //       assert.equal(movieData.title, 'Fight the Future');
-    //       done();
-    //   });
-    // });
+          assert.equal(movies.length, 2);
+          done();
+      });
+    });
 
-    // it("returns a currentRenters object with a list of current renters", function(done) {
-    //   agent.get('/movies/title/5/5').set('Accept', 'application/json')
-    //     .expect(200, function(error, response) {
-    //       var currentRenters = response.body.customers.currentRenters;
+    it("returns movies ordered alphabetically", function(done) {
+      agent.get('/movies/title/1/0').set('Accept', 'application/json')
+        .expect(200, function(error, response) {
+          var movies = response.body.movies;
 
-    //       assert(currentRenters[0].name, 'Fox Mulder');
-    //       done();
-    //   });
-    // });
+          // this is the third movie by id, but the first alphabetically
+          assert(movies[0].title, "A Movie");
+          done();
+      });
+    });
 
-    // it("returns a pastRenters object with a list of past renters sorted by the order variable", function(done) {
-    //   agent.get('/movies/title/5/5').set('Accept', 'application/json')
-    //     .expect(200, function(error, response) {
-    //       var pastRenters = response.body.customers.pastRenters;
+    it("returns movies starting from the id listed in the offset", function(done) {
+      agent.get('/movies/title/1/1').set('Accept', 'application/json')
+        .expect(200, function(error, response) {
+          var movies = response.body.movies;
 
-    //       assert(pastRenters[0].name, 'Alex Krychek');
-    //       done();
-    //   });
-    // });
+           // this is the second movie alphabetically
+          assert(movies[0].title, "Fight the Future");
+          done();
+      });
+    });
   });
 });

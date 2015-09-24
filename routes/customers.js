@@ -20,24 +20,21 @@ router.get('/', function(req, res, next) {
 router.get('/:id', function(req, res, next) {
   var id = req.params.id;
   var customer_info;
-  var pastRentalsArray = [];
+  // var pastRentalsObject = {};
 
   var customerObject = {
     customer_data: undefined,
-    movies: { pastRentals: pastRentalsArray }
+    movies: {}
   }
 
   customer.find_by('id', id, function(err, row) {
     customerObject.customer_data = row;
 
-    var condition = "customer_id = " + id;
-
-    // order_by returns a collection of records matching the condition,
-    // ordered by the column
-    rental.order_by(condition, "checkout_date", function(err, rows) {
+    // use where to pull all records that meet the condition
+    rental.where(["customer_id"], [id], function(err, rows) {
       var currentMoviesIDs = [];
       var pastMoviesIDs = [];
-      var pastMoviesObject = {};
+      var pastMovies = {};
 
       for (var i = 0; i < rows.length; i++) {
         // currently checked out movies
@@ -45,22 +42,32 @@ router.get('/:id', function(req, res, next) {
           currentMoviesIDs.push(rows[i].movie_id);
         // returned movies
         } else {
-          pastMoviesObject[rows[i].movie_id] = rows[i].returned_date;
+          pastMovies[rows[i].movie_id] = { 
+            dates: {
+              returned_date: rows[i].returned_date,
+              checkout_date: rows[i].checkout_date 
+            }
+          };
+
+          pastMoviesIDs.push(rows[i].movie_id);
         }
       }
-      pastMoviesIDs = Object.keys(pastMoviesObject);
 
       movie.where_in('id', currentMoviesIDs, function(err, rows) {
         customerObject.movies.currentRentals = rows; // no returned_date
+        pastMoviesArray = [];
 
-        movie.where_in('id', pastMoviesIDs, function(err, rows) {
+        movie.where_in('id', pastMoviesIDs, function(err, rows) { // unsorted
           for (var i = 0; i < rows.length; i++) {
-            var movieObject = {};
-            movieObject.movieData = rows[i];
-            movieObject.returnedDate = pastMoviesObject[rows[i].id];
-            pastRentalsArray.push(movieObject);
+            pastMovies[rows[i].id].movie_data = rows[i];
+            pastMoviesArray.push(pastMovies[rows[i].id]);
           }
+
+          pastMoviesArray.sort(function(a, b) {
+              return a.dates.checkout_date.localeCompare(b.dates.checkout_date); // this is a good way to sort strings!
+            });
           
+          customerObject.movies.pastRentals = pastMoviesArray;
           res.status(200).json(customerObject);
         });
       });
