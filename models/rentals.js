@@ -25,7 +25,6 @@ var sqlite3 = require('sqlite3').verbose(),
     statement = "Select customers.id, customers.name, rentals.checkout_date FROM customers, rentals WHERE rentals.customer_id=customers.id AND rentals.movie_title LIKE ? AND rentals.return_date " + returned + ordered;
 
     db.all(statement, [titleish], function(err, res) {
-      console.log(statement);
       if (callback) callback(err, res);
       db.close();
     })

@@ -115,7 +115,7 @@ describe("/customers", function() {
       customer_request = agent.get('/customers/history/1').set('Accept', 'application/json');
       customer_request.expect(200, function(err, res) {
         assert.equal(res.body.length, 1);
-        console.log(res.body);
+  
         assert.notEqual(res.body[0].return_date, null);
         done();
       })

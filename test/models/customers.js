@@ -3,7 +3,7 @@ var assert = require('assert'),
     Rental = require('../../models/rentals'),
     sqlite3 = require('sqlite3').verbose();
 
-describe.only("Customer", function() {
+describe("Customer", function() {
   var customer, rental, db_cleaner
 
   beforeEach(function(done) {
