@@ -55,7 +55,7 @@ MoviesController.title = function(request, response) {
 }
 
 //--------- GET rentals of :title, sorted by customer_id -----------------------
-MoviesController.rentals_by_customer_id =  function(request, response) {
+MoviesController.rentals_by_customer_id = function(request, response) {
   var movies = new movieTable();
   var title = request.params.title;
 
