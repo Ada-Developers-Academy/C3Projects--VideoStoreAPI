@@ -74,10 +74,18 @@ exports.moviesController = {
     var title = req.params.title;
     var regex = /[^\/]+$/
     var sort = regex.exec(req.url)
-    console.log(req.url)
     dbMovie.getPastRentalCustomer(dbMovie, dbRental, dbCustomer, title, sort[0], function(error, result) {
-      console.log(result);
       res.status(200).json(result);
+    });
+
+  },
+
+  pastCustomerRentalsByDate: function(req, res) {
+    var dbMovie = new Movie();
+    var title = req.params.title;
+
+    dbMovie.getPastRentalCustomerByDate(dbMovie, title, function(error, result) {
+      res.status(200).json(result)
     });
 
   },

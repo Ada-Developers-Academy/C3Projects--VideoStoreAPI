@@ -66,6 +66,18 @@ module.exports = {
     })
   },
 
+  past_checkout_rentals_by_date: function(value, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    var statement = "SELECT name, registered_at, address, city, state, postal_code, phone, account_credit, checkout_date FROM customers, rentals WHERE customers.id = rentals.customer_id AND rentals.movie_id = " + value +" AND rentals.returned_date != 'nil' ORDER BY checkout_date DESC;";
+
+    db.all(statement, function(error, result) {
+      console.log(statement);
+      if (callback) callback(error, result);
+      console.log(result)
+      db.close();
+    })
+  },
+
   create_rental: function(data, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
     var statement = "INSERT INTO rentals (checkout_date, returned_date, rental_time, \

@@ -44,6 +44,14 @@ Movie.prototype.getPastRentalCustomer = function(movieDb, rentalDb, customerDb, 
   });
 }
 
+Movie.prototype.getPastRentalCustomerByDate = function(movieDb, title, callback) {
+  getMovieId(movieDb, title, function(error, movieId) {
+    movieDb.past_checkout_rentals_by_date(movieId[0].id, function(error, customers) {
+      callback(error, customers);
+    });
+  });
+}
+
 function sortById(array) {
   array.sort(function(a, b) {
     if (a.id > b.id) {
@@ -70,6 +78,7 @@ function sortByName(array) {
 
   return array;
 }
+
 
 function getMovieId(instance, title, callback) {
   instance.find_by("title", title, function(error, result) {
