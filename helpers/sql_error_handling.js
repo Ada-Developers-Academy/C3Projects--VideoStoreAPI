@@ -11,7 +11,7 @@ function sqlErrorHandling(error, data, callback) {
   } else if (data.length == 0) { // handling for no results
     results.meta = {
       status: 303, // see other
-      message: "No results found. You must query this endpoint with an exact title."
+      message: "ERROR"
     }
   } else { // no error here
     return callback(null, data);

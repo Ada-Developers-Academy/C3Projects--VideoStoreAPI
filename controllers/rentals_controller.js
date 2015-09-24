@@ -41,28 +41,43 @@ RentalsController.movieInfo = function(request, response, next) {
   if (!title) { console.log("attempted SQL injection"); return; }
 
   Rental.movieInfo(title, function(error, result) {
-    if (error)
-      return response.status(error.meta.status).json(error);
-    else
-      return response.status(result.meta.status).json(result);
+    if (error) { result = error; }
+
+    var msg = result.meta.message;
+    if (typeof msg == "string") {
+      result.meta.message = Rental.noMoviesMsg;
+    }
+
+    return response.status(result.meta.status).json(result);
   })
 }
 
 RentalsController.overdue = function(request, response, next) {
+  var Rental = new RentalModel();
+
+  // basic handling for attempted sql injection
+  var callbackFxn = RentalsController.fixParamsOrReturnError(response);
+  var page = validateParams(request, "page", callbackFxn);
+  if (!page) { console.log("attempted SQL injection"); return; }
+
+  Rental.overdue(page, function(error, result) {
+    if (error) { result = error; }
+
+    var msg = result.meta.message;
+    if (typeof msg == "string") {
+      result.meta.message = Rental.noMoviesMsg;
+    }
+
+    return response.status(result.meta.status).json(result);
+  })
+
+
+
   // var db = new sqlite3.Database("db/" + dbEnv + ".db");
   var page = Number(request.params.page) || 1;
   var offset = (page - 1) * 10;
   var status = 200; // ok
 
-  var customerFields = ["id", "name", "city", "state", "postal_code"];
-  var statement = "SELECT customers." + customerFields.join(", customers.") + ", "
-                + "rentals.check_out_date, rentals.movie_title "
-                + "FROM rentals "
-                + "LEFT JOIN customers "
-                + "ON customers.id = rentals.customer_id "
-                + "WHERE rentals.returned = 0 " // we only want customers that haven't returned a copy.
-                + "AND rentals.check_out_date + " + hoursInMilliseconds(72) + " < " + Date.now() + " "
-                + "LIMIT " + Rental.limit + " OFFSET " + offset + ";";
 
   // query database
   var db = new sqlite3.Database("db/" + dbEnv + ".db");

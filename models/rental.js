@@ -25,6 +25,9 @@ var Rental = function() { // Rental constructor
 
   // rental page limit
   this.limit = 10;
+  this.noMovieMsg = "No results found. You must query this endpoint with an exact title.";
+  this.noOverdueMsg = "No results found. You must query this endpoint with an exact title. "
+                    + "If you are using an exact title, no customers have a copy checked out."
 }
 
 Rental.prototype.movieInfoStatement = function(title) {
@@ -35,6 +38,25 @@ Rental.prototype.movieInfoStatement = function(title) {
                 + "ON rentals.movie_title = movies.title "
                 + "WHERE movies.title = '" + title + "';";
   return statement;
+}
+
+Rental.prototype.overdueStatement = function(page) {
+  var offset = (page - 1) * 10;
+  var customerFields = ["id", "name", "city", "state", "postal_code"];
+  var statement = "SELECT customers." + customerFields.join(", customers.") + ", "
+                + "rentals.check_out_date, rentals.movie_title "
+                + "FROM rentals "
+                + "LEFT JOIN customers "
+                + "ON customers.id = rentals.customer_id "
+                + "WHERE rentals.returned = 0 " // we only want customers that haven't returned a copy.
+                + "AND rentals.check_out_date + " + hoursInMilliseconds(72) + " < " + Date.now() + " "
+                + "LIMIT " + Rental.limit + " OFFSET " + offset + ";";
+  return statement;
+}
+
+Rental.prototype.overdueCountStatement = function() {
+  return "SELECT count(*) FROM rentals WHERE returned = 0 " // now it is easy to change the day
+       + "AND check_out_date + " + hoursInMilliseconds(24 * 3) + " < " + Date.now() + ";";
 }
 
 Rental.prototype.addPageInfo = function(statement, callback) {
@@ -65,6 +87,20 @@ Rental.prototype.movieInfo = function(title, callback) {
   }
 
   var statement = this.movieInfoStatement(title);
+
+  this.open();
+  this.db.all(statement, function(error, data) {
+    return sqlErrorHandling(error, data, formatData);
+  })
+  this.close();
+}
+
+Rental.prototype.overdue = function(somethingUnknown, callback) {
+  function formatData(err, res) {
+
+  }
+
+  var statement = this.overdueStatement;
 
   this.open();
   this.db.all(statement, function(error, data) {
