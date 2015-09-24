@@ -114,7 +114,6 @@ describe("Movie", function() {
           assert.equal(err, undefined);
           assert(res instanceof Array);
           assert.equal(res.length, 2);
-          console.log(res);
           assert.equal(res[0].name, 'JuiceMaws');
           assert.equal(res[1].name, 'SecondMaws');
           done();

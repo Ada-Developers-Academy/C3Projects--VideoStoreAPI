@@ -20,7 +20,8 @@ var rentalsController = {
     db.check_in(customer_id, movie_title, function(err, result) {
       return response.status(200).json(result);
     });
-  }
+  },
+
 };
 
 module.exports = rentalsController;

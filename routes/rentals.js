@@ -6,5 +6,4 @@ router.post('/checkout', rentals_exports.create);
 router.patch('/checkin', rentals_exports.update);
 router.put('/checkin', rentals_exports.update);
 
-
 module.exports = router;
