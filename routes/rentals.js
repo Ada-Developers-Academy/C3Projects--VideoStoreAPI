@@ -13,7 +13,7 @@ router.get('/:movie_title/current_customers', function(req, res, next) {
   return rental_exports.rentalsController.current_customers(req, res);
 });
 
-router.get('/:movie_title', function(req, res, next) {
+router.get('/:movie_title/rental_log', function(req, res, next) {
   return rental_exports.rentalsController.rental_log(req, res);
 })
 

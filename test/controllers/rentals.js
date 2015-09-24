@@ -5,7 +5,7 @@ var request = require('supertest'),
     agent = request.agent(app),
     Rental = require('../../rentals');
 
-describe("rentals controller", function() {
+describe.only("rentals controller", function() {
   var rental, db_cleaner;
 
   beforeEach(function(done) {
@@ -17,8 +17,8 @@ describe("rentals controller", function() {
         "BEGIN; \
         DELETE FROM rentals; DELETE FROM customers; \
         INSERT INTO rentals(check_out, check_in, due_date, overdue, movie_title, customer_id) \
-        VALUES('2015-06-16', '2015-06-17', '2015-06-19', 0, 'Jaws', 1), \
-              ('2015-06-16', '2015-06-17', '2015-06-19', 1, 'Alien', 1); \
+        VALUES('20150616', '20150617', '20150619', 0, 'Jaws', 1), \
+              ('20150616', null, '20150619', 1, 'Alien', 1); \
         INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_credit) \
         VALUES('Harry', 20150616, '1234', 'Seattle', 'WA', '98103', '1234567', 123); \
         COMMIT;"
@@ -68,6 +68,7 @@ describe("rentals controller", function() {
       agent.get(rentals_overdue_path).set("Accept", "application/json")
         .expect(200, function(error, result) {
           assert.equal(result.body.length, 1);
+          console.log(result);
 
           var keys = ['id', 'name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone', 'account_credit'];
           assert.deepEqual(Object.keys(result.body[0]), keys);
