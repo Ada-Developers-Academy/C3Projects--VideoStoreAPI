@@ -93,7 +93,6 @@ var rentalsController = {
     db.query(select_name_and_title, function(err, result) {
       var customer_name = result[0].name;
       var movie_title = result[0].title;
-      console.log("typeof :", typeof customer_name);
 
       var post_rental_statement = 
         "INSERT INTO rentals (customer_id, name, movie_id, title, checkout_date, due_date, return_date) \
@@ -134,7 +133,6 @@ var rentalsController = {
 
     db.multi_query(return_movie_statement, function(err) {
       db.query(select_last_rental_statement, function(err, result) {
-      console.log("error: ", err);
 
         var json_result = {
           rental_history: result
