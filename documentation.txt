@@ -26,7 +26,7 @@ GET 'customers/:id/movies'
 GET '/movies'
   // => [{<movie>}, {<movie>}] <-- includes movie attributes
   // OPTIONAL
-  // ?&n=12&p=2&sort=_____
+  // ?n=12&p=2&sort=_____
     // sort options: title, release_date
   - Retrieve a list of all movies
   - Retrieve a subset of movies
@@ -36,7 +36,7 @@ GET '/movies'
         - `release_date`
 GET 'movies/:title/customers'
   // => {<movie>} <-- title is REQUIRED TO BE unique
-  // ?&status=____&sort=_____
+  // ?status=____&sort=_____
     // status options: current, past
     // sort options: id, name, checkout_date
   - Given a movies `title`...
