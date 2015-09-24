@@ -20,8 +20,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ------ ROUTES ---------------------------------------------------------------
-app.use("/rentals", require("./routes/rentals_routes"));
-app.use("/customers", require("./routes/customers_routes"));
+app.use("/rentals", require("./routes/rental_routes"));
+app.use("/customers", require("./routes/customer_routes"));
 app.use('/movies', require('./routes/movie_routes'));
 
 // catch 404 and forward to error handler

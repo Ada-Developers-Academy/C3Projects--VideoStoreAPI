@@ -1,11 +1,7 @@
 "use strict";
 
 // ----------------- rental model ----------------- //
-var Rental = require('../models/rental');
-
-// ------------------- database ------------------- //
-var sqlite3 = require("sqlite3").verbose();
-var dbEnv = process.env.DB || "development";
+var RentalModel = require('../models/rental');
 
 // --------------- helper functions --------------- //
 var helps = "../helpers/";
@@ -37,31 +33,19 @@ RentalsController.fixParamsOrReturnError = function(response) {
 }
 
 RentalsController.movieInfo = function(request, response, next) {
+  var Rental = new RentalModel();
+
   // basic handling for attempted sql injection
   var callbackFxn = RentalsController.fixParamsOrReturnError(response);
   var title = validateParams(request, "title", callbackFxn);
   if (!title) { console.log("attempted SQL injection"); return; }
 
-  var status = 200; // ok
-
-  var movieFields = ["title", "overview", "release_date", "inventory"];
-  var statement = "SELECT movies." + movieFields.join(", movies.") + ", rentals.returned "
-                + "FROM rentals "
-                + "LEFT JOIN movies "
-                + "ON rentals.movie_title = movies.title "
-                + "WHERE movies.title = '" + title + "';";
-
-  // query database
-  var db = new sqlite3.Database("db/" + dbEnv + ".db");
-  db.all(statement, function(error, data) {
-    var rental = new Rental();
-    var results = rental.movieInfo(error, data);
-    var status = results.data.status;
-
-    return response.status(status).json(results);
-  });
-
-  db.close();
+  Rental.movieInfo(title, function(error, result) {
+    if (error)
+      return response.status(error.meta.status).json(error);
+    else
+      return response.status(result.meta.status).json(result);
+  })
 }
 
 RentalsController.overdue = function(request, response, next) {
@@ -78,7 +62,7 @@ RentalsController.overdue = function(request, response, next) {
                 + "ON customers.id = rentals.customer_id "
                 + "WHERE rentals.returned = 0 " // we only want customers that haven't returned a copy.
                 + "AND rentals.check_out_date + " + hoursInMilliseconds(72) + " < " + Date.now() + " "
-                + "LIMIT 10 OFFSET " + offset + ";";
+                + "LIMIT " + Rental.limit + " OFFSET " + offset + ";";
 
   // query database
   var db = new sqlite3.Database("db/" + dbEnv + ".db");
