@@ -56,9 +56,9 @@ Returns all the information on record of the selected customer, including all th
 
 __Request Parameter__  
 
-  | Path Parameter  | Value              |
-  | :---------------| :----------------- |
-  | `id `           | The customer's ID. |
+| Path Parameter  | Value              |
+| :---------------| :----------------- |
+| `id `           | The customer's ID. |
 
 __Response__
 
@@ -140,7 +140,7 @@ __Response__
 ***
 
 __Endpoint__  
-`GET ./movies/title/{:title}`  
+`GET ./movies/{:title}`  
 
 Returns movies that fuzzy match the title query. The results are automatically ordered by `movie_id` but can also be ordered by title or release date.
 
@@ -164,46 +164,6 @@ __Response__
     }
 
 ***
-
-__Endpoint__  
-`GET /movies/{:title}/rentals`  
-
-Retrieve customers who currently and previously checked out a specific movie. Default ordering is by customer ID, but can be changed to order by the customer's name or the movie's checkout date.  
-
-__Request Parameters__  
-
-| Path Parameter     | Value                    |
-| :------------------| :----------------------- |
-| `title`            |  The title of the movie. |
-
-| Query Parameter    | Value                    |
-| :------------------| :----------------------- |
-| `order_by`         |  _Optional._ Provide this parameter if you would like the customers sorted. Options include: `customer_id`, `name`, or `checkout_date`.     |
-
-__Response__
-
-    {
-      "current_rentals": [
-        {
-          "rental_id": "5",
-          "movie_title": "Night of the Living Dead",
-        },
-        {
-
-        }
-      ],
-
-      "previous_rentals": [
-        {
-
-        },
-        {
-
-        },
-         …
-      ]
-    }
-
 
 ## Rentals
 
