@@ -12,3 +12,11 @@ just saying.
 - ROUTES controller.customers is executing in the context of the .get, not in the context of controller
   - using controller.customers.bind(controller) will bind the context to the controller object
   - or you can use `controller.thing` instead of `this.thing`
+
+### Jeri's notes about fixing the sql error handler
+
+hmmmm
+
+
+
+.
