@@ -14,7 +14,9 @@ Rental.prototype = {
       rental_duration_days = 7,
       checkout_date = date_format(0),
       return_date = date_format(rental_duration_days),
-      rental_cost = 1.0;
+      rental_cost = 1.0,
+      inserted_rental_id,
+      number_of_records_changed;
 
     var create_statement = "INSERT INTO " + this.table_name + " (checkout_date, return_date, movie_id, customer_id, checked_out) " + "VALUES ('" + checkout_date + "', '" + return_date  + "', (SELECT id FROM movies WHERE title = '" + movie_title + "'), " + customer_id + ", 'true')";
     var get_customer = "select * from customers where id = " + customer_id + ";";
@@ -23,30 +25,44 @@ Rental.prototype = {
     var availability_statement = "UPDATE movies SET num_available = (num_available - 1) WHERE id = (SELECT id FROM movies WHERE title = '" + movie_title + "');";
 
     db.serialize(function(err) {
+      db.exec("BEGIN IMMEDIATE");
       db.run(create_statement, function(err) {
-        callback(err, { inserted_rental_id: this.lastID, movie: movie_title, customer_id: customer_id, checked_out_on: checkout_date, due_on: return_date, number_of_records_changed: this.changes });
+        inserted_rental_id = this.lastID;
+        number_of_records_changed = this.changes;
       });
       db.run(charge_statement);
       db.run(zero_statement);
       db.run(availability_statement);
 
+      db.exec("COMMIT;", function(error) {
+        if (callback) {
+          callback(error, { inserted_rental_id: inserted_rental_id, movie: movie_title, customer_id: customer_id, checked_out_on: checkout_date, due_on: return_date, number_of_records_changed: number_of_records_changed });
+        }
+      });
       db.close();
     });
   },
 
   check_in: function(customer_id, movie_title, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db'),
-      return_date = date_format(0);
+      return_date = date_format(0),
+      changes;
 
-    var update_statement = "UPDATE " + this.table_name + " SET return_date = '" + return_date + "', checked_out = 'false' WHERE movie_id = (SELECT id FROM movies WHERE title = '" + movie_title + "') AND customer_id = " + customer_id + ";";
+    var update_statement = "UPDATE " + this.table_name + " SET return_date = '" + return_date + "', checked_out = 'false' WHERE movie_id = (SELECT id FROM movies WHERE title = '" + movie_title + "') AND customer_id = " + customer_id + " AND checked_out = 'true';";
 
     var availability_statement = "UPDATE movies SET num_available = (num_available + 1) WHERE id = (SELECT id FROM movies WHERE title = '" + movie_title + "');";
+    
     db.serialize(function(err) {
+      db.exec("BEGIN IMMEDIATE");
       db.run(update_statement, function(err) {
-        callback(err, { movie: movie_title, customer_id: customer_id, checked_in_on: return_date, number_of_records_changed: this.changes });
+        changes = this.changes;
       });
       db.run(availability_statement);
-
+      db.exec("COMMIT;", function(error) {
+        if (callback) {
+          callback(error, { movie: movie_title, customer_id: customer_id, checked_in_on: return_date, number_of_records_changed: changes });
+        }
+      });
       db.close();
     });
   }
