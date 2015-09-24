@@ -18,8 +18,10 @@ router.get('/:id/rental_history', function(req, res, next) {
   return customer_exports.customersController.rental_history(req, res, req.params.id);
 });
 
-// customers/name/1
-router.get('/:column/:number', function(req, res, next) {
+// customers/name/page1
+// customers/registered_at/page1
+// customers/postal_code/page1
+router.get('/:column/page:number', function(req, res, next) {
   return customer_exports.customersController.subset(req, res, req.params.column, req.params.number);
 });
 
