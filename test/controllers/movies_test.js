@@ -138,7 +138,6 @@ describe('/movies', function() {
   });
 
   describe("GET '?sort=puppies' (sort parameter is invalid)", function() {
-    var numMoviesSeeded;
     var request;
 
     before(function(done) {
@@ -149,7 +148,6 @@ describe('/movies', function() {
           { title: 'The French Connection', overview: 'Bonjour!', release_date: '1971-10-07', inventory: 8 }
         ]
       }
-      numMoviesSeeded = data.movies.length;
       resetTables(data, done);
     });
 
@@ -176,7 +174,6 @@ describe('/movies', function() {
   });
 
   describe("GET '?sort=release_date&n=2'", function() {
-    var numMoviesSeeded;
     var request;
 
     before(function(done) {
@@ -187,7 +184,6 @@ describe('/movies', function() {
           { title: 'The French Connection', overview: 'Bonjour!', release_date: '1971-10-07', inventory: 8 }
         ]
       }
-      numMoviesSeeded = data.movies.length;
       resetTables(data, done);
     });
 
@@ -253,7 +249,6 @@ describe('/movies', function() {
   });
 
   describe("GET '?sort=title&n=1&p=2'", function() {
-    var numMoviesSeeded;
     var request;
 
     before(function(done) {
@@ -264,7 +259,6 @@ describe('/movies', function() {
           { title: 'The French Connection', overview: 'Bonjour!', release_date: '1971-10-07', inventory: 8 }
         ]
       }
-      numMoviesSeeded = data.movies.length;
       resetTables(data, done);
     });
 
@@ -291,7 +285,6 @@ describe('/movies', function() {
   });
 
   describe("GET '?sort=title&n=2&p=dog' (p is invalid)", function() {
-    var numMoviesSeeded;
     var request;
 
     before(function(done) {
@@ -302,7 +295,6 @@ describe('/movies', function() {
           { title: 'The French Connection', overview: 'Bonjour!', release_date: '1971-10-07', inventory: 8 }
         ]
       }
-      numMoviesSeeded = data.movies.length;
       resetTables(data, done);
     });
 
@@ -371,7 +363,6 @@ describe('/movies', function() {
 
   describe("GET '/:title'", function() {
     describe("GET '/Jaws'", function() {
-      var numMoviesSeeded;
       var request;
 
       before(function(done) {
@@ -382,7 +373,6 @@ describe('/movies', function() {
             { title: 'The French Connection', overview: 'Bonjour!', release_date: '1971-10-07', inventory: 8 }
           ]
         }
-        numMoviesSeeded = data.movies.length;
         resetTables(data, done);
       });
 
@@ -413,7 +403,6 @@ describe('/movies', function() {
     });
 
     describe("GET '/JAWS'", function() {
-      var numMoviesSeeded;
       var request;
 
       before(function(done) {
@@ -424,7 +413,6 @@ describe('/movies', function() {
             { title: 'The French Connection', overview: 'Bonjour!', release_date: '1971-10-07', inventory: 8 }
           ]
         }
-        numMoviesSeeded = data.movies.length;
         resetTables(data, done);
       });
 
@@ -455,7 +443,6 @@ describe('/movies', function() {
     });
 
     describe("GET '/dog' (movie does not exist)", function() {
-      var numMoviesSeeded;
       var request;
 
       before(function(done) {
@@ -466,7 +453,6 @@ describe('/movies', function() {
             { title: 'The French Connection', overview: 'Bonjour!', release_date: '1971-10-07', inventory: 8 }
           ]
         }
-        numMoviesSeeded = data.movies.length;
         resetTables(data, done);
       });
 
