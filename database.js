@@ -48,7 +48,8 @@ module.exports = {
   customer_history: function(value, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
 
-    var statement = "SELECT movies.title, rentals.returned_date FROM movies JOIN rentals ON movies.id = rentals.movie_id WHERE rentals.customer_id = ?;"
+    var statement = "SELECT movies.title, rentals.returned_date, rentals.checked_out FROM movies JOIN rentals ON movies.id = rentals.movie_id WHERE rentals.customer_id = ? AND rentals.returned_date != '' ORDER BY rentals.checked_out;"
+
 
     db.all(statement, value, function(err, res) {
       if (callback) callback(err, res);
