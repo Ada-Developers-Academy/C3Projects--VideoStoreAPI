@@ -91,7 +91,7 @@ describe("movies routes", function() {
 
   describe("GET /movies/:title/:order", function() {
     it("responds with json", function(done) {
-      agent.get('/movies/Fight the Future/customer_id').set('Accept', 'application/json')
+      agent.get('/movies/Fight the Future/id').set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
           assert.equal(error, undefined);
@@ -100,7 +100,7 @@ describe("movies routes", function() {
     });
 
     it("returns an object", function(done) {
-      agent.get('/movies/Fight the Future/customer_id').set('Accept', 'application/json')
+      agent.get('/movies/Fight the Future/id').set('Accept', 'application/json')
         .expect(200, function(error, response) {
           var movie = response.body;
 
@@ -110,7 +110,7 @@ describe("movies routes", function() {
     });
 
     it("returns the movie with the title from the url", function(done) {
-      agent.get('/movies/Fight the Future/customer_id').set('Accept', 'application/json')
+      agent.get('/movies/Fight the Future/id').set('Accept', 'application/json')
         .expect(200, function(error, response) {
           var movieData = response.body.movie_data;
 
@@ -120,7 +120,7 @@ describe("movies routes", function() {
     });
 
     it("returns a currentRenters object with a list of current renters", function(done) {
-      agent.get('/movies/Fight the Future/customer_id').set('Accept', 'application/json')
+      agent.get('/movies/Fight the Future/id').set('Accept', 'application/json')
         .expect(200, function(error, response) {
           var currentRenters = response.body.customers.currentRenters;
 
@@ -130,7 +130,7 @@ describe("movies routes", function() {
     });
 
     it("returns a pastRenters object with a list of past renters sorted by the order variable", function(done) {
-      agent.get('/movies/Fight the Future/customer_id').set('Accept', 'application/json')
+      agent.get('/movies/Fight the Future/id').set('Accept', 'application/json')
         .expect(200, function(error, response) {
           var pastRenters = response.body.customers.pastRenters;
 
