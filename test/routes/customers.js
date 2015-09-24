@@ -101,5 +101,44 @@ describe("customers routes", function() {
           done();
         });
     });
+
+    it("returns an object with customer data and movies", function(done) {
+      agent.get('/customers/1').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, response) {
+          var result = response.body;
+
+          assert(result instanceof Object);
+          done();
+        });
+    });
+
+    it("object returned has customer_data and movies", function(done) {
+      agent.get('/customers/1').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, response) {
+          var result = response.body;
+          var keys = Object.keys(result);
+
+          assert.equal(keys.length, 2);
+          assert.equal(keys[0], "customer_data");
+          assert.equal(keys[1], "movies")
+          done();
+        });
+    });
+
+    it("object returned has customer_data and movies", function(done) {
+      agent.get('/customers/1').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, response) {
+          var result = response.body;
+          var keys = Object.keys(result);
+
+          assert.equal(keys.length, 2);
+          assert.equal(keys[0], "customer_data");
+          assert.equal(keys[1], "movies")
+          done();
+        });
+    });
   });
 });
