@@ -168,63 +168,6 @@ __Response__
 ## Rentals
 
 __Endpoint__  
-`POST ./rentals/{:customer_id}/checkout/{:movie_id}`  
-
-Checks out the given movie for the given customer, automatically setting the rental's return date to 7 days after checkout. It reduces that movie's inventory_avail by 1 and deducts a $3 rental fee from the customer's account_credit.  
-
-__Request Parameters__  
-
-| Path Parameter  | Value                    |
-| :---------------| :------------------------|
-| `customer_id`   |  The ID of the movie.    |
-| `movie_id`      |  The title of the movie. |
-
-__Response__
-
-    {
-      "rental": {
-        "id": 2,
-        "customer_id": "5",
-        "name": "Aquila Riddle",
-        "movie_id": "",
-        "title": "Close Encounters of the Third Kind",
-        "checkout_date": "2015-09-13",
-        "due_date": "2015-09-20",
-        "return_date": null
-      }
-    }
-
-***
-
-__Endpoint__  
-`PUT ./rentals/{:customer_id}/return/{:movie_id}`  
-
-Returns the updated rental information for that checked in movie and that movie's previous rental history in descending order of `return_date`.  
-
-__Request Parameters__  
-
-| Path Parameter  | Value                    |
-| :---------------| :------------------------|
-| `customer_id`   |  The ID of the movie.    |
-| `movie_id`      |  The title of the movie. |
-
-__Response__
-
-    {
-      "rental_history": {
-        "customer_id": "5",
-        "name": "Aquila Riddle",
-        "movie_id": "",
-        "title": "Close Encounters of the Third Kind",
-        "checkout_date": "2015-09-13",
-        "due_date": "2015-09-20",
-        "return_date": "2015-09-19"
-      }
-    }
-
-***
-
-__Endpoint__  
 `GET /rentals/overdue`  
 
 Returns an array of all rentals that are currently overdue.  
@@ -298,3 +241,61 @@ __Response__
         ...
       ]
     }
+
+***
+
+__Endpoint__  
+`POST ./rentals/{:customer_id}/checkout/{:movie_id}`  
+
+Checks out the given movie for the given customer, automatically setting the rental's return date to 7 days after checkout. It reduces that movie's inventory_avail by 1 and deducts a $3 rental fee from the customer's account_credit.  
+
+__Request Parameters__  
+
+| Path Parameter  | Value                    |
+| :---------------| :------------------------|
+| `customer_id`   |  The ID of the movie.    |
+| `movie_id`      |  The title of the movie. |
+
+__Response__
+
+    {
+      "rental": {
+        "id": 2,
+        "customer_id": "5",
+        "name": "Aquila Riddle",
+        "movie_id": "",
+        "title": "Close Encounters of the Third Kind",
+        "checkout_date": "2015-09-13",
+        "due_date": "2015-09-20",
+        "return_date": null
+      }
+    }
+
+***
+
+__Endpoint__  
+`PUT ./rentals/{:customer_id}/return/{:movie_id}`  
+
+Returns the updated rental information for that checked in movie and that movie's previous rental history in descending order of `return_date`.  
+
+__Request Parameters__  
+
+| Path Parameter  | Value                    |
+| :---------------| :------------------------|
+| `customer_id`   |  The ID of the movie.    |
+| `movie_id`      |  The title of the movie. |
+
+__Response__
+
+    {
+      "rental_history": {
+        "customer_id": "5",
+        "name": "Aquila Riddle",
+        "movie_id": "",
+        "title": "Close Encounters of the Third Kind",
+        "checkout_date": "2015-09-13",
+        "due_date": "2015-09-20",
+        "return_date": "2015-09-19"
+      }
+    }
+
