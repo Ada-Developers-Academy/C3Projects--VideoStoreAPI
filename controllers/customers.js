@@ -6,6 +6,8 @@ var Controller = {
   index: function(req, res, next) {
     if (req.query.status == 'overdue') {
       new Customer().overdue(Controller.sendJSON.bind(res));
+    } else if (req.query.sort) {
+      new Customer().sortBy(req.query.sort, req.query.n, req.query.p, Controller.sendJSON.bind(res));
     } else {
       new Customer().all(Controller.sendJSON.bind(res));
     }
@@ -13,7 +15,8 @@ var Controller = {
 
   sendJSON: function(err, res) {
     if (err) {
-      this.status(500).json(err);
+      var status = err.status == 400 ? 400 : 500;
+      this.status(status).json(err.message);
     } else {
       this.status(200).json(res);
     }

@@ -1,14 +1,12 @@
 ### Customers
 GET '/customers'
   // => [{<customer>}, {<customer>}] <-- includes customer attributes
-  // OPTIONAL
-    // ?&status=_____
-      // status options: overdue
-    // ?&n=12&p=2&sort=_____
-      // sort options: name, registered_at, postal_code
   - See a list of customers with overdue movies
+    // ?&status=overdue
   - Retrive a subset of customers
     - Given a sort column, return _n_ customer records, offset by _p_ records (this will be used to create "pages" of customers)
+      // ?&n=12&p=2&sort=_____
+        // sort options: name, registered_at, postal_code
       - Sort columns are
         - `name`
         - `registered_at`
