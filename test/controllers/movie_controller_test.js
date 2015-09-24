@@ -9,7 +9,7 @@ var movieController = require('../../controllers/movies_controller');
 
 // Run  `DB=test npm run db:schema' and 'DB=test npm run db:seeds` to seed before running these tests
 
-describe.only('movie controller', function() {
+describe('movie controller', function() {
   describe('GET /all/:page', function() {
     var uri = '/movies/all/1';
 
@@ -25,7 +25,7 @@ describe.only('movie controller', function() {
     it('responds with 10 movie results', function(done) {
       agent.get(uri).set('Accept', 'application/json')
         .expect(200, function(error, result) {
-          assert.equal(result.body.length, 10);
+          assert.equal(result.body.data.movies.length, 10);
           assert.equal(error, undefined);
           done();
         })
@@ -44,7 +44,7 @@ describe.only('movie controller', function() {
 
       agent.get(uri).set('Accept', 'application/json')
       .expect(200, function(error, result) {
-        assert.deepEqual(Object.keys(result.body[0]), movie_keys);
+        assert.deepEqual(Object.keys(result.body.data.movies[0]), movie_keys);
         done();
       })
     })
@@ -67,7 +67,7 @@ describe.only('movie controller', function() {
       agent.get(uri).set('Accept', 'application/json')
         .expect(200, function(error, result) {
           assert.equal(error, undefined);
-          assert.equal(result.body.length, 1);
+          assert.equal(result.body.data.movies.length, 1);
           done();
         })
     })
@@ -83,11 +83,10 @@ describe.only('movie controller', function() {
 
       agent.get(uri).set('Accept', 'application/json')
         .expect(200, function(error, result) {
-          assert.deepEqual(Object.keys(result.body[0]), movie_keys);
+          assert.deepEqual(Object.keys(result.body.data.movies[0]), movie_keys);
           done();
         })
     })
-
   }) // GET /movies/:title
 
   describe('GET /:title/renting', function() {
@@ -102,7 +101,7 @@ describe.only('movie controller', function() {
       })
     })
 
-    it("responds with keys of 'customer_name', \
+    it("responds with keys of 'name', \
       'check_out_date', and 'movie_title'",
       function(done) {
         var customer_movies = [
@@ -113,7 +112,7 @@ describe.only('movie controller', function() {
 
         agent.get(uri).set('Accept', 'application/json')
           .expect(200, function(error, result) {
-            assert.deepEqual(Object.keys(result.body[0]), customer_movies);
+            assert.deepEqual(Object.keys(result.body.data.movies[0]).sort(), customer_movies.sort());
             done();
           })
     })
@@ -134,8 +133,7 @@ describe.only('movie controller', function() {
 
     sorting_hat.forEach(function(query) {
       var uri = '/movies/' + title + '/rented/sort_by=' + query + '/1';
-      it('responds with json format', function(done) {
-        console.log(uri);
+      it.only('responds with json format', function(done) {
 
         agent.get(uri).set('Accept', 'application/json')
           .expect('Content-Type', /json/)
@@ -145,10 +143,11 @@ describe.only('movie controller', function() {
           })
       })
       it('responds with an array of customers', function(done) {
+            console.log('BODYWORKZ' + result.body.data.movies[0]);
         agent.get(uri).set('Accept', 'application/json')
           .expect(200, function(error, result) {
             assert.equal(error, undefined);
-            assert.deepEqual(Object.keys(result.body[0]), customer_movies);
+            assert.deepEqual(Object.keys(result.body.data.movies[0]).sort(), customer_movies.sort());
             done();
           })
       })
