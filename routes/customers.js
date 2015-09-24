@@ -30,8 +30,6 @@ router.get('/:id', function(req, res, next) {
   customer.find_by('id', id, function(err, row) {
     customerObject.customer_data = row;
 
-    var condition = "customer_id = " + id;
-
     // use where to pull all records that meet the condition
     rental.where(["customer_id"], [id], function(err, rows) {
       var currentMoviesIDs = [];
