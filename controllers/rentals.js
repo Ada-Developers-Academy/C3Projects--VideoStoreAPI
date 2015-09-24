@@ -56,6 +56,16 @@ exports.rentalsController = {
     });
   },
 
+  // GET /rentals/:title/available_inventory
+  getMovieAvailableInventory:function(title, res) {
+    db.all("SELECT movies.title, movies.inventory-(SELECT COUNT(*) from rentals  WHERE rentals.movie_id=movies.id AND check_in_date IS NULL) AS available from movies WHERE title LIKE ?", title, function(err, rows) {
+      if (err !== null) {
+        console.log(err);
+      }
+      res.status(200).json(rows);
+    });
+  },
+
   // GET /rentals/current_renters/:title
   getAllCurrentRenters:function(title, res) {
     db.all("SELECT customers.name from rentals INNER JOIN movies ON movies.id = rentals.movie_id INNER JOIN customers on customers.id = rentals.customer_id WHERE movies.title LIKE ? AND check_in_date IS NULL", title, function(err, rows) {
