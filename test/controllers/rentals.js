@@ -27,11 +27,11 @@ describe("Endpoints for /rentals", function() {
               (5, 'Steve', 'Fri, 18 Aug 2015 07:00:00 -0700', '123 Fake St.', 'Seattle', 'WA', 98102, '123-444-5555', 2.34);\
         DELETE FROM rentals; \
         INSERT INTO rentals(id, customer_id, customer_name, movie_id, return_date, checkout_date, due_date) \
-        VALUES(1, 1, 'Alice', 2, 'Fri, 18 Aug 2015 07:00:00 -0700', 'Wed, 14 Aug 2015 10:00:00 -0700', 'Wed, 21 Aug 2015 10:00:00 -0700'), \
-              (2, 1, 'Alice', 2, '', 'Wed, 22 Jul 2015 10:00:00 -0700', 'Wed, 29 Jul 2015 10:00:00 -0700'), \
-              (3, 2, 'Shanna', 2, '', 'Tue, 7 Sep 2015 10:00:00 -0700', 'Tue, 14 Sep 2015 10:00:00 -0700'), \
+        VALUES(1, 1, 'Alice', 5, 'Fri, 18 Aug 2015 07:00:00 -0700', 'Wed, 14 Aug 2015 10:00:00 -0700', 'Wed, 21 Aug 2015 10:00:00 -0700'), \
+              (2, 2, 'Shanna', 2, '', 'Wed, 22 Jul 2015 10:00:00 -0700', 'Wed, 29 Jul 2015 10:00:00 -0700'), \
+              (3, 1, 'Alice', 2, '', 'Tue, 7 Sep 2015 10:00:00 -0700', 'Tue, 14 Sep 2015 10:00:00 -0700'), \
               (4, 2, 'Shanna', 5, 'Tue, 7 Sep 2015 10:00:00 -0700', 'Tue, 1 Sep 2015 10:00:00 -0700', 'Tue, 8 Sep 2015 10:00:00 -0700'), \
-              (5, 3, 'Marleigh', 1, '', 'Fri, 18 Sep 2015 10:00:00 -0700', 'Fri, 25 Sep 2015 10:00:00 -0700'); \
+              (5, 3, 'Marleigh', 5, '', 'Fri, 18 Sep 2015 10:00:00 -0700', 'Fri, 25 Sep 2015 10:00:00 -0700'); \
         COMMIT;",
           function(err) {
             db_cleaner.close();
@@ -61,7 +61,7 @@ describe("Endpoints for /rentals", function() {
             var keys = ['id', 'customer_id', 'customer_name', 'movie_id', 'return_date', 'checkout_date', 'due_date'];
             assert.deepEqual(Object.keys(result.body[0]), keys);
             done();
-     })
+      })
     });
 
     it('returns an array of rental objects sorted by customer id', function(done){
@@ -80,47 +80,171 @@ describe("Endpoints for /rentals", function() {
 
             assert.deepEqual(expectedNames, actualNames);
             done();
-     })
+      })
     });
 
-    // it('returns an array of rental objects sorted by customer name', function(done){
-    //
-    // });
-    //
-    //
-    // it('returns an array of rental objects sorted by checkout date', function(done){
-    //
-    // });
+    it('returns an array of rental objects sorted by customer name', function(done){
+      agent.get('/rentals/Psycho/current/customer_name')
+           .set('Accept', 'application/json')
+           .expect(200, function(error, result) {
+              assert.equal(result.body.length, 2);
+
+            var expectedNames = ['Alice', 'Shanna'];
+            var actualNames = [];
+
+
+            for(var i = 0; i < result.body.length; i++) {
+              actualNames.push(result.body[i].customer_name);
+            }
+
+            assert.deepEqual(expectedNames, actualNames);
+            done();
+      })
+    });
+
+
+    it('returns an array of rental objects sorted by checkout date', function(done){
+      agent.get('/rentals/Psycho/current/checkout_date')
+           .set('Accept', 'application/json')
+           .expect(200, function(error, result) {
+              assert.equal(result.body.length, 2);
+
+            var expectedNames = ['Alice', 'Shanna'];
+            var actualNames = [];
+
+            for(var i = 0; i < result.body.length; i++) {
+              actualNames.push(result.body[i].customer_name);
+            }
+
+            assert.deepEqual(expectedNames, actualNames);
+            done();
+      })
+    });
   });
 
 
 
   // '/rentals/:title/past/:sort_option'
-  // describe('GET /rentals/:title/past/:sort_option', function(){
-  //   it('responds with json', function(done){
-  //
-  //   });
-  //
-  //   it('returns an array of rental objects', function(done){
-  //
-  //   });
-  //
-  //   it('returns an array of rental objects sorted by id, name checkout date', function(done){
-  //
-  //   });
-  //
-  //   it('returns an array of rental objects sorted by name', function(done){
-  //
-  //   });
-  //
-  //   it('returns an array of rental objects sorted by checkout date', function(done){
-  //
-  //   });
-  // });
+  describe('GET /rentals/:title/past/:sort_option', function(){
+    it('responds with json', function(done){
+      agent.get('/rentals/christine/past/customer_id')
+           .set('Accept', 'application/json')
+           .expect('Content-Type', /application\/json/)
+           .expect(200, done);
+    });
 
+    it('returns an array of rental objects', function(done){
+      agent.get('/rentals/christine/past/customer_id')
+           .set('Accept', 'application/json')
+           .expect(200, function(error, result) {
+              assert.equal(result.body.length, 2);
+
+            var keys = ['id', 'customer_id', 'customer_name', 'movie_id', 'return_date', 'checkout_date', 'due_date'];
+            assert.deepEqual(Object.keys(result.body[0]), keys);
+            done();
+      })
+    });
+
+    it('returns an array of rental objects sorted by id', function(done){
+      agent.get('/rentals/christine/past/customer_id')
+           .set('Accept', 'application/json')
+           .expect(200, function(error, result) {
+              assert.equal(result.body.length, 2);
+
+            var expectedNames = ['Alice', 'Shanna'];
+            var actualNames = [];
+
+
+            for(var i = 0; i < result.body.length; i++) {
+              actualNames.push(result.body[i].customer_name);
+            }
+
+            assert.deepEqual(expectedNames, actualNames);
+            done();
+      })
+    });
+
+    it('returns an array of rental objects sorted by name', function(done){
+      agent.get('/rentals/christine/past/customer_name')
+           .set('Accept', 'application/json')
+           .expect(200, function(error, result) {
+              assert.equal(result.body.length, 2);
+
+            var expectedNames = ['Alice', 'Shanna'];
+            var actualNames = [];
+
+
+            for(var i = 0; i < result.body.length; i++) {
+              actualNames.push(result.body[i].customer_name);
+            }
+
+            assert.deepEqual(expectedNames, actualNames);
+            done();
+      })
+    });
+
+    it('returns an array of rental objects sorted by checkout date', function(done){
+      agent.get('/rentals/christine/past/checkout_date')
+           .set('Accept', 'application/json')
+           .expect(200, function(error, result) {
+              assert.equal(result.body.length, 2);
+
+            var expectedNames = ['Shanna', 'Alice'];
+            var actualNames = [];
+
+            for(var i = 0; i < result.body.length; i++) {
+              actualNames.push(result.body[i].customer_name);
+            }
+
+            assert.deepEqual(expectedNames, actualNames);
+            done();
+      })
+    });
+  });
 
   // '/rentals/overdue'
+  describe('GET rentals/overdue', function(){
+    it('responds with json', function(done){
+      agent.get('/rentals/overdue')
+           .set('Accept', 'application/json')
+           .expect('Content-Type', /application\/json/)
+           .expect(200, done);
+    });
+
+    it('returns an array of rental objects', function(done){
+      agent.get('/rentals/overdue')
+           .set('Accept', 'application/json')
+           .expect(200, function(error, result) {
+              assert.equal(result.body.length, 2);
+
+            var keys = ['id', 'customer_id', 'customer_name', 'movie_id', 'return_date', 'checkout_date', 'due_date'];
+            assert.deepEqual(Object.keys(result.body[0]), keys);
+            done();
+      })
+    });
+  });
+
   // *GET*  rental/:title/available
+  describe('GET rentals/:title/available', function(){
+    it('responds with json', function(done){
+      agent.get('/rentals/psycho/available')
+           .set('Accept', 'application/json')
+           .expect('Content-Type', /application\/json/)
+           .expect(200, done);
+    });
+
+    it('returns an object with keys title and inventory_available', function(done){
+      agent.get('/rentals/psycho/available')
+           .set('Accept', 'application/json')
+           .expect(200, function(error, result) {
+              assert.equal(result.body.length, 1);
+
+            var keys = ['title', 'inventory_available'];
+            assert.deepEqual(Object.keys(result.body[0]), keys);
+            done();
+      })
+    });
+  });
   // *POST* rental/:title/:customer_id/checkin
   // *POST* rental/:title/:customer_id/checkout
 
