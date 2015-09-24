@@ -14,9 +14,18 @@ describe("/movies endpoints", function() {
       test_db.exec(
         "BEGIN; \
         DELETE FROM movies; \
+        DELETE FROM rentals; \
         INSERT INTO movies(title, overview, release_date, inventory_total, inventory_avail) \
         VALUES('Bring It On', 'Cheerleaders duel it out.', '2000-08-22', 10, 10), \
-              ('Maws', 'Worm!', '1998-02-11', 11, 11); \
+              ('Maws', 'Worm!', '1998-02-11', 11, 11), \
+              ('Bring It On 2', 'Moar cheerleaders', '1990-04-12', 12, 12); \
+        INSERT INTO rentals(customer_id, name, movie_id, title, checkout_date, due_date, return_date) \
+        VALUES(1, 'Sarah', 1, 'Bring It On', '2015-07-14', '2015-07-21', '2015-07-21'), \
+              (1, 'Sarah', 2, 'Maws', '2015-07-16', '2015-07-23', '2015-07-19'), \
+              (1, 'Sarah', 3, 'Bring It On 2', '2015-07-01', '2015-07-08', '2015-07-09'), \
+              (2, 'Jane', 1, 'Bring It On', '2015-07-14', '2015-07-21', '2015-07-15'), \
+              (2, 'Jane', 2, 'Maws', '2015-07-16', '2015-07-23', '2015-07-17'), \
+              (2, 'Jane', 3, 'Bring It On 2', '2015-07-01', '2015-07-08', '2015-07-02'); \
         COMMIT;"
         , function(err) {
           test_db.close();
@@ -41,7 +50,7 @@ describe("/movies endpoints", function() {
       movie_request = agent.get('/movies').set('Accept', 'application/json');
 
       movie_request.expect(200, function(error, result) {
-        assert.equal(result.body.movies.length, 2); //the tesb_db inserted 2 records
+        assert.equal(result.body.movies.length, 3); //the tesb_db inserted 2 records
 
         var keys = ['id', 'title', 'overview', 'release_date', 'inventory_total', 'inventory_avail'];
         assert.deepEqual(Object.keys(result.body.movies[0]), keys);
@@ -54,7 +63,8 @@ describe("/movies endpoints", function() {
       
       movie_request_title.expect(200, function(error, result) {
         assert.equal(result.body.movies[0].title, "Bring It On");
-        assert.equal(result.body.movies[1].title, "Maws");
+        assert.equal(result.body.movies[1].title, "Bring It On 2");
+        assert.equal(result.body.movies[2].title, "Maws");
         done();
       })
     })
@@ -63,8 +73,9 @@ describe("/movies endpoints", function() {
       movie_request_date = agent.get('/movies?order_by=release_date').set('Accept', 'application/json');
 
       movie_request_date.expect(200, function(error, result) {
-        assert.equal(result.body.movies[0].release_date, "1998-02-11");
-        assert.equal(result.body.movies[1].release_date, "2000-08-22");
+        assert.equal(result.body.movies[0].release_date, "1990-04-12");
+        assert.equal(result.body.movies[1].release_date, "1998-02-11");
+        assert.equal(result.body.movies[2].release_date, "2000-08-22");
         done();
       })
     })
@@ -79,4 +90,44 @@ describe("/movies endpoints", function() {
       })
     })
   })
+
+  describe('GET /:title', function() {
+    var movie_request;
+
+    it("responds with json", function(done) {
+      movie_request = agent.get('/movies/maws').set('Accept', 'application/json');
+
+      movie_request
+        .expect('Content-Type', /application\/json/)
+        .expect(200, done);
+    })
+
+    it('can find a specific movie', function(done) {
+      movie_request = agent.get('/movies/maws').set('Accept', 'application/json');
+
+      movie_request.expect(200, function(error, result) {
+        assert.equal(result.body.movie[0].title, 'Maws');
+        done();
+      })
+    })
+
+    it('returns all partial matches when searching by title', function(done) {
+      movie_request = agent.get('/movies/bring').set('Accept', 'application/json');
+
+      movie_request.expect(200, function(error, result) {
+        assert.equal(result.body.movie.length, 2);
+        done();
+      })
+    })
+
+    it('can order by other columns if there are multiple results', function(done) {
+      movie_request = agent.get('/movies/bring?order_by=release_date').set('Accept', 'application/json');
+
+      movie_request.expect(200, function(error, result) {
+        assert.equal(result.body.movie[0].title, "Bring It On 2");
+        done();
+      })
+    })  
+  })
+
 })
