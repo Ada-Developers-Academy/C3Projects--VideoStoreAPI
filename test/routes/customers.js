@@ -166,8 +166,8 @@ describe("customers routes", function() {
           var pastRental1 = response.body.movies.pastRentals[0].movie_data;
           var pastRental2 =  response.body.movies.pastRentals[1].movie_data;
 
-          assert.equal(pastRental1.title, "Fight the Future");
-          assert.equal(pastRental2.title, "I Want to Believe");
+          assert.equal(pastRental1.title, "I Want to Believe");
+          assert.equal(pastRental2.title, "Fight the Future");
           done();
         });
     });
@@ -177,11 +177,11 @@ describe("customers routes", function() {
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
           var pastRentals = response.body.movies.pastRentals;
-          var movie1ReturnDate = pastRentals[0].returnedDate;
-          var movie2ReturnDate = pastRentals[1].returnedDate;
+          var movie1ReturnDate = pastRentals[0].dates.returned_date;
+          var movie2ReturnDate = pastRentals[1].dates.returned_date;
 
-          assert.equal(movie1ReturnDate, 2013);
-          assert.equal(movie2ReturnDate, 2009);
+          assert.equal(movie1ReturnDate, 2009);
+          assert.equal(movie2ReturnDate, 2013);
           done();
         });
     });
