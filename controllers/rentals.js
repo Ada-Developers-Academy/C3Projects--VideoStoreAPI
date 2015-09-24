@@ -5,8 +5,8 @@ var rental = new Rental();
 
 exports.rentalsController = {
 
-  all: function all(req, res) {
-    var rentals = rental.all(function(rentals) {
+  all_rentals: function all_rentals(req, res) {
+    var rentals = rental.all_rentals(function(rentals) {
       return res.status(200).json(rentals);
     });
   },

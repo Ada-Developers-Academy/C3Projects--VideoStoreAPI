@@ -91,6 +91,24 @@ module.exports = {
    },
 
   // RENTALS
+  all_rentals: function(callback) {
+    var newDate = new Date();
+    var today = formatDate(newDate);
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+
+    db.exec("BEGIN; \
+    UPDATE rentals SET overdue=1 WHERE due_date < " + today + " \
+    AND check_in IS NULL; \
+    COMMIT;", function() {
+      db.all(
+        "SELECT * FROM rentals", function(err, res) {
+          if (callback) { callback(res); }
+        });
+    });
+
+    db.close();
+  },
+
   overdue: function(callback) {
     var newDate = new Date();
     var today = formatDate(newDate);
@@ -113,16 +131,6 @@ module.exports = {
 
     db.close();
   },
-
-  // update_overdue: function(callback) {
-  //   var newDate = new Date();
-  //   var today = formatDate(newDate);
-  //   this.query("UPDATE rentals SET overdue=1 WHERE due_date<" + today + " \
-  //     AND check_in IS NULL;",
-  //     function(res) {
-  //       callback(res);
-  //     });
-  // },
 
  // passing req.body to data
   check_out: function(data, callback) {
