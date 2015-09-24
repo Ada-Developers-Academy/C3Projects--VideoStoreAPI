@@ -80,7 +80,7 @@ describe("Endpoints under /rentals", function() {
 
     it('responds with correct data', function(done){
       request
-        .expect('[{"name":"Adam","title":"Jaws"}]', done);
+        .expect('[{"name":"Adam","title":"Jaws"},{"name":"Brandi","title":"Paws"}]', done);
     });
   });
 
