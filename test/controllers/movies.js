@@ -29,25 +29,29 @@ var request = require('supertest'),
 
       // '/movies'
       describe('GET /movies', function(){
+        var movieRequest;
+
+        beforeEach(function(done){
+          movieRequest = get('/movies').set('Accept', 'application/json');
+          done();
+        })
+
         it('responds with json', function(done){
-          agent.get('/movies')
-               .set('Accept', 'application/json')
-               .expect('Content-Type', /application\/json/)
-               .expect(200, function(error, result) {
-                  assert.equal(error, undefined);
-                  done();
-                });
+          movieRequest.expect('Content-Type', /application\/json/)
+                      .expect(200, function(error, result) {
+                        assert.equal(error, undefined);
+                        done();
+                      });
         });
 
         it('returns an array of movie objects', function(done){
-          agent.get('/movies')
-               .set('Accept', 'application/json')
-               .expect(200, function(error, result) {
-                  assert.equal(result.body.length, 5);
+          movieRequest.expect(200, function(error, result) {
+                        assert.equal(result.body.length, 5);
 
-                var keys = ['id' ,'title', 'overview', 'release_date', 'total_inventory', 'inventory_available'];
-                assert.deepEqual(Object.keys(result.body[0]), keys);
-                done();
+                        var keys = ['id' ,'title', 'overview', 'release_date', 'total_inventory', 'inventory_available'];
+
+                        assert.deepEqual(Object.keys(result.body[0]), keys);
+                        done();
           })
         });
       });
@@ -144,25 +148,28 @@ var request = require('supertest'),
 
       // '/movies/:title'
       describe("GET /movies/:title", function(){
+        var movieRequest;
+
+        beforeEach(function(done){
+          movieRequest = agent.get('/movies/jaw').set('Accept', 'application/json');
+          done();
+        })
+
         it('responds with json', function(done){
-          agent.get('/movies/jaw')
-               .set('Accept', 'application/json')
-               .expect('Content-Type', /application\/json/)
-               .expect(200, function(error, result) {
-                  assert.equal(error, undefined);
-                  done();
-                });
+          movieRequest.expect('Content-Type', /application\/json/)
+                      .expect(200, function(error, result) {
+                        assert.equal(error, undefined);
+                        done();
+                      });
         });
 
         it('returns an array of movie objects', function(done){
-          agent.get('/movies/jaw')
-               .set('Accept', 'application/json')
-               .expect(200, function(error, result) {
-                  assert.equal(result.body.length, 1);
+          movieRequest.expect(200, function(error, result) {
+                        assert.equal(result.body.length, 1);
 
-                var keys = ['id' ,'title', 'overview', 'release_date', 'total_inventory', 'inventory_available'];
-                assert.deepEqual(Object.keys(result.body[0]), keys);
-                done();
+                        var keys = ['id' ,'title', 'overview', 'release_date', 'total_inventory', 'inventory_available'];
+                        assert.deepEqual(Object.keys(result.body[0]), keys);
+                        done();
           })
         });
 
