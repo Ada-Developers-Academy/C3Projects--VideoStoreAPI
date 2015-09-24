@@ -15,7 +15,7 @@ router.get('/:movie_title/current_customers', function(req, res, next) {
 
 router.get('/:movie_title/rental_log', function(req, res, next) {
   return rental_exports.rentalsController.rental_log(req, res);
-})
+});
 
 router.get('/overdue', function(req, res, next) {
   return rental_exports.rentalsController.overdue(req, res);
@@ -33,7 +33,7 @@ router.get('/check_in', function(req, res, next) {
   return rental_exports.rentalsController.check_in(req, res);
 });
 
-router.post('/check_in', function(req, res, next) {
+router.post('/check_in', function(req, res, next) { // THIS SHOULD BE PUT/PATCH
   return rental_exports.rentalsController.check_in(req, res);
 });
 
