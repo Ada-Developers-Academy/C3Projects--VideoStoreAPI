@@ -23,5 +23,9 @@ router.get('/sort/postal_code/:limit/:offset', function(req, res, next) {
   return customer_exports.customersController.sortCustomersByPostalCode(req, res)
 });
 
+router.get('/:id/movies/past', function(req, res, next) {
+  customer_exports.customersController.getMoviesByCustomer(req, res)
+});
+
 
 module.exports = router;

@@ -18,6 +18,8 @@ exports.customersController = {
     });
   },
 
+
+
   sortCustomersByRegisteredAt: function(req, res) {
     var dbCustomer = new Customer();
     var limit = req.params.limit;
@@ -34,5 +36,15 @@ exports.customersController = {
     var result = dbCustomer.sort_by("postal_code", limit, offset, function(err,result){
     return res.status(200).json(result);
     });
+  },
+
+  getMoviesByCustomer: function(req, res) {
+    var dbCustomer = new Customer();
+    var customerId = req.params.id;
+    dbCustomer.past_rentals_by_customer(customerId, function(err, result) {
+      res.status(200).json(result);
+    });
   }
+
+
 }

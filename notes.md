@@ -28,7 +28,7 @@ Movies
 
 🔵 get "/movies/:title/customers/past/sort_by_name" = movie title, sorted by customers names
 
-get "/movies/:title/customers/past/sort_by_checkout_date" = movie title, sorted by checkout dates
+🔵 get "/movies/:title/customers/past/sort_by_checkout_date" = movie title, sorted by checkout dates
 
 🔵 get "/movies/:title" = Search for one specific title. Include synopsis, release date, and inventory total.
  - From Movies table find title
