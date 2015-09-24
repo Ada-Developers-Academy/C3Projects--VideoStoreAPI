@@ -58,11 +58,11 @@ exports.moviesController = {
 
     // This is the case when no query parameters are given
     if (num === undefined && page === undefined) {
-      db.all("SELECT title, release_date FROM movies ORDER BY release_date DESC", callback);
+      db.all("SELECT title, overview, release_date, inventory FROM movies ORDER BY release_date DESC", callback);
     }
     // This is the case when only n is given
     else if (page === undefined) {
-      db.all("SELECT title, release_date FROM movies ORDER BY release_date DESC LIMIT ?", num, callback);
+      db.all("SELECT title, overview, release_date, inventory FROM movies ORDER BY release_date DESC LIMIT ?", num, callback);
     }
     else {
       // Assume both num and page are specified
@@ -81,15 +81,15 @@ exports.moviesController = {
 
     // This is the case when no query parameters are given
     if (num === undefined && page === undefined) {
-      db.all("SELECT title, release_date FROM movies ORDER BY title ASC", callback);
+      db.all("SELECT title, overview, release_date, inventory FROM movies ORDER BY title ASC", callback);
     }
     // This is the case when only n is given
     else if (page === undefined) {
-      db.all("SELECT title, release_date FROM movies ORDER BY title ASC LIMIT ?", num, callback);
+      db.all("SELECT title, overview, release_date, inventory FROM movies ORDER BY title ASC LIMIT ?", num, callback);
     }
     else {
       // Assume both num and page are specified
-      db.all("SELECT title, release_date FROM movies WHERE id NOT IN ( SELECT id FROM movies ORDER BY title ASC LIMIT ?) ORDER BY title ASC LIMIT ?", (page - 1) * num, num, callback);
+      db.all("SELECT title, overview, release_date, inventory FROM movies WHERE id NOT IN ( SELECT id FROM movies ORDER BY title ASC LIMIT ?) ORDER BY title ASC LIMIT ?", (page - 1) * num, num, callback);
     }
   },
 

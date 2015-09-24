@@ -127,6 +127,27 @@ describe("Endpoints under /rentals", function() {
     });
   });
 
+  describe('GET /rentals/:title/available_inventory', function(){
+    var request;
+    beforeEach(function(done) {
+      request = agent
+        .get('/rentals/jaws/available_inventory')
+        .set('Accept', 'application/json');
+      done();
+    });
+
+    it('responds with json', function(done){
+      request
+        .expect('Content-Type', /application\/json/)
+        .expect(200, done);
+    });
+
+    it('responds with correct data', function(done){
+      request
+        .expect('[{"title":"Jaws","available":9}]', done);
+    });
+  });
+
 
   describe('GET /rentals/current_renters/jaws', function(){
     var request;

@@ -22,6 +22,11 @@ router.get('/available_inventory', function(req, res, next){
   rental_exports.rentalsController.getAvailableInventory(res);
 });
 
+// GET rentals/:title/available_inventory
+router.get('/:title/available_inventory', function(req, res, next){
+  rental_exports.rentalsController.getMovieAvailableInventory(req.params.title, res);
+});
+
 // GET rentals/current_renters/:title
 router.get('/current_renters/:title', function(req, res, next) {
   rental_exports.rentalsController.getAllCurrentRenters(req.params.title, res);
