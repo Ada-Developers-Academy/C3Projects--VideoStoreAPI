@@ -83,11 +83,17 @@ router.get('/:title', function(request, response, next) {
   });
 });
 
-router.post('/checkout/:customer_id/:movie_id', function(request, response, next) {
-  var movie_id = request.params.movie_id;
-  var count, inventory, enoughInventory;
+router.post('/checkout/:customer_id/:movie_title', function(request, response, next) {
+  var movie_title = request.params.movie_title;
+  var count, inventory, enoughInventory, movie_id;
 
   async.waterfall([
+    function(callback) {
+      movie.find_by('title', movie_title, function(err, row) {
+        movie_id = row.id;
+        callback(null);
+      });
+    },
     // count total # of checked out copies of movie with id, movie_id
     function(callback) {
       rental.where(['movie_id', 'returned_date'], [movie_id, ''], function(err, rows) {
