@@ -49,7 +49,10 @@ describe("Endpoints for /rentals", function() {
       agent.get('/rentals/Psycho/current/customer_id')
            .set('Accept', 'application/json')
            .expect('Content-Type', /application\/json/)
-           .expect(200, done);
+           .expect(200, function(error, result) {
+              assert.equal(error, undefined);
+              done();
+            });
     })
 
     it('returns an array of rental objects', function(done){
@@ -130,7 +133,10 @@ describe("Endpoints for /rentals", function() {
       agent.get('/rentals/christine/past/customer_id')
            .set('Accept', 'application/json')
            .expect('Content-Type', /application\/json/)
-           .expect(200, done);
+           .expect(200, function(error, result) {
+              assert.equal(error, undefined);
+              done();
+            });
     });
 
     it('returns an array of rental objects', function(done){
@@ -208,7 +214,10 @@ describe("Endpoints for /rentals", function() {
       agent.get('/rentals/overdue')
            .set('Accept', 'application/json')
            .expect('Content-Type', /application\/json/)
-           .expect(200, done);
+           .expect(200, function(error, result) {
+              assert.equal(error, undefined);
+              done();
+            });
     });
 
     it('returns an array of rental objects', function(done){
@@ -230,7 +239,10 @@ describe("Endpoints for /rentals", function() {
       agent.get('/rentals/psycho/available')
            .set('Accept', 'application/json')
            .expect('Content-Type', /application\/json/)
-           .expect(200, done);
+           .expect(200, function(error, result) {
+              assert.equal(error, undefined);
+              done();
+            });
     });
 
     it('returns an object with keys title and inventory_available', function(done){
@@ -245,7 +257,31 @@ describe("Endpoints for /rentals", function() {
       })
     });
   });
+
   // *POST* rental/:title/:customer_id/checkin
+  describe('POST rentals/:title/:customer_id/checkin', function(){
+    it('responds with json', function(done){
+      agent.post('/rentals/psycho/available')
+           .set('Accept', 'application/json')
+           .expect('Content-Type', /application\/json/)
+           .expect(200, function(error, result) {
+              assert.equal(error, undefined);
+              done();
+            });
+    });
+
+    // it('returns an object with keys title and inventory_available', function(done){
+    //   agent.get('/rentals/psycho/available')
+    //        .set('Accept', 'application/json')
+    //        .expect(200, function(error, result) {
+    //           assert.equal(result.body.length, 1);
+    //
+    //         var keys = ['title', 'inventory_available'];
+    //         assert.deepEqual(Object.keys(result.body[0]), keys);
+    //         done();
+    //   })
+    // });
+  });
   // *POST* rental/:title/:customer_id/checkout
 
 
