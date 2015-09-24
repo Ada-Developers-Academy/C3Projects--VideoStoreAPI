@@ -5,11 +5,11 @@ var router  = express.Router();
 var Customer = require('../models/customer'),
     customer = new Customer();
 
-var Rental   = require('../models/rental'),
-    rental   = new Rental();
+var Rental = require('../models/rental'),
+    rental = new Rental();
 
-var Movie    = require('../models/movie'),
-    movie    = new Movie();
+var Movie = require('../models/movie'),
+    movie = new Movie();
 
 router.get('/', function(req, res, next) {
   customer.find_all(function(err, rows) {
@@ -51,10 +51,10 @@ router.get('/:id', function(req, res, next) {
       }
       pastMoviesIDs = Object.keys(pastMoviesObject);
 
-      movie.where_in(['id'], currentMoviesIDs, function(err, rows) {
+      movie.where_in('id', currentMoviesIDs, function(err, rows) {
         customerObject.movies.currentRentals = rows; // no returned_date
 
-        movie.where_in(['id'], pastMoviesIDs, function(err, rows) {
+        movie.where_in('id', pastMoviesIDs, function(err, rows) {
           for (var i = 0; i < rows.length; i++) {
             var movieObject = {};
             movieObject.movieData = rows[i];
@@ -93,19 +93,6 @@ router.post('/create/:name/:registered_at/:address/:city/:state/:postal_code/:ph
 
   customer.create(columns, values, function(err, res) {
     res.status(200).json(res);
-  });
-});
-
-// DEBUGGER ROUTE
-
-router.get('/where/:city', function(req, res, next) {
-  var values = [];
-  values.push(req.params.city);
-  console.log(values);
-
-  customer.where(['city'], values, function(err, rows) {
-    console.log(rows.length);
-    res.status(200).json({ customers: rows} );
   });
 });
 

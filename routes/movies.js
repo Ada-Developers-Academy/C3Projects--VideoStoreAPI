@@ -1,7 +1,7 @@
 var async = require('async');
 
 var express = require('express');
-var router = express.Router();
+var router  = express.Router();
 
 var Movie = require('../models/movie'),
     movie = new Movie();
@@ -9,7 +9,7 @@ var Movie = require('../models/movie'),
 var Customer = require('../models/customer'),
     customer = new Customer();
 
-  var Rental = require('../models/rental'),
+var Rental = require('../models/rental'),
     rental = new Rental();
 
 router.get('/', function(req, res, next) {
@@ -21,9 +21,6 @@ router.get('/', function(req, res, next) {
 router.get('/:title/:order', function(req, res, next) {
   var title = req.params.title;
   var originalOrder = req.params.order;
-  // sort by customer_id, customer name, and checkout_date
-  // var currentRentersArray = [];
-  // var pastRentersArray = [];
 
   var movieObject = { 
     movie_data: undefined, 
@@ -58,10 +55,10 @@ router.get('/:title/:order', function(req, res, next) {
         }
       }
 
-      customer.where_in(['id'], currentRentersIds, function(err, rows) {
+      customer.where_in('id', currentRentersIds, function(err, rows) {
         movieObject.customers.currentRenters = rows;
 
-        customer.where_in(['id'], pastRentersIds, function(err, rows) {
+        customer.where_in('id', pastRentersIds, function(err, rows) {
           if (originalOrder == "customer_name") {
             rows.sort(function(a, b) {
               return a.name.localeCompare(b.name); // this is a good way to sort strings!
