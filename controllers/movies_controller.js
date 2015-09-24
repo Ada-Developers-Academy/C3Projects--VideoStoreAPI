@@ -3,15 +3,6 @@
 // ----------------- movie model ----------------- //
 var movieTable = require('../models/movie');
 
-// ------------------- database ------------------- //
-var sqlite3 = require("sqlite3").verbose();
-var dbEnv = process.env.DB || "development";
-
-// --------------- helper functions --------------- //
-var helps = "../helpers/";
-var fixTime = require(helps + "milliseconds_to_date");
-var ourWebsite = require(helps + "url_base");
-
 var MoviesController = {};
 
 //--------- GET /all -----------------------------------------------------------

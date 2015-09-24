@@ -9,7 +9,7 @@ var movieController = require('../../controllers/movies_controller');
 
 // Run  `DB=test npm run db:schema' and 'DB=test npm run db:seeds` to seed before running these tests
 
-describe('movie controller', function() {
+describe.only('movie controller', function() {
   describe('GET /all/:page', function() {
     var uri = '/movies/all/1';
 

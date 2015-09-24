@@ -19,9 +19,9 @@ var Movie = function() { // movie constructor
 }
 
 Movie.prototype.movieInfo = function(error, data) {
-
   var results = { meta: {} };
   var status;
+
   if (error) { // log error if error
     status = 500; // internal server error
     results.data = {
@@ -50,16 +50,13 @@ Movie.prototype.movieInfo = function(error, data) {
   results.meta.yourQuery = ourWebsite + "/movies/" + title;
 
   return results;
-
 }
 
 Movie.prototype.all = function(page, callback) {
-
   function formatData(err, res) {
     if (err) {return callback(err);}
 
     var data = fixTime(res, 'release_date');
-
     var results = {};
 
     results.meta = {
@@ -86,12 +83,10 @@ Movie.prototype.all = function(page, callback) {
 }
 
 Movie.prototype.all_by_title  = function(page, callback) {
-
   function formatData(err, res) {
     if (err) {return callback(err);}
 
     var data = fixTime(res, 'release_date');
-
     var results = {};
 
     results.meta = {
@@ -144,8 +139,6 @@ Movie.prototype.all_by_release_date = function(page, callback) {
     OFFSET " + offset + ";";
 
   this.open();
-  console.log("INSIDE PROTOTYPE");
-  console.log(statement);
   this.db.all(statement, function(error, data) {
     return sqlErrorHandling(error, data, formatData);
   })
@@ -211,8 +204,6 @@ Movie.prototype.rentals_by_customer_id = function(title, callback) {
     ORDER BY customers.id";
 
   this.open();
-  console.log("INSIDE PROTOTYPE");
-  console.log(statement);
   this.db.all(statement, function(error, data) {
     return sqlErrorHandling(error, data, formatData);
   })
@@ -248,8 +239,6 @@ Movie.prototype.rentals_by_customer_name = function(title, callback) {
     ORDER BY customers.name";
 
   this.open();
-  console.log("INSIDE PROTOTYPE");
-  console.log(statement);
   this.db.all(statement, function(error, data) {
     return sqlErrorHandling(error, data, formatData);
   })
@@ -324,6 +313,5 @@ Movie.prototype.whos_renting = function(title, callback) {
   })
   this.close();
 }
-
 
 module.exports = Movie;

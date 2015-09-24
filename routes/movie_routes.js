@@ -11,6 +11,7 @@ router.get('/all', function(req, res, next) {
 
 // GET all movies sorted by release_date or title
 router.get("/all/sort_by=:sort/:page", function(req, res, next) {
+  sorting_hat = ['release_date', 'title']
   var sort = req.params.sort;
 
   switch (sort) {
