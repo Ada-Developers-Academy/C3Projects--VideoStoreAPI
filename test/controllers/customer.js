@@ -41,13 +41,36 @@ describe("customers controller", function(){
     })
 
 
-    it("finds customer subset pages sorted by column", function(done) {
-      agent.get("/customers/name/1").set('Accept', 'application/json')
+    it("finds customer subset pages sorted by name", function(done) {
+      agent.get("/customers/name/page1").set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result){
           assert.equal(error, undefined);
-          assert.equal(result.body.customer_subset[1].name, "Scully");
           assert.equal(result.body.customer_subset[0].name, "Mulder");
+          assert.equal(result.body.customer_subset[1].name, "Scully");
+          done();
+        })
+    })
+
+    it("finds customer subset pages sorted by registered_at", function(done) {
+      agent.get("/customers/registered_at/page1").set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result){
+          assert.equal(error, undefined);
+          console.log(result.body);
+          assert.equal(result.body.customer_subset[0].registered_at, "2013-12-23");
+          assert.equal(result.body.customer_subset[1].registered_at, "2015-09-16");
+          done();
+        })
+    })
+
+    it("finds customer subset pages sorted by postal_code", function(done) {
+      agent.get("/customers/postal_code/page1").set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result){
+          assert.equal(error, undefined);
+          assert.equal(result.body.customer_subset[0].postal_code, "2342");
+          assert.equal(result.body.customer_subset[1].postal_code, "834885");
           done();
         })
     })
