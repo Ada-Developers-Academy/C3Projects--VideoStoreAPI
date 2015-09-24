@@ -1,10 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+var customers_exports = require('../controller/customers');
 
 // '/customers'
 router.get('/', function(req, res, next) {
@@ -21,7 +17,7 @@ router.get('/:sort_by/:results_per_page/:page_number', function(req, res, next) 
 // with a customer's id - the movies they currently have checked out
 // '/customers/:id/current'
 router.get('/:id/current', function(req, res, next) {
-  return customers_exports.customersController.search_id(req, res);
+  return customers_exports.customersController.search_current(req, res);
 });
 
 // with a customer's id - '/customers/:id/...'
@@ -31,7 +27,7 @@ router.get('/:id/current', function(req, res, next) {
 //              includes return date
 
 router.get('/:id/previous', function(req, res, next) {
-  return customers_exports.customersController.sort_pages(req, res);
+  return customers_exports.customersController.search_previous(req, res);
 });
 
 module.exports = router;

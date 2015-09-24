@@ -8,7 +8,8 @@ var movie_fields = [
   ['title', 'text'],
   ['overview', 'text'],
   ['release_date', 'text'],
-  ['inventory', 'integer']
+  ['total_inventory', 'integer'],
+  ['inventory_available', 'integer']
 ];
 
 db.serialize(function() {
@@ -50,6 +51,7 @@ db.serialize(function() {
 
 var rental_fields = [
   ['customer_id', 'integer'],
+  ['customer_name', 'text'],
   ['movie_id', 'integer'],
   ['return_date', 'text'],
   ['checkout_date', 'text'],

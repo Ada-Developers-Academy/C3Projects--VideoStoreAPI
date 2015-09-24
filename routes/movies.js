@@ -8,6 +8,7 @@ router.get('/', function(req, res, next) {
 });
 
 // '/movies/:sort_by/:results_per_page/:page_number'
+// :sort_by - :title, :release_date
 router.get('/:sort_by/:results_per_page/:page_number', function(req, res, next) {
   return movies_exports.moviesController.sort_pages(req, res);
 });
@@ -16,5 +17,7 @@ router.get('/:sort_by/:results_per_page/:page_number', function(req, res, next) 
 router.get('/:title', function(req, res, next) {
   return movies_exports.moviesController.search_title(req, res);
 });
+
+
 
 module.exports = router;

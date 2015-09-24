@@ -26,13 +26,32 @@ exports.customersController = {
     });
   },
 
-  // '/customers/:id'
+  // '/customers/:id/current'
   // '/current  and /previous'(should be able to see checkout & return date)
-  search_id: function(req, res) {
+  search_current: function(req, res) {
     var statement = "SELECT * FROM customers WHERE id LIKE '%" + req.params.id + "%';";
     db.all(statement, function(err, rows) {
-      res.status(200).json(rows);
+      var customerId = rows[0].id
+
+      var statement = "SELECT * FROM rentals WHERE customer_id = "+ customerId + " AND return_date = '';";
+      db.all(statement, function(err,rows){
+        res.status(200).json(rows);
+      });
+
     });
   },
-  
+
+  // '/customers/:id/previous'
+  search_previous: function(req, res) {
+    var statement = "SELECT * FROM customers WHERE id LIKE '%" + req.params.id + "%';";
+    db.all(statement, function(err, rows) {
+      var customerId = rows[0].id
+
+      var statement = "SELECT * FROM rentals WHERE customer_id = "+ customerId + " AND return_date != '';";
+      db.all(statement, function(err,rows){
+        res.status(200).json(rows);
+      });
+    });
+  }
+
 }

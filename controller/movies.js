@@ -31,5 +31,4 @@ exports.moviesController = {
       res.status(200).json(rows);
     });
   }
-
 }

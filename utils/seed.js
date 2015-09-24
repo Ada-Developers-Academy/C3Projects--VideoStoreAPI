@@ -6,8 +6,8 @@ var sqlite3 = require('sqlite3').verbose(),
 
 var movies = require('./movies');
 var movie_statement = db.prepare(
-  "INSERT INTO movies(title, overview, inventory, release_date) \
-  VALUES (?, ?, ?, ?);"
+  "INSERT INTO movies(title, overview, release_date, total_inventory, inventory_available) \
+  VALUES (?, ?, ?, ?, ?);"
 );
 
 db.serialize(function() {
@@ -17,8 +17,9 @@ db.serialize(function() {
     movie_statement.run(
       movie.title,
       movie.overview,
+      movie.release_date,
       movie.inventory,
-      movie.release_date
+      movie.inventory
     );
   }
 
@@ -41,9 +42,9 @@ db.serialize(function() {
       customer.address,
       customer.city,
       customer.state,
-      customer.postal_zip,
-      customer.phone_number,
-      customer.credit
+      customer.postal_code,
+      customer.phone,
+      customer.account_credit
     );
   }
 
@@ -52,8 +53,8 @@ db.serialize(function() {
 
 var rentals = require('./rentals');
 var rental_statement = db.prepare(
-  "INSERT INTO rentals(customer_id, movie_id, return_date, checkout_date, due_date) \
-  VALUES (?, ?, ?, ?, ?);"
+  "INSERT INTO rentals(customer_id, customer_name, movie_id, return_date, checkout_date, due_date) \
+  VALUES (?, ?, ?, ?, ?, ?);"
 );
 
 db.serialize(function() {
@@ -62,6 +63,7 @@ db.serialize(function() {
 
     rental_statement.run(
       rental.customer_id,
+      rental.customer_name,
       rental.movie_id,
       rental.return_date,
       rental.checkout_date,
