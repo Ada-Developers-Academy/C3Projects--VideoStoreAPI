@@ -19,6 +19,8 @@ describe("Customer", function() {
           'P.O. Box 887, 4257 Lorem Rd.', 'Columbus', 'Ohio', '43201', \
           '(371) 627-1105', 1234), \
         ('Fox Mulder', 'Fri, 10 Jul 2015 15:23:06 -0700', '152-525 Odio St.', \
+          'Seattle', 'Washington', '98109', '(206) 329-4928', 293), \
+        ('Alex Krychek', 'Fri, 10 Jul 2015 15:23:06 -0700', '152-525 Odio St.', \
           'Seattle', 'Washington', '98109', '(206) 329-4928', 293); \
         COMMIT;"
         , function(err) {
@@ -37,16 +39,40 @@ describe("Customer", function() {
     it("can find all customers", function(done){
       customer.find_all(function(err, res){
         assert.equal(err, undefined);
-        assert.equal(res.length, 2);
+        assert.equal(res.length, 3);
         done();
       });
     });
 
-    it("can find a customer by id", function(done){
+    it("can find a customer by id", function(done) {
       customer.find_by("id", 1, function(err, res) {
         assert.equal(err, undefined);
         assert(res instanceof Object);
         assert.equal(res.id, 1);
+        done();
+      });
+    });
+
+    it("can find a customer when given multiple columns and values", function(done) {
+      var columns = ['name', 'city', 'postal_code'];
+      var values = ['Fox Mulder', 'Seattle', '98109'];
+      customer.where(columns, values, function(err, res) {
+        assert.equal(err, undefined);
+        assert(res instanceof Array);
+        assert.equal(res[0].id, 2);
+        done();
+      });
+    });
+
+    it("can find all customers with specified column=value(s)", function(done) {
+      var column = 'city';
+      var values = ['Seattle'];
+      customer.where_in(column, values, function(err, res) {
+        assert.equal(err, undefined);
+        assert(res instanceof Array);
+        assert.equal(res.length, 2);
+        assert.equal(res[0].name, 'Fox Mulder');
+        assert.equal(res[1].name, 'Alex Krychek');
         done();
       });
     });
@@ -76,7 +102,7 @@ describe("Customer", function() {
         "Vancouver", "BC", "93840", "(385) 948-9282"];
 
       customer.create(columns, values, function(err, res) {
-        assert.equal(res.inserted_id, 3); //it inserted a new record
+        assert.equal(res.inserted_id, 4); //it inserted a new record
 
         customer.find_by("name", "Ratboy", function(err, res) {
           assert.equal(res.name, 'Ratboy'); //we found our new customer

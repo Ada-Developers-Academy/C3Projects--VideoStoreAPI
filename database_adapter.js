@@ -45,13 +45,13 @@ module.exports = {
     });
   },
 
-  where_in: function(column, valueList, callback) {
+  where_in: function(column, values, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
-    var questionMarks = Array(valueList.length + 1).join('?').split('').join(', ');
+    var questionMarks = Array(values.length + 1).join('?').split('').join(', ');
 
     var statement = "SELECT * FROM " + this.table_name + " WHERE " + column + " IN (" + questionMarks + ");";
 
-    db.all(statement, valueList, function(error, result) {
+    db.all(statement, values, function(error, result) {
       if (callback) { callback(error, result); }
       db.close();
     });
