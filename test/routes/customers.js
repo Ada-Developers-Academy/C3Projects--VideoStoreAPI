@@ -102,7 +102,7 @@ describe("customers routes", function() {
         });
     });
 
-    it("returns an object with customer data and movies", function(done) {
+    it("returns an object", function(done) {
       agent.get('/customers/1').set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
@@ -113,7 +113,7 @@ describe("customers routes", function() {
         });
     });
 
-    it("object returned has customer_data and movies", function(done) {
+    it("returns an object that has customer_data and movies", function(done) {
       agent.get('/customers/1').set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
@@ -148,30 +148,40 @@ describe("customers routes", function() {
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
           var pastRentals = response.body.movies.pastRentals;
-          var movie = pastRentals[0].movieData;
+          var movie = pastRentals[0].movie_data;
 
           assert.equal(pastRentals.length, 2);
-          assert.equal(movie.title, "Fight the Future"); 
-          assert.equal(movie.overview, "first xfiles movie"); 
-          assert.equal(movie.release_date, "1998");
-          assert.equal(movie.inventory, 2);
+          assert.equal(movie.title, "I Want to Believe"); 
+          assert.equal(movie.overview, "second xfiles movie"); 
+          assert.equal(movie.release_date, "2008");
+          assert.equal(movie.inventory, 4);
           done();
         });
     });
 
-    it("sorts past rentals by checkout date");
+    it("sorts past rentals by checkout date", function(done) {
+      agent.get('/customers/1').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, response) {
+          var pastRental1 = response.body.movies.pastRentals[0].movie_data;
+          var pastRental2 =  response.body.movies.pastRentals[1].movie_data;
+
+          assert.equal(pastRental1.title, "I Want to Believe");
+          assert.equal(pastRental2.title, "Fight the Future");
+          done();
+        });
+    });
 
     it("includes return date for past rentals", function(done) {
       agent.get('/customers/1').set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
           var pastRentals = response.body.movies.pastRentals;
-          var movie1ReturnDate = pastRentals[0].returnedDate;
-          var movie2ReturnDate = pastRentals[1].returnedDate;
-          console.log(movie1ReturnDate)
+          var movie1ReturnDate = pastRentals[0].dates.returned_date;
+          var movie2ReturnDate = pastRentals[1].dates.returned_date;
 
-          assert.equal(movie1ReturnDate, 2013);
-          assert.equal(movie2ReturnDate, 2009);
+          assert.equal(movie1ReturnDate, 2009);
+          assert.equal(movie2ReturnDate, 2013);
           done();
         });
     });

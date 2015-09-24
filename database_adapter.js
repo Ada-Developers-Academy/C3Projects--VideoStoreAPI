@@ -45,13 +45,13 @@ module.exports = {
     });
   },
 
-  where_in: function(column, valueList, callback) {
+  where_in: function(column, values, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
-    var questionMarks = Array(valueList.length + 1).join('?').split('').join(', ');
+    var questionMarks = Array(values.length + 1).join('?').split('').join(', ');
 
     var statement = "SELECT * FROM " + this.table_name + " WHERE " + column + " IN (" + questionMarks + ");";
 
-    db.all(statement, valueList, function(error, result) {
+    db.all(statement, values, function(error, result) {
       if (callback) { callback(error, result); }
       db.close();
     });
@@ -63,21 +63,6 @@ module.exports = {
     var statement = "SELECT * FROM " + this.table_name + " ORDER BY " + column + " LIMIT ? OFFSET ?";
 
     db.all(statement, queries, function(err, res) {
-      if (callback) { callback(err, res); }
-      db.close();
-    });
-  },
-
-  // if 'none' is passed in, no sort is performed
-  order_by: function(condition, column, callback) {
-    var db = new sqlite3.Database('db/' + db_env + '.db');
-
-    var statement;
-    statement = (column == "none") ?
-      "SELECT * FROM " + this.table_name + " WHERE " + condition
-      : "SELECT * FROM " + this.table_name + " WHERE " + condition + " ORDER BY " + column;
-
-    db.all(statement, function(err, res) {
       if (callback) { callback(err, res); }
       db.close();
     });
