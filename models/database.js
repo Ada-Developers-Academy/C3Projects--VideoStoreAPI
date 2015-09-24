@@ -80,9 +80,9 @@ Database.prototype.sortBy = function sortBy(parameter, n, p, callback) {
   n = parseInt(n);
   p = parseInt(p);
 
-  if (!n) {
+  if (!n) { // if n is NaN/null/undefined
     var statement = 'SELECT * FROM ' + this.tableName + ' ORDER BY ' + parameter + ';';
-  } else if (p > 1){
+  } else if (p > 1) {
     var offset = n * (p - 1);
     var statement = 'SELECT * FROM ' + this.tableName + ' ORDER BY ' + parameter + ' LIMIT ' + n + ' OFFSET ' + offset + ';';
   } else {
