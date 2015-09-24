@@ -133,7 +133,6 @@ module.exports = {
         FROM customers, rentals \
         WHERE customers.id=rentals.customer_id \
         AND rentals.overdue=1 AND rentals.check_in IS NULL;", function(err, res) {
-          // console.log(res);
           if (callback) { callback(res); }
         });
     });
