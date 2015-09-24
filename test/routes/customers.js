@@ -24,12 +24,15 @@ describe("customers routes", function() {
         DELETE FROM movies; \
         INSERT INTO movies (title, overview, release_date, inventory) \
         VALUES ('Fight the Future', 'first xfiles movie', '1998', 2), \
-          ('I Want to Believe', 'second xfiles movie', '2008', 4); \
+          ('I Want to Believe', 'second xfiles movie', '2008', 4), \
+          ('XFiles movie 3', 'third xfiles movie', '2010', 3); \
         DELETE FROM rentals; \
         INSERT INTO rentals (customer_id, movie_id, checkout_date, due_date, \
           returned_date) \
         VALUES (1, 1, '2012', '2013', '2013'), \
           (1, 2, '2008', '2009', '2009'), \
+          (1, 3, '2011', '2012', '2012'), \
+          (1, 1, '1998', '1999', '1999'), \
           (1, 2, '2014', '2015', ''); \
         COMMIT;"
         , function(err) {
@@ -102,7 +105,7 @@ describe("customers routes", function() {
         });
     });
 
-    it("returns an object with customer data and movies", function(done) {
+    it("returns an object", function(done) {
       agent.get('/customers/1').set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
@@ -113,7 +116,7 @@ describe("customers routes", function() {
         });
     });
 
-    it("object returned has customer_data and movies", function(done) {
+    it("returns an object that has customer_data and movies", function(done) {
       agent.get('/customers/1').set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
@@ -159,7 +162,15 @@ describe("customers routes", function() {
         });
     });
 
-    it("sorts past rentals by checkout date");
+    it.only("sorts past rentals by checkout date", function(done) {
+      agent.get('/customers/1').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, response) {
+          var pastRentals = response.body.movies;
+          console.log(pastRentals);
+          done();
+        });
+    });
 
     it("includes return date for past rentals", function(done) {
       agent.get('/customers/1').set('Accept', 'application/json')
@@ -168,7 +179,6 @@ describe("customers routes", function() {
           var pastRentals = response.body.movies.pastRentals;
           var movie1ReturnDate = pastRentals[0].returnedDate;
           var movie2ReturnDate = pastRentals[1].returnedDate;
-          console.log(movie1ReturnDate)
 
           assert.equal(movie1ReturnDate, 2013);
           assert.equal(movie2ReturnDate, 2009);

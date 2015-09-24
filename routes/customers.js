@@ -46,7 +46,6 @@ router.get('/:id', function(req, res, next) {
         // returned movies
         } else {
           pastMoviesObject[rows[i].movie_id] = rows[i].returned_date;
-          // pastMoviesIDs.push(rows[i].movie_id);
         }
       }
       pastMoviesIDs = Object.keys(pastMoviesObject);
