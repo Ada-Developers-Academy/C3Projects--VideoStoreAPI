@@ -33,7 +33,7 @@ router.get('/check_in', function(req, res, next) {
   return rental_exports.rentalsController.check_in(req, res);
 });
 
-router.post('/check_in', function(req, res, next) { // THIS SHOULD BE PUT/PATCH
+router.put('/check_in', function(req, res, next) { 
   return rental_exports.rentalsController.check_in(req, res);
 });
 

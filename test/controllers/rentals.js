@@ -99,67 +99,29 @@ describe("rentals controller", function() {
     });
   });
 
+  var check_out_path = '/rentals/check_out';
+  var new_rental = { movie_title: 'Jaws', customer_id: 1};
+  describe("POST check_out_path", function(){
+    it("creates a new rental record", function(){
+      request(check_out_path)
+     .post(check_out_path)
+     .send(new_rental)
+     .expect(200)
+     .expect(rental.all.length, 3);
+    });
+  });
 
-//request = agent
-// .post(path)
-// .send('key':'value')
-// done()
+  var check_in_path = '/rentals/check_in';
+  var update_rental = { movie_title: 'Alien', customer_id: 1};
+  describe("PUT check_in_path", function(){
+    it("updates an existing rental record", function(done){
+      request(check_in_path)
+     .put(check_in_path)
+     .send(update_rental)
+     .expect(200)
+     .expect("Alien is updated", done);
+    });
+  });
 
-  // var check_out_path = '/rentals/check_out'
-  // .post(check_out_path)
-  // .send(check_out:'', check_in:'', due_date:'', movie_title:'', customer_id:'')
-  // var check_out_path = '/rentals/check_out';
-  // describe("POST check_out_path", function() {
-  //   it("can make a post request", function(done) {
-  //     agent.post(check_out_path).set('Accept', 'application/json')
-  //       .field('check_out', 20150923)
-  //       .field('check_in', null)
-  //       .field('due_date', 20150926)
-  //       .field('movie_title', 'Jaws')
-  //       .field('customer_id', 1)
-  //
-  //       .expect(201, function(error, result) {
-  //         assert.equal(error, undefined);
-  //         done();
-  //       });
-  //   });
-  // });
-  //
-  // describe("GET check_out_path", function(){
-  //   it('should respond with JSON array', function(done) {
-  //     agent.get(check_out_path).set('Accept', 'application/json')
-  //       .expect(200)
-  //       .expect('Content-Type', /json/)
-  //       .end(function(err, res) {
-  //       console.log(res);
-  //         if (err) return done(err);
-  //         res.body.should.be.instanceof(Array);
-  //         done();
-  //       });
-  //   });
-  // });
-
-  // var check_in_path = '/rentals/check_in';
-  // describe("GET check_in_path", function() {
-  //   it("knows about the route", function(done) {
-  //     agent.get(check_in_path).set('Accept', 'application/json')
-  //       .expect('Content-Type', /application\/json/)
-  //       .expect(200, function(error, result) {
-  //         assert.equal(error, undefined);
-  //         done();
-  //       });
-  //   });
-
-    // it("returns an array of overdue rental objects", function(done) {
-    //   agent.get(check_in_path).set("Accept", "application/json")
-    //     .expect(200, function(error, result) {
-    //       assert.equal(result.body.length, 1);
-    //
-    //       var keys = ['id', 'name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone', 'account_credit'];
-    //       assert.deepEqual(Object.keys(result.body[0]), keys);
-    //       done();
-    //     });
-    // });
-  // });
 
 }); //final describe close
