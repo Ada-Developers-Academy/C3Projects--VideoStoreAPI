@@ -12,8 +12,23 @@ Rental.prototype = {
   check_out: function(customer_id, movie_title, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
     var rental_duration_days = 7;
+
     var checkout_date = new Date(Date.now());
+    var checkout_date_dd = checkout_date.getDate();
+    var checkout_date_mm = checkout_date.getMonth() + 1;
+    var checkout_date_yyyy = checkout_date.getFullYear();
+    if(checkout_date_dd < 10) { checkout_date_dd ='0'+ checkout_date_dd }
+    if(checkout_date_mm < 10) { checkout_date_mm ='0'+ checkout_date_mm }
+    checkout_date = checkout_date_yyyy + "-" + checkout_date_mm + "-" + checkout_date_dd;
+
     var return_date = new Date(Date.now() + (rental_duration_days * 24 * 60 * 60 * 1000));
+    var return_date_dd = return_date.getDate();
+    var return_date_mm = return_date.getMonth() + 1;
+    var return_date_yyyy = return_date.getFullYear();
+    if(return_date_dd < 10) { return_date_dd ='0'+ return_date_dd }
+    if(return_date_mm < 10) { return_date_mm ='0'+ return_date_mm }
+    return_date = return_date_yyyy + "-" + return_date_mm + "-" + return_date_dd;
+
     var rental_cost = 1.0;
 
     var create_statement = "INSERT INTO " + this.table_name + " (checkout_date, return_date, movie_id, customer_id, checked_out) " + "VALUES ('" + checkout_date + "', '" + return_date  + "', (SELECT id FROM movies WHERE title = '" + movie_title + "'), " + customer_id + ", 'true')";
@@ -47,6 +62,17 @@ Rental.prototype = {
       db.close();
     });
   },
+
+  format_date: function(days_to_add, callback) {
+    var today = new Date(Date.now());
+    var today_dd = today.getDate();
+    var today_mm = today.getMonth() + 1;
+    var today_yyyy = today.getFullYear();
+    if(today_dd < 10) { today_dd ='0'+ today_dd; }
+    if(today_mm < 10) { today_mm ='0'+ today_mm; }
+    today = today_yyyy + "-" + today_mm + "-" + today_dd;
+    callback(today);
+  }
 };
 
 module.exports = Rental;
