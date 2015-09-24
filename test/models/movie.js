@@ -31,6 +31,14 @@ describe("Movie", function() {
   });
 
   describe("instance methods", function() {
+    it("can find all movies", function(done){
+      movie.find_all(function(err, res){
+        assert.equal(err, undefined);
+        assert.equal(res.length, 3);
+        done();
+      });
+    });
+
     it("can find a movie by id", function(done){
       movie.find_by("id", 1, function(err, res) {
         assert.equal(err, undefined);
