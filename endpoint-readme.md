@@ -22,8 +22,8 @@ See below for the available endpoints for this API.
 - GET `/customers`
 - Retrieves a list of all customers.
 - Returns an object with a `customers` property containing an array of customer objects.
-- Each customer object contains the following properties: `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
-- Sample: GET '/customers'
+- Each customer object contains the following properties: `id`, `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
+- Sample: GET `/customers`
 ```json
 {
     "customers": [{
@@ -83,17 +83,17 @@ See below for the available endpoints for this API.
 ###Single Customer
 
 - GET `/customers/:id`
-- Retrieves data about the customer identified by the id passed in the URL.
+- Retrieves data about the customer identified by the `id` passed in the URL.
 - Returns an object with `customer_data` and `movies` properties.
-  - `customer_data` contains the following properties: `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
+  - `customer_data` contains the following properties: `id`, `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
   - `movies` contains: `current_rentals` and `past_rentals`.
     - `current_rentals` is a list of movies rented by the customer.
-      - Each movie object contains the following propeties: `title`, `overview`, `release_date`, and `inventory`.
+      - Each movie object contains the following propeties: `id`, `title`, `overview`, `release_date`, and `inventory`.
     - `past_rentals` is a list of movie objects.
       - Each movie object contains `movie_data` and `dates`.
         - `dates` contains `checkout_date` and `returned_date`.
-        - `movie_data` contains: `title`, `overview`, `release_date`, and `inventory`.
-- Sample: GET '/customers/1'
+        - `movie_data` contains: `id`, `title`, `overview`, `release_date`, and `inventory`.
+- Sample: GET `/customers/1`
 ```json
 {
     "customer_data": {
@@ -202,12 +202,12 @@ See below for the available endpoints for this API.
 
 - GET `/customers/:sort_by/:limit/:offset`
 - Sorts the entire set of customers by a certain property (`sort_by`), then retrieves a number (`limit`) of customers, starting at a certain index (`offset`).
-  - `sort_by` accepts 'name' (customer name), 'id' (customer id), or 'checkout_date'.
+  - `sort_by` accepts `name` (customer name), `registered_at` (registration date), or `postal_code`.
   - `limit` must be an integer >= 0.
   - `offset` must be an integer >= 0.
 - Returns an object with a `customers` property containing an array of customer objects.
-- Each customer object contains the following properties: `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
-- Sample: GET '/customers/name/2/2'
+- Each customer object contains the following properties: `id`, `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
+- Sample: GET `/customers/name/2/2`
 ```json
 {
     "customers": [{
@@ -241,8 +241,8 @@ See below for the available endpoints for this API.
 - GET `/movies`
 - Retrieves a list of all movies.
 - Returns an object with a `movies` property containing an array of movie objects.
-- Each movie object contains the following properties: `title`, `overview`, `release_date`, and `inventory`.
-- Sample: GET '/movies'
+- Each movie object contains the following properties: `id`, `title`, `overview`, `release_date`, and `inventory`.
+- Sample: GET `/movies`
 ```json
 {
     "movies": [{
@@ -279,8 +279,77 @@ See below for the available endpoints for this API.
 }
 ```
 
-GET '/movies/:title/:order'
 
+###Single Movie
+
+- GET `/movies/:title/:order`
+- `order` accepts `name` (customer name), `id` (customer id), and `checkout_date`.
+- Retrieves data about the movie identified by the `title` passed in the URL, with past customers sorted in the `order` passed in the URL.
+- Returns an object with `movie_data` and `customers` properties.
+  - `movie_data` contains the following properties: `id`, `title`, `overview`, `release_date`, and `inventory`.
+  - `customers` contains: `current_renters` and `past_renters`.
+    - `current_renters` is a list of customers who have an unreturned rental of the movie.
+      - Each customer object contains the following propeties: `id`, `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
+    - `past_renters` is a list of customer objects.
+      - Each customer object contains `customer_data` and `dates`.
+        - `dates` contains `checkout_date`.
+        - `customer_data` contains: `id`, `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
+- Sample: GET `/movies/The Guns of Navarone/name`
+```json
+{
+    "movie_data": {
+        "id": 89,
+        "title": "The Guns of Navarone",
+        "overview": "A team of allied saboteurs are assigned an impossible mission: infiltrate an impregnable Nazi-held island and destroy the two enormous long-range field guns that prevent the rescue of 2,000 trapped British soldiers.",
+        "release_date": "1961-06-22",
+        "inventory": 3
+    },
+    "customers": {
+        "current_renters": [{
+            "id": 4,
+            "name": "Carolyn Chandler",
+            "registered_at": "Fri, 04 Jul 2014 11:05:11 -0700",
+            "address": "133-8707 Arcu. Avenue",
+            "city": "Fort Wayne",
+            "state": "IN",
+            "postal_code": "73684",
+            "phone": "(234) 837-2886",
+            "account_credit": 2079
+        }],
+        "past_renters": [{
+            "dates": {
+                "checkout_date": "2009-12-03T10:58:43.000Z"
+            },
+            "customer_data": {
+                "id": 3,
+                "name": "Roanna Robinson",
+                "registered_at": "Fri, 28 Nov 2014 13:14:08 -0800",
+                "address": "Ap #561-4214 Eget St.",
+                "city": "Harrisburg",
+                "state": "PA",
+                "postal_code": "15867",
+                "phone": "(323) 336-1841",
+                "account_credit": 5039
+            }
+        }, {
+            "dates": {
+                "checkout_date": "1999-10-03T07:25:08.000Z"
+            },
+            "customer_data": {
+                "id": 2,
+                "name": "XCurran Stout",
+                "registered_at": "Wed, 16 Apr 2014 21:40:20 -0700",
+                "address": "Ap #658-1540 Erat Rd.",
+                "city": "San Francisco",
+                "state": "California",
+                "postal_code": "94267",
+                "phone": "(908) 949-6758",
+                "account_credit": 3565.9999999999995
+            }
+        }]
+    }
+}
+```
 
 
 GET '/movies/:sort_by/:limit/:offset'
