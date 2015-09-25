@@ -43,7 +43,7 @@ describe("movies controller", function(){
   });
 
   it("returns subset of movies sorted by title", function(done) {
-      agent.get("/movies/title/0").set('Accept', 'application/json')
+      agent.get("/movies/title/page0").set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result){
           assert.equal(error, undefined);
@@ -56,7 +56,7 @@ describe("movies controller", function(){
   });
 
   it("returns subset of movies sorted by release_date", function(done) {
-      agent.get("/movies/release_date/0").set('Accept', 'application/json')
+      agent.get("/movies/release_date/page0").set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result){
           assert.equal(error, undefined);

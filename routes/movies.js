@@ -22,7 +22,7 @@ router.get('/:movie_title/current_rentals', function(req, res, next) {
 
 
 // movies/name/1
-router.get('/:column/:number', function(req, res, next) {
+router.get('/:column/page:number', function(req, res, next) {
   return movie_exports.moviesController.subset(req, res, req.params.column, req.params.number);
 });
 
