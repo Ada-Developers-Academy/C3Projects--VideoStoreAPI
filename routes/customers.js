@@ -54,7 +54,7 @@ router.get('/:id', function(req, res, next) {
       }
 
       movie.where_in('id', currentMoviesIDs, function(err, rows) {
-        customerObject.movies.currentRentals = rows; // no returned_date
+        customerObject.movies.current_rentals = rows; // no returned_date
         pastMoviesArray = [];
 
         movie.where_in('id', pastMoviesIDs, function(err, rows) { // unsorted
@@ -67,7 +67,7 @@ router.get('/:id', function(req, res, next) {
               return a.dates.checkout_date.localeCompare(b.dates.checkout_date); // this is a good way to sort strings!
             });
           
-          customerObject.movies.pastRentals = pastMoviesArray;
+          customerObject.movies.past_rentals = pastMoviesArray;
           res.status(200).json(customerObject);
         });
       });
