@@ -31,7 +31,7 @@ RentalsController.movieInfo = function(request, response, next) {
   // basic handling for attempted sql injection
   var callbackFxn = RentalsController.fixParamsOrReturnError(response);
   var title = validateParams(request, "title", callbackFxn);
-  if (!title) { console.log("attempted SQL injection"); return; }
+  if (!title) { return; }
 
   Rental.movieInfo(title, function(error, result) {
     if (error) { result = error; }
@@ -86,12 +86,28 @@ RentalsController.customers = function(request, response, next) {
   })
 }
 
+// post request, check out a title
 RentalsController.checkOut = function(request, response, next) {
-  // post request, check out a title
+  var title = request.params.title;
+  var id = request.params.id;
+
+  var Rental = new RentalModel();
+  Rental.checkOut(title, id, function(error, result) {
+    if (error) { result = error; }
+    return response.status(result.meta.status).json(result);
+  })
 }
 
+// patch request, check in a title
 RentalsController.return = function(request, response, next) {
-  // patch request, check in a title
+  var title = request.params.title;
+  var id = request.params.id;
+
+  var Rental = new RentalModel();
+  Rental.return(title, id, function(error, result) {
+    if (error) { result = error; }
+    return response.status(result.meta.status).json(result);
+  })
 }
 
 module.exports = RentalsController;

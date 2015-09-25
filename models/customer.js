@@ -57,8 +57,6 @@ Customer.prototype.showStatement = function(id) {
   return "SELECT * FROM customers WHERE id=" + id + ";";
 }
 
-
-
 //------------------------------------------------------------------------------
 //--------- DB interactions ----------------------------------------------------
 

@@ -28,13 +28,13 @@ var Rental = function() { // Rental constructor
 
   // rental page limit
   this.limit = 10;
+  this.charge = 3.00;
   this.noMoviesMsg = "No results found. You must query this endpoint with an exact title.";
   this.noOverdueMsg = "No results found. We either have a loose database connection or "
                     + "it is that magical time when NO CUSTOMERS ARE HOLDING OVERDUE FILMS!";
   this.noCustomersMsg = "No results found. You must query this endpoint with an exact title. "
                       + "If you are using an exact title, no customers have a copy checked out."
 }
-
 
 //------------------------------------------------------------------------------
 //--------- SQL statements -----------------------------------------------------
@@ -182,6 +182,123 @@ Rental.prototype.customers = function(title, callback) {
   this.open();
   this.db.all(statement, function(error, data) {
     return sqlErrorHandling(error, data, formatData);
+  })
+  this.close();
+}
+
+Rental.prototype.checkOut = function(movieTitle, customerId, callback) {
+  function formatData(err, res) {
+    if (err) {
+      var results = {};
+
+      results.meta = {
+        status: 500,
+        message: err
+      }
+
+      return callback(results);
+    }
+
+    var results = {};
+    var data = fixTime([res], "check_out_date");
+    results.meta = {
+      status: 200,
+      moreMovieInfo: ourWebsite + "/movies/" + movieTitle,
+      moreRentalInfo: ourWebsite + "/rentals/" + movieTitle,
+      moreCustomerInfo: ourWebsite + "/customers/" + customerId,
+      yourQuery: ourWebsite + "/rentals/" + movieTitle + "/customers/" + customerId
+    }
+    results.data = { receipt: data[0] }
+
+    var credit = results.data.receipt.account_credit;
+    credit = Number(credit.toFixed(2));
+
+    return callback(null, results);
+  }
+
+  var rentalStatement = "INSERT INTO rentals( \
+    movie_title,  \
+    customer_id, \
+    returned, \
+    check_out_date, \
+    return_date) \
+    VALUES (?, ?, ?, ?, ?);";
+
+  var customerStatement = "UPDATE customers " +
+    "SET account_credit = account_credit - " + this.charge +
+    " WHERE id = " + customerId;
+
+  var receiptStatement = "SELECT customers.name, customers.account_credit, "
+    + "rentals.movie_title, rentals.check_out_date FROM customers "
+    + "LEFT JOIN rentals ON rentals.customer_id = customers.id "
+    + "WHERE rentals.movie_title = '" + movieTitle + "' "
+    + "AND customers.id = " + customerId;
+
+  var values = [movieTitle, customerId, 0, Date.now(), ""];
+  var that = this;
+
+  this.open();
+  this.db.serialize(function() {
+    // NOTE:
+    // check if customer already has an active rental for this title
+    // - maybe the POS accidentally submitted this order twice
+    // - maybe the customer's roommate didn't realize customer had come by
+    //   earlier today to pick up the film
+    that.db.run(rentalStatement, values);
+    that.db.run(customerStatement);
+    that.db.get(receiptStatement, function(error, data) {
+      return formatData(error, data);
+    })
+  })
+  this.close();
+
+}
+
+
+Rental.prototype.return = function(movieTitle, customerId, callback) {
+  function formatData(err, res) {
+    if (err) {
+      var results = {};
+
+      results.meta = {
+        status: 500,
+        message: err
+      }
+
+      return callback(results);
+    }
+
+    var results = {};
+    results.meta = {
+      status: 200,
+      moreMovieInfo: ourWebsite + "/movies/" + movieTitle,
+      moreRentalInfo: ourWebsite + "/rentals/" + movieTitle,
+      moreCustomerInfo: ourWebsite + "/customers/" + customerId,
+      yourQuery: ourWebsite + "/rentals/" + movieTitle + "/customers/" + customerId
+    }
+    results.data = { receipt: res }
+
+    return callback(null, results);
+  }
+
+  var returnStatement = 'UPDATE rentals '
+    +'SET return_date = ' + Date.now() + ', returned = 1 '
+    + 'WHERE movie_title = "' + movieTitle + '" '
+    + 'AND customer_id = ' + customerId + ';';
+
+  var that = this;
+
+  this.open();
+  this.db.serialize(function() {
+    // NOTE:
+    // - find movie_id from movie table
+    // - verify customer is a
+    // - do we want to check if customer already has title checked out first?
+    //   - i super think yes if time --jeri
+
+    that.db.run(returnStatement, function(error, data) {
+      return formatData(null, "Is this thing on? Maybe worked.");
+    })
   })
   this.close();
 }
