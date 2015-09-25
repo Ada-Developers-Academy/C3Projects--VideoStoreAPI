@@ -100,3 +100,11 @@ DONE- Retrieve a subset of movies
 - account for negative availability
 - possibly refactor database.js
 
+# Endpoints
+
+## Movies
+
+- Show all movies: http://localhost:3000/movies
+- Look up past rentals for a movie: http://localhost:3000/movies/alien/past_rentals/id
+- Look up current rentals for a movie
+http://localhost:3000/movies/psycho/current_rentals
