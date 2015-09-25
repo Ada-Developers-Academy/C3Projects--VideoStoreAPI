@@ -91,32 +91,22 @@ RentalsController.checkOut = function(request, response, next) {
   var title = request.params.title;
   var id = request.params.id;
 
-  console.log("your title is", title, "and your id is", id);
-
   var Rental = new RentalModel();
   Rental.checkOut(title, id, function(error, result) {
-    console.log('in http response body callback, before if');
     if (error) { result = error; }
-    console.log('result: ' + result);
-    return response.status(200).json(result);
+    return response.status(result.meta.status).json(result);
   })
 }
 
+// patch request, check in a title
 RentalsController.return = function(request, response, next) {
-  console.log('inside return');
-  // patch request, check in a title
-
   var title = request.params.title;
   var id = request.params.id;
 
-  console.log("your title is", title, "and your id is", id);
-
   var Rental = new RentalModel();
   Rental.return(title, id, function(error, result) {
-    console.log('in http response body callback, before if');
     if (error) { result = error; }
-    console.log('result: ' + result);
-    return response.status(200).json(result);
+    return response.status(result.meta.status).json(result);
   })
 }
 

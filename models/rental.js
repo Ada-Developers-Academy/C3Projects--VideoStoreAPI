@@ -85,7 +85,7 @@ Rental.prototype.customersStatement = function(title) {
 
 Rental.prototype.movieInfo = function(title, callback) {
   function formatData(err, res) {
-    if (err) { console.log("movieInfo fail"); return callback(err); }
+    if (err) { return callback(err); }
 
     var results = {};
     var data = fixTime(res, "release_date");
@@ -205,6 +205,7 @@ Rental.prototype.checkOut = function(movieTitle, customerId, callback) {
       status: 200,
       moreMovieInfo: ourWebsite + "/movies/" + movieTitle,
       moreRentalInfo: ourWebsite + "/rentals/" + movieTitle,
+      moreCustomerInfo: ourWebsite + "/customers/" + customerId,
       yourQuery: ourWebsite + "/rentals/" + movieTitle + "/customers/" + customerId
     }
     results.data = { receipt: data[0] }
@@ -215,11 +216,6 @@ Rental.prototype.checkOut = function(movieTitle, customerId, callback) {
     return callback(null, results);
   }
 
-  // NOTE:
-  // - find movie_id from movie table
-  // - verify customer is a
-  // - do we want to check if customer already has title checked out first?
-  //   - i super think yes if time --jeri
   var rentalStatement = "INSERT INTO rentals( \
     movie_title,  \
     customer_id, \
@@ -243,18 +239,14 @@ Rental.prototype.checkOut = function(movieTitle, customerId, callback) {
 
   this.open();
   this.db.serialize(function() {
+    // NOTE:
     // check if customer already has an active rental for this title
     // - maybe the POS accidentally submitted this order twice
     // - maybe the customer's roommate didn't realize customer had come by
-    // - earlier today to pick up the film
-    that.db.run(rentalStatement, values, function(error, data) {
-      console.log("inside rentalStatement");
-    })
-    that.db.run(customerStatement, function(error, data) {
-      console.log("inside customerStatement");
-    })
+    //   earlier today to pick up the film
+    that.db.run(rentalStatement, values);
+    that.db.run(customerStatement);
     that.db.get(receiptStatement, function(error, data) {
-      console.log("receiptStatement error is", error, "and data is", data);
       return formatData(error, data);
     })
   })
@@ -277,11 +269,11 @@ Rental.prototype.return = function(movieTitle, customerId, callback) {
     }
 
     var results = {};
-    // var data = fixTime([res], "return_date");
     results.meta = {
       status: 200,
       moreMovieInfo: ourWebsite + "/movies/" + movieTitle,
       moreRentalInfo: ourWebsite + "/rentals/" + movieTitle,
+      moreCustomerInfo: ourWebsite + "/customers/" + customerId,
       yourQuery: ourWebsite + "/rentals/" + movieTitle + "/customers/" + customerId
     }
     results.data = { receipt: res }
@@ -289,30 +281,24 @@ Rental.prototype.return = function(movieTitle, customerId, callback) {
     return callback(null, results);
   }
 
-  // NOTE:
-  // - find movie_id from movie table
-  // - verify customer is a
-  // - do we want to check if customer already has title checked out first?
-  //   - i super think yes if time --jeri
-
   var returnStatement = 'UPDATE rentals '
     +'SET return_date = ' + Date.now() + ', returned = 1 '
     + 'WHERE movie_title = "' + movieTitle + '" '
     + 'AND customer_id = ' + customerId + ';';
-  console.log(returnStatement);
 
   var that = this;
 
   this.open();
   this.db.serialize(function() {
+    // NOTE:
+    // - find movie_id from movie table
+    // - verify customer is a
+    // - do we want to check if customer already has title checked out first?
+    //   - i super think yes if time --jeri
+
     that.db.run(returnStatement, function(error, data) {
-      console.log("inside returnStatement");
       return formatData(null, "Is this thing on? Maybe worked.");
     })
-    // that.db.get(receiptStatement, function(error, data) {
-    //   console.log("receiptStatement error is", error, "and data is", data);
-    //   return formatData(error, data);
-    // })
   })
   this.close();
 }

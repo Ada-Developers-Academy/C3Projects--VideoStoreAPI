@@ -15,11 +15,9 @@ router.get("/:title", controller.movieInfo);
 router.get("/:title/customers", controller.customers);
 
 // POST to /:title/customer/:id to check out a title
-// http://www.wobsite.com/rentals/Alien/customers/184
 router.post("/:title/customers/:id", controller.checkOut);
 
 // PATCH to /:title/customer/:id to return a title
-router.get("/:title/customers/:id", controller.return);
-
+router.patch("/:title/customers/:id", controller.return);
 
 module.exports = router;
