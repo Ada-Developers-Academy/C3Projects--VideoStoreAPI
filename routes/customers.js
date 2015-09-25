@@ -13,7 +13,11 @@ var Movie = require('../models/movie'),
 
 router.get('/', function(req, res, next) {
   customer.find_all(function(err, rows) {
-    res.status(200).json({ customers: rows });
+    if (rows) {
+      return res.status(200).json({ customers: rows });
+    } else {
+      return res.status(400).json({ error: "No customers were found." });
+    }
   });
 });
 
@@ -29,6 +33,10 @@ router.get('/:id', function(req, res, next) {
 
   customer.find_by('id', id, function(err, row) {
     customerObject.customer_data = row;
+
+    if (row == undefined) {
+      return res.status(403).json({ error: "Customer " + id + " does not exist." });
+    }
 
     // use where to pull all records that meet the condition
     rental.where(["customer_id"], [id], function(err, rows) {
@@ -68,7 +76,8 @@ router.get('/:id', function(req, res, next) {
             });
           
           customerObject.movies.pastRentals = pastMoviesArray;
-          res.status(200).json(customerObject);
+
+          return res.status(200).json(customerObject);
         });
       });
     });
@@ -82,7 +91,11 @@ router.get('/:sort_by/:limit/:offset', function(req, res, next) {
   var column = req.params.sort_by;
 
   customer.subset(column, values, function(err, rows) {
-    res.status(200).json({ customers: rows} );
+    if (rows) {
+      return res.status(200).json({ customers: rows} );
+    } else {
+      return res.status(400).json({ error: "No results found or your parameters are inaccurate. Try again." });
+    }
   });
 });
 

@@ -26,7 +26,11 @@ router.get('/overdue', function(req, res, next) {
     }
 
     customer.where_in("id", overdueCustomerIds, function(err, rows) {
-      res.status(200).json({ overdue_customers: rows });
+      if (rows) {
+        return res.status(200).json({ overdue_customers: rows });
+      } else {
+        return res.status(400).json({ error: "No overdue customers were found." });
+      }
     });
   });
 });
@@ -40,6 +44,11 @@ router.get('/:title', function(request, response, next) {
   // query db for movie and get inventory
   movie.find_by('title', title, function(error, row) {
     movieObject.movie_data = row;
+    title = title.charAt(0).toUpperCase() + title.slice(1);
+
+    if (row == undefined) {
+      return response.status(400).json({ error: title + " was not found."});
+    }
 
     // retrieve rental records for that movie
     rental.where(['movie_id', 'returned_date'], [movieObject.movie_data.id, ''], function(error, rows) {
