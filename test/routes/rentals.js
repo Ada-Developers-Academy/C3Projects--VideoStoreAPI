@@ -148,8 +148,11 @@ describe("rentals routes", function() {
     });
 
     it("updates the rental record with the returned_date", function(done) {
+      // this joins movies and rentals on the movie_id
+      // and selects all those records with the customer ID and movie title
+      // from the URI, which have *not* been returned
       var statement = 
-        "SELECT * FROM rentals JOIN movies \
+        "SELECT * FROM rentals INNER JOIN movies \
         ON rentals.movie_id = movies.id \
         WHERE movies.title = ? \
         AND rentals.customer_id = ? \
@@ -173,7 +176,8 @@ describe("rentals routes", function() {
               rentalsAfterCheckin = rows;
               db.close();
 
-              assert(rentalsBeforeCheckin.length > rentalsAfterCheckin.length);
+              // check to make sure the number of un-returned movies has decreased by 1
+              assert(rentalsBeforeCheckin.length - rentalsAfterCheckin.length == 1);
               done();
             });
           });
@@ -199,6 +203,7 @@ describe("rentals routes", function() {
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
 
+          // there were 8 rental records seeded prior to creating the new rental
           rental.find_by("id", 9, function(err, res) {
             assert.equal(res.movie_id, 1);
             assert.equal(res.customer_id, 1);
