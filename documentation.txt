@@ -62,6 +62,6 @@ POST '/rentals'
   - "check out" one of the movies inventory to the customer
     - Establish a return date
     - Charge the customers account (cost up to you)
-PATCH '/rentals/:id'
+PUT '/rentals/:customer_id'
   - "check in" one of customers rentals
     - return the movie to its inventory

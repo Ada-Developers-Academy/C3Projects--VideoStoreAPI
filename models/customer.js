@@ -31,7 +31,7 @@ Customer.prototype.rentals = function rentals(customerID, callback) {
 
 Customer.prototype.overdue = function overdue(callback) {
   var db = this.openDB();
-  var statement = "SELECT customers.id, customers.name, rentals.movie_title, rentals.checkout_date FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id WHERE rentals.return_date = '' AND date('now') > DATETIME(rentals.checkout_date, '+7 days');";
+  var statement = "SELECT customers.id AS customer_id, customers.name, rentals.movie_title, rentals.checkout_date, rentals.id AS rental_id FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id WHERE rentals.return_date = '' AND date('now') > DATETIME(rentals.checkout_date, '+7 days');";
 
   db.all(statement, function(err, rows) {
     callback(err, rows);

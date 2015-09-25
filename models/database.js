@@ -77,6 +77,7 @@ Database.prototype.sortBy = function sortBy(parameter, n, p, callback) {
     return;
   }
 
+  var values = [];
   n = parseInt(n);
   p = parseInt(p);
 
@@ -84,13 +85,15 @@ Database.prototype.sortBy = function sortBy(parameter, n, p, callback) {
     var statement = 'SELECT * FROM ' + this.tableName + ' ORDER BY ' + parameter + ';';
   } else if (p > 1) {
     var offset = n * (p - 1);
-    var statement = 'SELECT * FROM ' + this.tableName + ' ORDER BY ' + parameter + ' LIMIT ' + n + ' OFFSET ' + offset + ';';
+    values.push(n, offset);
+    var statement = 'SELECT * FROM ' + this.tableName + ' ORDER BY ' + parameter + ' LIMIT ? OFFSET ?;';
   } else {
-    var statement = 'SELECT * FROM ' + this.tableName + ' ORDER BY ' + parameter + ' LIMIT ' + n + ';';
+    values.push(n);
+    var statement = 'SELECT * FROM ' + this.tableName + ' ORDER BY ' + parameter + ' LIMIT ?;';
   }
 
   var db = this.openDB();
-  db.all(statement, function(err, rows) {
+  db.all(statement, values, function(err, rows) {
     callback(err, rows);
     db.close();
   });

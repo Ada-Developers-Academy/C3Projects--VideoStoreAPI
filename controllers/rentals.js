@@ -8,6 +8,10 @@ var Controller = {
     rental.checkOut(req.body, Controller.sendJSON.bind(res));
   },
 
+  update: function(req, res, next) {
+    new Rental().checkIn(req.body.movie_title, req.body.return_date, req.params.customer_id, Controller.sendJSON.bind(res))
+  },
+
   sendJSON: function(err, res) {
     if (err) {
       var status = err.status == 400 ? 400 : 500;

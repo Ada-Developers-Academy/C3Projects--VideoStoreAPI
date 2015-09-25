@@ -36,4 +36,15 @@ Movie.prototype.customersPast = function customersPast(movieTitle, parameter, ca
   });
 }
 
+Movie.prototype.numAvail = function numAvail(movieTitle, callback) {
+  var statement = 'SELECT (SELECT inventory FROM movies WHERE title LIKE ?) - (SELECT COUNT(return_date) FROM rentals WHERE return_date = "" AND movie_title LIKE ?) AS num_available;'
+  var values = [movieTitle, movieTitle];
+
+  var db = this.openDB();
+  db.all(statement, values, function(err, rows) {
+    callback(err, rows);
+    db.close();
+  });
+}
+
 module.exports = Movie;

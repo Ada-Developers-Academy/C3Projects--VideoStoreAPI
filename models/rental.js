@@ -53,8 +53,8 @@ Rental.prototype.checkOut = function(data, callback) {
 
 Rental.prototype.checkIn = function(movie_title, date, callback) {
   var db = this.openDB();
-  var statement = "UPDATE rentals SET return_date = ? WHERE movie_title LIKE ?;";
-  var values = [date, movie_title];
+  var statement = "UPDATE rentals SET return_date = ? WHERE movie_title LIKE ? AND customer_id = ?;";
+  var values = [date, movie_title, customer_id];
 
   db.run(statement, values, function(err) {
     if (err) {
