@@ -5,10 +5,10 @@
   "scripts": {
     "start": "nodemon ./bin/www",
     "test": "DB=test mocha --recursive",
-    "test_schema": "DB=test node ./utils/schema.js",
+    "test_schema": "DB=test node ./utils/run_schema.js",
     "test_seed": "DB=test node ./utils/seed.js",
     "db:schema": "node ./utils/run_schema.js",
-    "db:seed": "node ./utils/seed.js"
+    "db:seed": "node ./utils/run_seed.js"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
