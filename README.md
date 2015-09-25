@@ -2,6 +2,14 @@ Alice & Anita
 
 # Project: VideoStoreAPI
 
+###How to run
+1. Clone the repo.
+2. Install all packages by running `npm install`.
+3. Set up the development.db by running `npm run db:setup`.
+4. Set up the test.db by running `DB=test npm run db:schema`.
+5. See tests by running `npm test`.
+6. See instructions for using our endpoints [here](./endpoint-readme.md).
+
 The overall goal of this project is to create a system that a video store (remember those?) could use to track their inventory of rental videos and their collection of customers.
 
 We will use [NodeJS](https://nodejs.org/en/) to construct a RESTful API. The goal of this API is to quickly serve information about the store's video collection, customer information, and to update rental status. This repository provides two JSON datafiles to serve as the initial seeds for this system.
