@@ -36,7 +36,9 @@ GET 'movies/:title/customers'
   // => {<movie>} <-- title is REQUIRED TO BE unique
   // ?status=____&sort=_____
     // status options: current, past
+    // status required for this endpoint
     // sort options: id, name, checkout_date
+    // sort required for status past
   - Given a movies `title`...
     + include rental ids
     - Get a list of customers that have _currently_ checked out a copy of the film
