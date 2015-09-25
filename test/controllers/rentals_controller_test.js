@@ -6,7 +6,7 @@ var request = require('supertest'),
     schema  = require('../../utils/schema'),
     seeder  = require('../../utils/seed');
 
-describe.only("rental controller", function() {
+describe("rental controller", function() {
   beforeEach(function(done) {
     schema(done)
 

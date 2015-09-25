@@ -33,9 +33,9 @@ describe("Endpoints under /movies", function() {
 
     it("returns an array", function(done) {
       movie_request.expect(200, function(error, result) {
-        assert.equal(result.body.length, 5); //the db_cleaner inserted two records
+        assert.equal(result.body.length, 6); //the db_cleaner inserted two records
 
-        var keys = ['id', 'title', 'overview', 'release_date', 'inventory'];
+        var keys = ['id', 'title', 'overview', 'release_date', 'inventory', 'available'];
         assert.deepEqual(Object.keys(result.body[0]), keys);
         done();
       })
@@ -46,10 +46,11 @@ describe("Endpoints under /movies", function() {
     var movie_request;
 
     it("can get subset of movies in title order", function(done) {
-      movie_request = agent.get('/movies/n/3/o/1/s/title').set('Accept', 'application/json');
+      movie_request = agent.get('/movies/sort/Jaws/4/1').set('Accept', 'application/json');
       movie_request
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result) {
+          console.log(result.body);
           assert.equal(result.body.length, 3);
 
           var expected_names = ['Gauze', 'Jaws', 'Maws'],

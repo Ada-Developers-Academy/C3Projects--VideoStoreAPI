@@ -7,7 +7,6 @@ module.exports = function(callback) {
 
   // MOVIES TABLE =========================================================================
   var movies = require('./movies-' + db_env + '.json');
-  console.log(movies);
   var movie_statement = db.prepare(
     "INSERT INTO movies(title, overview, inventory, release_date, available) VALUES (?, ?, ?, ?, ?);"
   );
@@ -25,9 +24,10 @@ module.exports = function(callback) {
     );
 
   db.serialize(function() {
+    db.exec("BEGIN");
     for(var i = 0; i < rentals.length; i++) {
       var rental = rentals[i];
-      rental_statement.exec(
+      rental_statement.run(
         rental.checkout_date,
         rental.returned_date,
         rental.rental_time,
@@ -41,7 +41,7 @@ module.exports = function(callback) {
 
     for(var i= 0; i < movies.length; i ++) {
       var movie = movies[i];
-      movie_statement.exec(
+      movie_statement.run(
         movie.title,
         movie.overview,
         movie.inventory,
@@ -53,7 +53,7 @@ module.exports = function(callback) {
 
     for(var i= 0; i < customers.length; i ++) {
       var customer = customers[i];
-      customer_statement.exec(
+      customer_statement.run(
         customer.name,
         customer.registered_at,
         customer.address,
@@ -66,9 +66,10 @@ module.exports = function(callback) {
     }
     customer_statement.finalize();
 
-
-    db.close();
-    console.log("I'm done seeding the database");
-    callback();
+    db.exec("COMMIT", function(error) {
+      db.close();
+      console.log("I'm done setting up the db")
+      callback(error, "Success");
+    });
   })
 }
