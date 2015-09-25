@@ -53,7 +53,7 @@ describe("/rentals endpoints", function() {
 
       rental_request.expect(200, function(error, result) {
 
-        var keys = ['rental_id', 'movie_title', 'customer_id', 'customer_name', 'checkout_date', 'due_date', 'return_date'];
+        var keys = ['rental_id', 'movie_id', 'movie_title', 'customer_id', 'customer_name', 'checkout_date', 'due_date', 'return_date'];
         assert.deepEqual(Object.keys(result.body.current_rentals[0]), keys);
         done();
       })
