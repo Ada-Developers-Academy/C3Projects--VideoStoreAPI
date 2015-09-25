@@ -21,7 +21,8 @@ exports.moviesController = {
 
     var movie = new Movie();
 
-    var offset = (pageNumber - 1) * 50;
+    //pagination begins at 0
+    var offset = pageNumber * 50;
 
     movie.find_subset(column, 50, offset, function(err, record) {
       res.status(200).json({ movie_subset: record });
