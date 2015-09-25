@@ -15,10 +15,10 @@ function Rental() {
 
 Rental.prototype = require('./database').prototype;
 
-Rental.prototype.checkIn = function checkIn(movie_title, date, callback) {
+Rental.prototype.checkIn = function checkIn(movie_title, date, customer_id, callback) {
   var db = this.openDB();
-  var statement = "UPDATE rentals SET return_date = ? WHERE movie_title LIKE ?;";
-  var values = [date, movie_title];
+  var statement = "UPDATE rentals SET return_date = ? WHERE movie_title LIKE ? AND customer_id = ?;";
+  var values = [date, movie_title, customer_id];
 
   db.run(statement, values, function(err) {
     if (err) {
