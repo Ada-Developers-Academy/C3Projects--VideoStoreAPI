@@ -177,9 +177,41 @@ describe("rentals routes", function() {
       });
     });
   });
+
+
+  describe("POST /rentals/checkout/:customer_id/:movie_title", function() {
+    it.only("returns a message that you checked out a movie", function(done) {
+      agent.post('/rentals/checkout/1/Fight the Future').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, response) {
+          var result = response.body;
+
+          assert.equal(error, undefined);
+          assert.equal(result.success,  'Yay! You checked out a movie.')
+          done();
+        });
+    });
+
+    it.only("adds a rental record to the rentals table", function(done) {
+      agent.post('/rentals/checkout/1/Fight the Future').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, response) {
+          // var statement = 
+          //   "SELECT * FROM rentals JOIN movies \
+          //   ON rentals.movie_id = movies.id \
+          //   WHERE movies.title = ? \
+          //   AND rentals.customer_id = ? \
+          //   AND rentals.returned_date = '';";
+
+          // var values = ['Fight the Future', 2];
+          // var rentalsBeforeCheckin,
+          //     rentalsAfterCheckin;
+
+          // var db = new sqlite3.Database('db/test.db');
+
+          // db.all()
+          done();
+        });
+    });
+  });
 });
-
-
-
-
-
