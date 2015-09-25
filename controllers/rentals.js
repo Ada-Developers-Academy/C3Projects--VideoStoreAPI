@@ -4,7 +4,6 @@ var Rental = require('../rentals');
 var rental = new Rental();
 
 exports.rentalsController = {
-
   all_rentals: function all_rentals(req, res) {
     var rentals = rental.all_rentals(function(rentals) {
       return res.status(200).json(rentals);
@@ -16,7 +15,7 @@ exports.rentalsController = {
 
     rental.current_customers(movie_title, function(current_customers){
       return res.status(200).json(current_customers);
-    })
+    });
   },
 
   rental_log: function rental_log(req, res) {
@@ -24,7 +23,7 @@ exports.rentalsController = {
 
     rental.rental_log(movie_title, function(rental_log){
       return res.status(200).json(rental_log);
-    })
+    });
   },
 
   overdue: function overdue(req, res) {
@@ -44,5 +43,4 @@ exports.rentalsController = {
       return res.status(200).json(check_in);
     });
   }
-
-}
+};

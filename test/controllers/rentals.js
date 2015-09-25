@@ -17,12 +17,11 @@ describe("rentals controller", function() {
         "BEGIN; \
         DELETE FROM rentals; DELETE FROM customers; \
         INSERT INTO rentals(check_out, check_in, due_date, overdue, movie_title, customer_id) \
-        VALUES('20150616', '20150617', '20150619', 0, 'Jaws', 1), \
-              ('20150616', null, '20150619', 1, 'Alien', 1); \
+        VALUES(20150616, 20150617, 20150619, 0, 'Jaws', 1), \
+              (20150616, null, 20150619, 1, 'Alien', 1); \
         INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_credit) \
         VALUES('Harry', 20150616, '1234', 'Seattle', 'WA', '98103', '1234567', 123); \
-        COMMIT;"
-        , function(err) {
+        COMMIT;", function(err) {
           db_cleaner.close();
           done();
         }
