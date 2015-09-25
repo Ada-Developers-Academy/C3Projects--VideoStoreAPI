@@ -24,12 +24,8 @@ exports.rentalsController = {
 
   checkout: function(req, res) {
     var rental = new Rental();
-    var responseBody = Object.keys(req.body);
-    var dataString = responseBody[0];
-    var data = JSON.parse(dataString);
 
-    rental.create_rental(data, function(error, result) {
-      console.log("I'm in the controller ", error);
+    rental.create_rental(req.body, function(error, result) {
       res.status(200).json(result);
     });
   },

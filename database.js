@@ -106,17 +106,12 @@ module.exports = {
     values.push(data.customer_id);
     values.push(data.movie_id);
 
-    console.log("I'm in the database", statement, values)
 
     db.run(statement, values, function(error, result) {
-      callback(error, "You created a new rental.");
+      callback(error, this);
       db.close();
     });
 
-    // db.run(return_statement, function(error, result) {
-    //   callback(error, result);
-    //   db.close();
-    // })
   },
 
   customersRentalHistory: function(callback){

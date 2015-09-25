@@ -4,7 +4,6 @@ module.exports = function(callback) {
   var sqlite3 = require("sqlite3").verbose(),
     db_env = process.env.DB || 'development',
     db = new sqlite3.Database('db/' + db_env + '.db');
-    console.log("I'm setting up the database");
 
   var movie_fields = [
     ['title', 'text'],
@@ -38,33 +37,32 @@ module.exports = function(callback) {
   ];
 
   db.serialize(function() {
+    db.exec("BEGIN");
 
-    db.run("DROP TABLE IF EXISTS customers;");
+    db.exec("DROP TABLE IF EXISTS customers;");
 
-    db.run("CREATE TABLE customers (id INTEGER PRIMARY KEY);");
+    db.exec("CREATE TABLE customers (id INTEGER PRIMARY KEY);");
 
     for(var i = 0; i < customer_fields.length; i++){
       var name = customer_fields[i][0],
           type = customer_fields[i][1];
-      db.run("ALTER TABLE customers ADD COLUMN " + name + " " + type + ";");
+      db.exec("ALTER TABLE customers ADD COLUMN " + name + " " + type + ";");
     }
 
-    db.run("DROP TABLE IF EXISTS movies;");
+    db.exec("DROP TABLE IF EXISTS movies;");
 
-    db.run("CREATE TABLE movies (id INTEGER PRIMARY KEY);");
+    db.exec("CREATE TABLE movies (id INTEGER PRIMARY KEY);");
 
     for(var i = 0; i < movie_fields.length; i++){
       var name = movie_fields[i][0],
           type = movie_fields[i][1];
-          console.log("im in the for loop", i)
-      db.run("ALTER TABLE movies ADD COLUMN " + name + " " + type + ";", function(error, result){
-        console.log("I'm in the  movie loop", error, result);
+      db.exec("ALTER TABLE movies ADD COLUMN " + name + " " + type + ";", function(error, result){
       });
     }
 
-    db.run("DROP TABLE IF EXISTS rentals;");
+    db.exec("DROP TABLE IF EXISTS rentals;");
 
-    db.run("CREATE TABLE rentals (id INTEGER PRIMARY KEY);");
+    db.exec("CREATE TABLE rentals (id INTEGER PRIMARY KEY);");
 
     for(var i = 0; i < rental_fields.length; i++){
       var name = rental_fields[i][0],
@@ -73,14 +71,18 @@ module.exports = function(callback) {
             var foreign_key = rental_fields[i][2];
           }
 
-      db.run("ALTER TABLE rentals ADD COLUMN " + name + " " + type + ";");
+      db.exec("ALTER TABLE rentals ADD COLUMN " + name + " " + type + ";");
       if(foreign_key) {
-      db.run("ALTER TABLE rentals ADD CONSTRAINT " + foreign_key + ";");
+      db.exec("ALTER TABLE rentals ADD CONSTRAINT " + foreign_key + ";");
       }
     }
+    db.exec("COMMIT", function(error) {
+      db.close();
+      callback(error, "Success");
+      console.log("I'm done setting up the db")
+    });
   });
 
-  db.close();
-  console.log("I'm done setting up the db")
-  callback()
+  // db.close();
+  // callback()
 }

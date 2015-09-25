@@ -2,17 +2,28 @@ var request = require('supertest'),
     assert  = require('assert'),
     app     = require('../../app'),
     sqlite3 = require('sqlite3').verbose(),
-    agent   = request.agent(app);
+    agent   = request.agent(app),
+    schema  = require('../../utils/schema'),
+    seeder  = require('../../utils/seed');
 
-describe("rentals controller", function() {
+describe.only("rental controller", function() {
+  beforeEach(function(done) {
+    schema(done)
 
-  it("can make a post", function(done) {
-   agent.post('/rent/checkin').set('Accept', 'application/json')
-     .field('customer_id', '4')
-     .field('movie_id', '5')
-     .field('total', '5')
-     .field('returned_date', '09-24-2015')
-     .expect('customer_id', '4')
-     done();
+  })
+
+  it("POST /rent/checkout", function(done) {
+    agent.post('/rent/checkout').set('Accept', 'application/json')
+      .send({'customer_id': 3})
+      .send({'movie_id': 2})
+      .send({'rental_time': 2})
+      .send({'cost': 2.50})
+      .expect(200, function(error, result) {
+        assert.equal(error, undefined)
+        console.log(result.body);
+        assert.equal(result.body.lastID, 1);
+        done();
+      })
+
   })
 })
