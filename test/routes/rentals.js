@@ -4,8 +4,7 @@ var request = require('supertest'),
     sqlite3 = require('sqlite3').verbose(),
     agent   = request.agent(app);
 
-var Rental   = require('../../models/rental'),
-    Customer = require('../../models/customer');
+var Rental   = require('../../models/rental');
 
 describe("rentals routes", function() {
   var db_cleaner, rental, customer;
@@ -13,7 +12,6 @@ describe("rentals routes", function() {
   beforeEach(function(done) {
     db_cleaner = new sqlite3.Database('db/test.db');
     rental = new Rental();
-    customer = new Customer();
 
     db_cleaner.serialize(function() {
       db_cleaner.exec(
