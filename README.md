@@ -5,10 +5,8 @@ Alice & Anita
 ###How to run
 1. Clone the repo.
 2. Install all packages by running `npm install`.
-3. Set up the development.db by running `npm run db:setup`.
-4. Set up the test.db by running `DB=test npm run db:schema`.
-5. See tests by running `npm test`.
-6. See instructions for using our endpoints [here](./endpoint-readme.md).
+3. See tests by running `npm test`.
+4. See instructions for using our endpoints [here](./endpoint-readme.md).
 
 -------------
 
