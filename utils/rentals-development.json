@@ -24,7 +24,7 @@
     "returned_date": "nil",
     "rental_time": "3",
     "cost": "2.50",
-    "total": "nil",
+    "total": null,
     "customer_id": "2",
     "movie_id": "2"
   },
@@ -34,7 +34,7 @@
     "returned_date": "nil",
     "rental_time": "2",
     "cost": "2.50",
-    "total": "nil",
+    "total": null,
     "customer_id": "4",
     "movie_id": "5"
   },

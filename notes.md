@@ -49,7 +49,7 @@ Customers
 
 🔵 get "/customers/sort/postal_code/:limit/:page" = returns all customers sorted by postal_code.
 
-🔵 get "/customers/:id/movies/current" = show all the movies that this customer is renting currently.
+get "/customers/:id/movies/current" = show all the movies that this customer is renting currently.
   - From Rentals table find all of one customer's current rentals
 
 
@@ -77,7 +77,7 @@ put "/rent/checkin" = Checks in the movie to the customer. changes the available
    - returned_date :string
    - total :integer
 
-get "/rent/overdue" = All customers with overdue movies.
+🔵 get "/rent/overdue" = All customers with overdue movies. *Added extra feature: returns not just customers with overdue movies, but also overdue days*
  * From Rentals table
   - returned_date
   - checkout_date
