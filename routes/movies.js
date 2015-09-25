@@ -53,7 +53,7 @@ router.get('/:title/:order', function(req, res, next) {
       }
 
       customer.where_in('id', currentRentersIds, function(err, rows) {
-        movieObject.customers.currentRenters = rows;
+        movieObject.customers.current_renters = rows;
         var pastRentersArray = [];
 
         customer.where_in('id', pastRentersIds, function(err, rows) {
@@ -80,7 +80,7 @@ router.get('/:title/:order', function(req, res, next) {
             var error_message = "You cannot sort by: " + order;
           }
 
-          movieObject.customers.pastRenters = pastRentersArray;
+          movieObject.customers.past_renters = pastRentersArray;
           
           if (error_message) {
             res.status(400).json(error_message);
