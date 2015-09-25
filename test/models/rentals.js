@@ -56,5 +56,17 @@ describe('Rental', function() {
         done();
       });
     });
+
+    it("checks movie availability", function(done) {
+      rental.check_movie_availability("The Lone Gunmen", function(err, res) {
+        console.log(res);
+        assert.equal(err, undefined);
+        assert(res instanceof Array);
+        assert.equal(res.length, 1);
+        assert.equal(Object.keys(res[0]), "available");
+        assert.equal(res[0].available, 5)
+        done();
+      });
+    });
   });
 });
