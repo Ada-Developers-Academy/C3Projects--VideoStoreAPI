@@ -2,8 +2,8 @@
 
 module.exports = function(callback) {
   var sqlite3 = require("sqlite3").verbose(),
-    db_env = process.env.DB || 'development',
-    db = new sqlite3.Database('db/' + db_env + '.db');
+      db_env  = process.env.DB || 'development',
+      db      = new sqlite3.Database('db/' + db_env + '.db');
 
   // MOVIES TABLE =========================================================================
   var movies = require('./movies-' + db_env + '.json');
@@ -12,10 +12,36 @@ module.exports = function(callback) {
     "INSERT INTO movies(title, overview, inventory, release_date, available) VALUES (?, ?, ?, ?, ?);"
   );
 
-  db.serialize(function(){
+  // CUSTOMERS TABLE =========================================================================
+  var customers = require('./customers-' + db_env + '.json');
+  var customer_statement = db.prepare(
+    "INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_credit) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
+  );
+
+  // RENTAL TABLE ===============================================================================
+  var rentals = require('./rentals-' + db_env + '.json');
+  var rental_statement = db.prepare(
+    "INSERT INTO rentals(checkout_date, returned_date, rental_time, cost, total, customer_id, movie_id) VALUES (?, ?, ?, ?, ?, ?, ?);"
+    );
+
+  db.serialize(function() {
+    for(var i = 0; i < rentals.length; i++) {
+      var rental = rentals[i];
+      rental_statement.exec(
+        rental.checkout_date,
+        rental.returned_date,
+        rental.rental_time,
+        rental.cost,
+        rental.total,
+        rental.customer_id,
+        rental.movie_id
+      );
+    }
+    rental_statement.finalize();
+
     for(var i= 0; i < movies.length; i ++) {
       var movie = movies[i];
-      movie_statement.run(
+      movie_statement.exec(
         movie.title,
         movie.overview,
         movie.inventory,
@@ -24,18 +50,10 @@ module.exports = function(callback) {
       );
     }
     movie_statement.finalize();
-  })
 
-  // CUSTOMERS TABLE =========================================================================
-  var customers = require('./customers-' + db_env + '.json');
-  var customer_statement = db.prepare(
-    "INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_credit) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
-  );
-
-  db.serialize(function(){
     for(var i= 0; i < customers.length; i ++) {
       var customer = customers[i];
-      customer_statement.run(
+      customer_statement.exec(
         customer.name,
         customer.registered_at,
         customer.address,
@@ -47,30 +65,10 @@ module.exports = function(callback) {
       );
     }
     customer_statement.finalize();
+
+
+    db.close();
+    console.log("I'm done seeding the database");
+    callback();
   })
-
-  // RENTAL TABLE ===============================================================================
-  var rentals = require('./rentals-' + db_env + '.json');
-  var rental_statement = db.prepare(
-    "INSERT INTO rentals(checkout_date, returned_date, rental_time, cost, total, customer_id, movie_id) VALUES (?, ?, ?, ?, ?, ?, ?);"
-    );
-
-  db.serialize(function() {
-    for(var i = 0; i < rentals.length; i++) {
-      var rental = rentals[i];
-      rental_statement.run(
-        rental.checkout_date,
-        rental.returned_date,
-        rental.rental_time,
-        rental.cost,
-        rental.total,
-        rental.customer_id,
-        rental.movie_id
-      );
-    }
-    rental_statement.finalize();
-  })
-
-
-  db.close();
 }
