@@ -187,6 +187,34 @@ Rental.prototype.customers = function(title, callback) {
 }
 
 Rental.prototype.checkOut = function(movieTitle, customerId, callback) {
+  function formatData(err, res) {
+    if (err) {
+      var results = {};
+
+      results.meta = {
+        status: 500,
+        message: err
+      }
+
+      return callback(results);
+    }
+
+    var results = {};
+    var data = fixTime([res], "check_out_date");
+    results.meta = {
+      status: 200,
+      moreMovieInfo: ourWebsite + "/movies/" + movieTitle,
+      moreRentalInfo: ourWebsite + "/rentals/" + movieTitle,
+      yourQuery: ourWebsite + "/rentals/" + movieTitle + "/customers/" + customerId
+    }
+    results.data = { receipt: data[0] }
+
+    var credit = results.data.receipt.account_credit;
+    credit = Number(credit.toFixed(2));
+
+    return callback(null, results);
+  }
+
   // NOTE:
   // - find movie_id from movie table
   // - verify customer is a
@@ -203,14 +231,12 @@ Rental.prototype.checkOut = function(movieTitle, customerId, callback) {
   var customerStatement = "UPDATE customers " +
     "SET account_credit = account_credit - " + this.charge +
     " WHERE id = " + customerId;
-  console.log(customerStatement)
 
   var receiptStatement = "SELECT customers.name, customers.account_credit, "
     + "rentals.movie_title, rentals.check_out_date FROM customers "
     + "LEFT JOIN rentals ON rentals.customer_id = customers.id "
     + "WHERE rentals.movie_title = '" + movieTitle + "' "
     + "AND customers.id = " + customerId;
-  console.log(receiptStatement);
 
   var values = [movieTitle, customerId, 0, Date.now(), ""];
   var that = this;
@@ -229,12 +255,68 @@ Rental.prototype.checkOut = function(movieTitle, customerId, callback) {
     })
     that.db.get(receiptStatement, function(error, data) {
       console.log("receiptStatement error is", error, "and data is", data);
-      return callback(error, data);
+      return formatData(error, data);
     })
   })
   this.close();
 
+}
 
+
+Rental.prototype.return = function(movieTitle, customerId, callback) {
+  function formatData(err, res) {
+    if (err) {
+      var results = {};
+
+      results.meta = {
+        status: 500,
+        message: err
+      }
+
+      return callback(results);
+    }
+
+    var results = {};
+    // var data = fixTime([res], "return_date");
+    results.meta = {
+      status: 200,
+      moreMovieInfo: ourWebsite + "/movies/" + movieTitle,
+      moreRentalInfo: ourWebsite + "/rentals/" + movieTitle,
+      yourQuery: ourWebsite + "/rentals/" + movieTitle + "/customers/" + customerId
+    }
+    results.data = { receipt: res }
+
+    return callback(null, results);
+  }
+
+  // NOTE:
+  // - find movie_id from movie table
+  // - verify customer is a
+  // - do we want to check if customer already has title checked out first?
+  //   - i super think yes if time --jeri
+  var returnStatement = 'UPDATE rentals '
+    +'SET return_date = ' + Date.now()
+    + ' AND returned = 1'
+    + ' WHERE movie_title = "'
+    + movieTitle +'" '
+    + 'AND customer_id = customerId';
+
+    console.log(returnStatement);
+
+  var that = this;
+
+  this.open();
+  this.db.serialize(function() {
+    that.db.run(returnStatement, function(error, data) {
+      console.log("inside returnStatement");
+      return formatData(null, "Is this thing on? Maybe worked.");
+    })
+    // that.db.get(receiptStatement, function(error, data) {
+    //   console.log("receiptStatement error is", error, "and data is", data);
+    //   return formatData(error, data);
+    // })
+  })
+  this.close();
 
 }
 
