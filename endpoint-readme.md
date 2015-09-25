@@ -9,14 +9,15 @@ See below for the available endpoints for this API.
 
 GET '/customers'
 
-- Returns list of all customers.
-- Contains the following properties: `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
+- Retrieves a list of all customers.
+- Returns an object with a `customers` property containing an array of customer objects.
+- Each customer object contains the following properties: `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
 - [Sample: GET '/customers'](./samples/get_customers.json)
 
 GET '/customers/:id'
 
-- Returns data about the customer identified by the id passed in the URI.
-- Contains `customer_data` and `movies`.
+- Retrieves data about the customer identified by the id passed in the URL.
+- Returns an object with `customer_data` and `movies` properties.
   - `customer_data` contains the following properties: `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
   - `movies` contains: `current_rentals` and `past_rentals`.
     - `current_rentals` is a list of movies rented by the customer.
@@ -29,6 +30,13 @@ GET '/customers/:id'
 
 GET '/customers/:sort_by/:limit/:offset'
 
+- Sorts the entire set of customers by a certain property (`sort_by`), then retrieves a number (`limit`) of customers, starting at a certain index (`offset`).
+  - `sort_by` accepts 'name' (customer name), 'id' (customer id), or 'checkout_date'.
+  - `limit` must be an integer >= 0.
+  - `offset` must be an integer >= 0.
+- Returns an object with a `customers` property containing an array of customer objects.
+- Each customer object contains the following properties: `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
+- [Sample: GET '/customers/name/2/2'](./samples/get_customers_sort_by_limit_offset.json)
 
 *Movies*
 
