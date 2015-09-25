@@ -9,7 +9,7 @@ var agent   = request.agent(app); // supertest magic
 var assert  = require("assert");
 var sqlite3 = require("sqlite3").verbose();
 
-describe.only("CustomersController", function() {
+describe("CustomersController", function() {
 //---------------------------------------------------------------------------------------------------------------------
 //--------- GET /all --------------------------------------------------------------------------------------------------
   describe("GET `/all`", function() {
@@ -98,8 +98,8 @@ describe.only("CustomersController", function() {
                 done();
               })
           })
-        }) // desc pages
-      }) // desc outer meta data
+        }) // pagination
+      }) // outer meta data
 
       describe("data", function() {
         it("returns no more than 10 customers", function(done) {
@@ -147,13 +147,12 @@ describe.only("CustomersController", function() {
 //---------------------------------------------------------------------------------------------------------------------
 //--------- GET /all/:sort_by -----------------------------------------------------------------------------------------
   describe("GET `/all/:sort_by`", function() {
-    var thisUrl = "/customers/all/";
+    var thisUrl = "/customers/all/sort_by=";
     var sorts = ["registered_at", "name", "postal_code"];
 
     sorts.forEach(function(sort) {
       var sortUrl = thisUrl + sort;
       var uniqueThisEndpoint = sort;
-
 
       it("responds 200 && returns a JSON object", function(done) {
         agent
@@ -288,10 +287,9 @@ describe.only("CustomersController", function() {
                     })
                   })
                 }) // bye, describe `data`
-              }) // bye, agent.expect
-            }) // bye, describe each customer
-          })
-        })
+            }) // agent.expect, there should be a gap in braces between this line & above!
+          }) // each cu. relevant
+        }) // outer data
       })
     })
   })

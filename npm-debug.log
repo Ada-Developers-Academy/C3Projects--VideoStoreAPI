@@ -1,0 +1,36 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'run', 'nyan' ]
+2 info using npm@2.12.1
+3 info using node@v0.12.7
+4 verbose node symlink /usr/local/bin/node
+5 verbose run-script [ 'prenyan', 'nyan', 'postnyan' ]
+6 info prenyan C3Projects--VideoStoreAPI@0.0.0
+7 info nyan C3Projects--VideoStoreAPI@0.0.0
+8 verbose unsafe-perm in lifecycle true
+9 info C3Projects--VideoStoreAPI@0.0.0 Failed to exec nyan script
+10 verbose stack Error: C3Projects--VideoStoreAPI@0.0.0 nyan: `DB=test; clear; mocha --recursive -R nyan`
+10 verbose stack Exit status 2
+10 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:213:16)
+10 verbose stack     at EventEmitter.emit (events.js:110:17)
+10 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/spawn.js:24:14)
+10 verbose stack     at ChildProcess.emit (events.js:110:17)
+10 verbose stack     at maybeClose (child_process.js:1015:16)
+10 verbose stack     at Process.ChildProcess._handle.onexit (child_process.js:1087:5)
+11 verbose pkgid C3Projects--VideoStoreAPI@0.0.0
+12 verbose cwd /Users/shikai/Documents/ada-other/project-forks/C3Projects--VideoStoreAPI
+13 error Darwin 14.5.0
+14 error argv "node" "/usr/local/bin/npm" "run" "nyan"
+15 error node v0.12.7
+16 error npm  v2.12.1
+17 error code ELIFECYCLE
+18 error C3Projects--VideoStoreAPI@0.0.0 nyan: `DB=test; clear; mocha --recursive -R nyan`
+18 error Exit status 2
+19 error Failed at the C3Projects--VideoStoreAPI@0.0.0 nyan script 'DB=test; clear; mocha --recursive -R nyan'.
+19 error This is most likely a problem with the C3Projects--VideoStoreAPI package,
+19 error not with npm itself.
+19 error Tell the author that this fails on your system:
+19 error     DB=test; clear; mocha --recursive -R nyan
+19 error You can get their info via:
+19 error     npm owner ls C3Projects--VideoStoreAPI
+19 error There is likely additional logging output above.
+20 verbose exit [ 1, true ]

@@ -91,7 +91,7 @@ Customer.prototype.allSorted = function(sort, page, callback) {
 
     var results = {};
     var data = fixTime(res, "registered_at");
-    results.meta = { status: 200, yourQuery: ourWebsite + "/customers/all/" + sort }
+    results.meta = { status: 200, yourQuery: ourWebsite + "/customers/all/sort_by=" + sort }
     results.data = { customers: formatCustomerInfo(data) }
     results.temp = { page: page, statement: "allCountStatement" }
 

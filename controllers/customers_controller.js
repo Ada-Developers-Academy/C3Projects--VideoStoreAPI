@@ -43,7 +43,7 @@ CustomersController.allSorted = function(request, response, next) {
     var msg = result.meta.message;
     if (typeof msg == "string") {
       result.meta.message = Customer.noOverdueMsg;
-      result.meta.yourQuery =  ourWebsite + "/customers/all/" + sort;
+      result.meta.yourQuery =  ourWebsite + "/customers/all/sort_by=" + sort;
     }
 
     return response.status(result.meta.status).json(result);
