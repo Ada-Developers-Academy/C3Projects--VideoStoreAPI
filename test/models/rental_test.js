@@ -2,6 +2,7 @@
 
 var assert = require("assert");
 var Rental = require('../../models/rental');
+var Customer = require('../../models/customer');
 var resetTables = require('../dbCleaner');
 
 describe('Rental', function() {
@@ -243,8 +244,46 @@ describe('Rental', function() {
         done();
       });
     });
-  })
-});
+  });
 
-function resetRentalsTable(done) {
-}
+  describe('#checkOut', function() {
+    var validRentalData;
+
+    beforeEach(function(done) {
+      var data = {
+        customers: [
+          { name: 'Customer0', account_balance: 200 },
+          { name: 'Customer1', account_balance: 650 },
+          { name: 'Customer3', account_balance: 1000 },
+        ],
+        movies: [ { title: 'Movie1', inventory: 1 } ]
+      }
+      resetTables(data, done)
+
+      validRentalData = { checkout_date: '2015-03-16', movie_title: 'Movie1', customer_id: '2' };
+    });
+
+    it('creates a new rental record', function(done) {
+      rental.checkOut(validRentalData, function(err, res) {
+        assert.equal(err, undefined);
+        assert.equal(res.insertedRentalID, 1);
+        assert.equal(res.changes, 2);
+        rental.all(function(err, res) {
+          assert.equal(res.length, 1);
+          done();
+        });
+      });
+    });
+
+    it("subtracts 250 from the customer's balance", function(done) {
+      rental.checkOut(validRentalData, function(err, res) {
+        new Customer().findBy('id', 2, function(err2, res2) {
+          assert.equal(err, undefined);
+          assert.equal(res2.length, 1);
+          assert.equal(res2[0].account_balance, 400);
+          done();
+        });
+      });
+    });
+  });
+});
