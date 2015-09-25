@@ -7,7 +7,7 @@ var assert = require('assert'),
 
 describe("Endpoints under /rentals", function() {
   var db_cleaner;
-  
+
   beforeEach(function(done) {
 
     db_cleaner = new sqlite3.Database('db/test.db');
@@ -30,7 +30,8 @@ describe("Endpoints under /rentals", function() {
         DELETE FROM rentals; \
         INSERT INTO rentals(checkout_date, return_date, movie_id, customer_id, checked_out) \
         VALUES('2015-09-23', '2015-09-30', 1, 1, 'true'), \
-              ('2015-09-16', '2015-09-23', 2, 2, 'false'); \
+              ('2015-09-16', '2015-09-23', 2, 2, 'false'), \
+              ('2015-09-16', '2015-09-23', 5, 1, 'true'); \
         COMMIT;"
         , function(err) {
           db_cleaner.close();
@@ -53,7 +54,7 @@ describe("Endpoints under /rentals", function() {
       it('posts to the rentals table', function(done) {
         request(app)
           .post('/rentals/checkout')
-          .send({ id: '1', title: 'RoboJaws'})
+          .send({ id: '1', title: 'Gauze'})
           .expect(200, function(err, res) {
             assert.equal(res.body.customer_id, 1);
             assert.equal(res.body.number_of_records_changed, 1);
@@ -68,6 +69,11 @@ describe("Endpoints under /rentals", function() {
 
     context("PATCH /checkin", function() {
       it("can update rental records", function(done) {
+        var statement = "select * from customers;";
+        db.run(statement, function(err) {
+          inserted_rental_id = this.lastID;
+          number_of_records_changed = this.changes;
+        });
         agent.patch('/checkin').set('Accept', 'application/json')
         .field('title', 'RoboJaws')
         .field('release_date', 'Tomorrow')
@@ -75,13 +81,12 @@ describe("Endpoints under /rentals", function() {
         done();
       });
 
-      it.only('should correctly update an existing account', function(done){
+      it('should correctly update an existing account', function(done){
         request(app)
           .patch('/rentals/checkin')
-          .send({ id: '1', title: 'RoboJaws'})
+          .send({ id: '1', title: 'Gauze'})
           .expect(200, function(err, res) {
             assert.equal(res.body.customer_id, 1);
-            console.log(res.body);
             assert.equal(res.body.number_of_records_changed, 1);
             if(err) {
               done(err);

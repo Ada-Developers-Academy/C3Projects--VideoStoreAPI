@@ -44,7 +44,7 @@ describe("Rental", function() {
   });
 
   describe("instance methods", function() {
-    context("GET #check_out", function() {
+    context("POST #check_out", function() {
 
       it("is successful", function(done) {
         rental.check_out(1, "Jaws", function(err, res) {
@@ -71,7 +71,7 @@ describe("Rental", function() {
       });
     });
 
-    context("GET #check_in", function() {
+    context("POST #check_in", function() {
 
       it("is successful", function(done) {
         rental.check_in(1, "Jaws", function(err, res) {
