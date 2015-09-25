@@ -1,7 +1,5 @@
-Anita & Alice's Video Store
+#Anita & Alice's Video Store
 ---------------------------
-
-#Endpoints
 
 See below for the available endpoints for this API.
 
@@ -16,9 +14,9 @@ See below for the available endpoints for this API.
 9. POST '/rentals/checkout/:customer_id/:movie_title'  
 10. PUT '/rentals/checkin/:customer_id/:movie_title'  
 
-###Customers
+##Customers
 
-#####All Customers
+###All Customers
 - GET `/customers`
 - Retrieves a list of all customers.
 - Returns an object with a `customers` property containing an array of customer objects.
