@@ -1,0 +1,51 @@
+[
+    {
+        "movie_id": 1,
+        "customer_id": 1,
+        "returned_date": "",
+        "due_date": "2015-09-11",
+        "checked_out": "2015-09-01"
+    },
+    {
+        "movie_id": 1,
+        "customer_id": 7,
+        "returned_date": "2015-06-19",
+        "due_date": "2015-06-21",
+        "checked_out": "2015-06-11"
+    },
+    {
+        "movie_id": 7,
+        "customer_id": 7,
+        "returned_date": "2015-07-18",
+        "due_date": "2015-06-21",
+        "checked_out": "2015-06-11"
+    },
+    {
+        "movie_id": 3,
+        "customer_id": 1,
+        "returned_date": "",
+        "due_date": "2015-09-30",
+        "checked_out": "2015-09-20"
+    },
+    {
+        "movie_id": 1,
+        "customer_id": 1,
+        "returned_date": "2015-07-17",
+        "due_date": "2015-07-20",
+        "checked_out": "2015-07-10"
+    },
+    {
+        "movie_id": 5,
+        "customer_id": 3,
+        "returned_date": "",
+        "due_date": "2015-08-24",
+        "checked_out": "2015-08-14"
+    },
+    {
+        "movie_id": 1,
+        "customer_id": 2,
+        "returned_date": "",
+        "due_date": "2015-09-30",
+        "checked_out": "2015-09-20"
+    }
+]
