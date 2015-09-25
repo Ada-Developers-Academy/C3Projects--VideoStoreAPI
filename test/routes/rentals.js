@@ -114,7 +114,7 @@ describe("rentals routes", function() {
         agent.get('/rentals/Fight the Future').set('Accept', 'application/json')
           .expect(200, function(error, response) {
             assert.equal(response.body.availability.available, true);
-            assert.equal(response.body.availability.copiesAvailable, 1);
+            assert.equal(response.body.availability.copies_available, 1);
             done();
           });
     });
@@ -122,8 +122,8 @@ describe("rentals routes", function() {
     it("returns a list of customers who have currently rented the movie", function(done) {
         agent.get('/rentals/Fight the Future').set('Accept', 'application/json')
           .expect(200, function(error, response) {
-            assert(response.body.currentRenters instanceof Object);
-            assert.equal(response.body.currentRenters[0].name, "Fox Mulder");
+            assert(response.body.current_renters instanceof Object);
+            assert.equal(response.body.current_renters[0].name, "Fox Mulder");
             done();
           });
     });
@@ -142,7 +142,7 @@ describe("rentals routes", function() {
     it("returns a message that you checked in that movie", function(done) {
       agent.put('/rentals/checkin/2/Fight the Future').set('Accept', 'application/json')
         .expect(200, function(error, response) {
-          assert.equal(response.body, "Congratulations, you have checked in: Fight the Future");
+          assert.equal(response.body.success, "Congratulations, you have checked in: Fight the Future");
           done();
         });
     });

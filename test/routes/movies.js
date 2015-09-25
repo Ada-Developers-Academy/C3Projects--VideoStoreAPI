@@ -122,7 +122,7 @@ describe("movies routes", function() {
     it("returns a currentRenters object with a list of current renters", function(done) {
       agent.get('/movies/Fight the Future/id').set('Accept', 'application/json')
         .expect(200, function(error, response) {
-          var currentRenters = response.body.customers.currentRenters;
+          var currentRenters = response.body.customers.current_renters;
 
           assert(currentRenters[0].name, 'Fox Mulder');
           done();
@@ -132,7 +132,7 @@ describe("movies routes", function() {
     it("returns a pastRenters object with a list of past renters sorted by the order variable", function(done) {
       agent.get('/movies/Fight the Future/id').set('Accept', 'application/json')
         .expect(200, function(error, response) {
-          var pastRenters = response.body.customers.pastRenters;
+          var pastRenters = response.body.customers.past_renters;
 
           assert(pastRenters[0].customer_data.name, 'Alex Krychek');
           done();

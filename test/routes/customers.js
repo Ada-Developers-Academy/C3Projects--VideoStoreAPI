@@ -133,7 +133,7 @@ describe("customers routes", function() {
       agent.get('/customers/1').set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
-          var currentRentals = response.body.movies.currentRentals;
+          var currentRentals = response.body.movies.current_rentals;
           var movie = currentRentals[0];
 
           assert.equal(currentRentals.length, 1);
@@ -149,7 +149,7 @@ describe("customers routes", function() {
       agent.get('/customers/1').set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
-          var pastRentals = response.body.movies.pastRentals;
+          var pastRentals = response.body.movies.past_rentals;
           var movie = pastRentals[0].movie_data;
 
           assert.equal(pastRentals.length, 2);
@@ -165,8 +165,8 @@ describe("customers routes", function() {
       agent.get('/customers/1').set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
-          var pastRental1 = response.body.movies.pastRentals[0].movie_data;
-          var pastRental2 =  response.body.movies.pastRentals[1].movie_data;
+          var pastRental1 = response.body.movies.past_rentals[0].movie_data;
+          var pastRental2 =  response.body.movies.past_rentals[1].movie_data;
 
           assert.equal(pastRental1.title, "I Want to Believe");
           assert.equal(pastRental2.title, "Fight the Future");
@@ -178,7 +178,7 @@ describe("customers routes", function() {
       agent.get('/customers/1').set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
-          var pastRentals = response.body.movies.pastRentals;
+          var pastRentals = response.body.movies.past_rentals;
           var movie1ReturnDate = pastRentals[0].dates.returned_date;
           var movie2ReturnDate = pastRentals[1].dates.returned_date;
 
