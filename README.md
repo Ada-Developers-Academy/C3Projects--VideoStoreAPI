@@ -48,25 +48,25 @@ The API you build should have the following capabilities. The schema of your dat
 - npm run db:setup to seed database
 - DB=test npm run db:schema to setup the test database
 
-### index
+### Index
 - Get zomg GET /
 
 ### Customers
 - Retrieve a list of all customers
-  - GET /Customers
+  - GET /customers
 - Retrieve a subset of customers
   - Given a sort column, return _n_ customer records, offset by _p_ records (this will be used to create "pages" of customers)
   - Sort columns are
-    - `name` GET customers/name/:records/:offset
-    - `registered_at` GET customers/registered/:records/:offset
-    - `postal_code` GET customers/postal/:records/:offset
+    - `name` GET /customers/name/:records/:offset
+    - `registered_at` GET /customers/registered/:records/:offset
+    - `postal_code` GET /customers/postal/:records/:offset
 - Given a customer's `id`...
   - List the movies they _currently_ have checked out
-    - GET customers/current/:id
+    - GET /customers/current/:id
   - List the movies a customer has checked out in the past
     - ordered by check out date
     - includes return date
-    - GET customers/history/:id
+    - GET /customers/history/:id
 
 ### Movies
 - Retrieve a list of all movies
@@ -74,40 +74,40 @@ The API you build should have the following capabilities. The schema of your dat
 - Retrieve a subset of movies
   - Given a sort column, return _n_ movie records, offset by _p_ records (this will be used to create "pages" of movies)
   - Sort columns are
-    - `title` GET movies/title/:records/:offset
-    - `release_date` GET movies/released/:records/:offset
+    - `title` GET /movies/title/:records/:offset
+    - `release_date` GET /movies/released/:records/:offset
 
   - Look a movie up by title to see
     - it's synopsis
     - release date
     - and inventory total
     - Know if a movie has any inventory available to rent
-    - GET movies/:title
+    - GET /movies/:title
 
 ### Rentals
 
 - See a list of customers that have _currently_ checked out any of the movie's inventory
-  - GET rentals/customers/current
+  - GET /rentals/customers/current
 - Given a movie's `title`...
   - Get a list of customers that have _currently_ checked out a copy of the film
-    - GET rentals/checkedout/:title
+    - GET /rentals/checkedout/:title
   - Get a list of customers that have checked out a copy _in the past_
     - ordered by customer `id`
-      - GET rentals/history/id/:title
+      - GET /rentals/history/id/:title
     - ordered by customer `name`
-      - GET rentals/history/name/:title
+      - GET /rentals/history/name/:title
     - ordered by check out date
-      - GET rentals/history/:title
+      - GET /rentals/history/:title
 - Given a customer's `id` and a movie's `title` ...
   - "check out" one of the movie's inventory to the customer
     - Establish a return date
     - Charge the customer's account (cost up to you)
-      - POST rentals/checkout/:title/:customer_id
+      - POST /rentals/checkout/:title/:customer_id
   - "check in" one of customer's rentals
     - return the movie to its inventory
       - PUT /rentals/checkin/:title/:customer_id
 - See a list of customers with overdue movies
-  - GET rentals/customers/overdue
+  - GET /rentals/customers/overdue
 
 ### Interface
 - This part of the project is purely an API; all interactions should happen over HTTP requests. There is no front-end, user-facing interface.
