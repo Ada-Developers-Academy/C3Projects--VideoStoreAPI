@@ -39,15 +39,45 @@ exports.customersController = {
       if (number && pages) {
         var select = []
         var offset = (pages - 1) * number;
+        var start = parseInt(offset);
+        var end = parseInt(offset) + parseInt(number);
 
-        // ex. 6 - 10 (page 2 & number 5)
-        // ex. [5, 6, 7, 8, 9]
-        var selection = Array.apply(null, Array(number)).map(function (_, i) {return offset + i;});
-        for (var i = selection[0]; i < (selection[0] + selection.length); i++) {
+        for (var i = start; i < end; i++) {
           select.push(result[i]);
+          // console.log(select);
+          if (i == (end - 1)) {
+            return res.status(200).json(select);
+          }
         }
 
-        return res.status(200).json(select);
+        // var test = function(callback) {
+        //   var jo = function() {
+        //     var num_large_array = Array.apply(null, Array(number));
+        //     // var selection = num_large_array.map(function (original_val, i) {return offset + i;});
+        //     return num_large_array.map(function (original_val, i) {return offset + i;});
+        //     // callback(selection);
+        //   };
+        //   console.log(callback)
+        //   var selection = jo();
+        //   console.log(selection);
+        //   for (var i = selection[0]; i < (selection[0] + selection.length); i++) {
+        //     select.push(result[i]);
+        //     if (i == (selection[0] + selection.length - 1)) {
+        //       return res.status(200).json(select);
+        //     }
+        //   }
+        // };
+        //
+        // test();
+
+        // test(function(selection) {
+        //   for (var i = selection[0]; i < (selection[0] + selection.length); i++) {
+        //     select.push(result[i]);
+        //     if (i == (selection[0] + selection.length - 1)) {
+        //       return res.status(200).json(select);
+        //     }
+        //   }
+      // }
       } else {
         return res.status(200).json(result);
       }
