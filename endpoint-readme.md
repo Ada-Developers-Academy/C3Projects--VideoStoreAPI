@@ -20,7 +20,7 @@ See below for the available endpoints for this API.
 - Retrieves a list of all customers.
 - Returns an object with a `customers` property containing an array of customer objects.
 - Each customer object contains the following properties: `id`, `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
-- Sample: GET `/customers`
+- **Sample:** GET `/customers`
 ```json
 {
     "customers": [{
@@ -90,7 +90,7 @@ See below for the available endpoints for this API.
       - Each movie object contains `movie_data` and `dates`.
         - `dates` contains `checkout_date` and `returned_date`.
         - `movie_data` contains: `id`, `title`, `overview`, `release_date`, and `inventory`.
-- Sample: GET `/customers/1`
+- **Sample:** GET `/customers/1`
 ```json
 {
     "customer_data": {
@@ -204,7 +204,7 @@ See below for the available endpoints for this API.
   - `offset` must be an integer >= 0.
 - Returns an object with a `customers` property containing an array of customer objects.
 - Each customer object contains the following properties: `id`, `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
-- Sample: GET `/customers/name/2/2`
+- **Sample:** GET `/customers/name/2/2`
 ```json
 {
     "customers": [{
@@ -239,7 +239,7 @@ See below for the available endpoints for this API.
 - Retrieves a list of all movies.
 - Returns an object with a `movies` property containing an array of movie objects.
 - Each movie object contains the following properties: `id`, `title`, `overview`, `release_date`, and `inventory`.
-- Sample: GET `/movies`
+- **Sample:** GET `/movies`
 ```json
 {
     "movies": [{
@@ -290,7 +290,7 @@ See below for the available endpoints for this API.
       - Each customer object contains `customer_data` and `dates`.
         - `dates` contains `checkout_date`.
         - `customer_data` contains: `id`, `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
-- Sample: GET `/movies/The Guns of Navarone/name`
+- **Sample:** GET `/movies/The Guns of Navarone/name`
 ```json
 {
     "movie_data": {
@@ -355,7 +355,7 @@ See below for the available endpoints for this API.
   - `offset` must be an integer >= 0.
 - Returns an object with a `movies` property containing an array of movie objects.
 - Each movie object contains the following properties: `id`, `title`, `overview`, `release_date`, and `inventory`.
-- Sample: GET `/movies/title/2/2`
+- **Sample:** GET `/movies/title/2/2`
 ```json
 {
     "movies": [{
@@ -381,7 +381,7 @@ See below for the available endpoints for this API.
 - Retrieves a list of all customers with overdue rentals.
 - Returns an object with an `overdue_customers` property that contains a list of customer objects.
   - Each customer object contains the following properties: `id`, `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
-- Sample: GET `/rentals/overdue`
+- **Sample:** GET `/rentals/overdue`
 ```json
 
 {
@@ -437,7 +437,7 @@ See below for the available endpoints for this API.
   - `availability` contains: `available` (boolean) and `copies_available` (integer).
   - `current_renters` is a list of customers who are currently renting the movie.
     - Each customer object contains the following propeties: `id`, `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
-- Sample: GET `/rentals/jaws`
+- **Sample:** GET `/rentals/jaws`
 ```json
 
 {
@@ -475,7 +475,7 @@ See below for the available endpoints for this API.
 - Charges the customer's account credit $1.00 (decrements by `100`).
 - Returns an object with a `success` property.
   - `success` contains the message: `"Yay! You checked out " + movie_title"`
-- Sample: POST `/rentals/checkout/1/Jaws`
+- **Sample:** POST `/rentals/checkout/1/Jaws`
 ```json
 {
     "success": "Yay! You checked out Jaws"
@@ -488,7 +488,7 @@ See below for the available endpoints for this API.
   - `returned_date` is set to the current day.
 - Returns an object with a `success` property.
   - `success` contains the message: `"Congratulations, you have checked in: " + movie_title`
-- SAMPLE: PUT `/rentals/checkin/1/jaws`
+- **Sample:** PUT `/rentals/checkin/1/jaws`
 ```json
 {
     "success": "Congratulations, you have checked in: jaws"
