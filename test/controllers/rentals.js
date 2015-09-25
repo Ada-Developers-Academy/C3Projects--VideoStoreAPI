@@ -7,6 +7,7 @@ var assert = require('assert'),
 
 describe("Endpoints under /rentals", function() {
   var db_cleaner;
+  var date_format = require('../../helpers/date_helper');
 
   beforeEach(function(done) {
 
@@ -41,16 +42,8 @@ describe("Endpoints under /rentals", function() {
     });
   });
 
-  describe("rentals instance methods", function() {
+  describe.only("rentals instance methods", function() {
     context("POST /checkout", function() {
-      it("can make a post", function(done) {
-        agent.post('/checkout').set('Accept', 'application/json')
-        .field('title', 'RoboJaws')
-        .field('release_date', 'Tomorrow')
-        .expect(200);
-        done();
-      });
-
       it('posts to the rentals table', function(done) {
         request(app)
           .post('/rentals/checkout')
@@ -58,6 +51,7 @@ describe("Endpoints under /rentals", function() {
           .expect(200, function(err, res) {
             assert.equal(res.body.customer_id, 1);
             assert.equal(res.body.number_of_records_changed, 1);
+            assert.equal(res.body.checked_out_on, date_format(0));
             if(err) {
               done(err);
             } else {
@@ -68,33 +62,21 @@ describe("Endpoints under /rentals", function() {
     });
 
     context("PATCH /checkin", function() {
-      it("can update rental records", function(done) {
-        var statement = "select * from customers;";
-        db.run(statement, function(err) {
-          inserted_rental_id = this.lastID;
-          number_of_records_changed = this.changes;
-        });
-        agent.patch('/checkin').set('Accept', 'application/json')
-        .field('title', 'RoboJaws')
-        .field('release_date', 'Tomorrow')
-        .expect();
-        done();
-      });
-
-      it('should correctly update an existing account', function(done){
+      it('should update a rental record', function(done){
         request(app)
           .patch('/rentals/checkin')
           .send({ id: '1', title: 'Gauze'})
           .expect(200, function(err, res) {
             assert.equal(res.body.customer_id, 1);
             assert.equal(res.body.number_of_records_changed, 1);
+            assert.equal(res.body.checked_in_on, date_format(0));
             if(err) {
               done(err);
             } else {
               done();
             }
           });
-  		});
+      });
   	});
   });
 });
