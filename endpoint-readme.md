@@ -350,7 +350,7 @@ See below for the available endpoints for this API.
 ### Subset of Movies
 - GET `/movies/:sort_by/:limit/:offset`
 - Sorts the entire set of movies by a certain property (`sort_by`), then retrieves a number (`limit`) of movies, starting at a certain index (`offset`).
-  - `sort_by` accepts `title`, `release_date`.
+  - `sort_by` accepts `title` and `release_date`.
   - `limit` must be an integer >= 0.
   - `offset` must be an integer >= 0.
 - Returns an object with a `movies` property containing an array of movie objects.
