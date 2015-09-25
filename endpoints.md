@@ -52,7 +52,7 @@ __Response Format__
 __Endpoint__  
 `GET /customers/{:id}`  
 
-Returns all the information on record of the selected customer, including all the movies they have currently and previously checked out.  
+Returns all the information on record of the selected customer, including all the movies they have currently and previously checked out. Rental records are ordered by checkout_date.  
 
 __Request Parameter__  
 
@@ -67,34 +67,38 @@ __Response__
         "id": 2,
         "name": "Curran Stout",
         "registered_at": "Wed, 16 Apr 2014 21:40: -0770"
-        "address": ,
-
-        "renting": [
-          {
-            "id": 1
-            "title": "Psycho",
-            "checkout_date": "",
-            "due_date": "" ,
-            "return_date": null
-          },
-          {
-            "id": 2
-            "title": "Jaws",
-            "checkout_date": "",
-            "due_date": "",
-            "return_date": null
-          }
-        ],
-        "rented" : [
-          {
-            "id": 8
-            "title": "The French Connection",
-            "checkout_date": "",
-            "due_date": "",
-            "return_date": ""
-          }
-        ]
-      }
+        "address": "123 Street Road",
+        "city": "San Francisco",
+        "state": "CA",
+        "postal_code": "12345",
+        "phone": "(123) 123-1234",
+        "account_credit": "12.45"
+      },
+      "renting": [
+        {
+          "id": 1
+          "title": "Psycho",
+          "checkout_date": "2014-09-19",
+          "due_date": "2014-09-26" ,
+          "return_date": null
+        },
+        {
+          "id": 2
+          "title": "Jaws",
+          "checkout_date": "2015-09-19",
+          "due_date": "2015-09-26",
+          "return_date": null
+        }
+      ],
+      "rented" : [
+        {
+          "id": 8
+          "title": "The French Connection",
+          "checkout_date": "2015-01-03",
+          "due_date": "2015-01-10",
+          "return_date": "2015-01-09"
+        }
+      ]
     }
 
 
@@ -142,7 +146,7 @@ __Response__
 __Endpoint__  
 `GET ./movies/{:title}`  
 
-Returns movies that fuzzy match the title query. The results are automatically ordered by `movie_id` but can also be ordered by title or release date.
+Returns movies that fuzzy match the title query. The results are automatically ordered by `movie_id` but can also be ordered by `title` or `release_date`.
 
 __Request Parameters__  
 
@@ -154,12 +158,16 @@ __Request Parameters__
 __Response__
 
     {
-      "movies" : {
+      "movie" : [
+        {
+          "id": 23,
           "title": "The Night of the Hunter",
           "overview": "Harry Powell marries and murders widows for their money, believing he is helping God do away with women who arouse men's carnal instincts. Arrested for auto theft, he shares a cell with condemned killer Ben Harper and tries to get him to reveal the whereabouts of the $10,000 he stole. Only Ben's nine-year-old son, John, and four-year-old daughter, Pearl, know the money is in Pearl's doll; and they have sworn to their father to keep this secret. After Ben is executed, Preacher goes to Cresap's Landing to court Ben's widow, Willa. When he overwhelms her with his Scripture quoting, sermons, and hymns, she agrees to marry him. On their wedding night, he tells her they will never have sex because it is sinful.",
           "release_date": "1955-07-26",
-          "inventory": 9
-        }
+          "inventory_total": 9,
+          "inventory_avail": 7
+        },
+        ...
       ]
     }
 
@@ -170,7 +178,7 @@ __Response__
 __Endpoint__  
 `GET /rentals/overdue`  
 
-Returns an array of all rentals that are currently overdue.  
+Returns an array of all rentals that are currently overdue ordered ASC by `due_date`. Includes information about the customer associated with each rental.  
 
 __Response__
 
@@ -205,7 +213,7 @@ __Endpoint__
 
 Returns an array of the given movie's rental history, grouping them in two sub arrays of `current_rentals` and `previous_rentals`. 
 
-If there are multiple matched movies for the {:title} search, it will pull in all matching results. 
+If there are multiple matched movies for the `{:title}` search, it will pull in all matching results. 
 
 The results are automatically ordered by `customer_id` but can also be ordered by `name` (customer's name), `checkout_date`, `due_date`,  `return_date`.
 
@@ -287,7 +295,7 @@ __Response__
 __Endpoint__  
 `PUT ./rentals/{:customer_id}/return/{:movie_id}`  
 
-Returns the updated rental information for that checked in movie and that movie's previous rental history in descending order of `return_date`.  
+Returns the updated rental information for that checked in movie and that customer's previous rental history for that movie in descending order of `return_date`.  
 
 __Request Parameters__  
 
