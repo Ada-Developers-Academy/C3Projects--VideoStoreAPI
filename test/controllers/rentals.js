@@ -36,7 +36,6 @@ describe("rentals controller", function(){
       agent.get("/rentals/X-files:%20I%20want%20to%20believe/customers").set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result){
-          console.log(result.body);
           assert.equal(error, undefined);
           assert.equal(result.body.rental_customers.length, 1);
           var keys = ["id", "name", "registered_at", "address", "city", "state", "postal_code", "phone", "account_credit"];
@@ -45,4 +44,28 @@ describe("rentals controller", function(){
           done();
       });
     });
+
+  describe("rentals check-in", function(){
+    it.only("updates a movie's availability", function(done) {
+      agent.post("/rentals/new_rental/1/Fight%20The%20Future").set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result){
+          console.log(result.body);
+          assert.equal(error, undefined);
+
+          var new_availability
+          var db = new sqlite3.Database('db/test.db');
+
+          db.serialize (function() {
+            db.all("SELECT available FROM movies WHERE title= 'Fight the Future';", function(err, record) {
+              if (err) {
+                console.log(err);
+            }  else
+                console.log(record);
+            });
+          });
+          done();
+       });
+    });
+  });
 });
