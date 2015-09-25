@@ -4,7 +4,7 @@ var request = require('supertest'),
     sqlite3 = require('sqlite3').verbose(),
     agent   = request.agent(app);
 
-var Rental   = require('../../models/rental');
+var Rental  = require('../../models/rental');
 
 describe("rentals routes", function() {
   var db_cleaner, rental;
@@ -210,6 +210,39 @@ describe("rentals routes", function() {
             done();
           });
         });
+    });
+
+    it("decrements the account_credit for each customer by $1.00", function(done) {
+      var statement = 
+        "SELECT * FROM customers \
+        WHERE id = ?;";
+
+      var values = [1];
+      var creditBeforeCheckout,
+          creditAfterCheckout;
+
+      var db = new sqlite3.Database('db/test.db');
+
+      // get account_credit before checking out a movie
+      db.all(statement, values, function(err, row) {
+        creditBeforeCheckout = row[0].account_credit;
+        db.close();
+
+        agent.post('/rentals/checkout/1/Fight the Future').set('Accept', 'application/json')
+          .expect(200, function(error, response) {
+            var db = new sqlite3.Database('db/test.db');
+
+            // get account_credit after checking out a movie
+            db.all(statement, values, function(err, row) {
+              creditAfterCheckout = row[0].account_credit;
+              db.close();
+
+              // check to make sure the account_credit has decreased by 100 ($1.00)
+              assert(creditBeforeCheckout - 100 == creditAfterCheckout);
+              done();
+            });
+          });
+      });
     });
   });
 });
