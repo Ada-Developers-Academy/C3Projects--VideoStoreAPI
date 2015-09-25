@@ -34,5 +34,17 @@ router.get('/:title/available', function(req, res, next) {
   return movies_exports.moviesController.availableMovies(req, res)
 });
 
+router.get('/:title/customers/past/sort_by_id', function(req, res, next) {
+  movies_exports.moviesController.pastCustomerRentals(req, res)
+});
+
+router.get('/:title/customers/past/sort_by_name', function(req, res, next) {
+  movies_exports.moviesController.pastCustomerRentals(req, res)
+});
+
+router.get('/:title/customers/past/sort_by_checkout_date', function(req, res, next) {
+  movies_exports.moviesController.pastCustomerRentalsByDate(req, res)
+});
+
 module.exports = router;
 // title?page=:page&number=:number
