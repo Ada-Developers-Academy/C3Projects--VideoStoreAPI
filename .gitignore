@@ -2,3 +2,5 @@
 
 # Let package.json handle dependencies
 /node_modules
+
+db/test.db

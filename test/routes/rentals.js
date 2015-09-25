@@ -4,11 +4,14 @@ var request = require('supertest'),
     sqlite3 = require('sqlite3').verbose(),
     agent   = request.agent(app);
 
+var Rental   = require('../../models/rental');
+
 describe("rentals routes", function() {
-  var db_cleaner;
+  var db_cleaner, rental;
 
   beforeEach(function(done) {
     db_cleaner = new sqlite3.Database('db/test.db');
+    rental = new Rental();
 
     db_cleaner.serialize(function() {
       db_cleaner.exec(
@@ -177,9 +180,31 @@ describe("rentals routes", function() {
       });
     });
   });
+
+  describe("POST /rentals/checkout/:customer_id/:movie_title", function() {
+    it("returns a message that you checked out a movie", function(done) {
+      agent.post('/rentals/checkout/1/Fight the Future').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, response) {
+          var result = response.body;
+
+          assert.equal(error, undefined);
+          assert.equal(result.success,  'Yay! You checked out Fight the Future')
+          done();
+        });
+    });
+
+    it("adds a rental record to the rentals table", function(done) {
+      agent.post('/rentals/checkout/1/Fight the Future').set('Accept', 'application/json')
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, response) {
+
+          rental.find_by("id", 9, function(err, res) {
+            assert.equal(res.movie_id, 1);
+            assert.equal(res.customer_id, 1);
+            done();
+          });
+        });
+    });
+  });
 });
-
-
-
-
-
