@@ -52,10 +52,10 @@ describe("Database", function() {
     });
   });
 
-  describe("formatDate", function() {
-    it("returns date as an integer in the form of YYYYMMDD", function(done) {
-      Database.formatDate();
-    });
-  });
+  // describe("formatDate", function() {
+  //   it("returns date as an integer in the form of YYYYMMDD", function(done) {
+  //     Database.formatDate();
+  //   });
+  // });
 
 });

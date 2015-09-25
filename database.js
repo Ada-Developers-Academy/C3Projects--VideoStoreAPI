@@ -31,7 +31,7 @@ module.exports = {
     });
   },
 
-  formatDate: function(date, callback) { // shared
+  formatDate: function(date) { // shared
     var dateObj = new Date(date);
     var month = (dateObj.getUTCMonth() + 1).toString(); //months from 1-12
     var day = (dateObj.getUTCDate()).toString();
@@ -46,8 +46,6 @@ module.exports = {
       day = "0" + day;
     }
 
-    newDate = parseInt(year + month + day);
-
-    if(callback) { callback(newDate); }
+    return parseInt(year + month + day);
   }
 };
