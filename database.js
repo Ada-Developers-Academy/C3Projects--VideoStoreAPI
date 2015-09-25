@@ -48,7 +48,6 @@ module.exports = {
     var db = new sqlite3.Database('db/' + db_env + '.db');
     var statement = "SELECT * FROM rentals WHERE " + column + " = ? AND returned_date = 'nil';";
 
-
     db.all(statement, value, function(error, result) {
 
       if (callback) callback(error, result);
@@ -106,5 +105,28 @@ module.exports = {
       if (callback) callback(err, res);
       db.close();
     });
+  },
+
+  checkin: function(data, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    var customer_id = data.customer_id; // 2
+    var movie_id = data.movie_id; // 2
+    var total = data.total; // 5
+    var returned_date = data.returned_date; // "09-20-2015"
+
+    var rentalsStatement = "UPDATE rentals SET total = " + total + ", returned_date = '" + returned_date + "' WHERE customer_id = " + customer_id + " AND movie_id = " + movie_id + ";";
+    var customersStatement = "UPDATE customers SET account_credit = account_credit - (SELECT total FROM rentals WHERE customers.id = rentals.customer_id AND rentals.movie_id = " + movie_id + ");";
+    var moviesStatement = "UPDATE movies SET available = available + 1 WHERE id = " + movie_id + ";";
+
+    db.serialize(function(){
+      db.exec("BEGIN");
+      db.exec(rentalsStatement);
+      db.exec(customersStatement);
+      db.exec(moviesStatement)
+      db.exec("COMMIT", function(error) {
+        callback(error, "Success");
+        db.close();
+      });
+    })
   }
 }

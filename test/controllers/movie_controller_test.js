@@ -37,7 +37,7 @@ describe("movies controller", function() {
       done();
     })
 
-    it.only("returns an array", function(done) {
+    it("returns an array", function(done) {
       movie_request.expect(200, function(error, result) {
         assert.equal(result.body.length, 2);
 

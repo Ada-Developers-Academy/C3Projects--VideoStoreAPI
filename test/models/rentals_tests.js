@@ -34,7 +34,9 @@ describe("Rental", function() {
           VALUES('09-22-2015', '09-25-2015', '3', '2.50', '5', '1', '1'), \
                 ('09-23-2015', '09-26-2015', '3', '2.50', '5', '2', '2'), \
                 ('09-24-2015', '09-30-2015', '6', '2.50', '5', '1', '3'), \
-                ('09-25-2015', '09-25-2015', '1', '2.50', '5', '2', '4'); \
+                ('09-25-2015', '09-25-2015', '1', '2.50', '5', '2', '4'), \
+                ('09-19-2015', 'nil', '6', '2.50', null, '1', '6'), \
+                ('09-18-2015', 'nil', '1', '2.50', null, '2', '5'); \
           COMMIT;",
           function(err) {
             db_cleaner.close();
@@ -55,12 +57,13 @@ describe("Rental", function() {
       });
     });
 
-    // it("displays all records from movies table", function(done) {
-    //   movie.find_all(function(err, result) {
-    //     assert.equal(result.length, 4);
-    //     done();
-    //   });
-    // })
+    it("displays all records from rental table where returned_date is nil", function(done) {
+      rental.checkin(function(err, result) {
+        console.log(result);
+        assert.equal(result.length, 4);
+        done();
+      });
+    })
     //
     // it("displays all records from 'movies' table, sorted by title with limit 2", function(done) {
     //   movie.sort_by("title", 2, 0, function(err, result) {
