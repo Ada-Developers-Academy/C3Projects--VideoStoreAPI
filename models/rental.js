@@ -28,13 +28,13 @@ var Rental = function() { // Rental constructor
 
   // rental page limit
   this.limit = 10;
+  this.charge = 3.00;
   this.noMoviesMsg = "No results found. You must query this endpoint with an exact title.";
   this.noOverdueMsg = "No results found. We either have a loose database connection or "
                     + "it is that magical time when NO CUSTOMERS ARE HOLDING OVERDUE FILMS!";
   this.noCustomersMsg = "No results found. You must query this endpoint with an exact title. "
                       + "If you are using an exact title, no customers have a copy checked out."
 }
-
 
 //------------------------------------------------------------------------------
 //--------- SQL statements -----------------------------------------------------
@@ -186,39 +186,8 @@ Rental.prototype.customers = function(title, callback) {
   this.close();
 }
 
-Rental.prototype.checkOut = function(movie_title, customer_id, outerCallback) {
+Rental.prototype.checkOut = function(movie_title, customer_id, callback) {
   // NOTE: maybe update to check if stock, then if stock, continue
-  var that = this;
-
-  // validateMovie
-  function movie(callback) {
-    this.movieInfo(movie_title, function(error, result) {
-      if (error) { console.log("oh crap moviez"); return false; }
-      console.log("is title avail? " + result.data.availableToRent);
-      return callback(result.data.availableToRent);
-    });
-  }
-
-  movie(function() {
-    console.log("here")
-    console.log("movie is not available to rent");
-  });
-
-  // validateCustomer
-  var statement = "SELECT * FROM customers WHERE id=" + customer_id + ";";
-  function validateCustomer(callback) {
-    that.open();
-    that.db.all(statement, function(error, result) {
-      if (error) { console.log("oh crap customerz"); return false; }
-      var leTruth = result.length > 0;
-      console.log("le truthiness " + leTruth);
-      console.log("result:");
-      console.log(result);
-      return callback(leTruth);
-    });
-    that.close();
-  }
-
   // 3. create a rental transaction STATEMENT
   var rentalStatement = "INSERT INTO rentals( \
     movie_title,  \
@@ -226,44 +195,39 @@ Rental.prototype.checkOut = function(movie_title, customer_id, outerCallback) {
     returned, \
     check_out_date, \
     return_date) \
-    VALUES (?, ?, ?, ?, ?);"
+    VALUES (?, ?, ?, ?, ?);";
+
+  var customerStatement = "UPDATE customers \
+    SET account_credit = account_credit - " + this.charge +
+    "WHERE customer_id = " + customer_id;
 
   var values = [movie_title, customer_id, 0, Date.now(), ""];
+  var that = this;
 
-  function checkOut(boolean) {
-    if (!boolean) {
-      console.log("Falsey");
-      return false;
-    }
-
-    that.open();
-    that.db.run(rentalStatement, values, function(error, results) {
-      if (error) { console.log("oh crap rentalz"); return false; }
-      console.log("RESULTZ: " + results);
-      return stepFour(results);
+  this.open();
+  this.db.serialize(function() {
+    that.db.run(rentalStatement, values, function(error, data) {
+      // return sqlErrorHandling(error, data, formatData);
+      console.log("Inside db.run rental");
     })
-    that.close();
-  }
+    that.db.run(customerStatement, function(error, data) {
+      console.log('inside customerStatement');
+      // return sqlErrorHandling(error, data, formatData);
+    });
+  })
+  this.close();
 
-  function stepFour(results) {
-    console.log("STEP 4");
-    console.log("RESUTLS IN step 4: " + results);
-  }
+  // serialize sqlite3 queries:
+  //   // find movie_id from movie table
+  //   // decrement inventory -1
+  //   // verify customer is a
+  //   use customer_id to create new rental line
+  //   query customer table to decrease account credit by CONSTANT ($3?)
 
-  validateCustomer(checkOut);
-  // 1. find a movie w/ movie_title STATEMENT
-  // 2. find customer w/ id STATEMENT
-  // create a rental transaction after validating presence of above
-  // 3. create a rental transaction STATEMENT
-    // id INTEGER PRIMARY KEY // autopopulate
-    // movie_title TEXT // from URL
-    // customer_id INTEGER // from URL
-    // returned INTEGER // 0
-    // check_out_date INTEGER // we need to populate from Date.now?
-    // return_date INTEGER // ""
-  // 4. charge the customer's account STATEMENT
-    // id INTEGER
-    // account_credit INTEGER // somehow it is a magical 13.15 dollars and cents amt
+
+  // 4. charge the customer's account STATEMENT\
+  //   id INTEGER\
+  //   account_credit INTEGER // somehow it is a magical 13.15 dollars and cents amt\
 }
 
 module.exports = Rental;

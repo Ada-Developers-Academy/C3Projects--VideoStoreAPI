@@ -87,11 +87,14 @@ RentalsController.customers = function(request, response, next) {
 }
 
 RentalsController.checkOut = function(request, response, next) {
+  console.log('inside checkout');
   // post request, check out a title
   var Rental = new RentalModel();
   // change hard code!!
   Rental.checkOut("Jaws", 1, function(error, result) {
+    console.log('in callback, before if');
     if (error) { result = error; }
+    console.log('result: ' + result);
     return response.status(200).json(result);
   })
 }
