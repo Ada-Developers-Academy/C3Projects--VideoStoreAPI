@@ -63,8 +63,9 @@ router.get('/:title', function(request, response, next) {
 });
 
 router.post('/checkout/:customer_id/:movie_title', function(request, response, next) {
+  var customer_id = request.params.customer_id;
   var movie_title = request.params.movie_title;
-  var count, inventory, enoughInventory, movie_id;
+  var count, inventory, enoughInventory, movie_id, account_credit;
 
   movie.find_by('title', movie_title, function(err, row) {
     movie_id = row.id;
@@ -97,7 +98,13 @@ router.post('/checkout/:customer_id/:movie_title', function(request, response, n
           var columns = ['customer_id', 'movie_id', 'checkout_date', 'due_date', 'returned_date'];
 
           rental.create(columns, values, function(err, results) {
-            response.status(200).json({ success: "Yay! You checked out a movie." });
+            customer.find_by('id', customer_id, function(err, row) {
+              account_credit = row.account_credit;
+              var new_credit = account_credit - 100;
+              customer.update(customer_id, ['account_credit'], [new_credit], function(err, results) {
+                response.status(200).json({ success: "Yay! You checked out " + movie_title });
+              });
+            });
           });
         }
       });

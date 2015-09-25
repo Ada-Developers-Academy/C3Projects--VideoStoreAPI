@@ -185,6 +185,8 @@ describe("rentals routes", function() {
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
           var result = response.body;
+          var movie = request.params.movie_title;
+          console.log(movie);
 
           assert.equal(error, undefined);
           assert.equal(result.success,  'Yay! You checked out a movie.')
