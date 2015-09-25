@@ -186,9 +186,12 @@ Rental.prototype.customers = function(title, callback) {
   this.close();
 }
 
-Rental.prototype.checkOut = function(movie_title, customer_id, callback) {
-  // NOTE: maybe update to check if stock, then if stock, continue
-  // 3. create a rental transaction STATEMENT
+Rental.prototype.checkOut = function(movieTitle, customerId, callback) {
+  // NOTE:
+  // - find movie_id from movie table
+  // - verify customer is a
+  // - do we want to check if customer already has title checked out first?
+  //   - i super think yes if time --jeri
   var rentalStatement = "INSERT INTO rentals( \
     movie_title,  \
     customer_id, \
@@ -199,36 +202,36 @@ Rental.prototype.checkOut = function(movie_title, customer_id, callback) {
 
   var customerStatement = "UPDATE customers " +
     "SET account_credit = account_credit - " + this.charge +
-    " WHERE id = " + customer_id;
+    " WHERE id = " + customerId;
   console.log(customerStatement)
 
-  var values = [movie_title, customer_id, 0, Date.now(), ""];
+  var receiptStatement = "SELECT customers.name, customers.account_credit, "
+    + "rentals.movie_title, rentals.check_out_date FROM customers "
+    + "LEFT JOIN rentals ON rentals.customer_id = customers.id "
+    + "WHERE rentals.movie_title = '" + movieTitle + "' "
+    + "AND customers.id = " + customerId;
+  console.log(receiptStatement);
+
+  var values = [movieTitle, customerId, 0, Date.now(), ""];
   var that = this;
 
   this.open();
   this.db.serialize(function() {
     that.db.run(rentalStatement, values, function(error, data) {
       console.log("inside rentalStatement");
-      // return sqlErrorHandling(error, data, formatData);
     })
     that.db.run(customerStatement, function(error, data) {
-      console.log('inside customerStatement');
-      // return sqlErrorHandling(error, data, formatData);
-    });
+      console.log("inside customerStatement");
+    })
+    that.db.get(receiptStatement, function(error, data) {
+      console.log("receiptStatement error is", error, "and data is", data);
+      return callback(error, data);
+    })
   })
   this.close();
 
-  // serialize sqlite3 queries:
-  //   // find movie_id from movie table
-  //   // decrement inventory -1
-  //   // verify customer is a
-  //   use customer_id to create new rental line
-  //   query customer table to decrease account credit by CONSTANT ($3?)
 
 
-  // 4. charge the customer's account STATEMENT\
-  //   id INTEGER\
-  //   account_credit INTEGER // somehow it is a magical 13.15 dollars and cents amt\
 }
 
 module.exports = Rental;
