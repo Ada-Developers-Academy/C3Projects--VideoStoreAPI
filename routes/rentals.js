@@ -5,6 +5,6 @@ var router = express.Router();
 var Controller = require('../controllers/rentals');
 
 router.post('/', Controller.create);
-router.put('/:title', Controller.update);
+router.put('/:customer_id', Controller.update);
 
 module.exports = router;
