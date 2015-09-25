@@ -61,10 +61,10 @@ router.get('/:title', function(request, response, next) {
       var inventory = movieObject.movie_data.inventory;
       var availableBool = (rentedCount < inventory) ? true : false;
       var availableCount = (rentedCount < inventory) ? (inventory - rentedCount) : 0;
-      movieObject.availability = { available: availableBool, copiesAvailable: availableCount }
+      movieObject.availability = { available: availableBool, copies_available: availableCount }
 
       customer.where_in('id', customerIdList, function(error, rows) {
-        movieObject.currentRenters = rows;
+        movieObject.current_renters = rows;
         response.status(200).json(movieObject);
       });
     });
@@ -141,7 +141,7 @@ router.put('/checkin/:customer_id/:movie_title', function(req, res, next) {
       var message = "Congratulations, you have checked in: ";
 
       rental.update(rentalId, ["returned_date"], [today], function(err, result) {
-        res.status(200).json(message + movieTitle);
+        res.status(200).json({ success: message + movieTitle });
       })
     });
   });
