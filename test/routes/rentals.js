@@ -180,16 +180,14 @@ describe("rentals routes", function() {
 
 
   describe("POST /rentals/checkout/:customer_id/:movie_title", function() {
-    it.only("returns a message that you checked out a movie", function(done) {
+    it("returns a message that you checked out a movie", function(done) {
       agent.post('/rentals/checkout/1/Fight the Future').set('Accept', 'application/json')
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, response) {
           var result = response.body;
-          var movie = request.params.movie_title;
-          console.log(movie);
 
           assert.equal(error, undefined);
-          assert.equal(result.success,  'Yay! You checked out a movie.')
+          assert.equal(result.success,  'Yay! You checked out Fight the Future')
           done();
         });
     });
