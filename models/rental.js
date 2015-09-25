@@ -217,6 +217,10 @@ Rental.prototype.checkOut = function(movieTitle, customerId, callback) {
 
   this.open();
   this.db.serialize(function() {
+    // check if customer already has an active rental for this title
+    // - maybe the POS accidentally submitted this order twice
+    // - maybe the customer's roommate didn't realize customer had come by
+    // - earlier today to pick up the film
     that.db.run(rentalStatement, values, function(error, data) {
       console.log("inside rentalStatement");
     })
