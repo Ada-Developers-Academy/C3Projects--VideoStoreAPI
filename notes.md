@@ -53,10 +53,14 @@ Customers
   - From Rentals table find all of one customer's current rentals
 
 
-get "/customers/:id/movies/past" = show all the movies that this customer has rented in the past, sorted by the checkout date. Include return date in response.
+🔵 get "/customers/:id/movies/past" = show all the movies that this customer has rented in the past, sorted by the checkout date. Include return date in response.
  - From Rentals table find all of one customer's past rentals
-
+SELECT title, checkout_date, return_date FROM movies, rentals WHERE rentals.customer_id = 2 AND rentals.returned_date != 'nil' ORDER BY checkout_date DESC;";
 Rental
+
+SELECT title, checkout_date, returned_date FROM movies, rentals where movies.id = rentals.movie_id and rentals.returned_date != 'nil' and rentals.customer_id = 4 ORDER BY checkout_date DESC;
+
+
 
 post "/rent/checkout" = Checks out the movie to the customer. Change the available inventory for that specific title. Do we decided how much to charge and when to return the movie?
  * Add to Rentals table:
