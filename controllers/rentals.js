@@ -7,7 +7,7 @@ var Controller = {
   },
 
   update: function(req, res, next) {
-    new Rental().checkIn(req.params.title, req.body.return_date, Controller.sendJSON.bind(res))
+    new Rental().checkIn(req.body.movie_title, req.body.return_date, req.params.customer_id, Controller.sendJSON.bind(res))
   },
 
   sendJSON: function(err, res) {
