@@ -25,7 +25,7 @@ describe('movie controller', function() {
     it('responds with 10 movie results', function(done) {
       agent.get(uri).set('Accept', 'application/json')
         .expect(200, function(error, result) {
-          assert.equal(result.body.length, 10);
+          assert.equal(result.body.data.movies.length, 10);
           assert.equal(error, undefined);
           done();
         })
@@ -44,7 +44,7 @@ describe('movie controller', function() {
 
       agent.get(uri).set('Accept', 'application/json')
       .expect(200, function(error, result) {
-        assert.deepEqual(Object.keys(result.body[0]), movie_keys);
+        assert.deepEqual(Object.keys(result.body.data.movies[0]), movie_keys);
         done();
       })
     })
@@ -67,7 +67,7 @@ describe('movie controller', function() {
       agent.get(uri).set('Accept', 'application/json')
         .expect(200, function(error, result) {
           assert.equal(error, undefined);
-          assert.equal(result.body.length, 1);
+          assert.equal(result.body.data.movies.length, 1);
           done();
         })
     })
@@ -83,11 +83,10 @@ describe('movie controller', function() {
 
       agent.get(uri).set('Accept', 'application/json')
         .expect(200, function(error, result) {
-          assert.deepEqual(Object.keys(result.body[0]), movie_keys);
+          assert.deepEqual(Object.keys(result.body.data.movies[0]), movie_keys);
           done();
         })
     })
-
   }) // GET /movies/:title
 
   describe('GET /:title/renting', function() {
@@ -102,7 +101,7 @@ describe('movie controller', function() {
       })
     })
 
-    it("responds with keys of 'customer_name', \
+    it("responds with keys of 'name', \
       'check_out_date', and 'movie_title'",
       function(done) {
         var customer_movies = [
@@ -113,7 +112,7 @@ describe('movie controller', function() {
 
         agent.get(uri).set('Accept', 'application/json')
           .expect(200, function(error, result) {
-            assert.deepEqual(Object.keys(result.body[0]), customer_movies);
+            assert.deepEqual(Object.keys(result.body.data.movies[0]).sort(), customer_movies.sort());
             done();
           })
     })
@@ -133,10 +132,9 @@ describe('movie controller', function() {
     ];
 
     sorting_hat.forEach(function(query) {
-      var uri = '/movies/' + title + '/rented/sort_by=' + query + '/1';
-      it('responds with json format', function(done) {
-        console.log(uri);
+      var uri = '/movies/' + title + '/rented/sort_by=' + query;
 
+      it('responds with json format', function(done) {
         agent.get(uri).set('Accept', 'application/json')
           .expect('Content-Type', /json/)
           .expect(200, function(error, result) {
@@ -144,11 +142,12 @@ describe('movie controller', function() {
             done();
           })
       })
+
       it('responds with an array of customers', function(done) {
         agent.get(uri).set('Accept', 'application/json')
           .expect(200, function(error, result) {
             assert.equal(error, undefined);
-            assert.deepEqual(Object.keys(result.body[0]), customer_movies);
+            assert.deepEqual(Object.keys(result.body.data.movies[0]).sort(), customer_movies.sort());
             done();
           })
       })
@@ -183,7 +182,7 @@ describe('movie controller', function() {
       it('responds with an array of movies', function(done) {
         agent.get(uri).set('Accept', 'application/json')
         .expect(200, function(error, result) {
-          assert.deepEqual(Object.keys(result.body[0]).sort(), movie_keys.sort())
+          assert.deepEqual(Object.keys(result.body.data.movies[0]).sort(), movie_keys.sort())
           done();
         })
       })
@@ -191,7 +190,7 @@ describe('movie controller', function() {
       it('responds with 10 movies', function(done) {
         agent.get(uri).set('Accept', 'application/json')
         .expect(200, function(error, result) {
-          assert.equal(result.body.length, 10)
+          assert.equal(result.body.data.movies.length, 10)
           done();
         })
       })

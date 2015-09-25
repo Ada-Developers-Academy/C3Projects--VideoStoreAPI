@@ -9,7 +9,7 @@ var agent   = request.agent(app); // supertest magic
 var assert  = require("assert");
 var sqlite3 = require("sqlite3").verbose();
 
-describe.only("CustomersController", function() {
+describe("CustomersController", function() {
 //---------------------------------------------------------------------------------------------------------------------
 //--------- GET /all --------------------------------------------------------------------------------------------------
   describe("GET `/all`", function() {
