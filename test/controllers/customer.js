@@ -57,7 +57,6 @@ describe("customers controller", function(){
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result){
           assert.equal(error, undefined);
-          console.log(result.body);
           assert.equal(result.body.customer_subset[0].registered_at, "2013-12-23");
           assert.equal(result.body.customer_subset[1].registered_at, "2015-09-16");
           done();

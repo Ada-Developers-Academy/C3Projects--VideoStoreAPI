@@ -10,7 +10,7 @@ describe("Movie", function() {
 
     db_cleaner = new sqlite3.Database('db/test.db');
     db_cleaner.serialize(function() {
-      db_cleaner.exec("BEGIN; DELETE FROM movies; DELETE FROM rentals; INSERT INTO movies(title, overview, release_date, inventory, available) VALUES('X-files: I want to believe', 'Mulder and Scully rock it', '2007', 4, 4), ('The Lone Gunmen', 'misadventures of the best nerds', '2001', 5, 5), ('Fight the Future', 'a bee ruins everything', '1998', 7, 7); INSERT INTO rentals(movie_id, customer_id, returned_date, due_date, checked_out) VALUES(1, 1, '', '2015-09-10', '2015-09-01'), (2, 2, '2015-09-30', '2015-10-01', '2015-09-15'); COMMIT;"
+      db_cleaner.exec("BEGIN; DELETE FROM movies; DELETE FROM rentals; INSERT INTO movies(title, overview, release_date, inventory, available) VALUES('X-files: I want to believe', 'Mulder and Scully rock it', '2007', 4, 3), ('The Lone Gunmen', 'misadventures of the best nerds', '2001', 5, 5), ('Fight the Future', 'a bee ruins everything', '1998', 7, 7); INSERT INTO rentals(movie_id, customer_id, returned_date, due_date, checked_out) VALUES(1, 1, '', '2015-09-10', '2015-09-01'), (2, 2, '2015-09-30', '2015-10-01', '2015-09-15'); COMMIT;"
         , function(err) {
           db_cleaner.close();
           done();

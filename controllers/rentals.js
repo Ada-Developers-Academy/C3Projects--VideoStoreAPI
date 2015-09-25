@@ -37,7 +37,7 @@ exports.rentalsController = {
     // check availablity in movies table first
     rental.check_movie_availability(movie_title, function(err, record) {
       if (record[0].available > 0) {
-        console.log("we're getting somewhere");
+        // console.log("we're getting somewhere");
 
         //nested function inception :(
 
