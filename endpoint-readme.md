@@ -12,7 +12,62 @@ GET '/customers'
 - Retrieves a list of all customers.
 - Returns an object with a `customers` property containing an array of customer objects.
 - Each customer object contains the following properties: `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
-- [Sample: GET '/customers'](./samples/get_customers.json)
+- Sample: GET '/customers'
+```json
+{
+    "customers": [{
+        "id": 1,
+        "name": "Shelley Rocha",
+        "registered_at": "Wed, 29 Apr 2015 07:54:14 -0700",
+        "address": "Ap #292-5216 Ipsum Rd.",
+        "city": "Hillsboro",
+        "state": "OR",
+        "postal_code": "24309",
+        "phone": "(322) 510-8695",
+        "account_credit": 1315
+    }, {
+        "id": 2,
+        "name": "XCurran Stout",
+        "registered_at": "Wed, 16 Apr 2014 21:40:20 -0700",
+        "address": "Ap #658-1540 Erat Rd.",
+        "city": "San Francisco",
+        "state": "California",
+        "postal_code": "94267",
+        "phone": "(908) 949-6758",
+        "account_credit": 3565.9999999999995
+    }, {
+        "id": 3,
+        "name": "Roanna Robinson",
+        "registered_at": "Fri, 28 Nov 2014 13:14:08 -0800",
+        "address": "Ap #561-4214 Eget St.",
+        "city": "Harrisburg",
+        "state": "PA",
+        "postal_code": "15867",
+        "phone": "(323) 336-1841",
+        "account_credit": 5039
+    }, {
+        "id": 4,
+        "name": "Carolyn Chandler",
+        "registered_at": "Fri, 04 Jul 2014 11:05:11 -0700",
+        "address": "133-8707 Arcu. Avenue",
+        "city": "Fort Wayne",
+        "state": "IN",
+        "postal_code": "73684",
+        "phone": "(234) 837-2886",
+        "account_credit": 2079
+    }, {
+        "id": 5,
+        "name": "Aquila Riddle",
+        "registered_at": "Thu, 27 Aug 2015 08:17:24 -0700",
+        "address": "Ap #187-9582 Primis St.",
+        "city": "Tacoma",
+        "state": "WA",
+        "postal_code": "73251",
+        "phone": "(925) 161-2223",
+        "account_credit": 1782
+    }]
+}
+```
 
 GET '/customers/:id'
 
@@ -26,7 +81,110 @@ GET '/customers/:id'
       - Each movie object contains `movie_data` and `dates`.
         - `dates` contains `checkout_date` and `returned_date`.
         - `movie_data` contains: `title`, `overview`, `release_date`, and `inventory`.
-- [Sample: GET '/customers/1'](./samples/get_customers_id.json)
+- Sample: GET '/customers/1'
+```json
+{
+    "customer_data": {
+        "id": 1,
+        "name": "Shelley Rocha",
+        "registered_at": "Wed, 29 Apr 2015 07:54:14 -0700",
+        "address": "Ap #292-5216 Ipsum Rd.",
+        "city": "Hillsboro",
+        "state": "OR",
+        "postal_code": "24309",
+        "phone": "(322) 510-8695",
+        "account_credit": 1315
+    },
+    "movies": {
+        "current_rentals": [{
+            "id": 2,
+            "title": "Jaws",
+            "overview": "An insatiable great white shark terrorizes the townspeople of Amity Island, The police chief, an oceanographer and a grizzled shark hunter seek to destroy the bloodthirsty beast.",
+            "release_date": "1975-06-19",
+            "inventory": 6
+        }, {
+            "id": 3,
+            "title": "The Exorcist",
+            "overview": "12-year-old Regan MacNeil begins to adapt an explicit new personality as strange events befall the local area of Georgetown. Her mother becomes torn between science and superstition in a desperate bid to save her daughter, and ultimately turns to her last hope: Father Damien Karras, a troubled priest who is struggling with his own faith.",
+            "release_date": "1973-12-26",
+            "inventory": 7
+        }, {
+            "id": 5,
+            "title": "The Silence of the Lambs",
+            "overview": "FBI trainee Clarice Starling ventures into a maximum-security asylum to pick the diseased brain of Hannibal Lecter, a psychiatrist turned homicidal cannibal. Starling needs clues to help her capture a serial killer. Unfortunately, her Faustian relationship with Lecter soon leads to his escape, and now two deranged killers are on the loose.",
+            "release_date": "1991-02-14",
+            "inventory": 3
+        }, {
+            "id": 49,
+            "title": "Ben-Hur",
+            "overview": "Ben-Hur is a 1959 epic film directed by William Wyler, the third film version of Lew Wallace's 1880 novel Ben-Hur: A Tale of the Christ. It premiered at Loew's State Theatre in New York City on November 18, 1959. The film went on to win a record of eleven Academy Awards, including Best Picture, a feat equaled only by Titanic in 1998 and The Lord of the Rings: The Return of the King in 2004. It was also the last film to win the Oscar for both Best Actor and Best Supporting Actor, until nearly 44 years later when Mystic River achieved the same feat.The movie revolves around a Jewish prince who is betrayed and sent into slavery by a Roman friend and how he regains his freedom and comes back for revenge.",
+            "release_date": "1959-11-18",
+            "inventory": 5
+        }, {
+            "id": 84,
+            "title": "Poltergeist",
+            "overview": "Craig T. Nelson stars as Steve Freeling, the main protagonist, who lives with his wife, Diane, (JoBeth Williams) and their three children, Dana (Dominique Dunne), Robbie (Oliver Robins), and Carol Anne (Heather O'Rourke), in Southern California where he sells houses for the company that built the neighborhood. It starts with just a few odd occurrences, such as broken dishes and furniture moving around by itself. However, a tree comes alive and takes Robbie through his bedroom window, and Carol Anne is abducted by ghosts. Realizing that something evil haunts his home, Steve calls in a team of parapsychologists led by Dr. Lesh (Beatrice Straight) to investigate, hoping to get Carol Anne back, so he can remove his family from the house before it's too late.",
+            "release_date": "1982-06-04",
+            "inventory": 4
+        }, {
+            "id": 99,
+            "title": "Speed",
+            "overview": "Los Angeles SWAT cop Jack Traven is up against bomb expert Howard Payne, who's after major ransom money. First it's a rigged elevator in a very tall building. Then it's a rigged bus--if it slows, it will blow, bad enough any day, but a nightmare in LA traffic. And that's still not the end.",
+            "release_date": "1994-06-09",
+            "inventory": 10
+        }],
+        "past_rentals": [{
+            "dates": {
+                "returned_date": "07 Dec 2008 06:19:02",
+                "checkout_date": "03 Dec 2008 02:58:43"
+            },
+            "movie_data": {
+                "id": 39,
+                "title": "Die Hard",
+                "overview": "NYPD cop John McClane's plan to reconcile with his estranged wife, Holly, is thrown for a serious loop when minutes after he arrives at her office, the entire building is overtaken by a group of pitiless terrorists. With little help from the LAPD, wisecracking McClane sets out to single-handedly rescue the hostages and bring the bad guys down.",
+                "release_date": "1988-07-14",
+                "inventory": 4
+            }
+        }, {
+            "dates": {
+                "returned_date": "07 Dec 2009 06:19:02",
+                "checkout_date": "03 Dec 2009 02:58:43"
+            },
+            "movie_data": {
+                "id": 72,
+                "title": "Platoon",
+                "overview": "Chris Taylor, a young, naive recruit in Vietnam, faces a moral crisis when confronted with the horrors of war and the duality of man.",
+                "release_date": "1986-12-18",
+                "inventory": 1
+            }
+        }, {
+            "dates": {
+                "returned_date": "14 May 2011 02:58:43",
+                "checkout_date": "10 May 2011 02:58:43"
+            },
+            "movie_data": {
+                "id": 68,
+                "title": "Halloween",
+                "overview": "A psychotic murderer institutionalized since childhood for the murder of his sister, escapes and stalks a bookish teenage girl and her friends while his doctor chases him through the streets.",
+                "release_date": "1978-10-25",
+                "inventory": 4
+            }
+        }, {
+            "dates": {
+                "returned_date": "14 May 2011 02:58:43",
+                "checkout_date": "10 May 2011 02:58:43"
+            },
+            "movie_data": {
+                "id": 100,
+                "title": "The Adventures of Robin Hood",
+                "overview": "Robin Hood (Errol Flynn) fights nobly for justice against the evil Sir Guy of Gisbourne (Basil Rathbone) while striving to win the hand of the beautiful Maid Marian (Olivia de Havilland).",
+                "release_date": "1938-05-14",
+                "inventory": 3
+            }
+        }]
+    }
+}
+```
 
 GET '/customers/:sort_by/:limit/:offset'
 
@@ -36,7 +194,7 @@ GET '/customers/:sort_by/:limit/:offset'
   - `offset` must be an integer >= 0.
 - Returns an object with a `customers` property containing an array of customer objects.
 - Each customer object contains the following properties: `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
-- [Sample: GET '/customers/name/2/2'](./samples/get_customers_sort_by_limit_offset.json)
+- Sample: GET '/customers/name/2/2'
 ```json
 {
     "customers": [{
