@@ -26,7 +26,11 @@ router.get('/overdue', function(req, res, next) {
     }
 
     customer.where_in("id", overdueCustomerIds, function(err, rows) {
-      res.status(200).json({ overdue_customers: rows });
+      if (rows) {
+        return res.status(200).json({ overdue_customers: rows });
+      } else {
+        return res.status(400).json({ error: "No overdue customers were found." })
+      }
     });
   });
 });
