@@ -85,7 +85,7 @@ Rental.prototype.customersStatement = function(title) {
 
 Rental.prototype.movieInfo = function(title, callback) {
   function formatData(err, res) {
-    if (err) { return callback(err); }
+    if (err) { console.log("movieInfo fail"); return callback(err); }
 
     var results = {};
     var data = fixTime(res, "release_date");
@@ -188,29 +188,39 @@ Rental.prototype.customers = function(title, callback) {
 
 Rental.prototype.checkOut = function(movie_title, customer_id, outerCallback) {
   // NOTE: maybe update to check if stock, then if stock, continue
-  console.log("in checkOut here")
   var that = this;
 
   // validateMovie
-  var movie = this.movieInfo(movie_title, function(error, result) {
-    if (error) { console.log("oh crap moviez"); return false; }
-    return result.data.availableToRent;
+  function movie(callback) {
+    this.movieInfo(movie_title, function(error, result) {
+      if (error) { console.log("oh crap moviez"); return false; }
+      console.log("is title avail? " + result.data.availableToRent);
+      return callback(result.data.availableToRent);
+    });
+  }
+
+  movie(function() {
+    console.log("here")
+    console.log("movie is not available to rent");
   });
 
   // validateCustomer
   var statement = "SELECT * FROM customers WHERE id=" + customer_id + ";";
-
   function validateCustomer(callback) {
     that.open();
     that.db.all(statement, function(error, result) {
       if (error) { console.log("oh crap customerz"); return false; }
-      return callback(result.length > 0);
+      var leTruth = result.length > 0;
+      console.log("le truthiness " + leTruth);
+      console.log("result:");
+      console.log(result);
+      return callback(leTruth);
     });
     that.close();
   }
 
   // 3. create a rental transaction STATEMENT
-  var statement = "INSERT INTO rentals( \
+  var rentalStatement = "INSERT INTO rentals( \
     movie_title,  \
     customer_id, \
     returned, \
@@ -227,7 +237,7 @@ Rental.prototype.checkOut = function(movie_title, customer_id, outerCallback) {
     }
 
     that.open();
-    that.db.run(statement, values, function(error, results) {
+    that.db.run(rentalStatement, values, function(error, results) {
       if (error) { console.log("oh crap rentalz"); return false; }
       console.log("RESULTZ: " + results);
       return stepFour(results);

@@ -31,7 +31,7 @@ RentalsController.movieInfo = function(request, response, next) {
   // basic handling for attempted sql injection
   var callbackFxn = RentalsController.fixParamsOrReturnError(response);
   var title = validateParams(request, "title", callbackFxn);
-  if (!title) { console.log("attempted SQL injection"); return; }
+  if (!title) { return; }
 
   Rental.movieInfo(title, function(error, result) {
     if (error) { result = error; }
@@ -92,14 +92,6 @@ RentalsController.checkOut = function(request, response, next) {
   // change hard code!!
   Rental.checkOut("Jaws", 1, function(error, result) {
     if (error) { result = error; }
-
-    // var msg = result.meta.message;
-    // if (typeof msg == "string") {
-    //   result.meta.message = Rental.noCustomersMsg;
-    //   result.meta.moreMovieInfo = ourWebsite + "/movies/" + title;
-    //   result.meta.yourQuery = ourWebsite + "/rentals/" + title + "/customers";
-    // }
-
     return response.status(200).json(result);
   })
 }
