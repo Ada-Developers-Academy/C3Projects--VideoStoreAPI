@@ -27,11 +27,9 @@ Rental.prototype = {
     var zero_statement = "UPDATE customers SET account_credit = 0.0 WHERE id = " + customer_id + " AND account_credit < 1.0;";
 
     db.serialize(function(err) {
-      // db.exec("BEGIN IMMEDIATE;");
 
       db.exec(begin_statement + create_statement + availability_statement +     charge_statement + zero_statement + "COMMIT;", function(error) {
-        // inserted_rental_id = this.lastID;
-        // number_of_records_changed = this.changes;
+
         if (callback) {
           if (error) {
             callback(error, { error: error, result: "Unsuccessful request. There may not be any copies of that movie available."  });
@@ -60,11 +58,7 @@ Rental.prototype = {
         changes = this.changes;
       });
 
-      // if (changes === 0) {
-      //   err = { error: "Check in did not occur. Please make sure that the movie was checked out." } ;
-      // } else {
-        db.run(availability_statement);
-      // }
+      db.run(availability_statement);
 
       db.exec("COMMIT;", function(error) {
         if (callback) {
