@@ -85,29 +85,23 @@ exports.rentalsController = {
       AND check_in_date IS NULL;"
 
     db.all(statement, id, title, function(err, result1) {
-      console.log(result1);
-      // if (result == []) {
-      //   res.status(404).json([]);
-      // }
-      // else {
-        var statement_oldest = "UPDATE rentals SET check_in_date=? WHERE id=" + result1[0].id;
-        db.all(statement_oldest, yyyymmdd(now), function(err, result2) {
-          if (err !== null) {
-            console.log(err);
-          } else {
-            var statement_late_fee = "UPDATE customers SET account_credit=(account_credit-" + late_fee + ") WHERE id=? AND date((SELECT expected_return_date FROM rentals WHERE id=?)) < date('now');";
+      var statement_oldest = "UPDATE rentals SET check_in_date=? WHERE id=" + result1[0].id;
+      db.all(statement_oldest, yyyymmdd(now), function(err, result2) {
+        if (err !== null) {
+          console.log(err);
+        } else {
+          var statement_late_fee = "UPDATE customers SET account_credit=(account_credit-" + late_fee + ") WHERE id=? AND date((SELECT expected_return_date FROM rentals WHERE id=?)) < date('now');";
 
-            db.run(statement_late_fee, id, result1[0].id, function(err, result3) {
-              if (err !== null) {
-                console.log(err);
-              }
-              else {
-                res.status(200).json([]);
-              }
-            });
-          }
-        })
-      // }
+          db.run(statement_late_fee, id, result1[0].id, function(err, result3) {
+            if (err !== null) {
+              console.log(err);
+            }
+            else {
+              res.status(200).json([]);
+            }
+          });
+        }
+      })
     })
   },
 

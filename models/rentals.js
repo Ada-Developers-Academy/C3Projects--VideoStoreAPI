@@ -33,10 +33,7 @@ Rental.prototype.check_out = function(data, callback){
 
   var check_inventory_statement = "SELECT movies.inventory-(SELECT COUNT(*) from rentals  WHERE rentals.movie_id=movies.id AND check_in_date IS NULL) AS available from movies WHERE title LIKE ?";
 
-  console.log(title);
-
   db.all(check_inventory_statement, title, function(err, result){
-    console.log(result);
     if (result[0].available > 0){
     db.run(insert_statement, yyyymmdd(now), yyyymmdd(due), id, title, function(err, rows) {
       if (err !== null) {
