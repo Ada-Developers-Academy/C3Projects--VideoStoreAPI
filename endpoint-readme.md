@@ -5,8 +5,8 @@ Anita & Alice's Video Store
 
 See below for the available endpoints for this API.
 
-1. [GET '/customers'](#GET-'/customers')  
-2. [GET '/customers/:id'](#GET-'/customers/:id')  
+1. [GET '/customers'](#get-'/customers')  
+2. [GET '/customers/:id'](#get-'/customers/:id')  
 3. GET '/customers/:sort_by/:limit/:offset'  
 4. GET '/movies'  
 5. GET '/movies/:title/:order'  
