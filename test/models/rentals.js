@@ -101,10 +101,9 @@ describe("Rental model", function() {
       rental.checkoutMovie('Amelie', 1, function(err, res) {
         assert.equal(err, undefined);
         assert(res instanceof Object);
-
-        assert.equal(res.message, 'Checkout successful');
-        assert.equal(res.movie_title, 'Amelie');
-        assert.equal(res.customer_id, 1);
+        assert.equal(res[1].message, 'Checkout successful');
+        assert.equal(res[0].movie_title, 'Amelie');
+        assert.equal(res[0].name, 'Jim');
 
         done();
       })
@@ -114,10 +113,9 @@ describe("Rental model", function() {
       rental.checkInMovie('Amelie', 1, function(err, res) {
         assert.equal(err, undefined);
         assert(res instanceof Object);
-
-        assert.equal(res.message, 'Check-in successful');
-        assert.equal(res.movie_title, 'Amelie');
-        assert.equal(res.customer_id, 1);
+        assert.equal(res[1].message, 'Checkin successful');
+        assert.equal(res[0].movie_title, 'Amelie');
+        assert.equal(res[0].customer_id, 1);
 
         done();
       })

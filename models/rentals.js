@@ -33,7 +33,7 @@ var sqlite3 = require('sqlite3').verbose(),
   Rental.prototype.checkInMovie = function checkInMovie(title, id, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db'),
         update_statement = "Update rentals SET return_date = date('now'), overdue = (CASE WHEN (date('now') > due_date) THEN 1 ELSE 0 END) WHERE return_date IS NULL AND movie_title = ? AND customer_id = ?;",
-        select_statement = "SELECT rentals.due_date, rentals.return_date, rentals.overdue, rentals.movie_title, customers.account_credit FROM rentals, customers WHERE rentals.customer_id=customers.id AND rentals.customer_id=? AND rentals.movie_title=? AND return_date=date('now')",
+        select_statement = "SELECT rentals.due_date, rentals.return_date, rentals.overdue, rentals.movie_title, rentals.customer_id, customers.account_credit FROM rentals, customers WHERE rentals.customer_id=customers.id AND rentals.customer_id=? AND rentals.movie_title=? AND return_date=date('now')",
         charge_statement = "Update customers SET account_credit = (account_credit - 5) WHERE id=?";
 
     db.run(update_statement, [title, id]);
