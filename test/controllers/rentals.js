@@ -2,8 +2,7 @@ var request = require('supertest'),
     assert = require('assert'),
     app = require('../../app'),
     sqlite3 = require('sqlite3').verbose(),
-    agent = request.agent(app),
-    express = require('express');
+    agent = request.agent(app);
 
 describe("Endpoints for /rentals", function() {
   beforeEach(function(done){
@@ -41,10 +40,7 @@ describe("Endpoints for /rentals", function() {
     });
   })
 
-
-  // '/rentals/:title/current/:sort_option'
   describe('GET /rentals/:title/current/:sort_option', function(){
-
     it('responds with json', function(done){
       agent.get('/rentals/Psycho/current/customer_id')
            .set('Accept', 'application/json')
@@ -105,7 +101,6 @@ describe("Endpoints for /rentals", function() {
       })
     });
 
-
     it('returns an array of rental objects sorted by checkout date', function(done){
       agent.get('/rentals/Psycho/current/checkout_date')
            .set('Accept', 'application/json')
@@ -125,9 +120,6 @@ describe("Endpoints for /rentals", function() {
     });
   });
 
-
-
-  // '/rentals/:title/past/:sort_option'
   describe('GET /rentals/:title/past/:sort_option', function(){
     it('responds with json', function(done){
       agent.get('/rentals/christine/past/customer_id')
@@ -208,7 +200,6 @@ describe("Endpoints for /rentals", function() {
     });
   });
 
-  // '/rentals/overdue'
   describe('GET rentals/overdue', function(){
     it('responds with json', function(done){
       agent.get('/rentals/overdue')
@@ -233,7 +224,6 @@ describe("Endpoints for /rentals", function() {
     });
   });
 
-  // *GET*  rental/:title/available
   describe('GET rentals/:title/available', function(){
     it('responds with json', function(done){
       agent.get('/rentals/psycho/available')
@@ -258,36 +248,46 @@ describe("Endpoints for /rentals", function() {
     });
   });
 
-  // *POST* rental/:title/:customer_id/checkin
   describe('POST rentals/:title/:customer_id/checkin', function(){
-    // it('responds with json', function(done){
-    //   agent.post('/rentals/psycho/available')
-    //        .set('Accept', 'application/json')
-    //        .expect('Content-Type', /application\/json/)
-    //        .expect(200, function(error, result) {
-    //           assert.equal(error, undefined);
-    //           done();
-    //         });
-    // });
+    it('responds with json', function(done){
+      agent.post('/rentals/psycho/2/checkin')
+           .set('Accept', 'application/json')
+           .expect('Content-Type', /application\/json/)
+           .expect(200, function(error, result) {
+              assert.equal(error, undefined);
+              done();
+            });
+    });
 
-    // it('returns an object with keys title and inventory_available', function(done){
-    //   agent.get('/rentals/psycho/available')
-    //        .set('Accept', 'application/json')
-    //        .expect(200, function(error, result) {
-    //           assert.equal(result.body.length, 1);
-    //
-    //         var keys = ['title', 'inventory_available'];
-    //         assert.deepEqual(Object.keys(result.body[0]), keys);
-    //         done();
-    //   })
-    // });
+    it('returns an object with keys title and inventory_available', function(done){
+      agent.post('/rentals/psycho/2/checkin')
+           .set('Accept', 'application/json')
+           .expect(200, function(error, result) {
+              assert.equal(result.body, 'Movie checked in. Charged late fee.');
+
+            done();
+      })
+    });
   });
-  // *POST* rental/:title/:customer_id/checkout
 
+  describe('POST rentals/:title/:customer_id/checkout', function(){
+    it('responds with json', function(done){
+      agent.post('/rentals/christine/4/checkout')
+           .set('Accept', 'application/json')
+           .expect('Content-Type', /application\/json/)
+           .expect(200, function(error, result) {
+              assert.equal(error, undefined);
+              done();
+            });
+    });
 
-
-
-
-
-
+    it('returns an object with keys title and inventory_available', function(done){
+      agent.post('/rentals/christine/4/checkout')
+           .set('Accept', 'application/json')
+           .expect(200, function(error, result) {
+              assert.equal(result.body, 'Movie checked out.');
+              done();
+            })
+    });
+  });
 });
