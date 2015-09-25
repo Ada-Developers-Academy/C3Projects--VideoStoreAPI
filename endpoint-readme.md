@@ -7,8 +7,8 @@ See below for the available endpoints for this API.
 
 1. [All Customers](#all-customers)  
 2. [Single Customer](#single-customer)  
-3. GET '/customers/:sort_by/:limit/:offset'  
-4. GET '/movies'  
+3. [Subset of Customers](#subset-of-customers)  
+4. [All Movies](#all-movies)  
 5. GET '/movies/:title/:order'  
 6. GET '/movies/:sort_by/:limit/:offset'  
 7. GET '/rentals/overdue'  
@@ -19,7 +19,7 @@ See below for the available endpoints for this API.
 **Customers**
 
 ###All Customers
-- GET '/customers'
+- GET `/customers`
 - Retrieves a list of all customers.
 - Returns an object with a `customers` property containing an array of customer objects.
 - Each customer object contains the following properties: `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
@@ -82,7 +82,7 @@ See below for the available endpoints for this API.
 
 ###Single Customer
 
-- GET '/customers/:id'
+- GET `/customers/:id`
 - Retrieves data about the customer identified by the id passed in the URL.
 - Returns an object with `customer_data` and `movies` properties.
   - `customer_data` contains the following properties: `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
@@ -198,8 +198,9 @@ See below for the available endpoints for this API.
 }
 ```
 
-GET '/customers/:sort_by/:limit/:offset'
+###Subset of Customers
 
+- GET `/customers/:sort_by/:limit/:offset`
 - Sorts the entire set of customers by a certain property (`sort_by`), then retrieves a number (`limit`) of customers, starting at a certain index (`offset`).
   - `sort_by` accepts 'name' (customer name), 'id' (customer id), or 'checkout_date'.
   - `limit` must be an integer >= 0.
@@ -235,8 +236,9 @@ GET '/customers/:sort_by/:limit/:offset'
 
 *Movies*
 
-GET '/movies'
+###All Movies
 
+- GET `/movies`
 - Retrieves a list of all movies.
 - Returns an object with a `movies` property containing an array of movie objects.
 - Each movie object contains the following properties: `title`, `overview`, `release_date`, and `inventory`.
