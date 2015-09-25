@@ -16,10 +16,10 @@ router.get("/:title/customers", controller.customers);
 
 // POST to /:title/customer/:id to check out a title
 // http://www.wobsite.com/rentals/Alien/customers/184
-router.get("/:title/customers/:id", controller.checkOut);
+router.post("/:title/customers/:id", controller.checkOut);
 
 // PATCH to /:title/customer/:id to return a title
-router.patch("/:title/customers/:id", controller.return);
+router.get("/:title/customers/:id", controller.return);
 
 
 module.exports = router;

@@ -88,7 +88,6 @@ RentalsController.customers = function(request, response, next) {
 
 // post request, check out a title
 RentalsController.checkOut = function(request, response, next) {
-  console.log('inside checkout');
   var title = request.params.title;
   var id = request.params.id;
 
@@ -104,7 +103,21 @@ RentalsController.checkOut = function(request, response, next) {
 }
 
 RentalsController.return = function(request, response, next) {
+  console.log('inside return');
   // patch request, check in a title
+
+  var title = request.params.title;
+  var id = request.params.id;
+
+  console.log("your title is", title, "and your id is", id);
+
+  var Rental = new RentalModel();
+  Rental.return(title, id, function(error, result) {
+    console.log('in http response body callback, before if');
+    if (error) { result = error; }
+    console.log('result: ' + result);
+    return response.status(200).json(result);
+  })
 }
 
 module.exports = RentalsController;

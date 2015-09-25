@@ -258,4 +258,62 @@ Rental.prototype.checkOut = function(movieTitle, customerId, callback) {
 
 }
 
+
+Rental.prototype.return = function(movieTitle, customerId, callback) {
+  function formatData(err, res) {
+    if (err) {
+      var results = {};
+
+      results.meta = {
+        status: 500,
+        message: err
+      }
+
+      return callback(results);
+    }
+
+    var results = {};
+    // var data = fixTime([res], "return_date");
+    results.meta = {
+      status: 200,
+      moreMovieInfo: ourWebsite + "/movies/" + movieTitle,
+      moreRentalInfo: ourWebsite + "/rentals/" + movieTitle,
+      yourQuery: ourWebsite + "/rentals/" + movieTitle + "/customers/" + customerId
+    }
+    results.data = { receipt: res }
+
+    return callback(null, results);
+  }
+
+  // NOTE:
+  // - find movie_id from movie table
+  // - verify customer is a
+  // - do we want to check if customer already has title checked out first?
+  //   - i super think yes if time --jeri
+  var returnStatement = 'UPDATE rentals '
+    +'SET return_date = ' + Date.now()
+    + ' AND returned = 1'
+    + ' WHERE movie_title = "'
+    + movieTitle +'" '
+    + 'AND customer_id = customerId';
+
+    console.log(returnStatement);
+
+  var that = this;
+
+  this.open();
+  this.db.serialize(function() {
+    that.db.run(returnStatement, function(error, data) {
+      console.log("inside returnStatement");
+      return formatData(null, "Is this thing on? Maybe worked.");
+    })
+    // that.db.get(receiptStatement, function(error, data) {
+    //   console.log("receiptStatement error is", error, "and data is", data);
+    //   return formatData(error, data);
+    // })
+  })
+  this.close();
+
+}
+
 module.exports = Rental;
