@@ -33,5 +33,4 @@ router.post('/:title/:customer_id/checkout', function(req, res, next) {
   return rentals_exports.rentalsController.checkout(req, res);
 });
 
-
 module.exports = router;
