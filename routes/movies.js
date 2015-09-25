@@ -11,8 +11,6 @@ router.get('/title/:records/:offset', Controller.title);
 router.get('/released/:records/:offset', Controller.released);
 
 // get movie info and whether has inventory
-router.get('/:title', function(req, res, next) {
-  return Controller.movie_available(req, res);
-});
+router.get('/:title', Controller.available);
 
 module.exports = router;
