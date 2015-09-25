@@ -19,7 +19,6 @@ describe("Endpoints under /movies", function() {
     var movie_request;
 
     beforeEach(function(done) {
-      console.log("HITHERE")
       movie_request = agent.get('/movies').set('Accept', 'application/json');
       done();
     })

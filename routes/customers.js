@@ -27,5 +27,9 @@ router.get('/:id/movies/past', function(req, res, next) {
   customer_exports.customersController.getMoviesByCustomer(req, res)
 });
 
+router.get('/customers/:id/movies/current', function(req, res, next) {
+  cusomter_exports.customersController.customermovies(req, res);
+})
+
 
 module.exports = router;
