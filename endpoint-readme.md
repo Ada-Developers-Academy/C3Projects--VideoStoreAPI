@@ -11,9 +11,17 @@ GET '/customers'
 
 - Returns list of all customers.
 - Includes the following properties: name, registered_at (date of registration), address, city, state, postal_code, phone, account_credit (in cents).
-- [Sample](./samples/get_customers.json).
+- [Sample: GET '/customers'](./samples/get_customers.json)
 
 GET '/customers/:id'
+
+- Returns data about the customer identified by the id passed in the URI.
+- Includes customer_data and rentals.
+  - customer_data includes the following properties: name, registered_at (date of registration), address, city, state, postal_code, phone, account_credit (in cents).
+  - rentals includes: current_rentals and past_rentals.
+    - current_rentals and past_rentals are lists of movies rented by the customer.
+    - Each movie object includes the following propeties: title, overview, release_date, inventory.
+- [Sample: GET '/customers/1'](./samples/get_customers_id.json)
 
 GET '/customers/:sort_by/:limit/:offset'
 
