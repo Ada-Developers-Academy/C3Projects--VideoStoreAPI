@@ -215,7 +215,7 @@ describe("Endpoints for /rentals", function() {
       agent.get('/rentals/overdue')
            .set('Accept', 'application/json')
            .expect(200, function(error, result) {
-              assert.equal(result.body.length, 2);
+              assert.equal(result.body.length, 3);
 
             var keys = ['id', 'customer_id', 'customer_name', 'movie_id', 'return_date', 'checkout_date', 'due_date'];
             assert.deepEqual(Object.keys(result.body[0]), keys);
