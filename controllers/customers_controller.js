@@ -51,23 +51,10 @@ CustomersController.allSorted = function(request, response, next) {
 }
 
 CustomersController.show = function(request, response, next) {
-  console.log("fresh inside CustomersController.show");
   var Customer = new CustomerModel();
-  console.log("created new CustomerModel instance");
   var id = request.params.id;
-  console.log("id is " + id);
 
-  console.log("can I see customer model from here?");
-  console.log(Customer);
-  console.log("how about its #show?");
-  console.log(Customer.show);
-  console.log("what happens if I run customer model's show method?");
-  console.log("invalid input:");
-  console.log(Customer.show("potato", console.log));
-  console.log("valid input:");
-  console.log(Customer.show(5, console.log));
-  Customer.show(page, function(error, result) {
-    console.log("inside last callback step in CustomerController path, where http response is finally sent");
+  Customer.show(id, function(error, result) {
     if (error) { result = error; }
 
     var msg = result.meta.message;

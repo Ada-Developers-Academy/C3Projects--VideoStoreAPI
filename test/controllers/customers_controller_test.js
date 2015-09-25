@@ -35,54 +35,149 @@ describe.only("CustomersController", function() {
               done();
             })
         })
+
+        it("includes `totalResults`", function(done) {
+          agent
+            .get(thisUrl)
+            .expect(200, function(error, result) {
+              assert(result.body.meta.totalResults);
+              assert.equal(result.body.meta.totalResults, 200);
+              done();
+            })
+        })
+
+        describe("pagination", function() {
+          it("includes `prevPage` when relevant", function(done) {
+            var page = 2;
+            var pageUrl = thisUrl + "/" + page;
+            var uniqueThisEndpoint = page - 1;
+
+            agent
+              .get(pageUrl)
+              .expect(200, function(error, result) {
+                assert(result.body.meta.yourQuery);
+                assert(result.body.meta.yourQuery.indexOf(page) > 0);
+                done();
+              })
+          })
+
+          it("doesn't include `prevPage` when it's not relevant", function(done) {
+            var page = 1;
+            var pageUrl = thisUrl + "/" + page;
+
+            agent
+              .get(pageUrl)
+              .expect(200, function(error, result) {
+                assert(!result.body.meta.prevPage);
+                done();
+              })
+          })
+
+          it("includes `nextPage` when relevant", function(done) {
+            var page = 1;
+            var pageUrl = thisUrl + "/" + page;
+            var uniqueThisEndpoint = page + 1;
+
+            agent
+              .get(pageUrl)
+              .expect(200, function(error, result) {
+                assert(result.body.meta.nextPage);
+                assert(result.body.meta.nextPage.indexOf(uniqueThisEndpoint) > 0);
+                done();
+              })
+          })
+
+          it("doesn't include `nextPage` when it's not relevant", function(done) {
+            var page = 20;
+            var pageUrl = thisUrl + "/" + page;
+
+            agent
+              .get(pageUrl)
+              .expect(200, function(error, result) {
+                assert(!result.body.meta.nextPage);
+                done();
+              })
+          })
+        })
       })
 
       describe("data", function() {
+        it("returns no more than 10 customers", function(done) {
+          agent
+            .get(thisUrl)
+            .expect(200, function(error, result) {
+              var data = result.body.data;
+              var customers = data.customers;
+              assert(customers.length <= 10);
+              done();
+            })
+        })
 
-      })
-    })
-  })
+        describe("each customer contains relevant customer info", function() {
+          agent
+            .get(thisUrl)
+            .expect(200, function(error, result) {
+              var customer = result.body.data.customers[0];
+
+              describe("meta data", function() {
+                it("`moreCustomerInfo`", function(done) {
+                  assert(customer.meta.moreCustomerInfo);
+                  assert(customer.meta.moreCustomerInfo.indexOf(customer.data.id) > 0);
+                  done();
+                })
+              })
+
+              describe("`data`", function() {
+                it("contains relevant customer info", function(done) {
+                  var customerKeys = ["id", "name", "registered_at", "postal_code"];
+                  customerKeys.forEach(function(key, index) {
+                    assert(customer.data[key]);
+
+                    if (index == customerKeys.length - 1)
+                      done();
+                  }) // customerKeys forEach
+                }) // relevant co. info
+              }) // each co. data
+          }) // expect
+        }) // describe each co.
+      }) // describe data
+    }) // returned JSON object
+  }) // GET /all
 
 //---------------------------------------------------------------------------------------------------------------------
 //--------- GET /all/:sort_by -----------------------------------------------------------------------------------------
   describe("GET `/all/:sort_by`", function() {
     var thisUrl = "/customers/all/";
-    var sorts = ["registered_at", "name", "postal_code"];
 
-    sorts.forEach(function(sort) {
-      var sortUrl = thisUrl + sort;
-      var uniqueThisEndpoint = sort;
+    it("responds 200 && returns a JSON object", function(done) {
+      agent
+        .get(sortUrl)
+        .set("Accept", "application/json")
+        .expect("Content-Type", /application\/json/)
+        .expect(200, done);
+    })
 
-      describe("`" + sort + "` sort_by", function() {
-        it("responds 200 && returns a JSON object", function(done) {
+    describe("the returned JSON object", function() {
+      describe("meta data", function() {
+        it("includes `yourQuery` -- a URL for the current endpoint & query", function(done) {
           agent
             .get(sortUrl)
-            .set("Accept", "application/json")
-            .expect("Content-Type", /application\/json/)
-            .expect(200, done);
+            .expect(200, function(error, result) {
+              assert(result.body.meta.yourQuery);
+              assert(result.body.meta.yourQuery.indexOf(uniqueThisEndpoint) > 0);
+              done();
+            })
         })
 
-        describe("the returned JSON object", function() {
-          describe("meta data", function() {
-            it("includes `yourQuery` -- a URL for the current endpoint & query", function(done) {
-              agent
-                .get(sortUrl)
-                .expect(200, function(error, result) {
-                  assert(result.body.meta.yourQuery);
-                  assert(result.body.meta.yourQuery.indexOf(uniqueThisEndpoint) > 0);
-                  done();
-                })
+        it("includes `totalResults`", function(done) {
+          agent
+            .get(sortUrl)
+            .expect(200, function(error, result) {
+              assert(result.body.meta.totalResults);
+              assert.equal(result.body.meta.totalResults, 200);
+              done();
             })
-
-            it("includes `totalResults`", function(done) {
-              agent
-                .get(sortUrl)
-                .expect(200, function(error, result) {
-                  assert(result.body.meta.totalResults);
-                  assert.equal(result.body.meta.totalResults, 200);
-                  done();
-                })
-            })
+        })
 
             describe("pagination", function() {
               it("includes `prevPage` when relevant", function(done) {
