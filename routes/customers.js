@@ -94,7 +94,7 @@ router.get('/:sort_by/:limit/:offset', function(req, res, next) {
     if (rows) {
       return res.status(200).json({ customers: rows} );
     } else {
-      return res.status(400).json({ error: "Not found" });
+      return res.status(400).json({ error: "No results found or your parameters are inaccurate. Try again." });
     }
   });
 });
