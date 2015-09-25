@@ -5,7 +5,7 @@ Anita & Alice's Video Store
 
 See below for the available endpoints for this API.
 
-1. GET '/customers'  
+1. [GET '/customers'](#GET-'/customers')  
 2. GET '/customers/:id'  
 3. GET '/customers/:sort_by/:limit/:offset'  
 4. GET '/movies'  
@@ -18,7 +18,7 @@ See below for the available endpoints for this API.
 
 **Customers**
 
-GET '/customers'
+###GET '/customers'
 
 - Retrieves a list of all customers.
 - Returns an object with a `customers` property containing an array of customer objects.
