@@ -48,7 +48,7 @@ describe("Rental", function() {
         assert.equal(result[0].checkout_date, '09-25-2015');
         assert.equal(result[0].returned_date, '09-25-2015');
         assert.equal(result[0].rental_time, 1);
-        assert.equal(result.length, 4);
+        assert.equal(result.length, 6);
         done();
       });
     });

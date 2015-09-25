@@ -6,20 +6,14 @@ var request = require('supertest'),
     schema  = require('../../utils/schema'),
     agent   = request.agent(app);
 
-describe.only("Endpoints under /movies", function() {
+describe("Endpoints under /movies", function() {
   beforeEach(function(done) {
     schema(done)
-
   })
 
-beforeEach(function(done) {
-  seeder(done)
-
-})
-
-  // beforeEach(function(done) {
-  //   schema(done)
-  // })
+  beforeEach(function(done) {
+    seeder(done)
+  })
 
   describe("GET all movies", function() {
     var movie_request;
@@ -36,7 +30,6 @@ beforeEach(function(done) {
         .expect('Content-Type', /application\/json/)
         .expect(200, done);
     })
-
 
     it("returns an array", function(done) {
       movie_request.expect(200, function(error, result) {
@@ -114,5 +107,3 @@ beforeEach(function(done) {
     })
   })
 })
-
-
