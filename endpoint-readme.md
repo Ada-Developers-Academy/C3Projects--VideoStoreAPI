@@ -5,9 +5,13 @@ Anita & Alice's Video Store
 
 See below for the available endpoints for this API.
 
-*Customers*
+**Customers**
 
-*GET '/customers'*
+GET '/customers'
+
+- Returns list of all customers.
+- Includes the following properties: name, registered_at (date of registration), address, city, state, postal_code, phone, account_credit (in cents).
+- [Sample](./samples/get_customers.json).
 
 GET '/customers/:id'
 
