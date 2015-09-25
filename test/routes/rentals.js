@@ -7,7 +7,7 @@ var request = require('supertest'),
 var Rental   = require('../../models/rental');
 
 describe("rentals routes", function() {
-  var db_cleaner, rental, customer;
+  var db_cleaner, rental;
 
   beforeEach(function(done) {
     db_cleaner = new sqlite3.Database('db/test.db');
