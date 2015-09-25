@@ -5,8 +5,8 @@ Anita & Alice's Video Store
 
 See below for the available endpoints for this API.
 
-1. [GET '/customers'](#get-'/customers')  
-2. [GET '/customers/:id'](#get-'/customers/:id')  
+1. [All Customers](#all-customers)  
+2. [Single Customer](#single-customer)  
 3. GET '/customers/:sort_by/:limit/:offset'  
 4. GET '/movies'  
 5. GET '/movies/:title/:order'  
@@ -18,8 +18,8 @@ See below for the available endpoints for this API.
 
 **Customers**
 
-###GET '/customers'
-
+###All Customers
+- GET '/customers'
 - Retrieves a list of all customers.
 - Returns an object with a `customers` property containing an array of customer objects.
 - Each customer object contains the following properties: `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
@@ -80,8 +80,9 @@ See below for the available endpoints for this API.
 }
 ```
 
-###GET '/customers/:id'
+###Single Customer
 
+- GET '/customers/:id'
 - Retrieves data about the customer identified by the id passed in the URL.
 - Returns an object with `customer_data` and `movies` properties.
   - `customer_data` contains the following properties: `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
