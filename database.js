@@ -70,9 +70,19 @@ module.exports = {
     var statement = "SELECT name, registered_at, address, city, state, postal_code, phone, account_credit, checkout_date FROM customers, rentals WHERE customers.id = rentals.customer_id AND rentals.movie_id = " + value +" AND rentals.returned_date != 'nil' ORDER BY checkout_date DESC;";
 
     db.all(statement, function(error, result) {
+      if (callback) callback(error, result);
+      db.close();
+    })
+  },
+
+  past_rentals_by_customer: function(value, callback) {
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    var statement = "SELECT title, checkout_date, returned_date FROM movies, rentals where movies.id = rentals.movie_id and rentals.returned_date != 'nil' and rentals.customer_id = " + value + " ORDER BY checkout_date DESC;";
+
+    db.all(statement, function(error, result) {
       console.log(statement);
       if (callback) callback(error, result);
-      console.log(result)
+      console.log(result);
       db.close();
     })
   },
