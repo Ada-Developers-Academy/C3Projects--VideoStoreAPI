@@ -377,7 +377,7 @@ See below for the available endpoints for this API.
 ##Rentals
 
 ###Overdue Rentals
-- *Endpoint:* GET `/rentals/overdue`
+- **Endpoint:** GET `/rentals/overdue`
 - Retrieves a list of all customers with overdue rentals.
 - Returns an object with an `overdue_customers` property that contains a list of customer objects.
   - Each customer object contains the following properties: `id`, `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
