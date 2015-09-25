@@ -5,13 +5,6 @@ var sqlite3 = require('sqlite3').verbose(),
   db = new sqlite3.Database('db/' + db_env + '.db'); // creates db connection
 
 var movie_table = "movies";
-var movie_fields = [
-  ['title', 'text'],
-  ['overview', 'text'],
-  ['release_date', 'text'],
-  ['inventory', 'integer'],
-  ['num_available', 'integer']
-];
 
 var customer_table = "customers";
 var customer_fields = [
@@ -26,13 +19,6 @@ var customer_fields = [
 ];
 
 var rental_table = "rentals";
-var rental_fields = [
-  ['checkout_date', 'text'],
-  ['return_date', 'text'],
-  ['movie_id', 'integer'],
-  ['customer_id', 'integer'],
-  ['checked_out', 'boolean']
-];
 
 function create_table(table_name, table_fields)  {
   db.serialize(function() {
@@ -40,15 +26,35 @@ function create_table(table_name, table_fields)  {
     db.run("DROP TABLE IF EXISTS " + table_name + ";");
 
     // create fresh version of table with id as primary key
-    db.run("CREATE TABLE " + table_name + " (id INTEGER PRIMARY KEY);");
+    db.run("CREATE TABLE " + table_name +
+    " (id INTEGER PRIMARY KEY);");
 
     // add columns to those tables
     for(var i = 0; i < table_fields.length; i++) {
       var name = table_fields[i][0],
           type = table_fields[i][1];
 
-      db.run("ALTER TABLE " + table_name + " ADD COLUMN " + name + " " + type + ";");
+      db.run("ALTER TABLE " + table_name +
+      " ADD COLUMN " + name + " " + type +
+      ";");
     }
+  });
+}
+
+function create_movies_table(table_name)  {
+  db.serialize(function() {
+    // drop existing tables
+    db.run("DROP TABLE IF EXISTS " + table_name + ";");
+
+    // create fresh version of table with id as primary key
+    db.run("CREATE TABLE " + table_name +
+    " (id INTEGER PRIMARY KEY, \
+      title TEXT, \
+      overview TEXT, \
+      release_date TEXT, \
+      inventory INTEGER NOT NULL CHECK(inventory > 0), \
+      num_available INTEGER NOT NULL CHECK(num_available <= inventory \
+        AND num_available >= 0));");
   });
 }
 
@@ -58,11 +64,11 @@ function create_rentals_table(table_name)  {
     db.run("DROP TABLE IF EXISTS " + table_name + ";");
 
     // create fresh version of table with id as primary key
-    db.run("CREATE TABLE rentals (id INTEGER PRIMARY KEY, checkout_date text, return_date text, movie_id integer, customer_id integer, checked_out boolean, FOREIGN KEY(movie_id) REFERENCES movie(id), FOREIGN KEY(customer_id) REFERENCES customer(id));");
+    db.run("CREATE TABLE rentals (id INTEGER PRIMARY KEY, checkout_date text NOT NULL, return_date text NOT NULL, movie_id integer NOT NULL, customer_id integer NOT NULL, checked_out boolean NOT NULL, FOREIGN KEY(movie_id) REFERENCES movie(id), FOREIGN KEY(customer_id) REFERENCES customer(id));");
   });
 }
 
-create_table(movie_table, movie_fields);
+create_movies_table(movie_table);
 create_table(customer_table, customer_fields);
 create_rentals_table(rental_table);
 
