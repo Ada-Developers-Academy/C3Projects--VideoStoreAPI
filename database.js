@@ -87,20 +87,61 @@ module.exports = {
 
   checkin: function(data, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
-    // {"name": "vika", "returned_date": "09-25-2015"}
-    UPDATE customers, rentals
-    SET account_credit = account_credit - (select total from rentals where rentals.customer_id = customers.id),
-        returned_date = data.returned_date,
-       c = c + (select c from table1 where table1.f = table2.f),
-       d = d + (select d from table1 where table1.f = table2.f),
-       e = e + (select e from table1 where table1.f = table2.f)
-    WHERE RowId IN (Select table2.RowId from table1 where table1.f = table2.f)
+    var customer_id = data.customer_id; // 2
+    var movie_id = data.movie_id; // 2
+    var total = data.total; // 5
+    var returned_date = data.returned_date; // "09-20-2015"
+      // var statement = db.exec(
+        // var statement = "BEGIN; UPDATE rentals SET total = " + total + ", returned_date = " + returned_date + " WHERE customer_id = " + customer_id + " AND movie_id = " + movie_id + "; UPDATE customers SET account_credit = account_credit - (SELECT total FROM rentals WHERE customers.id = rentals.customer_id AND rentals.movie_id = " + movie_id + "); UPDATE movies SET available = available + 1 WHERE id = " + movie_id + "; COMMIT;";
 
-    var statement = "SELECT name, checkout_date, returned_date, rental_time, cost, total FROM customers, rentals WHERE customers.id = rentals.customer_id AND returned_date = 'nil' ORDER BY checkout_date DESC;"; //[ { customer_id: 1 }, { customer_id: 2 }, { customer_id: 3 }, { customer_id: 4 } ]
-    // var statement = "SELECT * FROM rentals WHERE returned_date = nil;";
-    db.all(statement, function(err, res) {
-      if (callback) callback(err, res);
-      db.close();
-    });
+    var rentalsStatement = "UPDATE rentals SET total = " + total + ", returned_date = '" + returned_date + "' WHERE customer_id = " + customer_id + " AND movie_id = " + movie_id + ";";
+    var customersStatement = "UPDATE customers SET account_credit = account_credit - (SELECT total FROM rentals WHERE customers.id = rentals.customer_id AND rentals.movie_id = " + movie_id + ");";
+    var moviesStatement = "UPDATE movies SET available = available + 1 WHERE id = " + movie_id + ";";
+
+    console.log(returned_date)
+    console.log(typeof returned_date)
+    console.log(rentalsStatement)
+
+
+
+        // var statement = "BEGIN; \
+        // UPDATE rentals SET total = " + total + ", returned_date = " + returned_date + " WHERE customer_id = " + customer_id + " AND movie_id = " + movie_id + "; \
+        // UPDATE customers SET account_credit = account_credit - (SELECT total FROM rentals WHERE customers.id = rentals.customer_id AND rentals.movie_id = " + movie_id + "); \
+        // UPDATE movies SET available = available + 1 WHERE id = " + movie_id + "; \
+        // COMMIT;";
+
+        // console.log();
+        // console.log(statement);
+      //   function(err) {
+      //     db.close();
+      //   }
+      // )
+
+      db.serialize(function(){
+        db.exec("BEGIN");
+        db.exec(rentalsStatement);
+        db.exec(customersStatement);
+        db.exec(moviesStatement)
+        db.exec("COMMIT", function(error) {
+          callback(error, "Success");
+          db.close();
+        });
+      })
+
+
+    // db.all(rentalsStatement, function(err, res) {
+    //   if (callback) callback(err, "Success");
+    //   db.close();
+    // });
+    //
+    // db.all(customersStatement, function(err, res) {
+    //   if (callback) callback(err, "Success");
+    //   db.close();
+    // });
+    //
+    // db.all(moviesStatement, function(err, res) {
+    //   if (callback) callback(err, "Success");
+    //   db.close();
+    // });
   }
 }

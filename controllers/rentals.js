@@ -11,9 +11,32 @@ exports.rentalsController = {
     });
   },
 
+  checkin: function(req, res) {
+    var rental = new Rental();
+    // var data = {
+    //     movie_id: req.body.movie_id,
+    //     customer_id: req.body.customer_id,
+    //     total: req.body.total,
+    //     returned_date: req.body.returned_date,
+    // };
+    var responseBody = Object.keys(req.body);
+    var dataString = responseBody[0];
+    var data = JSON.parse(dataString);
+    // var customer_id = dataString["customer_id"]
+    // console.log(dataString);
+    // console.log(dataString);
+    // console.log(typeof dataString);
+    // console.log(data.total);
+    console.log(data);
+    console.log(data.returned_date)
+
+    rental.checkin(data, function(err, result){
+    res.status(200).json(result);
+    });
+  },
+
   customersOverdue: function(req, res) {
     var rental = new Rental();
-
     var result = rental.customersRentalHistory(function(err,result){
     var overdues = [];
     var overdue = 0;
@@ -87,7 +110,7 @@ exports.rentalsController = {
     if (overdue > 0) {
       var customer = arg.name;
       var overdueInfo = {};
-      overdueInfo[customer] = overdue + " days";
+      overdueInfo[customer] = overdue;
       overdues.push(overdueInfo);
     }
   }
