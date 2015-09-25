@@ -5,8 +5,4 @@ function Customer() {
 }
 
 Customer.prototype = require('../database');
-// var customer = new Customer();
-// customer.find_all(function(err, res){});
 module.exports = Customer;
-
-

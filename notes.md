@@ -56,7 +56,6 @@ http://localhost:3000/customers/sort/name/5/0
   - From Customers table find all customers
   - sort by name
 
-FIX
 http://localhost:3000/customers/sort/registered_at/5/0
 🔵 get "/customers/sort/registered_at/:limit/:page" = returns all customers sorted date they registered.
 

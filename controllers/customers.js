@@ -44,6 +44,4 @@ exports.customersController = {
       res.status(200).json(result);
     });
   }
-
-
 }

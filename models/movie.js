@@ -79,7 +79,6 @@ function sortByName(array) {
   return array;
 }
 
-
 function getMovieId(instance, title, callback) {
   instance.find_by("title", title, function(error, result) {
     callback(error, result);
@@ -103,12 +102,4 @@ function getCustomer(instance, customerId, callback) {
     callback(error, result);
   })
 }
-
-
-// var movie = new Movie();
-// movie.find_by("title", "Jaws", function(err, res){});
-// movie.find_all(function(err, res){});
-// movie.sort_by("title", 30, 1, function(err, res){});
 module.exports = Movie;
-
-

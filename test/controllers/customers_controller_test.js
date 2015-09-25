@@ -100,4 +100,32 @@ describe("Endpoints under /customers", function() {
         })
     })
   })
+
+  describe("GET /customers/:id/movies/past", function() {
+    var customers_request;
+
+    beforeEach(function(done) {
+      customers_request = agent.get('/customers/1/movies/past').set('Accept', 'application/json');
+      done();
+    })
+
+    it("responds with json", function(done) {
+      customers_request
+        .expect('Content-Type', /application\/json/)
+        .expect(200, done);
+    })
+
+    it("returns an array", function(done) {
+      customers_request.expect(200, function(error, result) {
+        assert.equal(result.body.length, 2); //the db_cleaner inserted two records
+
+        var keys = ['title', 'checkout_date', 'returned_date'];
+        assert.deepEqual(Object.keys(result.body[0]), keys);
+
+        assert.equal(result.body[0].title, 'The Exorcist');
+        assert.equal(result.body[1].title, 'North by Northwest');
+        done();
+      })
+    })
+  })
 })

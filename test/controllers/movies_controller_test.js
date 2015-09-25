@@ -128,7 +128,6 @@ describe("Endpoints under /movies", function() {
     })
   })
 
-
   describe("GET /movies/:title/customers/current", function() {
     var movie_request;
 
