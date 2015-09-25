@@ -59,31 +59,25 @@ Customer.prototype.find_by_sorted_date = function(sort_by, number, pages, callba
   var statement = "SELECT * FROM customers;";
 
   db.all(statement, function(err, res) {
+    var sorted = res.sort(function(a, b) {
+      return new Date(a.registered_at) - new Date(b.registered_at);
+    });
+
+    var select_sorted;
+
     if (number && pages) {
-      // var offset = (pages - 1) * number;
+      select_sorted = [];
+      var offset = (pages - 1) * number;
+      var start = parseInt(offset);
+      var end = parseInt(offset) + parseInt(number);
 
-      var sorted = res.sort(function(a, b){
-        return new Date(a.registered_at) - new Date(b.registered_at)
-      });
-      // sorted[offset]
-      // sorted[i]
-      // var select = []
-      //
-      // var selection = Array.apply(null, Array(number)).map(function (_, i) {return offset + i;});
-      // for (var i = selection[0]; i < (selection[0] + selection.length); i++) {
-      //   select.push(sorted[i]);
-      // }
-      //
-      // console.log(select);
-    }
-    else {
-      var sorted = res.sort(function(a, b){
-        return new Date(a.registered_at) - new Date(b.registered_at)
-      });
-      // console.log(sorted);
+      for (var i = start; i < end; i++) {
+        select_sorted.push(sorted[i]);
+      }
     }
 
-    if (callback) callback(err, sorted);
+    var result = select_sorted || sorted;
+    if (callback) callback(err, result);
     db.close();
   });
 };
