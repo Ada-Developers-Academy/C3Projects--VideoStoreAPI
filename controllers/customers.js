@@ -44,41 +44,11 @@ exports.customersController = {
 
         for (var i = start; i < end; i++) {
           select.push(result[i]);
-          // console.log(select);
-          if (i == (end - 1)) {
-            return res.status(200).json(select);
-          }
         }
-
-        // var test = function(callback) {
-        //   var jo = function() {
-        //     var num_large_array = Array.apply(null, Array(number));
-        //     // var selection = num_large_array.map(function (original_val, i) {return offset + i;});
-        //     return num_large_array.map(function (original_val, i) {return offset + i;});
-        //     // callback(selection);
-        //   };
-        //   console.log(callback)
-        //   var selection = jo();
-        //   console.log(selection);
-        //   for (var i = selection[0]; i < (selection[0] + selection.length); i++) {
-        //     select.push(result[i]);
-        //     if (i == (selection[0] + selection.length - 1)) {
-        //       return res.status(200).json(select);
-        //     }
-        //   }
-        // };
-        //
-        // test();
-
-        // test(function(selection) {
-        //   for (var i = selection[0]; i < (selection[0] + selection.length); i++) {
-        //     select.push(result[i]);
-        //     if (i == (selection[0] + selection.length - 1)) {
-        //       return res.status(200).json(select);
-        //     }
-        //   }
-      // }
-      } else {
+        
+        return res.status(200).json(select);
+      }
+      else {
         return res.status(200).json(result);
       }
     });
