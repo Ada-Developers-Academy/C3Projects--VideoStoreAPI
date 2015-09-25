@@ -59,7 +59,7 @@ describe("Endpoints for /customers", function() {
       });
     });
   });
-  
+
   describe ("Get a subset of customers", function() {
     var customer_request;
 
@@ -88,7 +88,7 @@ describe("Endpoints for /customers", function() {
             done();
           })
     }),
-  
+
     // '/customers/:registered_at/:results_per_page/:page_number'
     it("can get subset of customers by date registered", function(done) {
       customer_request = agent.get('/customers/registered_at/5/1').set('Accept', 'application/json');
@@ -98,7 +98,7 @@ describe("Endpoints for /customers", function() {
             assert.equal(result.body.length, 5);
 
             var expected_dateRegistered = ['Fri, 18 Aug 2015 07:00:00 -0700','Mon, 21 Aug 2015 07:00:00 -0700',
-             'Sat, 19 Aug 2015 07:00:00 -0700','Sun, 20 Aug 2015 07:00:00 -0700', 
+             'Sat, 19 Aug 2015 07:00:00 -0700','Sun, 20 Aug 2015 07:00:00 -0700',
               'Tue, 22 Aug 2015 07:00:00 -0700'],
             actual_dateRegistered = [];
 
@@ -138,31 +138,14 @@ describe("Endpoints for /customers", function() {
           .expect('Content-Type', /application\/json/)
           .expect(200, function(error,result) {
             assert.equal(result.body.length, 1);
-            console.log(result.body)
 
             var expected_currentReturnDate = result.body[0].return_date,
             actual_currentReturnDate = "";
-            
-            assert.deepEqual(expected_currentReturnDate, 
+
+            assert.deepEqual(expected_currentReturnDate,
               actual_currentReturnDate);
             done();
           })
     })
-
-})
-
-
-
-
-// '/customers/:id/previous'
-
-
-
-
-
-
-
-
-
-
+  })
 });
