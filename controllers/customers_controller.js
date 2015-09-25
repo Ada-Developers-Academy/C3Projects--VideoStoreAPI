@@ -51,11 +51,33 @@ CustomersController.allSorted = function(request, response, next) {
 }
 
 CustomersController.show = function(request, response, next) {
-  var results = { meta: {}, data: {} };
+  console.log("fresh inside CustomersController.show");
+  var Customer = new CustomerModel();
+  console.log("created new CustomerModel instance");
   var id = request.params.id;
-  results.meta.yourQuery = ourWebsite + "/customers/" + id;
+  console.log("id is " + id);
 
-  return response.status(200).json(results);
+  console.log("can I see customer model from here?");
+  console.log(Customer);
+  console.log("how about its #show?");
+  console.log(Customer.show);
+  console.log("what happens if I run customer model's show method?");
+  console.log("invalid input:");
+  console.log(Customer.show("potato", console.log));
+  console.log("valid input:");
+  console.log(Customer.show(5, console.log));
+  Customer.show(page, function(error, result) {
+    console.log("inside last callback step in CustomerController path, where http response is finally sent");
+    if (error) { result = error; }
+
+    var msg = result.meta.message;
+    if (typeof msg == "string") {
+      result.meta.message = Customer.noCustomerMsg;
+      result.meta.yourQuery = ourWebsite + "/customers/" + id;
+    }
+
+    return response.status(result.meta.status).json(result);
+  })
 }
 
 module.exports = CustomersController;

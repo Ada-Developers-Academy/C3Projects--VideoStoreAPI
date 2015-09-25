@@ -53,6 +53,10 @@ Customer.prototype.allSortedStatement = function(sort, page) {
   return statement;
 }
 
+Customer.prototype.showStatement = function(id) {
+  return "SELECT * FROM customers WHERE id=" + id + ";";
+}
+
 
 
 //------------------------------------------------------------------------------
@@ -130,11 +134,38 @@ Customer.prototype.addPageInfo = function(results, callback) {
   this.close();
 }
 
-// all w/ sort by field
-// - SELECT * FROM customers ORDER BY (columnName);
+Customer.prototype.show = function(id, callback) {
+  console.log("now here inside Customer.prototype.show");
+  console.log("your id is " + id);
 
-// all w/ pagination /customers/all&pagination=1
-// - first page: SELECT * FROM customers ORDER BY (columnName) LIMIT pageLimit;
-// - second page: SELECT * FROM customers ORDER BY (columnName) LIMIT pageLimit OFFSET offsetAmount;
+  function formatData(err, res) {
+    console.log("now here inside formatData callback");
+    if (err) {
+      console.log("id " + id + " is in error");
+      console.log("id " + id + "'s results formatted, returning final callback you passed in");
+      console.log("btw that callback is: " + callback);
+      return callback(err);
+    }
+
+    var results = {};
+    var data = fixTime(res, "registered_at");
+    results.meta = { status: 200, yourQuery: ourWebsite + "/customers/" + id }
+    results.data = { customer: data[0] }
+
+    console.log("id " + id + "'s results formatted, returning final callback you passed in");
+    console.log("btw that callback is: " + callback);
+    return callback(results);
+  }
+
+  var statement = this.showStatement(id);
+  this.open();
+  this.db.all(statement, function(error, data) {
+    console.log("now here inside database query callback");
+    console.log("id: " + id + " error: " + error);
+    console.log("id: " + id + " data: " + data);
+    return sqlErrorHandling(error, data, formatData);
+  })
+  this.close();
+}
 
 module.exports = Customer;
