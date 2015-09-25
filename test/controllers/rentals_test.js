@@ -3,14 +3,47 @@
 var request = require('supertest');
 var assert = require('assert');
 var app = require('../../app');
-var Rental = require('../../models/rental');
 var agent = request.agent(app);
-// var sqlite3 = require('sqlite3').verbose(); // currently unused
+var Rental = require('../../models/rental');
 
 var resetTables = require('../dbCleaner');
 
 describe('/rentals', function() {
   describe("POST '/'", function() {
+    var err;
+    var res;
+
+    before(function(done) {
+      var data = {
+        customers: [ { name: 'Customer1', account_balance: 500 } ],
+        movies: [ { title: 'Movie1', inventory: 1 } ]
+      }
+      resetTables(data, done)
+    });
+
+    before(function(done) {
+      agent.post('/rentals')
+        .send({ checkout_date: '2015-03-16', movie_title: 'Movie1', customer_id: '1' })
+        .expect(200, function(error, response) {
+          err = error;
+          res = response;
+          done();
+        });
+    });
+
+    it('adds a record to the db, with all of the correct data', function(done) {
+      new Rental().all(function(error, rows) {
+        assert.equal(error, undefined);
+        assert.equal(rows.length, 1);
+        done();
+      });
+    });
+
+    it('returns a confirmation that the request was successful', function() {
+      assert.equal(err, undefined);
+      assert.equal(res.body.insertedRentalID, 1);
+      assert.equal(res.body.changes, 2);
+    });
   });
 
   describe("PUT '/2'", function() {

@@ -1,7 +1,6 @@
 "use strict";
 
 var assert = require("assert");
-var sqlite3 = require('sqlite3').verbose();
 var Customer = require('../../models/customer');
 var resetTables = require('../dbCleaner');
 

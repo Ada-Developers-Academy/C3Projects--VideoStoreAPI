@@ -1,7 +1,5 @@
 "use strict";
 
-// var sqlite3 = require('sqlite3').verbose(); // currently unused
-
 function Movie() {
   this.tableName = 'movies';
   this.columnNames = [
