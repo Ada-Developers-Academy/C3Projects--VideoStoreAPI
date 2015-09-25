@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var rentals = require("./routes/rentals_routes");
+var rentals = require("./routes/rental_routes");
 app.use("/rentals", rentals);
 
 var zomgRoutes = require('./routes/zomgRoutes');
@@ -31,7 +31,7 @@ app.use('/all/registered/:page', zomgRoutes);
 var users = require('./routes/users');
 app.use('/users', users);
 
-var movies = require('./routes/movieRoutes');
+var movies = require('./routes/movie_routes');
 app.use('/movies', movies);
 
 

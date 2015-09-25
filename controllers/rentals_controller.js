@@ -1,7 +1,7 @@
 "use strict";
 
 // ----------------- rental model ----------------- //
-var rentalTable = require('../models/rental');
+var Rental = require('../models/rental');
 
 // ------------------- database ------------------- //
 var sqlite3 = require("sqlite3").verbose();
@@ -56,29 +56,9 @@ rentals.movieInfo = function(request, response, next) {
   // query database
   var db = new sqlite3.Database("db/" + dbEnv + ".db");
   db.all(statement, function(error, data) {
-    var results = { meta: {} };
-
-    if (error) { // log error if error
-      status = 500; // internal server error
-      results.data = error;
-    } else if (data.length == 0) { // handling for no results
-      status = 303; // see other
-      results.data = {
-        status: status,
-        message: "No results found. You must query this endpoint with an exact title."
-      };
-    } else {
-      data = fixTime(data, "release_date"); // fixing time
-      results.data = {
-        movieInfo: formatMovieInfo(data),
-        availableToRent: isMovieAvailable(data)
-      };
-
-      results.meta.customersHoldingCopies = ourWebsite + "/rentals/" + title + "/customers";
-    };
-
-    results.meta.movieInfo = ourWebsite + "/movies/" + title;
-    results.meta.yourQuery = ourWebsite + "/rentals/" + title;
+    var rental = new Rental();
+    var results = rental.movieInfo(error, data);
+    var status = results.data.status;
 
     return response.status(status).json(results);
   });
