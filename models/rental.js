@@ -14,9 +14,7 @@ Rental.prototype = {
       rental_duration_days = 7,
       checkout_date = date_format(0),
       return_date = date_format(rental_duration_days),
-      rental_cost = 1.0,
-      inserted_rental_id,
-      number_of_records_changed = 0;
+      rental_cost = 1.0;
 
     var begin_statement = "BEGIN IMMEDIATE;"
 
@@ -38,7 +36,7 @@ Rental.prototype = {
           if (error) {
             callback(error, { error: error, result: "Unsuccessful request. There may not be any copies of that movie available."  });
           } else {
-            callback(error, { result: "Successful check out" });
+            callback(error, { result: "Successful check out", movie: movie_title, customer_id: customer_id, checked_out_on: checkout_date });
           }
         }
         db.close();
@@ -62,15 +60,14 @@ Rental.prototype = {
         changes = this.changes;
       });
 
-      if (changes === 0) {
-        err = { error: "Check in did not occur. Please make sure that the movie was checked out." } ;
-      } else {
+      // if (changes === 0) {
+      //   err = { error: "Check in did not occur. Please make sure that the movie was checked out." } ;
+      // } else {
         db.run(availability_statement);
-      }
+      // }
 
       db.exec("COMMIT;", function(error) {
         if (callback) {
-          if (err) { error = err; }
           callback(error, { movie: movie_title, customer_id: customer_id, checked_in_on: return_date, number_of_records_changed: changes });
         }
       });

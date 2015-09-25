@@ -53,19 +53,12 @@ describe("Rental", function() {
         });
       });
 
-      it("returns an object with the expected keys", function(done) {
-        var keys = [  "inserted_rental_id",
-                      "movie",
-                      "customer_id",
-                      "checked_out_on",
-                      "due_on",
-                      "number_of_records_changed" ];
+      it("returns a 'success' object", function(done) {
+        var keys = [  "result", "movie", "customer_id", "checked_out_on" ];
           rental.check_out(1, "Jaws", function(err, res) {
           assert.deepEqual(Object.keys(res), keys);
-          assert.equal(res.inserted_rental_id, 6);
           assert.equal(res.movie, "Jaws");
           assert.equal(res.customer_id, 1);
-          assert.equal(res.number_of_records_changed, 1);
           done();
         });
       });
