@@ -51,7 +51,7 @@ Rental.prototype.checkOut = function(data, callback) {
   });
 }
 
-Rental.prototype.checkIn = function(movie_title, date, callback) {
+Rental.prototype.checkIn = function(movie_title, date, customer_id, callback) {
   var db = this.openDB();
   var statement = "UPDATE rentals SET return_date = ? WHERE movie_title LIKE ? AND customer_id = ?;";
   var values = [date, movie_title, customer_id];
