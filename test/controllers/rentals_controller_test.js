@@ -20,7 +20,7 @@ describe("rental controller", function() {
       .send({'cost': 2.50})
       .expect(200, function(error, result) {
         assert.equal(error, undefined)
-        console.log(result.body);
+        // console.log(result.body);
         assert.equal(result.body.lastID, 1);
         done();
       })

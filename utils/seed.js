@@ -68,7 +68,7 @@ module.exports = function(callback) {
 
     db.exec("COMMIT", function(error) {
       db.close();
-      console.log("I'm done setting up the db")
+      // console.log("I'm done setting up the db")
       callback(error, "Success");
     });
   })
