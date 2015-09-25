@@ -59,17 +59,14 @@ var sqlite3 = require('sqlite3').verbose(),
   Rental.prototype.checkoutMovie = function checkoutMovie(title, id, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db'),
         insert_statement = "Insert into rentals (checkout_date, due_date, return_date, overdue, movie_title, customer_id) VALUES (date('now'), date('now', '+3 day'), ?, ?, ?, ?);",
-        update_statement = "Update customers SET account_credit = account_credit - 2 WHERE id = ?;";
+        update_statement = "Update customers SET account_credit = account_credit - 2 WHERE id = ?;",
+        select_statement = "SELECT customers.name, customers.account_credit, rentals.movie_title, rentals.due_date FROM customers, rentals WHERE customers.id=? AND rentals.customer_id=? AND rentals.movie_title=? AND rentals.due_date=date('now', '+3 day')";
 
     db.run(insert_statement, [null, 0, title, id]);
-    db.all(update_statement, [id], function(err) {
-      if (err) {
-        callback(err, { message: "Checkout failed" });
+    db.run(update_statement, [id]);
+    db.all(select_statement, [id, id, title], function(err, res) {
+        if (callback) callback(err, res);
         db.close();
-      } else {
-        callback(err, {message: 'Checkout successful', movie_title: title, customer_id: id});
-        db.close();
-      }
-    });
+      })
   }
 module.exports = Rental
