@@ -32,8 +32,7 @@ exports.customersController = {
   },
 
   // GET /customers/by_registered_at?n=XXX&p=XXX
-  // NOTE: Need to change registered at to a time object? Sorting alphabetally vs. by date!
-  showByRegistered_at: function(req, res) {
+  showByRegisteredAt: function(req, res) {
     var number = req["query"]["n"];
     var pages = req["query"]["p"];
     Customer.find_by_sorted_date("registered_at", number, pages, function(err, result) {
@@ -41,14 +40,13 @@ exports.customersController = {
         var select = []
         var offset = (pages - 1) * number;
 
-        // 6 - 10 (page 2 & number 5)
-        // [5, 6, 7, 8, 9]
+        // ex. 6 - 10 (page 2 & number 5)
+        // ex. [5, 6, 7, 8, 9]
         var selection = Array.apply(null, Array(number)).map(function (_, i) {return offset + i;});
         for (var i = selection[0]; i < (selection[0] + selection.length); i++) {
           select.push(result[i]);
         }
 
-        // console.log(select);
         return res.status(200).json(select);
       } else {
         return res.status(200).json(result);
