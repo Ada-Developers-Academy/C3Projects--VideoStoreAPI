@@ -12,7 +12,11 @@ var Rental = require('../models/rental'),
 
 router.get('/', function(req, res, next) {
   movie.find_all(function(err, rows) {
-    res.status(200).json({ movies: rows });
+    if (rows) {
+      return res.status(200).json({ movies: rows });
+    } else {
+      return res.status(400).json({ error: "No movies were found." });
+    }
   });
 });
 
@@ -29,6 +33,12 @@ router.get('/:title/:order', function(req, res, next) {
 
   movie.find_by('title', title, function(err, row) {
     movieObject.movie_data = row;
+    title = title.charAt(0).toUpperCase() + title.slice(1);
+
+    if (row == undefined) {
+      return res.status(400).json({ error: title + " was not found." })
+    }
+    
     movieId = row.id;
 
     rental.where(["movie_id"], [movieId], function(err, rows) {
@@ -83,9 +93,9 @@ router.get('/:title/:order', function(req, res, next) {
           movieObject.customers.pastRenters = pastRentersArray;
           
           if (error_message) {
-            res.status(400).json(error_message);
+            return res.status(400).json(error_message);
           } else {
-            res.status(200).json(movieObject);
+            return res.status(200).json(movieObject);
           }
         });
       });
@@ -100,7 +110,11 @@ router.get('/:sort_by/:limit/:offset', function(req, res, next) {
   var column = req.params.sort_by;
 
   movie.subset(column, queries, function(err, rows) {
-    res.status(200).json({ movies: rows} );
+    if (rows) {
+      return res.status(200).json({ movies: rows} ); 
+    } else {
+      return res.status(400).json({ error: "No results found or your paramters are inaccurate. Try again." })
+    }
   });
 });
 

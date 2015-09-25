@@ -16,7 +16,7 @@ router.get('/', function(req, res, next) {
     if (rows) {
       return res.status(200).json({ customers: rows });
     } else {
-      return res.status(400).json({ "No customers were found." });
+      return res.status(400).json({ error: "No customers were found." });
     }
   });
 });
