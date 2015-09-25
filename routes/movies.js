@@ -87,7 +87,7 @@ router.get('/:title/:order', function(req, res, next) {
               return a.dates.checkout_date - b.dates.checkout_date;
             });
           } else {
-            var error_message = "You cannot sort by: " + order;
+            var error_message = { error: "You cannot sort by: " + order }
           }
 
           movieObject.customers.pastRenters = pastRentersArray;
