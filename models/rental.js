@@ -294,14 +294,12 @@ Rental.prototype.return = function(movieTitle, customerId, callback) {
   // - verify customer is a
   // - do we want to check if customer already has title checked out first?
   //   - i super think yes if time --jeri
-  var returnStatement = 'UPDATE rentals '
-    +'SET return_date = ' + Date.now()
-    + ' AND returned = 1'
-    + ' WHERE movie_title = "'
-    + movieTitle +'" '
-    + 'AND customer_id = customerId';
 
-    console.log(returnStatement);
+  var returnStatement = 'UPDATE rentals '
+    +'SET return_date = ' + Date.now() + ', returned = 1 '
+    + 'WHERE movie_title = "' + movieTitle + '" '
+    + 'AND customer_id = ' + customerId + ';';
+  console.log(returnStatement);
 
   var that = this;
 
@@ -317,7 +315,6 @@ Rental.prototype.return = function(movieTitle, customerId, callback) {
     // })
   })
   this.close();
-
 }
 
 module.exports = Rental;
