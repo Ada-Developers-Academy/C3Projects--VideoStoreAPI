@@ -221,6 +221,7 @@ describe('Rental', function() {
         rentals: [
           { checkout_date: '2015-03-16', return_date: '2015-03-20', movie_title: 'North by Northwest', customer_id: 2 },
           { checkout_date: '2015-09-16', return_date: '', movie_title: 'Wait Until Dark', customer_id: 9 },
+          { checkout_date: '2015-08-23', return_date: '', movie_title: 'Wait Until Dark', customer_id: 4},
           { checkout_date: '2015-08-10', return_date: '', movie_title: 'Jaws', customer_id: 1 }
         ]
       }
@@ -230,18 +231,23 @@ describe('Rental', function() {
 
     it('checks in a rental by adding a return date', function(done) {
       var movie_title = 'Wait Until Dark';
-
+      var customer_id = 4;
       var date = '2015-09-20';
 
-      rental.checkIn(movie_title, date, function(err, res) {
+      rental.checkIn(movie_title, date, customer_id, function(err, res) {
         assert.equal(err, undefined);
         assert.equal(res.changed, 1);
 
-        rental.findBy('movie_title', 'Wait Until Dark', function(err, row) {
+        rental.findBy('customer_id', 4, function(err, row) {
           assert.equal(err, undefined);
           assert.equal(row[0].return_date, '2015-09-20');
+
+          rental.findBy('customer_id', 9, function(err, row) {
+            assert.equal(err, undefined);
+            assert.equal(row[0].return_date, '');
+            done();
+          });
         });
-        done();
       });
     });
   })
