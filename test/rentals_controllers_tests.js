@@ -25,7 +25,9 @@ describe("/rentals endpoints", function() {
               (1, 'Sarah', 3, 'Bring It On 2', '2015-07-01', '2015-07-08', '2015-07-09'), \
               (2, 'Jane', 1, 'Bring It On', '2015-07-14', '2015-07-21', '2015-07-15'), \
               (2, 'Jane', 2, 'Maws', '2015-07-16', '2015-07-23', '2015-07-17'), \
-              (2, 'Jane', 3, 'Bring It On 2', '2015-07-01', '2015-07-08', NULL); \
+              (2, 'Jane', 3, 'Bring It On 2', '2015-07-01', '2015-07-08', NULL), \
+              (2, 'Jane', 2, 'Maws', '2015-07-01', '2015-10-08', NULL), \
+              (1, 'Sarah', 2, 'Maws', '2015-07-01', '2015-07-08', '2015-07-10'); \
         COMMIT;"
         , function(err) {
           test_db.close();
@@ -101,32 +103,24 @@ describe("/rentals endpoints", function() {
         .expect(200, done);
     })
 
-    // it('can find a specific movie', function(done) {
-    //   movie_request = agent.get('/movies/maws').set('Accept', 'application/json');
+    it('returns an array of overdue rental records', function(done) {
+      rental_request = agent.get('/rentals/overdue').set('Accept', 'application/json');
 
-    //   movie_request.expect(200, function(error, result) {
-    //     assert.equal(result.body.movie[0].title, 'Maws');
-    //     done();
-    //   })
-    // })
+      rental_request.expect(200, function(error, result) {
+        assert.equal(result.body.overdue_movies.length, 1); // only 1 seed record has no return_date and has a past due_date
+        assert.equal(result.body.overdue_movies[0].title, "Bring It On 2");
+        done();
+      })
+    })
 
-    // it('returns all partial matches when searching by title', function(done) {
-    //   movie_request = agent.get('/movies/bring').set('Accept', 'application/json');
+    it('does not consider movies that have been returned late as still overdue', function(done) {
+      rental_request = agent.get('/rentals/overdue').set('Accept', 'application/json');
 
-    //   movie_request.expect(200, function(error, result) {
-    //     assert.equal(result.body.movie.length, 2);
-    //     done();
-    //   })
-    // })
-
-    // it('can order by other columns if there are multiple results', function(done) {
-    //   movie_request = agent.get('/movies/bring?order_by=release_date').set('Accept', 'application/json');
-
-    //   movie_request.expect(200, function(error, result) {
-    //     assert.equal(result.body.movie[0].title, "Bring It On 2");
-    //     done();
-    //   })
-    // })  
+      rental_request.expect(200, function(error, result) {
+        assert.notEqual(result.body.overdue_movies[0].name, "Sarah"); // Sarah returned a movie late
+        done();
+      })
+    })  
   })
 
   describe('POST ./rentals/{:customer_id}/checkout/{:movie_id}', function() {
@@ -137,17 +131,87 @@ describe("/rentals endpoints", function() {
       rental_request
         .expect('Content-Type', /application\/json/)
         .expect(200, done);
-    }) 
-  })
+    })
+
+    it('creates a new rental record and returns that rental record', function(done) {
+      rental_request = agent.post('/rentals/2/checkout/1').set('Accept', 'application/json');
+
+      rental_request.expect(200, function(error, result) {
+
+        assert.equal(result.body.rental.length, 1);
+        assert.equal(result.body.rental[0].customer_id, 2);
+        done();
+      })
+    })
+
+    it("sets the checkout_date to be day('now')", function(done) {
+      rental_request = agent.post('/rentals/2/checkout/1').set('Accept', 'application/json');
+      
+      rental_request.expect(200, function(error, result) {
+        var today = new Date;
+        var day = today.getDate();
+        var month = today.getMonth() + 1;
+        var year = today.getFullYear();
+
+        if(day < 10) { day = '0' + day } 
+        if(month < 10) { month = '0' + month }
+
+        var now = year + "-" + month + "-" + day;
+
+        assert.equal(result.body.rental[0].checkout_date, now);
+        done();
+      })
+    })
+
+    it("sets a due_date greater than today", function(done) {
+      rental_request = agent.post('/rentals/2/checkout/1').set('Accept', 'application/json');
+
+      rental_request.expect(200, function(error, result) {
+        var today = new Date;
+        var day = today.getDate();
+        var month = today.getMonth() + 1;
+        var year = today.getFullYear();
+
+        if(day < 10) { day = '0' + day } 
+        if(month < 10) { month = '0' + month }
+
+        var now = year + "-" + month + "-" + day;
+
+        assert(result.body.rental[0].due_date > now);
+        done();
+      })
+    })
+  });
 
   describe('PUT ./rentals/{:customer_id}/return/{:movie_id}', function() {
 
     it("responds with json", function(done) {
-      rental_request = agent.put('/rentals/2/return/3').set('Accept', 'application/json');
+      rental_request = agent.put('/rentals/2/return/2').set('Accept', 'application/json');
 
       rental_request
         .expect('Content-Type', /application\/json/)
         .expect(200, done);
+    })
+
+    it("updates return_date to date('now') and returns the customer's rental history for that movie", function(done) {
+      rental_request = agent.put('/rentals/2/return/2').set('Accept', 'application/json');
+
+      rental_request.expect(200, function(error, result) {
+        var today = new Date;
+        var day = today.getDate();
+        var month = today.getMonth() + 1;
+        var year = today.getFullYear();
+
+        if(day < 10) { day = '0' + day } 
+        if(month < 10) { month = '0' + month }
+
+        var now = year + "-" + month + "-" + day;
+
+        assert.equal(result.body.rental_history.length, 2);
+        assert.equal(result.body.rental_history[0].customer_id, 2);
+        assert.equal(result.body.rental_history[0].return_date, now);
+        done();
+      })
     })
   })
 
