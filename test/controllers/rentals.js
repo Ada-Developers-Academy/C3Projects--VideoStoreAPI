@@ -172,7 +172,7 @@ describe("/rentals", function() {
       .expect(200, function(err, res) {
         assert.equal(err, undefined);
 
-        var rental_keys = ['due_date', 'return_date', 'overdue', 'movie_title', 'account_credit'];
+        var rental_keys = ['due_date', 'return_date', 'overdue', 'movie_title', 'customer_id', 'account_credit'];
         assert.deepEqual(Object.keys(res.body[0]), rental_keys);
         assert.equal(res.body[0].movie_title, 'Amelie');
 

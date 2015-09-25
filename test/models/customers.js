@@ -61,7 +61,7 @@ describe("Customer", function() {
       })
     })
 
-    it.only("can find a customer by id", function(done){
+    it("can find a customer by id", function(done){
       rental.find_by("customer_id", 'return_date IS NULL', 1, function(err, res) {
         assert.equal(err, undefined);
         console.log(res)
