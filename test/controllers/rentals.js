@@ -42,7 +42,7 @@ describe("Endpoints under /rentals", function() {
     });
   });
 
-  describe.only("rentals instance methods", function() {
+  describe("rentals instance methods", function() {
     context("POST /checkout", function() {
       it('posts to the rentals table', function(done) {
         request(app)
