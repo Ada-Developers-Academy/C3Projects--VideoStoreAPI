@@ -89,7 +89,7 @@ Customer.prototype.allSorted = function(sort, page, callback) {
 
     var results = {};
     var data = fixTime(res, "registered_at");
-    results.meta = { status: 200, yourQuery: ourWebsite + "/customers/all/" + sort }
+    results.meta = { status: 200, yourQuery: ourWebsite + "/customers/all/sort_by=" + sort }
     results.data = { customers: formatCustomerInfo(data) }
     results.temp = { page: page, statement: "allCountStatement" }
 
@@ -138,20 +138,19 @@ Customer.prototype.show = function(id, callback) {
 
     var results = {};
     var data = fixTime(res, "registered_at");
-    results.meta = { status: 200, yourQuery: ourWebsite + "/customers/all/" + sort }
-    results.data = { customers: formatCustomerInfo(data) }
-    results.temp = { page: page, statement: "allCountStatement" }
+    results.meta = { status: 200, yourQuery: ourWebsite + "/customers/" + id }
+    results.data = { customer: data[0] }
 
-    return that.addPageInfo(results, callback);
+    return callback(results);
   }
 
   var statement = this.showStatement(id);
+
   this.open();
   this.db.all(statement, function(error, data) {
     return sqlErrorHandling(error, data, formatData);
   })
   this.close();
 }
-
 
 module.exports = Customer;

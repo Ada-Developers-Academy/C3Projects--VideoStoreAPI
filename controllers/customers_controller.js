@@ -43,7 +43,7 @@ CustomersController.allSorted = function(request, response, next) {
     var msg = result.meta.message;
     if (typeof msg == "string") {
       result.meta.message = Customer.noOverdueMsg;
-      result.meta.yourQuery =  ourWebsite + "/customers/all/" + sort;
+      result.meta.yourQuery =  ourWebsite + "/customers/all/sort_by=" + sort;
     }
 
     return response.status(result.meta.status).json(result);
@@ -51,11 +51,20 @@ CustomersController.allSorted = function(request, response, next) {
 }
 
 CustomersController.show = function(request, response, next) {
-  var results = { meta: {}, data: {} };
+  var Customer = new CustomerModel();
   var id = request.params.id;
-  results.meta.yourQuery = ourWebsite + "/customers/" + id;
 
-  return response.status(200).json(results);
+  Customer.show(id, function(error, result) {
+    if (error) { result = error; }
+
+    var msg = result.meta.message;
+    if (typeof msg == "string") {
+      result.meta.message = Customer.noCustomerMsg;
+      result.meta.yourQuery = ourWebsite + "/customers/" + id;
+    }
+
+    return response.status(result.meta.status).json(result);
+  })
 }
 
 module.exports = CustomersController;
