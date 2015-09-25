@@ -50,7 +50,6 @@ describe("Endpoints under /rentals", function() {
           .send({ id: '1', title: 'Gauze'})
           .expect(200, function(err, res) {
             assert.equal(res.body.customer_id, 1);
-            assert.equal(res.body.number_of_records_changed, 1);
             assert.equal(res.body.checked_out_on, date_format(0));
             if(err) {
               done(err);

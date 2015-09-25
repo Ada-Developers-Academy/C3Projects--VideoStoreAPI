@@ -20,9 +20,9 @@ describe("Endpoints under /customers", function() {
               ('Juicy Beetle', '2014-01-01', '123 street', 'Burlington', 'WA', '98211', '3604216650', 5.55), \
               ('Aaron Aaronson', '2015-02-01', '123 street', 'Burlington', 'WA', '98195', '3604216650', 5.55); \
         DELETE FROM movies; \
-        INSERT INTO movies(title, overview, release_date, inventory) \
-        VALUES('Jaws', 'Shark!', 'Yesterday', 10), \
-              ('Maws', 'Worm!', 'Yesterday', 11); \
+        INSERT INTO movies(title, overview, release_date, inventory, num_available) \
+        VALUES('Jaws', 'Shark!', 'Yesterday', 10, 10), \
+              ('Maws', 'Worm!', 'Yesterday', 11, 11); \
         DELETE FROM rentals; \
         INSERT INTO rentals(checkout_date, return_date, movie_id, customer_id, checked_out) \
         VALUES('2015-02-14', '2015-02-21', '1', '1', 'false'), \
