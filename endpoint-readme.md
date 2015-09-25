@@ -9,7 +9,7 @@ See below for the available endpoints for this API.
 2. [Single Customer](#single-customer)  
 3. [Subset of Customers](#subset-of-customers)  
 4. [All Movies](#all-movies)  
-5. GET '/movies/:title/:order'  
+5. [Single Movie](#single-movie)  
 6. GET '/movies/:sort_by/:limit/:offset'  
 7. GET '/rentals/overdue'  
 8. GET '/rentals/:title'  
@@ -278,7 +278,6 @@ See below for the available endpoints for this API.
     }]
 }
 ```
-
 
 ###Single Movie
 
