@@ -26,21 +26,39 @@ Rental.prototype.check_out = function(data, callback){
   var id = data.customer_id;
   var title = data.movie_title
   due.setDate(now.getDate()+checkoutLengthDays);
-  var insert_statement = "INSERT INTO rentals (check_out_date, expected_return_date, customer_id, movie_id) VALUES (?,?,?,(SELECT id FROM movies where title LIKE ?))";
-  var charge_statement = "UPDATE customers SET account_credit=(account_credit-" +rental_cost+") WHERE id=?";
-  db.run(insert_statement, yyyymmdd(now), yyyymmdd(due), id, title, function(err, rows) {
-    if (err !== null) {
-      console.log(err);
-    }
-  });
 
-  db.run(charge_statement, id, function(err, res) {
+  var insert_statement = "INSERT INTO rentals (check_out_date, expected_return_date, customer_id, movie_id) VALUES (?,?,?,(SELECT id FROM movies where title LIKE ?))";
+
+  var charge_statement = "UPDATE customers SET account_credit=(account_credit-" +rental_cost+") WHERE id=?";
+
+  var check_inventory_statement = "SELECT movies.inventory-(SELECT COUNT(*) from rentals  WHERE rentals.movie_id=movies.id AND check_in_date IS NULL) AS available from movies WHERE title LIKE ?";
+
+  console.log(title);
+
+  db.all(check_inventory_statement, title, function(err, result){
+    console.log(result);
+    if (result[0].available > 0){
+    db.run(insert_statement, yyyymmdd(now), yyyymmdd(due), id, title, function(err, rows) {
       if (err !== null) {
         console.log(err);
       }
+    });
+    db.run(charge_statement, id, function(err, res) {
+        if (err !== null) {
+          console.log(err);
+        }
+        result = {"result": "Successful", "message": "Rental Created"};
+        if (callback) callback(err, result);
+        db.close();
+    });
+  }
+    else {
+      var res = {"result": "Unsuccessful", "message": "Not enough inventory to complete rental"};
       if (callback) callback(err, res);
       db.close();
+    }
   });
+
 };
 
 module.exports = Rental;

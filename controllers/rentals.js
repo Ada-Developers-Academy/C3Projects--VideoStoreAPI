@@ -120,9 +120,9 @@ exports.rentalsController = {
     db.check_out(data, function(err, result) {
       if (err !== null) {
         console.log(err);
-        return res.status(500).json({});
+        return res.status(500).json(result);
       } else {
-        return res.status(200).json({});
+        return res.status(200).json(result);
       }
     });
   }
