@@ -187,7 +187,7 @@ describe("Endpoints under /rentals", function() {
 
     it('responds with correct data', function(done){
       request
-        .expect('{"result":"Successful","message":"Rental Created"}', done);
+        .expect('{"result":"Successful","message":"Rental created"}', done);
     });
 
     it('creates a new rental in the database', function(done) {
