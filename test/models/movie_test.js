@@ -221,8 +221,6 @@ describe('Movie', function() {
     beforeEach(function(done) {
       var data = {
         movies: [
-          // NOTE: we need to maintain these titles (where 'Jaws' is in both)
-          //       in order to test that only exact matches are returned in #findBy
           { title: 'Jaws', overview: 'Shark!', release_date: '1975-06-19', inventory: 10 },
           { title: 'Jaws and Maws', overview: 'Worm!', release_date: '2015-09-12', inventory: 11 },
           { title: 'The French Connection', overview: 'Bonjour!', release_date: '1971-10-07', inventory: 8 }
@@ -232,10 +230,10 @@ describe('Movie', function() {
           { name: 'Customer2', registered_at: '2014-12-01', address: 'Address2', city: 'City2', state: 'State2', postal_code: 'Zip2', phone: 'Phone2', account_balance: '1000' },
         ],
         rentals: [
-          { checkout_date: '2015-09-16', return_date: '', movie_title: 'Movie1', customer_id: 1 },
-          { checkout_date: '2015-03-16', return_date: '2015-03-20', movie_title: 'Movie2', customer_id: 1 },
-          { checkout_date: '2015-06-23', return_date: '', movie_title: 'Movie2', customer_id: 2 },
-          { checkout_date: '2015-09-18', return_date: '', movie_title: 'Movie3', customer_id: 2 }
+          { checkout_date: '2015-09-16', return_date: '', movie_title: 'Jaws', customer_id: 1 },
+          { checkout_date: '2015-03-16', return_date: '2015-03-20', movie_title: 'Jaws and Maws', customer_id: 1 },
+          { checkout_date: '2015-06-23', return_date: '', movie_title: 'Jaws and Maws', customer_id: 2 },
+          { checkout_date: '2015-09-18', return_date: '', movie_title: 'The French Connection', customer_id: 2 }
         ]
       }
 
@@ -244,7 +242,7 @@ describe('Movie', function() {
 
     describe('#customersCurrent', function() {
       it('returns a list of customers who currently have checked out a movie given the title', function(done) {
-        movie.customersCurrent('Movie3', function(err, rows) {
+        movie.customersCurrent('The French Connection', function(err, rows) {
           assert.equal(err, undefined);
           assert.equal(rows.length, 1);
           assert.equal(rows[0].rental_id, 4);
@@ -256,7 +254,7 @@ describe('Movie', function() {
 
     describe('#customersPast', function() {
       it('returns a list of customers sorted by customer_id who have checked out a movie in the past given the title', function(done) {
-        movie.customersPast('Movie2', 'customer_id', function(err, rows) {
+        movie.customersPast('Jaws and Maws', 'customer_id', function(err, rows) {
           assert.equal(err, undefined);
           assert.equal(rows.length, 1);
           assert.equal(rows[0].customer_id, 1);
@@ -265,7 +263,7 @@ describe('Movie', function() {
       });
 
       it('returns a list of customers sorted by customer name who have checked out a movie in the past given the title', function(done) {
-        movie.customersPast('Movie2', 'name', function(err, rows) {
+        movie.customersPast('Jaws and Maws', 'name', function(err, rows) {
           assert.equal(err, undefined);
           assert.equal(rows.length, 1);
           assert.equal(rows[0].name, 'Customer1');
@@ -274,10 +272,21 @@ describe('Movie', function() {
       });
 
       it('returns a list of customers sorted by checkout_date who have checked out a movie in the past given the title', function(done) {
-        movie.customersPast('Movie2', 'checkout_date', function(err, rows) {
+        movie.customersPast('Jaws and Maws', 'checkout_date', function(err, rows) {
           assert.equal(err, undefined);
           assert.equal(rows.length, 1);
           assert.equal(rows[0].checkout_date, '2015-03-16');
+          done();
+        });
+      });
+    });
+
+    describe('#numAvail', function() {
+      it('returns the number of movies available for rent for a given movie', function(done) {
+        movie.numAvail('Jaws and Maws', function(err, rows) {
+          assert.equal(err, undefined);
+          assert.equal(rows.length, 1);
+          assert.equal(rows[0].num_available, 10);
           done();
         });
       });
