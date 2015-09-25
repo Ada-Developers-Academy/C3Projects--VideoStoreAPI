@@ -2,7 +2,6 @@
 
 var assert = require("assert");
 var Movie = require('../../models/movie');
-var sqlite3 = require('sqlite3').verbose();
 var resetTables = require('../dbCleaner');
 
 describe('Movie', function() {

@@ -2,7 +2,6 @@
 
 var assert = require("assert");
 var Rental = require('../../models/rental');
-var sqlite3 = require('sqlite3').verbose();
 var resetTables = require('../dbCleaner');
 
 describe('Rental', function() {

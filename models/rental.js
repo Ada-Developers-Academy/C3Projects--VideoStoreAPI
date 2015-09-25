@@ -1,7 +1,5 @@
 "use strict";
 
-var sqlite3 = require('sqlite3').verbose();
-
 function Rental() {
   this.tableName = "rentals";
   this.columnNames = [
