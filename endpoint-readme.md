@@ -7,11 +7,11 @@ See below for the available endpoints for this API.
 3. [Subset of Customers](#subset-of-customers)  
 4. [All Movies](#all-movies)  
 5. [Single Movie](#single-movie)  
-6. GET '/movies/:sort_by/:limit/:offset'  
-7. GET '/rentals/overdue'  
-8. GET '/rentals/:title'  
-9. POST '/rentals/checkout/:customer_id/:movie_title'  
-10. PUT '/rentals/checkin/:customer_id/:movie_title'  
+6. [Subset of Movies](#subset-of-movies)  
+7. [Overdue Rentals](#overdue-rentals)  
+8. [Rental History of Single Movie](#rental-history-of-single-movie)  
+9. [Rent Movie](#rent-movie)  
+10. [Return Movie](#return-movie)  
 
 ##Customers
 
@@ -231,7 +231,7 @@ See below for the available endpoints for this API.
 }
 ```
 
-*Movies*
+##Movies
 
 ###All Movies
 
@@ -347,15 +347,43 @@ See below for the available endpoints for this API.
 }
 ```
 
+### Subset of Movies
+- GET `/movies/:sort_by/:limit/:offset`
+- Sorts the entire set of movies by a certain property (`sort_by`), then retrieves a number (`limit`) of movies, starting at a certain index (`offset`).
+  - `sort_by` accepts `title`, `release_date`.
+  - `limit` must be an integer >= 0.
+  - `offset` must be an integer >= 0.
+- Returns an object with a `movies` property containing an array of movie objects.
+- Each movie object contains the following properties: `id`, `title`, `overview`, `release_date`, and `inventory`.
+- Sample: GET `/movies/title/2/2`
+```json
+{
+    "movies": [{
+        "id": 21,
+        "title": "A Clockwork Orange",
+        "overview": "The head of a gang of toughs, in an insensitive futuristic society, is conditioned to become physically ill at sex and violence during a prison sentence. When he is released, he's brutally beaten by all of his old adversaries.",
+        "release_date": "1971-12-18",
+        "inventory": 4
+    }, {
+        "id": 6,
+        "title": "Alien",
+        "overview": "During its return to the earth, commercial spaceship Nostromo intercepts a distress signal from a distant planet. When a three-member team of the crew discovers a chamber containing thousands of eggs on the planet, a creature inside one of the eggs attacks an explorer. The entire crew is unaware of the impending nightmare set to descend upon them when the alien parasite planted inside its unfortunate host is birthed.",
+        "release_date": "1979-05-25",
+        "inventory": 4
+    }]
+}
+```
 
-GET '/movies/:sort_by/:limit/:offset'
+##Rentals
 
-*Rentals*
+###Overdue Rentals
+- GET `/rentals/overdue`
 
-GET '/rentals/overdue'
+###Rental History of Single Movie
+- GET `/rentals/:title`
 
-GET '/rentals/:title'
+###Rent Movie
+- POST `/rentals/checkout/:customer_id/:movie_title`
 
-POST '/rentals/checkout/:customer_id/:movie_title'
-
-PUT '/rentals/checkin/:customer_id/:movie_title'
+###Return Movie
+- PUT `/rentals/checkin/:customer_id/:movie_title`
