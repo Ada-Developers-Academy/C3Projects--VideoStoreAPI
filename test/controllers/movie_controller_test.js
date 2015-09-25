@@ -133,8 +133,7 @@ describe('movie controller', function() {
 
     sorting_hat.forEach(function(query) {
       var uri = '/movies/' + title + '/rented/sort_by=' + query + '/1';
-      it.only('responds with json format', function(done) {
-
+      it('responds with json format', function(done) {
         agent.get(uri).set('Accept', 'application/json')
           .expect('Content-Type', /json/)
           .expect(200, function(error, result) {
@@ -142,8 +141,8 @@ describe('movie controller', function() {
             done();
           })
       })
+
       it('responds with an array of customers', function(done) {
-            console.log('BODYWORKZ' + result.body.data.movies[0]);
         agent.get(uri).set('Accept', 'application/json')
           .expect(200, function(error, result) {
             assert.equal(error, undefined);
