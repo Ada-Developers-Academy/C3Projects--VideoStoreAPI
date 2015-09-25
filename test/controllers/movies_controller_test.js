@@ -128,4 +128,100 @@ describe("Endpoints under /movies", function() {
     })
   })
 
+
+  describe("GET /movies/:title/customers/current", function() {
+    var movie_request;
+
+    beforeEach(function(done) {
+      movie_request = agent.get('/movies/Jaws/customers/current').set('Accept', 'application/json');
+      done();
+    })
+
+    it("displays current customers of jaws", function(done) {
+      movie_request
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result) {
+          assert.equal(result.body.length, 1);
+
+          var keys = ['id', 'name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone', 'account_credit'];
+          assert.deepEqual(Object.keys(result.body[0]), keys);
+
+          assert.equal(result.body[0].name, 'Curran Stout');
+          done();
+        });
+    })
+  })
+
+  describe("GET /movies/:title/customers/past/sort_by_id", function() {
+    var movie_request;
+
+    beforeEach(function(done) {
+      movie_request = agent.get('/movies/The Exorcist/customers/past/sort_by_id').set('Accept', 'application/json');
+      done();
+    })
+
+    it("displays past customers of the Exorcist, sorted by id", function(done) {
+      movie_request
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result) {
+          assert.equal(result.body.length, 2);
+
+          var keys = ['id', 'name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone', 'account_credit'];
+          assert.deepEqual(Object.keys(result.body[0]), keys);
+
+          assert.equal(result.body[0].name, 'Shelley Rocha');
+          assert.equal(result.body[1].name, 'Carolyn Chandler');
+          done();
+        });
+    })
+  })
+
+  describe("GET /movies/:title/customers/past/sort_by_name", function() {
+    var movie_request;
+
+    beforeEach(function(done) {
+      movie_request = agent.get('/movies/The Exorcist/customers/past/sort_by_name').set('Accept', 'application/json');
+      done();
+    })
+
+    it("displays past customers of the Exorcist, sorted by name", function(done) {
+      movie_request
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result) {
+          assert.equal(result.body.length, 2);
+
+          var keys = ['id', 'name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone', 'account_credit'];
+          assert.deepEqual(Object.keys(result.body[0]), keys);
+
+          assert.equal(result.body[0].name, 'Carolyn Chandler');
+          assert.equal(result.body[1].name, 'Shelley Rocha');
+          done();
+        });
+    })
+  })
+
+  describe("GET /movies/:title/customers/past/sort_by_checkout_date", function() {
+    var movie_request;
+
+    beforeEach(function(done) {
+      movie_request = agent.get('/movies/The Exorcist/customers/past/sort_by_checkout_date').set('Accept', 'application/json');
+      done();
+    })
+
+    it("displays past customers of the Exorcist, sorted by checkout_date", function(done) {
+      movie_request
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result) {
+          assert.equal(result.body.length, 2);
+
+          var keys = ['name', 'registered_at', 'address', 'city', 'state', 'postal_code', 'phone', 'account_credit', 'checkout_date'];
+          assert.deepEqual(Object.keys(result.body[0]), keys);
+          console.log(result.body)
+
+          assert.equal(result.body[0].checkout_date, '09-22-2015');
+          assert.equal(result.body[1].checkout_date, '09-20-2015');
+          done();
+        });
+    })
+  })
 })

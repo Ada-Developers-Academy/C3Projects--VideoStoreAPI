@@ -73,7 +73,6 @@ describe("Endpoints under /customers", function() {
           actual_registered_at = [];
 
           for(var index in result.body) {
-            console.log(result.body[index].registered_at)
             actual_registered_at.push(result.body[index].registered_at);
           }
 
