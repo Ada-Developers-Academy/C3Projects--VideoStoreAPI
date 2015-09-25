@@ -24,7 +24,6 @@ describe("Endpoints under /movies", function() {
     })
 
     it("responds with json", function(done) {
-      // console.log("HITHERE")
       movie_request
         .expect('Content-Type', /application\/json/)
         .expect(200, done);
@@ -45,14 +44,13 @@ describe("Endpoints under /movies", function() {
     var movie_request;
 
     it("can get subset of movies in title order", function(done) {
-      movie_request = agent.get('/movies/sort/Jaws/4/1').set('Accept', 'application/json');
+      movie_request = agent.get('/movies/sort/title/4/0').set('Accept', 'application/json');
       movie_request
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result) {
-          console.log(result.body);
-          assert.equal(result.body.length, 3);
+          assert.equal(result.body.length, 4);
 
-          var expected_names = ['Gauze', 'Jaws', 'Maws'],
+          var expected_names = ['Alien', 'Jaws', 'North by Northwest', 'Psycho'],
           actual_names = [];
 
           for(var index in result.body) {
@@ -65,19 +63,19 @@ describe("Endpoints under /movies", function() {
     })
 
     it("can get a subset of movies in release_date order", function(done){
-      movie_request = agent.get('/movies/n/3/o/1/s/release_date').set('Accept', 'application/json');
+      movie_request = agent.get('/movies/sort/release_date/4/0').set('Accept', 'application/json');
       movie_request
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result) {
-          assert.equal(result.body.length, 3);
-          var expected_names = ['Claws', 'Maws', 'Gauze'],
-          actual_names = [];
+          assert.equal(result.body.length, 4);
+          var expected_release_date = ['1959-07-17', '1960-06-16', '1973-12-26', '1975-06-19'],
+          actual_release_date = [];
 
           for(var index in result.body) {
-            actual_names.push(result.body[index].title);
+            actual_release_date.push(result.body[index].release_date);
           }
 
-          assert.deepEqual(expected_names, actual_names);
+          assert.deepEqual(expected_release_date, actual_release_date);
 
           done(error);
         })
@@ -98,7 +96,7 @@ describe("Endpoints under /movies", function() {
         .expect(200, function(error, result) {
           assert.equal(result.body.length, 1);
 
-          var keys = ['id', 'title', 'overview', 'release_date', 'inventory'];
+          var keys = ['id', 'title', 'overview', 'release_date', 'inventory', 'available'];
           assert.deepEqual(Object.keys(result.body[0]), keys);
 
           assert.equal(result.body[0].title, 'Jaws');
@@ -106,4 +104,28 @@ describe("Endpoints under /movies", function() {
         });
     })
   })
+
+  describe("GET /movies/:title/available", function() {
+    var movie_request;
+
+    beforeEach(function(done) {
+      movie_request = agent.get('/movies/Jaws/available').set('Accept', 'application/json');
+      done();
+    })
+
+    it("displays available quantity of jaws", function(done) {
+      movie_request
+        .expect('Content-Type', /application\/json/)
+        .expect(200, function(error, result) {
+          assert.equal(result.body.length, 1);
+
+          var keys = ['title', 'available'];
+          assert.deepEqual(Object.keys(result.body[0]), keys);
+
+          assert.equal(result.body[0].available, '6');
+          done();
+        });
+    })
+  })
+
 })

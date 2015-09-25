@@ -34,6 +34,17 @@ module.exports = {
     });
   },
 
+  sort_by_registered_date: function(column, limit, offset, callback){
+    var db = new sqlite3.Database('db/' + db_env + '.db');
+    var statement = "SELECT * FROM " + this.table_name + " ORDER BY " + column + " LIMIT " + limit + " OFFSET " + offset + ";";
+
+    db.all(statement, function(err, res) {
+      res = res.sort(function(a, b) { return Date.parse(a.registered_at) > Date.parse(b.registered_at) });
+      if (callback) callback(err, res);
+      db.close();
+    });
+  },
+
   available: function(value, callback){
     var db = new sqlite3.Database('db/' + db_env + '.db');
     var statement = "SELECT title, available FROM " + this.table_name + " WHERE title = ?;";

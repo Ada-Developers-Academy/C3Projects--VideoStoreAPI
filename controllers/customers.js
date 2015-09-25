@@ -18,13 +18,12 @@ exports.customersController = {
     });
   },
 
-
-
   sortCustomersByRegisteredAt: function(req, res) {
     var dbCustomer = new Customer();
     var limit = req.params.limit;
     var offset = req.params.offset;
-    var result = dbCustomer.sort_by("registered_at", limit, offset, function(err,result){
+    // console.log(res)
+    var result = dbCustomer.sort_by_registered_date("registered_at", limit, offset, function(err,result){
     return res.status(200).json(result);
     });
   },
