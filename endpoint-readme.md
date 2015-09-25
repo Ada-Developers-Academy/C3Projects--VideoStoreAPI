@@ -16,7 +16,7 @@ See below for the available endpoints for this API.
 ##Customers
 
 ###All Customers
-- GET `/customers`
+- **Endpoint:** GET `/customers`
 - Retrieves a list of all customers.
 - Returns an object with a `customers` property containing an array of customer objects.
 - Each customer object contains the following properties: `id`, `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
@@ -79,7 +79,7 @@ See below for the available endpoints for this API.
 
 ###Single Customer
 
-- GET `/customers/:id`
+- **Endpoint:** GET `/customers/:id`
 - Retrieves data about the customer identified by the `id` passed in the URL.
 - Returns an object with `customer_data` and `movies` properties.
   - `customer_data` contains the following properties: `id`, `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
@@ -197,7 +197,7 @@ See below for the available endpoints for this API.
 
 ###Subset of Customers
 
-- GET `/customers/:sort_by/:limit/:offset`
+- **Endpoint:** GET `/customers/:sort_by/:limit/:offset`
 - Sorts the entire set of customers by a certain property (`sort_by`), then retrieves a number (`limit`) of customers, starting at a certain index (`offset`).
   - `sort_by` accepts `name` (customer name), `registered_at` (registration date), or `postal_code`.
   - `limit` must be an integer >= 0.
@@ -235,7 +235,7 @@ See below for the available endpoints for this API.
 
 ###All Movies
 
-- GET `/movies`
+- **Endpoint:** GET `/movies`
 - Retrieves a list of all movies.
 - Returns an object with a `movies` property containing an array of movie objects.
 - Each movie object contains the following properties: `id`, `title`, `overview`, `release_date`, and `inventory`.
@@ -278,7 +278,7 @@ See below for the available endpoints for this API.
 
 ###Single Movie
 
-- GET `/movies/:title/:order`
+- **Endpoint:** GET `/movies/:title/:order`
 - `order` accepts `name` (customer name), `id` (customer id), and `checkout_date`.
 - Retrieves data about the movie identified by the `title` passed in the URL, with past customers sorted in the `order` passed in the URL.
 - Returns an object with `movie_data` and `customers` properties.
@@ -348,7 +348,7 @@ See below for the available endpoints for this API.
 ```
 
 ### Subset of Movies
-- GET `/movies/:sort_by/:limit/:offset`
+- **Endpoint:** GET `/movies/:sort_by/:limit/:offset`
 - Sorts the entire set of movies by a certain property (`sort_by`), then retrieves a number (`limit`) of movies, starting at a certain index (`offset`).
   - `sort_by` accepts `title` and `release_date`.
   - `limit` must be an integer >= 0.
@@ -430,10 +430,44 @@ See below for the available endpoints for this API.
 ```
 
 ###Rental History of Single Movie
-- GET `/rentals/:title`
+- **Endpoint:** GET `/rentals/:title`
+- Retrieves data and rental history about the movie identified by the `title` passed in the URL.
+- Returns an object with `movie_data`, `availability`, `current_renters` properties.
+  - `movie_data` contains the following properties: `id`, `title`, `overview`, `release_date`, and `inventory`.
+  - `availability` contains: `available` (boolean) and `copies_available` (integer).
+  - `current_renters` is a list of customers who are currently renting the movie.
+    - Each customer object contains the following propeties: `id`, `name`, `registered_at` (date of registration), `address`, `city`, `state`, `postal_code`, `phone`, and `account_credit` (in cents).
+- Sample: GET `/rentals/jaws`
+```json
+
+{
+    "movie_data": {
+        "id": 2,
+        "title": "Jaws",
+        "overview": "An insatiable great white shark terrorizes the townspeople of Amity Island, The police chief, an oceanographer and a grizzled shark hunter seek to destroy the bloodthirsty beast.",
+        "release_date": "1975-06-19",
+        "inventory": 6
+    },
+    "availability": {
+        "available": true,
+        "copies_available": 5
+    },
+    "current_renters": [{
+        "id": 1,
+        "name": "Shelley Rocha",
+        "registered_at": "Wed, 29 Apr 2015 07:54:14 -0700",
+        "address": "Ap #292-5216 Ipsum Rd.",
+        "city": "Hillsboro",
+        "state": "OR",
+        "postal_code": "24309",
+        "phone": "(322) 510-8695",
+        "account_credit": 1315
+    }]
+}
+```
 
 ###Rent Movie
-- POST `/rentals/checkout/:customer_id/:movie_title`
+- **Endpoint:** POST `/rentals/checkout/:customer_id/:movie_title`
 
 ###Return Movie
-- PUT `/rentals/checkin/:customer_id/:movie_title`
+- **Endpoint:** PUT `/rentals/checkin/:customer_id/:movie_title`
