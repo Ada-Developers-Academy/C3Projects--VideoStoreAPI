@@ -89,23 +89,34 @@ module.exports = {
 
   create_rental: function(data, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
+    var returned_date = null,
+        total         = null;
     var statement = "INSERT INTO rentals (checkout_date, returned_date, rental_time, \
                     cost, total, customer_id, movie_id) \
                     VALUES (?, ?, ?, ?, ?, ?, ?);";
 
+    var return_statement = "SELECT * FROM rentals WHERE ID = (SELECT MAX(ID) FROM rentals);";
+
     var values = []
     values.push(data.checkout_date);
-    values.push(data.returned_date);
+    values.push(returned_date);
     values.push(data.rental_time);
     values.push(data.cost);
-    values.push(data.total);
+    values.push(total);
     values.push(data.customer_id);
     values.push(data.movie_id);
 
-    db.run(statement, values, function(err) {
-      callback(err, res);
+    console.log("I'm in the database", statement, values)
+
+    db.run(statement, values, function(error, result) {
+      callback(error, "You created a new rental.");
       db.close();
     });
+
+    // db.run(return_statement, function(error, result) {
+    //   callback(error, result);
+    //   db.close();
+    // })
   },
 
   customersRentalHistory: function(callback){

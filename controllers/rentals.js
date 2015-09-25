@@ -22,6 +22,18 @@ exports.rentalsController = {
     });
   },
 
+  checkout: function(req, res) {
+    var rental = new Rental();
+    var responseBody = Object.keys(req.body);
+    var dataString = responseBody[0];
+    var data = JSON.parse(dataString);
+
+    rental.create_rental(data, function(error, result) {
+      console.log("I'm in the controller ", error);
+      res.status(200).json(result);
+    });
+  },
+
   customersOverdue: function(req, res) {
     var rental = new Rental();
     rental.customersRentalHistory(function(err,result){

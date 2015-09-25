@@ -6,7 +6,7 @@ var request = require('supertest'),
     schema  = require('../../utils/schema'),
     agent   = request.agent(app);
 
-describe.only("Endpoints under /movies", function() {
+describe("Endpoints under /movies", function() {
   beforeEach(function(done) {
     schema(done)
 

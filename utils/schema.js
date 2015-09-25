@@ -14,20 +14,6 @@ module.exports = function(callback) {
     ['available', 'integer']
   ];
 
-  db.serialize(function() {
-    db.run("DROP TABLE IF EXISTS movies;");
-
-    db.run("CREATE TABLE movies (id INTEGER PRIMARY KEY);");
-
-    for(var i = 0; i < movie_fields.length; i++){
-      var name = movie_fields[i][0],
-          type = movie_fields[i][1];
-
-      db.run("ALTER TABLE movies ADD COLUMN " + name + " " + type + ";");
-    }
-
-  });
-
   var customer_fields = [
     ['name', 'text'],
     ['registered_at', 'text'],
@@ -38,18 +24,6 @@ module.exports = function(callback) {
     ['phone', 'text'],
     ['account_credit', 'integer']
   ];
-
-  db.serialize(function() {
-    db.run("DROP TABLE IF EXISTS customers;");
-
-    db.run("CREATE TABLE customers (id INTEGER PRIMARY KEY);");
-
-    for(var i = 0; i < customer_fields.length; i++){
-      var name = customer_fields[i][0],
-          type = customer_fields[i][1];
-      db.run("ALTER TABLE customers ADD COLUMN " + name + " " + type + ";");
-    }
-  });
 
   var rental_fields = [
     ['checkout_date', 'text'],
@@ -64,6 +38,30 @@ module.exports = function(callback) {
   ];
 
   db.serialize(function() {
+
+    db.run("DROP TABLE IF EXISTS customers;");
+
+    db.run("CREATE TABLE customers (id INTEGER PRIMARY KEY);");
+
+    for(var i = 0; i < customer_fields.length; i++){
+      var name = customer_fields[i][0],
+          type = customer_fields[i][1];
+      db.run("ALTER TABLE customers ADD COLUMN " + name + " " + type + ";");
+    }
+
+    db.run("DROP TABLE IF EXISTS movies;");
+
+    db.run("CREATE TABLE movies (id INTEGER PRIMARY KEY);");
+
+    for(var i = 0; i < movie_fields.length; i++){
+      var name = movie_fields[i][0],
+          type = movie_fields[i][1];
+          console.log("im in the for loop", i)
+      db.run("ALTER TABLE movies ADD COLUMN " + name + " " + type + ";", function(error, result){
+        console.log("I'm in the  movie loop", error, result);
+      });
+    }
+
     db.run("DROP TABLE IF EXISTS rentals;");
 
     db.run("CREATE TABLE rentals (id INTEGER PRIMARY KEY);");
@@ -77,9 +75,12 @@ module.exports = function(callback) {
 
       db.run("ALTER TABLE rentals ADD COLUMN " + name + " " + type + ";");
       if(foreign_key) {
-        db.run("ALTER TABLE rentals ADD CONSTRAINT " + foreign_key + ";");
+      db.run("ALTER TABLE rentals ADD CONSTRAINT " + foreign_key + ";");
       }
     }
   });
+
   db.close();
+  console.log("I'm done setting up the db")
+  callback()
 }

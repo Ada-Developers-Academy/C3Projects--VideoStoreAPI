@@ -2,8 +2,8 @@
 
 module.exports = function(callback) {
   var sqlite3 = require("sqlite3").verbose(),
-    db_env = process.env.DB || 'development',
-    db = new sqlite3.Database('db/' + db_env + '.db');
+      db_env  = process.env.DB || 'development',
+      db      = new sqlite3.Database('db/' + db_env + '.db');
 
   // MOVIES TABLE =========================================================================
   var movies = require('./movies-' + db_env + '.json');
@@ -24,6 +24,7 @@ module.exports = function(callback) {
       );
     }
     movie_statement.finalize();
+    db.close();
   })
 
   // CUSTOMERS TABLE =========================================================================
@@ -47,6 +48,7 @@ module.exports = function(callback) {
       );
     }
     customer_statement.finalize();
+    db.close();
   })
 
   // RENTAL TABLE ===============================================================================
@@ -69,8 +71,9 @@ module.exports = function(callback) {
       );
     }
     rental_statement.finalize();
+    db.close();
   })
 
-
-  db.close();
+  console.log("I'm seeding the database")
+  // db.close();
 }
