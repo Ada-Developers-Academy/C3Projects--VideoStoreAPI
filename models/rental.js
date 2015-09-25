@@ -188,7 +188,16 @@ Rental.prototype.customers = function(title, callback) {
 
 Rental.prototype.checkOut = function(movieTitle, customerId, callback) {
   function formatData(err, res) {
-    if (err) { return callback(err); }
+    if (err) {
+      var results = {};
+
+      results.meta = {
+        status: 500,
+        message: err
+      }
+
+      return callback(results);
+    }
 
     var results = {};
     var data = fixTime([res], "check_out_date");
