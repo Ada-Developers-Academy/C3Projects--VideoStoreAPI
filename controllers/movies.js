@@ -15,6 +15,16 @@ var Controller = {
     new Movie().findBy('title', req.params.title, Controller.sendJSON.bind(res));
   },
 
+  customers: function(req, res, next) {
+    if (req.query.status == 'current') {
+      new Movie().customersCurrent(req.params.title, Controller.sendJSON.bind(res));
+    } else if (req.query.status == 'past') {
+      new Movie().customersPast(req.params.title, req.query.sort, Controller.sendJSON.bind(res));
+    } else {
+      res.status(400).json("Bad request");
+    }
+  },
+
   sendJSON: function(err, res) {
     if (err) {
       var status = err.status == 400 ? 400 : 500;

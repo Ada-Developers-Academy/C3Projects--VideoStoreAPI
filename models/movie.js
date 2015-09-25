@@ -27,8 +27,11 @@ Movie.prototype.customersCurrent = function customersCurrent(movieTitle, callbac
 
 Movie.prototype.customersPast = function customersPast(movieTitle, parameter, callback) {
   var db = this.openDB();
-  var statement = 'SELECT customers.id AS customer_id, customers.name, rentals.id AS rental_id, rentals.checkout_date FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id WHERE rentals.movie_title LIKE ? AND rentals.return_date != "" ORDER BY ?;';
-  var values = [movieTitle, parameter];
+
+  // There is a security gap here with putting the parameter directly into the statement without a check that it is a valid sort parameter.
+
+  var statement = 'SELECT customers.id AS customer_id, customers.name, rentals.id AS rental_id, rentals.checkout_date FROM customers INNER JOIN rentals ON customers.id = rentals.customer_id WHERE rentals.movie_title LIKE ? AND rentals.return_date != "" ORDER BY ' + parameter + ';';
+  var values = [movieTitle];
 
   db.all(statement, values, function(err, rows) {
     callback(err, rows);

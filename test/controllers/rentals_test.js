@@ -3,7 +3,6 @@
 var request = require('supertest');
 var assert = require('assert');
 var app = require('../../app');
-var Rental = require('../../models/rental');
 var agent = request.agent(app);
 var Rental = require('../../models/rental');
 
