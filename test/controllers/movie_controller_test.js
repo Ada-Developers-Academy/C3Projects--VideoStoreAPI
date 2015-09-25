@@ -132,7 +132,8 @@ describe('movie controller', function() {
     ];
 
     sorting_hat.forEach(function(query) {
-      var uri = '/movies/' + title + '/rented/sort_by=' + query + '/1';
+      var uri = '/movies/' + title + '/rented/sort_by=' + query;
+
       it('responds with json format', function(done) {
         agent.get(uri).set('Accept', 'application/json')
           .expect('Content-Type', /json/)
@@ -181,7 +182,7 @@ describe('movie controller', function() {
       it('responds with an array of movies', function(done) {
         agent.get(uri).set('Accept', 'application/json')
         .expect(200, function(error, result) {
-          assert.deepEqual(Object.keys(result.body[0]).sort(), movie_keys.sort())
+          assert.deepEqual(Object.keys(result.body.data.movies[0]).sort(), movie_keys.sort())
           done();
         })
       })
@@ -189,7 +190,7 @@ describe('movie controller', function() {
       it('responds with 10 movies', function(done) {
         agent.get(uri).set('Accept', 'application/json')
         .expect(200, function(error, result) {
-          assert.equal(result.body.length, 10)
+          assert.equal(result.body.data.movies.length, 10)
           done();
         })
       })
