@@ -25,7 +25,6 @@ var sqlite3 = require('sqlite3').verbose(),
     statement = "Select customers.id, customers.name, rentals.checkout_date FROM customers, rentals WHERE rentals.customer_id=customers.id AND rentals.movie_title LIKE ? AND rentals.return_date " + returned + ordered;
 
     db.all(statement, [titleish], function(err, res) {
-      console.log(statement);
       if (callback) callback(err, res);
       db.close();
     })
@@ -33,24 +32,26 @@ var sqlite3 = require('sqlite3').verbose(),
 
   Rental.prototype.checkInMovie = function checkInMovie(title, id, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db'),
-        statement = "Update rentals SET return_date = date('now'), overdue = (CASE WHEN (date('now') > due_date) THEN 1 ELSE 0 END) WHERE return_date IS NULL AND movie_title = ? AND customer_id = ?;";
+        update_statement = "Update rentals SET return_date = date('now'), overdue = (CASE WHEN (date('now') > due_date) THEN 1 ELSE 0 END) WHERE return_date IS NULL AND movie_title = ? AND customer_id = ?;",
+        select_statement = "SELECT rentals.due_date, rentals.return_date, rentals.overdue, rentals.movie_title, customers.account_credit FROM rentals, customers WHERE rentals.customer_id=customers.id AND rentals.customer_id=? AND rentals.movie_title=? AND return_date=date('now')",
+        charge_statement = "Update customers SET account_credit = (account_credit - 5) WHERE id=?";
 
-    db.all(statement, [title, id], function(err) {
-      if (err) {
-        callback(err, { message: "Check-in failed" });
-        db.close();
-      } else {
-        callback(err, { message: 'Check-in successful', movie_title: title, customer_id: id });
-        db.close();
+    db.run(update_statement, [title, id]);
+    db.all(select_statement, [id, title], function(err, res) {
+      if (res[0].overdue == 1) {
+        db.run(charge_statement, [id]);
       }
-    });
+      res.push({message: 'Checkin successful'});
+      if (callback) callback(err, res);
+      db.close();
+    })
   }
 
   Rental.prototype.overdue = function overdue(callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db'),
       statement = "SELECT customers.id, customers.name, rentals.movie_title from customers, rentals WHERE customers.id=rentals.customer_id AND (rentals.overdue = 1 OR ( date('now')>rentals.due_date AND rentals.return_date IS NULL));";
-
     db.all(statement, function(err, res) {
+
       if (callback) callback(err, res);
       db.close();
     })
@@ -65,6 +66,7 @@ var sqlite3 = require('sqlite3').verbose(),
     db.run(insert_statement, [null, 0, title, id]);
     db.run(update_statement, [id]);
     db.all(select_statement, [id, id, title], function(err, res) {
+        res.push({message: 'Checkout successful'})
         if (callback) callback(err, res);
         db.close();
       })

@@ -166,15 +166,17 @@ describe("/rentals", function() {
     var rental_request;
 
     it("checks in a movie for a given customer", function(done) {
-      rental_request = agent.put('/rentals/checkin/amelie/1').set('Accept', 'application/json');
+      rental_request = agent.put('/rentals/checkin/Amelie/1').set('Accept', 'application/json');
       rental_request
       .expect(200, function(err, res) {
         assert.equal(err, undefined);
 
-        var keys = ['message', 'movie_title', 'customer_id'];
-        assert.deepEqual(Object.keys(res.body), keys);
+        var rental_keys = ['due_date', 'return_date', 'overdue', 'movie_title', 'account_credit'];
+        assert.deepEqual(Object.keys(res.body[0]), rental_keys);
+        assert.equal(res.body[0].movie_title, 'Amelie');
 
-        assert.equal(res.body.movie_title, 'amelie');
+        var message = ['Checkin successful'];
+        assert.equal(res.body[1].message, message);
         done();
       });
     })
