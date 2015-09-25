@@ -1,16 +1,13 @@
 "use strict";
 
-// ----------------- movie model ----------------- //
 var movieTable = require('../models/movie');
-
 var MoviesController = {};
 
 //--------- GET /all -----------------------------------------------------------
 MoviesController.all = function(request, response) {
   var movies = new movieTable();
-
-  // prepare statement
   var page = request.params.page || 1;
+
   movies.all(page, function(error, result) {
     if (error) { result = error; }
 
@@ -94,24 +91,12 @@ MoviesController.rentals_by_check_out_date = function(request, response) {
 MoviesController.whos_renting = function(request, response) {
   var movies = new movieTable();
   var title = request.params.title;
-  // var page = request.params.page || 1;
-  // var offset = (page - 1) * movies.limit;
 
   movies.whos_renting(title, function(error, result) {
     if (error) { result = error; }
 
     return response.status(result.meta.status).json(result);
   })
-
-  // var statement =
-  //   "SELECT customers.name, rentals.check_out_date, \
-  //   rentals.movie_title \
-  //   FROM rentals LEFT JOIN customers \
-  //   ON rentals.customer_id = customers.id \
-  //   WHERE rentals.movie_title = '" + title + "' \
-  //   AND rentals.returned = 0 \
-  //   LIMIT " + movies.limit + " \
-  //   OFFSET " + offset;
 }
 
 module.exports = MoviesController;
