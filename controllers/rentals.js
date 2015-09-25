@@ -9,7 +9,7 @@ var rentalsController = {
     var title = req.params.title   
     var statement = 
       "SELECT \
-        rentals.id, rentals.title, rentals.customer_id, rentals.name, \
+        rentals.id, rentals.movie_id, rentals.title, rentals.customer_id, rentals.name, \
         rentals.checkout_date, rentals.due_date, rentals.return_date \
       FROM movies, rentals \
       WHERE rentals.movie_id = movies.id AND movies.title LIKE '%" + title + "%' \
@@ -27,6 +27,7 @@ var rentalsController = {
         
         var rental = { 
           rental_id: result[i].id,
+          movie_id: result[i].movie_id,
           movie_title: result[i].title,
           customer_id: result[i].customer_id,
           customer_name: result[i].name,
@@ -119,11 +120,11 @@ var rentalsController = {
     var movie_id = parseInt(req.params.movie_id);
 
     var return_movie_statement = 
-      "UPDATE rentals SET return_date = date('now') WHERE movie_id = " + movie_id + " AND return_date IS NULL; \
+      "UPDATE rentals SET return_date = date('now') WHERE movie_id = " + movie_id + " AND return_date IS NULL AND customer_id = " + customer_id + "; \
       UPDATE movies SET inventory_avail = inventory_avail + 1 WHERE id = " + movie_id + ";";
 
     var select_last_rental_statement = 
-      "SELECT rentals.id, rentals.title, rentals.customer_id, rentals.name, rentals.checkout_date, rentals.due_date, rentals.return_date \
+      "SELECT rentals.id, rentals.movie_id, rentals.title, rentals.customer_id, rentals.name, rentals.checkout_date, rentals.due_date, rentals.return_date \
       FROM rentals \
       WHERE movie_id = " + movie_id + " AND customer_id = " + customer_id + " \
       ORDER BY return_date DESC;";
