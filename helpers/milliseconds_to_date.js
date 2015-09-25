@@ -1,6 +1,6 @@
 "use strict";
 
-function convertRegisteredAt(objectsArray, propertyToConvert) {
+function convertTimePropertyOnObject(objectsArray, propertyToConvert) {
   objectsArray = objectsArray.map(function(customer) {
     var stringMilliseconds = customer[propertyToConvert];
     var numericMilliseconds = Number(stringMilliseconds);
@@ -16,4 +16,4 @@ function convertRegisteredAt(objectsArray, propertyToConvert) {
   return objectsArray;
 }
 
-module.exports = convertRegisteredAt;
+module.exports = convertTimePropertyOnObject;

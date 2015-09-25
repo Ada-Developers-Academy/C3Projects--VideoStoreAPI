@@ -1,58 +1,61 @@
+- - -
 > ## Endpoints
+- - -
 
-<!--
+For all paginated results, the page number is optional. By default, the first page is returned.
 
-seed data:
-- movies
-- customers
+## 1. Customers
+  - GET all customers  
+    `http://wobsite.url/customers/all/:page`
+  - GET all customers, sorted by a passed in attribute  
+    `http://wobsite.url/customers/all/sort_by=:sort/:page`
+    - name  
+      `http://wobsite.url/customers/all/sort_by=name/2`
+    - registered_at  
+      `http://wobsite.url/customers/all/sort_by=registered_at/2`
+    - postal_code  
+      `http://wobsite.url/customers/all/sort_by=postal_code/2`
+  - GET single customer profile  
+    `http://wobsite.url/customers/1`
 
-other data:
-- transactions
-  - __active__: customer rents movie
-    - pay when you rent
-    - customer's account credit / balance needs to be updated $$$$$
-    - there is a return / due date on this transaction
-  - __inactive / complete__: customer returns movie
-    - record is updated to include a return date
-
--->
-
-1. Customers
-  - GET all customers `http://wobsite.url/customers/all`
-    - GET subset of customers, sorted by a passed in attribute
-      - name `http://wobsite.url/customers/all?sort=name&page=2`
-      - registered_at `http://wobsite.url/customers/all?sort=registered_at&page=2`
-      - postal_code `http://wobsite.url/customers/all?sort=postal_code&page=2`
-  - GET single customer profile `http://wobsite.url/customers/1`
-
-2. Movies
-  - GET all movies `http://wobsite.url/movies/all`
-  - GET subset of movies
-    - title `http://wobsite.url/movies/all?sort=title&page=2`
-    - release_date `http://wobsite.url/movies/all?sort=release_date&page=2`
-  - GET single movie profile
-  - GET a list of customers who are renting the title `http://wobsite.url/movies/<title>/renting`
-    - GET a list of customers that have rented the title
-      - customer id `http://wobsite.url/movies/<title>/rented?sort=customer_id&page=2`
-      - customer name `http://wobsite.url/movies/<title>/rented?sort=customer_name&page=2`
-      - check out date `http://wobsite.url/movies/<title>/rented?sort=check_out_date&page=2`
+## 2. Movies
+  - GET all movies  
+    `http://wobsite.url/movies/all`
+  - GET all movies, sorted by a passed in attribute  
+    `http://wobsite.url/movies/<title>/all/sort_by=:sort/:page`
+    - title  
+      `http://wobsite.url/movies/all/sort_by=title/2`
+    - release_date  
+      `http://wobsite.url/movies/all/sort_by=release_date/2`
+  - GET single movie profile  
+    `http://wobsite.url/movies/<title>`
+  - GET a list of customers who are renting the title  
+    `http://wobsite.url/movies/<title>/renting`
+  - GET a list of customers that have rented the title, sorted by a passed in
+    attribute  
+   `http://wobsite.url/movies/<title>/rented/sort_by=:sort/:page`
+    - customer id  
+      `http://wobsite.url/movies/<title>/rented/sort_by=customer_id/2`
+    - customer name  
+      `http://wobsite.url/movies/<title>/rented/sort_by=customer_name/2`
+    - check out date  
+      `http://wobsite.url/movies/<title>/rented/sort_by=check_out_date/2`
 
 
-3. Rentals - this is the interface used when talking to customers
-  - GET `http://wobsite.url/rentals/movies/<title>`
-    - returns
-      - synopsis
-      - release date
-      - inventory total
-      - whether title is available for rent
-  - see all customers who currently have a copy `http://wobsite.url/rentals/movies/<title>/customers/all`
-  - GET a list of customers with overdue movies
-    - `http://wobsite.url/rentals/overdue`
-  - POST check out a title `http://wobsite.url/rentals/movies/<title>/customers/:id`
-    - create return date
-    - create charge customer's account
-  - PATCH check in a title `http://wobsite.url/rentals/movies/<title>/customers/:id`
-    - update record
-      - returned = true
-    - update movie's inventory
-    - update returned date
+## 3. Rentals
+  - GET Rentals Edition™ single movie profile  
+    `http://wobsite.url/rentals/movies/<title>`
+  - GET a list of all customers who currently have a copy of a given title  
+    `http://wobsite.url/rentals/movies/<title>/customers`
+  - GET a list of customers with overdue movies  
+    `http://wobsite.url/rentals/overdue`
+  - POST without request body to check out a title  
+    `http://wobsite.url/rentals/movies/<title>/customers/:id`
+    - example request:
+      `curl -X POST http://wobsite.url/rentals/Alien/customers/100`
+    - returns a receipt
+  - PATCH without request body to return a title  
+    `http://wobsite.url/rentals/movies/<title>/customers/:id`
+    - example request:  
+      `curl --request PATCH http://wobsite.url/rentals/Alien/customers/100`
+    - returns a receipt

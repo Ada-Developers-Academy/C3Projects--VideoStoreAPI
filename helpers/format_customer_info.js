@@ -1,6 +1,6 @@
 "use strict";
 
-var ourWebsite = require("../url_base");
+var ourWebsite = require("./url_base");
 
 function formatCustomerInfo(dataArray) {
   var output = dataArray.map(function(dataItem) {

@@ -19,21 +19,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var rentals = require("./routes/rental_routes");
-app.use("/rentals", rentals);
-
-var zomgRoutes = require('./routes/zomgRoutes');
-app.use('/', zomgRoutes);
-app.use('/zomg', zomgRoutes);
-app.use('/all', zomgRoutes);
-app.use('/all/registered/:page', zomgRoutes);
-
-var users = require('./routes/users');
-app.use('/users', users);
-
-var movies = require('./routes/movie_routes');
-app.use('/movies', movies);
-
+// ------ ROUTES ---------------------------------------------------------------
+app.use("/rentals", require("./routes/rental_routes"));
+app.use("/customers", require("./routes/customer_routes"));
+app.use('/movies', require('./routes/movie_routes'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

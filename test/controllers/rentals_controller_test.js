@@ -25,13 +25,13 @@ describe("RentalsController", function() {
 
       describe("the returned JSON object", function() {
         describe("data", function() {
-          it("includes `movieInfo` -- about the movie", function(done) {
+          it("includes `movie` -- about the movie", function(done) {
             var movieKeys = ["title", "overview", "release_date", "inventory"].sort();
             agent
               .get(thisUrl)
               .expect(200, function(error, result) {
-                assert(result.body.data.movieInfo);
-                assert.deepEqual(Object.keys(result.body.data.movieInfo).sort(), movieKeys);
+                assert(result.body.data.movie);
+                assert.deepEqual(Object.keys(result.body.data.movie).sort(), movieKeys);
                 done();
               })
           })
@@ -47,12 +47,12 @@ describe("RentalsController", function() {
         })
 
         describe("meta data", function() {
-          it("includes `movieInfo`-- a URL that might provide better results", function(done) {
+          it("includes `moreMovieInfo`-- a URL that might provide better results", function(done) {
              agent
                .get(thisUrl)
                .expect(200, function(error, result) {
-                 assert(result.body.meta.movieInfo);
-                 assert(result.body.meta.movieInfo.indexOf(title) > 0);
+                 assert(result.body.meta.moreMovieInfo);
+                 assert(result.body.meta.moreMovieInfo.indexOf(title) > 0);
                  done();
                })
           })
@@ -98,16 +98,16 @@ describe("RentalsController", function() {
            agent
              .get(thisUrl)
              .expect(303, function(error, result) { // this is just the supertest way
-               assert.equal(result.body.data.message, message);
+               assert.equal(result.body.meta.message, message);
                done();
              })
         })
 
-        it("has meta data including `movieInfo`-- a URL that might provide better results", function(done) {
+        it("has meta data including `moreMovieInfo`-- a URL that might provide better results", function(done) {
            agent
              .get(thisUrl)
              .expect(303, function(error, result) {
-               assert(result.body.meta.movieInfo);
+               assert(result.body.meta.moreMovieInfo);
                done();
              })
         })
@@ -215,12 +215,12 @@ describe("RentalsController", function() {
               })
           })
 
-          it("includes `movieInfo`-- a URL that might provide better results", function(done) {
+          it("includes `moreMovieInfo`-- a URL that might provide better results", function(done) {
              agent
                .get(thisUrl)
                .expect(200, function(error, result) {
-                 assert(result.body.meta.movieInfo);
-                 assert(result.body.meta.movieInfo.indexOf(title) > 0);
+                 assert(result.body.meta.moreMovieInfo);
+                 assert(result.body.meta.moreMovieInfo.indexOf(title) > 0);
                  done();
                })
           })
@@ -260,17 +260,17 @@ describe("RentalsController", function() {
            agent
              .get(thisUrl)
              .expect(303, function(error, result) { // this is just the supertest way
-               assert.equal(result.body.data.message, message);
+               assert.equal(result.body.meta.message, message);
                done();
              })
         })
 
-        it("has meta data including `movieInfo`-- a URL that might provide better results", function(done) {
+        it("has meta data including `moreMovieInfo`-- a URL that might provide better results", function(done) {
            agent
              .get(thisUrl)
              .expect(303, function(error, result) {
-               assert(result.body.meta.movieInfo);
-               assert(result.body.meta.movieInfo.indexOf(title) > 0);
+               assert(result.body.meta.moreMovieInfo);
+               assert(result.body.meta.moreMovieInfo.indexOf(title) > 0);
                done();
              })
         })
@@ -466,17 +466,17 @@ describe("RentalsController", function() {
            agent
              .get(thisUrl)
              .expect(303, function(error, result) { // this is just the supertest way
-               assert.equal(result.body.data.message, message);
+               assert.equal(result.body.meta.message, message);
                done();
              })
         })
 
-        it("has meta data including `movieInfo`-- a URL that might provide better results", function(done) {
+        it("has meta data including `moreMovieInfo`-- a URL that might provide better results", function(done) {
            agent
              .get(thisUrl)
              .expect(303, function(error, result) {
-               assert(result.body.meta.movieInfo);
-               assert(result.body.meta.movieInfo.indexOf(title) > 0);
+               assert(result.body.meta.moreMovieInfo);
+               assert(result.body.meta.moreMovieInfo.indexOf(title) > 0);
                done();
              })
         })
