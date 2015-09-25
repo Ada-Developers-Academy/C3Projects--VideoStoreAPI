@@ -91,57 +91,20 @@ module.exports = {
     var movie_id = data.movie_id; // 2
     var total = data.total; // 5
     var returned_date = data.returned_date; // "09-20-2015"
-      // var statement = db.exec(
-        // var statement = "BEGIN; UPDATE rentals SET total = " + total + ", returned_date = " + returned_date + " WHERE customer_id = " + customer_id + " AND movie_id = " + movie_id + "; UPDATE customers SET account_credit = account_credit - (SELECT total FROM rentals WHERE customers.id = rentals.customer_id AND rentals.movie_id = " + movie_id + "); UPDATE movies SET available = available + 1 WHERE id = " + movie_id + "; COMMIT;";
 
     var rentalsStatement = "UPDATE rentals SET total = " + total + ", returned_date = '" + returned_date + "' WHERE customer_id = " + customer_id + " AND movie_id = " + movie_id + ";";
     var customersStatement = "UPDATE customers SET account_credit = account_credit - (SELECT total FROM rentals WHERE customers.id = rentals.customer_id AND rentals.movie_id = " + movie_id + ");";
     var moviesStatement = "UPDATE movies SET available = available + 1 WHERE id = " + movie_id + ";";
 
-    console.log(returned_date)
-    console.log(typeof returned_date)
-    console.log(rentalsStatement)
-
-
-
-        // var statement = "BEGIN; \
-        // UPDATE rentals SET total = " + total + ", returned_date = " + returned_date + " WHERE customer_id = " + customer_id + " AND movie_id = " + movie_id + "; \
-        // UPDATE customers SET account_credit = account_credit - (SELECT total FROM rentals WHERE customers.id = rentals.customer_id AND rentals.movie_id = " + movie_id + "); \
-        // UPDATE movies SET available = available + 1 WHERE id = " + movie_id + "; \
-        // COMMIT;";
-
-        // console.log();
-        // console.log(statement);
-      //   function(err) {
-      //     db.close();
-      //   }
-      // )
-
-      db.serialize(function(){
-        db.exec("BEGIN");
-        db.exec(rentalsStatement);
-        db.exec(customersStatement);
-        db.exec(moviesStatement)
-        db.exec("COMMIT", function(error) {
-          callback(error, "Success");
-          db.close();
-        });
-      })
-
-
-    // db.all(rentalsStatement, function(err, res) {
-    //   if (callback) callback(err, "Success");
-    //   db.close();
-    // });
-    //
-    // db.all(customersStatement, function(err, res) {
-    //   if (callback) callback(err, "Success");
-    //   db.close();
-    // });
-    //
-    // db.all(moviesStatement, function(err, res) {
-    //   if (callback) callback(err, "Success");
-    //   db.close();
-    // });
+    db.serialize(function(){
+      db.exec("BEGIN");
+      db.exec(rentalsStatement);
+      db.exec(customersStatement);
+      db.exec(moviesStatement)
+      db.exec("COMMIT", function(error) {
+        callback(error, "Success");
+        db.close();
+      });
+    })
   }
 }

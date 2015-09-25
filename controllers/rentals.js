@@ -6,29 +6,16 @@ var Movie = require("../models/movie");
 exports.rentalsController = {
   customersRentalHistory: function(req, res) {
     var rental = new Rental();
-    var result = rental.customersRentalHistory(function(err,result){
-    return res.status(200).json(result);
+    rental.customersRentalHistory(function(err,result){
+    res.status(200).json(result);
     });
   },
 
   checkin: function(req, res) {
     var rental = new Rental();
-    // var data = {
-    //     movie_id: req.body.movie_id,
-    //     customer_id: req.body.customer_id,
-    //     total: req.body.total,
-    //     returned_date: req.body.returned_date,
-    // };
     var responseBody = Object.keys(req.body);
     var dataString = responseBody[0];
     var data = JSON.parse(dataString);
-    // var customer_id = dataString["customer_id"]
-    // console.log(dataString);
-    // console.log(dataString);
-    // console.log(typeof dataString);
-    // console.log(data.total);
-    console.log(data);
-    console.log(data.returned_date)
 
     rental.checkin(data, function(err, result){
     res.status(200).json(result);
@@ -37,7 +24,7 @@ exports.rentalsController = {
 
   customersOverdue: function(req, res) {
     var rental = new Rental();
-    var result = rental.customersRentalHistory(function(err,result){
+    rental.customersRentalHistory(function(err,result){
     var overdues = [];
     var overdue = 0;
     var overdueDays = 0;
@@ -86,7 +73,7 @@ exports.rentalsController = {
           pushCustomerToArrayIfOverdue(result[i], overdue, overdues);
       }
     }
-    return res.status(200).json(overdues);
+    res.status(200).json(overdues);
     });
   }
 }
