@@ -5,6 +5,17 @@ Anita & Alice's Video Store
 
 See below for the available endpoints for this API.
 
+1. GET '/customers'  
+2. GET '/customers/:id'  
+3. GET '/customers/:sort_by/:limit/:offset'  
+4. GET '/movies'  
+5. GET '/movies/:title/:order'  
+6. GET '/movies/:sort_by/:limit/:offset'  
+7. GET '/rentals/overdue'  
+8. GET '/rentals/:title'  
+9. POST '/rentals/checkout/:customer_id/:movie_title'  
+10. PUT '/rentals/checkin/:customer_id/:movie_title'  
+
 **Customers**
 
 GET '/customers'
@@ -221,12 +232,53 @@ GET '/customers/:sort_by/:limit/:offset'
 }
 ```
 
-
 *Movies*
 
 GET '/movies'
 
+- Retrieves a list of all movies.
+- Returns an object with a `movies` property containing an array of movie objects.
+- Each movie object contains the following properties: `title`, `overview`, `release_date`, and `inventory`.
+- Sample: GET '/movies'
+```json
+{
+    "movies": [{
+        "id": 1,
+        "title": "Psycho",
+        "overview": "When larcenous real estate clerk Marion Crane goes on the lam with a wad of cash and hopes of starting a new life, she ends up at the notorious Bates Motel, where manager Norman Bates cares for his housebound mother. The place seems quirky, but fine… until Marion decides to take a shower.",
+        "release_date": "1960-06-16",
+        "inventory": 8
+    }, {
+        "id": 2,
+        "title": "Jaws",
+        "overview": "An insatiable great white shark terrorizes the townspeople of Amity Island, The police chief, an oceanographer and a grizzled shark hunter seek to destroy the bloodthirsty beast.",
+        "release_date": "1975-06-19",
+        "inventory": 6
+    }, {
+        "id": 3,
+        "title": "The Exorcist",
+        "overview": "12-year-old Regan MacNeil begins to adapt an explicit new personality as strange events befall the local area of Georgetown. Her mother becomes torn between science and superstition in a desperate bid to save her daughter, and ultimately turns to her last hope: Father Damien Karras, a troubled priest who is struggling with his own faith.",
+        "release_date": "1973-12-26",
+        "inventory": 7
+    }, {
+        "id": 4,
+        "title": "North by Northwest",
+        "overview": "Madison Avenue advertising man Roger Thornhill finds himself thrust into the world of spies when he is mistaken for a man by the name of George Kaplan. Foreign spy Philip Vandamm and his henchman Leonard try to eliminate him but when Thornhill tries to make sense of the case, he is framed for murder. Now on the run from the police, he manages to board the 20th Century Limited bound for Chicago where he meets a beautiful blond, Eve Kendall, who helps him to evade the authorities. His world is turned upside down yet again when he learns that Eve isn't the innocent bystander he thought she was. Not all is as it seems however, leading to a dramatic rescue and escape at the top of Mt. Rushmore.",
+        "release_date": "1959-07-17",
+        "inventory": 10
+    }, {
+        "id": 5,
+        "title": "The Silence of the Lambs",
+        "overview": "FBI trainee Clarice Starling ventures into a maximum-security asylum to pick the diseased brain of Hannibal Lecter, a psychiatrist turned homicidal cannibal. Starling needs clues to help her capture a serial killer. Unfortunately, her Faustian relationship with Lecter soon leads to his escape, and now two deranged killers are on the loose.",
+        "release_date": "1991-02-14",
+        "inventory": 3
+    }]
+}
+```
+
 GET '/movies/:title/:order'
+
+
 
 GET '/movies/:sort_by/:limit/:offset'
 
