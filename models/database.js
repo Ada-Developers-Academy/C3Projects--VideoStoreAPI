@@ -49,7 +49,6 @@ module.exports = {
               results = [],
               movie = res[0];
 
-              // console.log(res);
             if (movie == undefined) {
               db.all(all_statement, [titleish], function(err, res) {
                 var movie = res[0],

@@ -59,7 +59,29 @@ var sqlite3 = require('sqlite3').verbose(),
 
   Rental.prototype.checkoutMovie = function checkoutMovie(title, id, callback) {
     var db = new sqlite3.Database('db/' + db_env + '.db');
+    var inventory_statement = "SELECT movies.title, movies.overview, movies.inventory FROM movies, rentals WHERE movies.title LIKE ? AND movies.title=rentals.movie_title AND rentals.return_date IS NULL;",
+        all_statement = "SELECT movies.title, movies.overview, movies.inventory FROM movies WHERE movies.title LIKE ?;";
 
+    db.serialize(function() {
+      db.all(inventory_statement, title, function(err, res) {
+        var rented = res.length,
+            movie = res[0];
+
+          if (movie == undefined) {
+            db.all(all_statement, title, function(err, res) {
+            var movie = res[0],
+                available = movie.inventory;
+            return available;
+            // db.close();
+            });
+          } else {
+            var available = movie.inventory - rented;
+            return available;
+            // db.close();
+          }
+      });
+    });
+    console.log(available);
     var insert_statement = "Insert into rentals (checkout_date, due_date, return_date, overdue, movie_title, customer_id) VALUES (date('now'), date('now', '+3 day'), ?, ?, ?, ?);",
         update_statement = "Update customers SET account_credit = account_credit - 2 WHERE id = ?;",
         select_statement = "SELECT customers.name, customers.account_credit, rentals.movie_title, rentals.due_date FROM customers, rentals WHERE customers.id=? AND rentals.customer_id=? AND rentals.movie_title=? AND rentals.due_date=date('now', '+3 day')";
