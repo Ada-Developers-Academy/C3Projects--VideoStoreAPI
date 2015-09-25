@@ -41,48 +41,73 @@ The API you build should have the following capabilities. The schema of your dat
 ### Authentication
 - There is not an authentication requirement for this project; assume all users interacting with the API are video store employees.
 
+
+## Using this API
+
+### _Setup_
+- npm run db:setup to seed database
+- DB=test npm run db:schema to setup the test database
+
+### index
+- Get zomg GET /
+
 ### Customers
-- Retrive a list of all customers
-- Retrive a subset of customers
+- Retrieve a list of all customers
+  - GET /Customers
+- Retrieve a subset of customers
   - Given a sort column, return _n_ customer records, offset by _p_ records (this will be used to create "pages" of customers)
   - Sort columns are
-    - `name`
-    - `registered_at`
-    - `postal_code`
+    - `name` GET customers/name/:records/:offset
+    - `registered_at` GET customers/registered/:records/:offset
+    - `postal_code` GET customers/postal/:records/:offset
 - Given a customer's `id`...
   - List the movies they _currently_ have checked out
+    - GET customers/current/:id
   - List the movies a customer has checked out in the past
     - ordered by check out date
     - includes return date
+    - GET customers/history/:id
 
 ### Movies
 - Retrieve a list of all movies
+  - GET /movies
 - Retrieve a subset of movies
   - Given a sort column, return _n_ movie records, offset by _p_ records (this will be used to create "pages" of movies)
   - Sort columns are
-    - `title`
-    - `release_date`
+    - `title` GET movies/title/:records/:offset
+    - `release_date` GET movies/released/:records/:offset
+
+  - Look a movie up by title to see
+    - it's synopsis
+    - release date
+    - and inventory total
+    - Know if a movie has any inventory available to rent
+    - GET movies/:title
+
+### Rentals
+
+- See a list of customers that have _currently_ checked out any of the movie's inventory
+  - GET rentals/customers/current
 - Given a movie's `title`...
   - Get a list of customers that have _currently_ checked out a copy of the film
+    - GET rentals/checkedout/:title
   - Get a list of customers that have checked out a copy _in the past_
     - ordered by customer `id`
+      - GET rentals/history/id/:title
     - ordered by customer `name`
+      - GET rentals/history/name/:title
     - ordered by check out date
-
-### Rental
-- Look a movie up by title to see
-  - it's synopsis
-  - release date
-  - and inventory total
-- Know if a movie has any inventory available to rent
-- See a list of customers that have _currently_ checked out any of the movie's inventory
+      - GET rentals/history/:title
 - Given a customer's `id` and a movie's `title` ...
   - "check out" one of the movie's inventory to the customer
     - Establish a return date
     - Charge the customer's account (cost up to you)
+      - POST rentals/checkout/:title/:customer_id
   - "check in" one of customer's rentals
     - return the movie to its inventory
+      - PUT /rentals/checkin/:title/:customer_id
 - See a list of customers with overdue movies
+  - GET rentals/customers/overdue
 
 ### Interface
 - This part of the project is purely an API; all interactions should happen over HTTP requests. There is no front-end, user-facing interface.
@@ -91,53 +116,3 @@ The API you build should have the following capabilities. The schema of your dat
 - All endpoints must be tested.
 - We will use [Mocha](https://mochajs.org/) for tests.
 - There isn't a coverage requirement for this project, beyond demonstrating that every endpoint is covered by some manner of tests.
-
-
-#Endpoints
-### HTTP verbs
-- data needs
-- create app
-- seed db
-​
-### Customers
-- all Customers
-    - get "/" within customersController
-    - data from customers db
-- sort customers (by name, registered, or postal) and return offset by some amount
-    - get "/name/:name", "/registered/:registered", "/postal/:postal"
-    - pagination/:limiting_num??
-    - data from customers db
-- for given customer, list currently checked out and checkout history w/ checkout date and return date
-    - get "/:id/current"
-    - get "/:id/history"
-    - data from joint rental db (make this?)
-        - where "in-date" is null => currently "checked_out"
-​
-### Movies
-- all Movies
-    - get "/" within moviesController
-    - data from movies db
-- sort movies (by title or release date) and return offset by some amount
-    - get "/title/start=:num1&return=:num2, "/released/:date"
-    - pagination/:limiting_num?
-    - data from movies db
-- given title, list current and previous check out
-    - "/:title/current" => return customers
-    - "/:title/history" sort by customer "/id", "/name", and checkout "/date" => return customers
-    - hit all 3 db tables
-​
-### Rentals
-- get "/rental/:title"
-    - data from movies and rentals db (inventory - checkout == true)
-- get "/rental/:title/customers"
-    - data from customers and rentals db (checkout == true)
-- post "/rental/checkout/:title/:customer_id"
-    - new rental record w/ due_date (Date.now + 3 days)
-    - new rental_cost (-2)
-    - patch customer db (account_credit - rental_cost)
-    - checkout_date == Date.now
-- patch "/rental/checkin/:title/:customer_id"
-    - patch rental db checkout_out == false
-- get "/rental/overdue"
-    - data from rentals and customers db => return customers
-    - w
