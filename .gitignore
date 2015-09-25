@@ -1,1 +1,4 @@
 .DS_Store
+node_modules/
+db/development.db
+db/test.db
