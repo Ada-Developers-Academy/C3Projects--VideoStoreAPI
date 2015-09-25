@@ -100,3 +100,26 @@ DONE- Retrieve a subset of movies
 - account for negative availability
 - possibly refactor database.js
 
+# Endpoints
+
+## Movies
+
+- Show all movies:
+http://localhost:3000/movies
+- Look up past rentals for a movie: http://localhost:3000/movies/alien/past_rentals/id
+- Look up current rentals for a movie
+http://localhost:3000/movies/psycho/current_rentals
+- Pagination for name
+???????
+______
+## Rentals
+- Check out a new title
+curl -X POST http://localhost:3000/rentals/new_rental/4/the_exorcist
+- Check in a title
+curl -X PUT http://localhost:3000/rentals/check_in/4/the_exorcist
+- Check overdue rentals
+http://localhost:3000/rentals/overdue
+- Look at the movie's details
+http://localhost:3000/rentals/the_exorcist
+- Find a movie's current customer rentals
+http://localhost:3000/rentals/the_exorcist/customers

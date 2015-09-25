@@ -2,7 +2,12 @@
 
 var Movie = require('../models/movie');
 
+function titleSpaces(title) {
+  return title.replace("_", " ");
+}
+
 exports.moviesController = {
+
   index: function index(req, res) {
 
     var movie = new Movie();
@@ -26,6 +31,8 @@ exports.moviesController = {
 
   current_rentals: function current_rentals(req, res, movie_title) {
 
+    movie_title = titleSpaces(movie_title);
+
     var movie = new Movie();
 
     movie.movie_current_customers(movie_title, function(err, record) {
@@ -34,6 +41,8 @@ exports.moviesController = {
   },
 
   past_rentals: function past_rentals(req, res, movie_title, column) {
+
+    movie_title = titleSpaces(movie_title);
 
     var movie = new Movie();
 
