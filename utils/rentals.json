@@ -1,0 +1,26 @@
+[
+  {
+    "check_out": 20150616,
+    "check_in": null,
+    "due_date": 20150619,
+    "overdue": 0,
+    "customer_id": 1,
+    "movie_title": "Jaws"
+  },
+  {
+    "check_out": 20150616,
+    "check_in": 20150618,
+    "due_date": 20150619,
+    "overdue": 0,
+    "customer_id": 2,
+    "movie_title": "Alien"
+  },
+  {
+    "check_out": 20150616,
+    "check_in": null,
+    "due_date": 20150619,
+    "overdue": 0,
+    "customer_id": 3,
+    "movie_title": "The Birds"
+  }
+]
