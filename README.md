@@ -1,5 +1,5 @@
 # Project: VideoStoreAPI
-## Brittany L. Walentin & Jeri Sommers
+## Brittany L. Walentin & Jeri Sommers -- [About Our Endpoints]("about_endpoints.md")
 
 The overall goal of this project is to create a system that a video store (remember those?) could use to track their inventory of rental videos and their collection of customers.
 
