@@ -61,16 +61,15 @@ describe("Customer", function() {
       })
     })
 
-    it.only("can find a customer by id", function(done){
-      rental.find_by("customer_id", 'return_date IS NULL', 1, function(err, res) {
+    it("can find a customer's rentals by id", function(done){
+      rental.find_by("customer_id", 'return_date IS NULL', 2, function(err, res) {
         assert.equal(err, undefined);
-        console.log(res)
+
         assert(res instanceof Array);
-        assert.equal(res.length, 1);
-        assert.equal(res[0].customer_id, 1);
+        assert.equal(res.length, 2); //amelie and jaws
+        assert.equal(res[0].customer_id, 2);
         done();
       })
     })
-
   })
 })
