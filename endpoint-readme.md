@@ -472,14 +472,26 @@ See below for the available endpoints for this API.
   - The `checkout_date` is set to the current day.  
   - The `due_date` of the rental is set to 5 days from the current day.
   - The `returned_date` is set to an empty string `''`.
+- Charges the customer's account credit $1.00 (decrements by `100`).
 - Returns an object with a `success` property.
   - `success` contains the message: `"Yay! You checked out " + movie_title"`
-- Sample: POST `/rentals/checkout/1/jaws`
+- Sample: POST `/rentals/checkout/1/Jaws`
 ```json
 {
-    "success": "Yay! You checked out jaws"
+    "success": "Yay! You checked out Jaws"
 }
 ```
 
 ###Return Movie
 - **Endpoint:** PUT `/rentals/checkin/:customer_id/:movie_title`
+- Updates the first rental record associated with the `customer_id` and `movie_title` to include a `returned_date`.
+  - `returned_date` is set to the current day.
+- Returns an object with a `success` property.
+  - `success` contains the message: `"Congratulations, you have checked in: " + movie_title`
+- SAMPLE: PUT `/rentals/checkin/1/jaws`
+```json
+{
+    "success": "Congratulations, you have checked in: jaws"
+}
+```
+

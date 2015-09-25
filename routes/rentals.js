@@ -132,7 +132,7 @@ router.put('/checkin/:customer_id/:movie_title', function(req, res, next) {
       var message = "Congratulations, you have checked in: ";
 
       rental.update(rentalId, ["returned_date"], [today], function(err, result) {
-        res.status(200).json(message + movieTitle);
+        res.status(200).json({ success: message + movieTitle });
       })
     });
   });
