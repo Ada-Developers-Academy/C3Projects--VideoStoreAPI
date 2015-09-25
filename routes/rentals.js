@@ -12,5 +12,9 @@ router.get('/overdue', function(req, res, next) {
   return rental_exports.rentalsController.customersOverdue(req, res);
 });
 
+router.put('/checkin', function(req, res, next) {
+  return rental_exports.rentalsController.checkin(req, res);
+});
+
 module.exports = router;
 // title?page=:page&number=:number

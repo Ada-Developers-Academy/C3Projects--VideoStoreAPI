@@ -87,7 +87,6 @@ exports.moviesController = {
     dbMovie.getPastRentalCustomerByDate(dbMovie, title, function(error, result) {
       res.status(200).json(result)
     });
-
   },
 
   availableMovies: function(req, res) {

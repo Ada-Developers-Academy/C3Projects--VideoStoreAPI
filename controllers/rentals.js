@@ -6,15 +6,25 @@ var Movie = require("../models/movie");
 exports.rentalsController = {
   customersRentalHistory: function(req, res) {
     var rental = new Rental();
-    var result = rental.customersRentalHistory(function(err,result){
-    return res.status(200).json(result);
+    rental.customersRentalHistory(function(err,result){
+    res.status(200).json(result);
+    });
+  },
+
+  checkin: function(req, res) {
+    var rental = new Rental();
+    var responseBody = Object.keys(req.body);
+    var dataString = responseBody[0];
+    var data = JSON.parse(dataString);
+
+    rental.checkin(data, function(err, result){
+    res.status(200).json(result);
     });
   },
 
   customersOverdue: function(req, res) {
     var rental = new Rental();
-
-    var result = rental.customersRentalHistory(function(err,result){
+    rental.customersRentalHistory(function(err,result){
     var overdues = [];
     var overdue = 0;
     var overdueDays = 0;
@@ -63,7 +73,7 @@ exports.rentalsController = {
           pushCustomerToArrayIfOverdue(result[i], overdue, overdues);
       }
     }
-    return res.status(200).json(overdues);
+    res.status(200).json(overdues);
     });
   }
 }
@@ -87,7 +97,7 @@ exports.rentalsController = {
     if (overdue > 0) {
       var customer = arg.name;
       var overdueInfo = {};
-      overdueInfo[customer] = overdue + " days";
+      overdueInfo[customer] = overdue;
       overdues.push(overdueInfo);
     }
   }

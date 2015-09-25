@@ -37,7 +37,8 @@ beforeEach(function(done) {
         .expect(200, done);
     })
 
-    it("returns an array of movie objects", function(done) {
+
+    it("returns an array", function(done) {
       movie_request.expect(200, function(error, result) {
         assert.equal(result.body.length, 5); //the db_cleaner inserted two records
 

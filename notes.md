@@ -72,10 +72,15 @@ post "/rent/checkout" = Checks out the movie to the customer. Change the availab
    - cost_per_day :integer
    - total :integer - nil when init
 
-put "/rent/checkin" = Checks in the movie to the customer. changes the available inventory for that specific title.
+🔵 put "/rent/checkin" = Checks in the movie to the customer. changes the available inventory for that specific title.
  * Update Rentals table:
    - returned_date :string
    - total :integer
+ * Update Customers table;  
+   - account_credit
+ * Update Movies table:
+  - inventory
+  - available
 
 🔵 get "/rent/overdue" = All customers with overdue movies. *Added extra feature: returns not just customers with overdue movies, but also overdue days*
  * From Rentals table
