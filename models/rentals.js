@@ -34,28 +34,27 @@ Rental.prototype.check_out = function(data, callback){
   var check_inventory_statement = "SELECT movies.inventory-(SELECT COUNT(*) from rentals  WHERE rentals.movie_id=movies.id AND check_in_date IS NULL) AS available from movies WHERE title LIKE ?";
 
   db.all(check_inventory_statement, title, function(err, result){
-    if (result[0].available > 0){
-    db.run(insert_statement, yyyymmdd(now), yyyymmdd(due), id, title, function(err, rows) {
-      if (err !== null) {
-        console.log(err);
-      }
-    });
-    db.run(charge_statement, id, function(err, res) {
+    if (result[0].available > 0) {
+      db.run(insert_statement, yyyymmdd(now), yyyymmdd(due), id, title, function(err, rows) {
         if (err !== null) {
           console.log(err);
         }
-        result = {"result": "Successful", "message": "Rental Created"};
-        if (callback) callback(err, result);
-        db.close();
-    });
-  }
+      });
+      db.run(charge_statement, id, function(err, res) {
+          if (err !== null) {
+            console.log(err);
+          }
+          result = { "result": "Successful", "message": "Rental created" };
+          if (callback) callback(err, result);
+          db.close();
+      });
+    }
     else {
-      var res = {"result": "Unsuccessful", "message": "Not enough inventory to complete rental"};
+      var res = { "result": "Unsuccessful", "message": "Not enough inventory to complete rental" };
       if (callback) callback(err, res);
       db.close();
     }
   });
-
 };
 
 module.exports = Rental;
