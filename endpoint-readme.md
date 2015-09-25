@@ -468,6 +468,18 @@ See below for the available endpoints for this API.
 
 ###Rent Movie
 - **Endpoint:** POST `/rentals/checkout/:customer_id/:movie_title`
+- Creates a rental record for the customer identified by the `customer_id` and the movie identified by the `movie_title`.
+  - The `checkout_date` is set to the current day.  
+  - The `due_date` of the rental is set to 5 days from the current day.
+  - The `returned_date` is set to an empty string `''`.
+- Returns an object with a `success` property.
+  - `success` contains the message: `"Yay! You checked out " + movie_title"`
+- Sample: POST `/rentals/checkout/1/jaws`
+```json
+{
+    "success": "Yay! You checked out jaws"
+}
+```
 
 ###Return Movie
 - **Endpoint:** PUT `/rentals/checkin/:customer_id/:movie_title`
