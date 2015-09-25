@@ -1,5 +1,4 @@
 #Anita & Alice's Video Store
----------------------------
 
 See below for the available endpoints for this API.
 
