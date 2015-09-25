@@ -1,5 +1,36 @@
-# Project: VideoStoreAPI
+# Carly and Elsa Project: VideoStoreAPI
 
+## Notes
+### Endpoints
+*DONE* GET "/customers"
+// for routes below, will need to return results offset by page number
+*DONE* GET "/customers/:name" // will be dynamic
+*DONE* GET "/customers/:registered_at"
+*DONE* GET "/customers/:postal_code"
+
+*DONE* GET "/customers/:id/current_movies"
+*DONE* GET "/customers/:id/past_movies" // order by checkout date, include return date
+
+*DONE* GET "/movies"
+// for routes below, will need to return results offset by page number
+*DONE* GET "/movies/:title" // will be dynamic
+*DONE* GET "/movies/:release_date"
+
+// for routes below, will need to pass an ordering parameter to order by customer id, name, or checkout date
+*DONE* GET "/movies/:title/current_customers/:order"
+*DONE* GET "/movies/:title/past_customers/:order"
+
+// normalize database or join everything???
+*DONE* GET "/movies/:title"
+  // includes synopsis, release date, inventory total, rentable boolean, list of customers that have it currently checkout out ...?
+
+*DONE* POST "/rentals/:customer_id/:movie_title"
+  // create association, checkout date, return date, charge account, returned boolean
+*DONE* PATCH "/checkin/:customer_id/:movie_title"
+  // modify returned boolean
+*DONE* GET "/rentals/overdue"
+
+---
 The overall goal of this project is to create a system that a video store (remember those?) could use to track their inventory of rental videos and their collection of customers.
 
 We will use [NodeJS](https://nodejs.org/en/) to construct a RESTful API. The goal of this API is to quickly serve information about the store's video collection, customer information, and to update rental status. This repository provides two JSON datafiles to serve as the initial seeds for this system.
@@ -18,7 +49,7 @@ We will use [NodeJS](https://nodejs.org/en/) to construct a RESTful API. The goa
 - `registered_at`: When the customer first visited the store
 - The customer's physical address, composed of:
   - `address`
-  - `city` 
+  - `city`
   - `state`
   - `postal_code`
 - `phone`: Primary contact phone number
@@ -91,4 +122,3 @@ The API you build should have the following capabilities. The schema of your dat
 - All endpoints must be tested.
 - We will use [Mocha](https://mochajs.org/) for tests.
 - There isn't a coverage requirement for this project, beyond demonstrating that every endpoint is covered by some manner of tests.
-

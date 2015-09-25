@@ -1,0 +1,30 @@
+var express = require('express');
+var router = express.Router();
+var customer_exports = require('../controllers/customers');
+
+// GET CUSTOMER ROUTES
+router.get('/', function(req, res, next) {
+  return customer_exports.customersController.customers(req, res);
+});
+
+router.get('/:id/current_movies', function(req, res, next) {
+  return customer_exports.customersController.customers_current_movies(req, res);
+});
+
+router.get('/:id/past_movies', function(req, res, next) {
+  return customer_exports.customersController.customers_past_movies(req, res);
+});
+
+router.get('/names/:name/per_page:per_page/pg:pg', function(req, res, next) {
+  return customer_exports.customersController.customers_by_name(req, res);
+});
+
+router.get('/date/:date/per_page:per_page/pg:pg', function(req, res, next) {
+  return customer_exports.customersController.customers_by_register_date(req, res);
+});
+
+router.get('/zipcode/:zipcode/per_page:per_page/pg:pg', function(req, res, next) {
+  return customer_exports.customersController.customers_by_postal_code(req, res);
+});
+
+module.exports = router;
