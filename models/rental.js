@@ -197,9 +197,10 @@ Rental.prototype.checkOut = function(movie_title, customer_id, callback) {
     return_date) \
     VALUES (?, ?, ?, ?, ?);";
 
-  var customerStatement = "UPDATE customers \
-    SET account_credit = account_credit - " + this.charge +
-    "WHERE customer_id = " + customer_id;
+  var customerStatement = "UPDATE customers " +
+    "SET account_credit = account_credit - " + this.charge +
+    " WHERE id = " + customer_id;
+  console.log(customerStatement)
 
   var values = [movie_title, customer_id, 0, Date.now(), ""];
   var that = this;
@@ -207,8 +208,8 @@ Rental.prototype.checkOut = function(movie_title, customer_id, callback) {
   this.open();
   this.db.serialize(function() {
     that.db.run(rentalStatement, values, function(error, data) {
+      console.log("inside rentalStatement");
       // return sqlErrorHandling(error, data, formatData);
-      console.log("Inside db.run rental");
     })
     that.db.run(customerStatement, function(error, data) {
       console.log('inside customerStatement');
