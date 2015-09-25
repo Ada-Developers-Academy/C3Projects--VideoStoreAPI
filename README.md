@@ -109,9 +109,21 @@ http://localhost:3000/movies
 - Look up past rentals for a movie: http://localhost:3000/movies/alien/past_rentals/id
 - Look up current rentals for a movie
 http://localhost:3000/movies/psycho/current_rentals
-- Pagination for name
-???????
+- Pagination for title
+http://localhost:3000/movies/title/page1
 ______
+
+## Customers
+-Show all customers:
+http://localhost:3000/customers
+- Loop at subset of customers sorted by name, registered at, postal_code
+http://localhost:3000/customers/name/page1
+- Show customers current rentals
+http://localhost:3000/customers/1/current_rentals
+- Customers past rentals
+http://localhost:3000/customers/2/current_rentals
+
+
 ## Rentals
 - Check out a new title
 curl -X POST http://localhost:3000/rentals/new_rental/4/the_exorcist
@@ -123,3 +135,5 @@ http://localhost:3000/rentals/overdue
 http://localhost:3000/rentals/the_exorcist
 - Find a movie's current customer rentals
 http://localhost:3000/rentals/the_exorcist/customers
+
+
