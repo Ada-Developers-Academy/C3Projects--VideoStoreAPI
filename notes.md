@@ -23,8 +23,6 @@ http://localhost:3000/movies/The%20Silence%20of%20the%20Lambs/customers/current
     - return customer_id
     - From Customer table find customers with customer_id
 
-
-
 http://localhost:3000/movies/The%20Exorcist/customers/past/sort_by_id
 🔵 get "/movies/:title/customers/past/sort_by_id" = movie title, sorted by customers ids
   - From Movies Table find movie_id
@@ -64,11 +62,9 @@ http://localhost:3000/customers/sort/registered_at/5/0
 http://localhost:3000/customers/sort/postal_code/5/0
 🔵 get "/customers/sort/postal_code/:limit/:page" = returns all customers sorted by postal_code.
 
-
 CHECK
 get "/customers/:id/movies/current" = show all the movies that this customer is renting currently.
   - From Rentals table find all of one customer's current rentals
-
 
 http://localhost:3000/customers/1/movies/past
 🔵 get "/customers/:id/movies/past" = show all the movies that this customer has rented in the past, sorted by the checkout date. Include return date in response.
@@ -87,7 +83,6 @@ post "/rent/checkout" = Checks out the movie to the customer. Change the availab
    - rental_time :integer
    - cost_per_day :integer
    - total :integer - nil when init
-
 
 CURL ===============================
 curl -X PUT -d '{"customer_id":"4", "movie_id":"5", "total": "5", "returned_date": "09-24-2015"}' -H 'contentype:application/json' "http://localhost:3000/rent/checkin"
