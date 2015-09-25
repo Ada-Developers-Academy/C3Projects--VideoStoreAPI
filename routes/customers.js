@@ -14,7 +14,7 @@ router.get('/by_name', function(req, res, next) {
 
 // all customers by registered at (optional query for number (n=#) & page (p=#))
 router.get('/by_registered_at', function(req, res, next) {
-  return customer_exports.customersController.showByRegistered_at(req, res);
+  return customer_exports.customersController.showByRegisteredAt(req, res);
 });
 
 // all customers by postal code (optional query for number (n=#) & page (p=#))

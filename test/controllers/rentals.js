@@ -222,5 +222,32 @@ describe("Endpoints under /rentals", function() {
       request
         .expect('[]', done);
     });
+
+    it('updates the rental in the database', function(done) {
+      var db = new sqlite3.Database('db/test.db');
+
+      request
+        .end(function(err, res) {
+          db.all("SELECT COUNT(*) AS num_of_checked_out_movies FROM rentals WHERE check_in_date IS NULL", function(error, result) {
+            assert.deepEqual([{'num_of_checked_out_movies': 1}], result);
+            done();
+          });
+        });
+    });
+
+    it('charges customer if returned movie is overdue', function(done) {
+      var db = new sqlite3.Database('db/test.db');
+
+      db.all("SELECT account_credit FROM customers WHERE id=3;", function(err1, money_before) {
+        request
+          .end(function(err, res) {
+            db.all("SELECT account_credit FROM customers WHERE id=3;", function(err2, money_after) {
+              assert.notEqual(money_before[0].account_credit, money_after[0].account_credit);
+              // HOW TO MAKE THIS LESS THAN OR GREATER THAN CONDITIONAL?
+              done();
+            });
+          });
+      });
+    });
   });
 });
