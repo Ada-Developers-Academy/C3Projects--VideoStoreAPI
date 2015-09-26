@@ -7,15 +7,17 @@ var request = require('supertest'),
     agent   = request.agent(app);
 
 describe("Endpoints under /movies", function() {
-  beforeEach(function(done) {
-    schema(done)
-  })
-
-  beforeEach(function(done) {
-    seeder(done)
-  })
-
   describe("GET all movies", function() {
+    beforeEach(function(done) {
+      schema(done)
+      done();
+    });
+
+    beforeEach(function(done) {
+      seeder(done)
+      done();
+    });
+
     var movie_request;
 
     beforeEach(function(done) {
@@ -44,13 +46,15 @@ describe("Endpoints under /movies", function() {
     var movie_request;
 
     it("can get subset of movies in title order", function(done) {
-      movie_request = agent.get('/movies/sort/title/4/0').set('Accept', 'application/json');
+
+      movie_request = agent.get('/movies/sort/title/4/1').set('Accept', 'application/json');
       movie_request
         .expect('Content-Type', /application\/json/)
         .expect(200, function(error, result) {
+          console.log(result.body);
           assert.equal(result.body.length, 4);
 
-          var expected_names = ['Alien', 'Jaws', 'North by Northwest', 'Psycho'],
+          var expected_names = ['Jaws', 'North by Northwest', 'Psycho', 'The Exorcist'],
           actual_names = [];
 
           for(var index in result.body) {
