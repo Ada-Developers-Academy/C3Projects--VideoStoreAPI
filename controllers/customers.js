@@ -44,6 +44,14 @@ exports.customersController = {
     dbCustomer.past_rentals_by_customer(customerId, function(err, result) {
       res.status(200).json(result);
     });
+  },
+
+  getCurrentMoviesbyCustomer: function(req, res) {
+    var dbCustomer = new Customer();
+    var customerId = req.params.id;
+    dbCustomer.current_checkout_rentals('customer_id', customerId, function(err, result) {
+      res.status(200).json(result);
+    });
   }
 
 

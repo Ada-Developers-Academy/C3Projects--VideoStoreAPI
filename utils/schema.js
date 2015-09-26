@@ -37,7 +37,7 @@ module.exports = function(callback) {
   ];
 
   db.serialize(function() {
-    db.exec("BEGIN");
+    db.exec("BEGIN IMMEDIATE");
 
     db.exec("DROP TABLE IF EXISTS customers;");
 
@@ -77,9 +77,9 @@ module.exports = function(callback) {
       }
     }
     db.exec("COMMIT", function(error) {
-      db.close();
-      callback(error, "Success");
       console.log("I'm done setting up the db")
+      callback(error, "Success");
+      db.close();
     });
   });
 

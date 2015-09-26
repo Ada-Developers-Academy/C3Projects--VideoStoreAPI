@@ -7,24 +7,18 @@ module.exports = function(callback) {
 
   // MOVIES TABLE =========================================================================
   var movies = require('./movies-' + db_env + '.json');
-  var movie_statement = db.prepare(
-    "INSERT INTO movies(title, overview, inventory, release_date, available) VALUES (?, ?, ?, ?, ?);"
-  );
 
   // CUSTOMERS TABLE =========================================================================
   var customers = require('./customers-' + db_env + '.json');
-  var customer_statement = db.prepare(
-    "INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_credit) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
-  );
 
   // RENTAL TABLE ===============================================================================
   var rentals = require('./rentals-' + db_env + '.json');
-  var rental_statement = db.prepare(
-    "INSERT INTO rentals(checkout_date, returned_date, rental_time, cost, total, customer_id, movie_id) VALUES (?, ?, ?, ?, ?, ?, ?);"
-    );
 
   db.serialize(function() {
-    db.exec("BEGIN");
+    db.exec("BEGIN IMMEDIATE");
+    var rental_statement = db.prepare(
+      "INSERT INTO rentals(checkout_date, returned_date, rental_time, cost, total, customer_id, movie_id) VALUES (?, ?, ?, ?, ?, ?, ?);"
+      );
     for(var i = 0; i < rentals.length; i++) {
       var rental = rentals[i];
       rental_statement.run(
@@ -39,6 +33,9 @@ module.exports = function(callback) {
     }
     rental_statement.finalize();
 
+    var movie_statement = db.prepare(
+      "INSERT INTO movies(title, overview, inventory, release_date, available) VALUES (?, ?, ?, ?, ?);"
+    );
     for(var i= 0; i < movies.length; i ++) {
       var movie = movies[i];
       movie_statement.run(
@@ -50,6 +47,10 @@ module.exports = function(callback) {
       );
     }
     movie_statement.finalize();
+
+    var customer_statement = db.prepare(
+      "INSERT INTO customers(name, registered_at, address, city, state, postal_code, phone, account_credit) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
+    );
 
     for(var i= 0; i < customers.length; i ++) {
       var customer = customers[i];
@@ -67,9 +68,9 @@ module.exports = function(callback) {
     customer_statement.finalize();
 
     db.exec("COMMIT", function(error) {
-      db.close();
       console.log("I'm done setting up the db")
       callback(error, "Success");
+      db.close();
     });
   })
 }

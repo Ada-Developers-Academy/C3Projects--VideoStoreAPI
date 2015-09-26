@@ -17,7 +17,6 @@ router.put('/checkin', function(req, res, next) {
 });
 
 router.post('/checkout', function(req, res, next) {
-  console.log(req.body);
   rental_exports.rentalsController.checkout(req, res);
 });
 

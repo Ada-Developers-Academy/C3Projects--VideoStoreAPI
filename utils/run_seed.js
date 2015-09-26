@@ -1,6 +1,6 @@
 "use strict";
 
-seeder = require('./seed');
+var seeder = require('./seed');
 
 seeder(function(error, result) {
   console.log(error);

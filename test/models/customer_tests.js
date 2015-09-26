@@ -1,6 +1,9 @@
 var assert = require("assert"),
     Customer = require('../../models/customer'),
-    sqlite3 = require('sqlite3').verbose();
+    sqlite3 = require('sqlite3').verbose(),
+    seeder = require('../../utils/run_seed'),
+    schema = require('../../utils/run_schema')
+
 
 
 describe("Customer", function() {
