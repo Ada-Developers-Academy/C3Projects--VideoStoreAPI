@@ -267,7 +267,7 @@ describe('Customer', function() {
     it('returns a list of customers with overdue movies', function(done) {
       customer.overdue(function(err, rows) {
         assert.equal(err, undefined);
-        assert.equal(rows.length, 2); // this will change to 3 on 2015-09-26 as our seed data becomes overdue
+        assert.equal(rows.length, 3);
         assert.equal(rows[0].name, 'Customer1');
         assert.equal(rows[0].movie_title, 'Movie1');
         assert.equal(rows[0].checkout_date, '2015-09-16');
