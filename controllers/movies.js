@@ -12,7 +12,18 @@ var Controller = {
   },
 
   show: function(req, res, next) {
-    new Movie().findBy('title', req.params.title, Controller.sendJSON.bind(res));
+    new Movie().findBy('title', req.params.title, Controller.formatThenSendJSON.bind(res));
+  },
+
+  formatThenSendJSON: function(err, results) {
+    new Movie().numAvail(results[0].title, function(err, otherResults) {
+      results = results[0];
+      results.num_available = otherResults[0].num_available;
+
+      Controller.sendJSON.apply(this, [err, results]);
+
+    }.bind(this));
+
   },
 
   customers: function(req, res, next) {
