@@ -1,0 +1,62 @@
+[
+  {
+    "checkout_date": "2015-03-16",
+    "return_date": "2015-03-20",
+    "movie_title": "North by Northwest",
+    "customer_id": 2
+  },
+  {
+    "checkout_date": "2014-12-16",
+    "return_date": "",
+    "movie_title": "The Great Escape",
+    "customer_id": 15
+  },
+  {
+    "checkout_date": "2015-02-16",
+    "return_date": "2015-02-20",
+    "movie_title": "E.T. the Extra-Terrestrial",
+    "customer_id": 20
+  },
+  {
+    "checkout_date": "2014-11-16",
+    "return_date": "2015-01-01",
+    "movie_title": "Pulp Fiction",
+    "customer_id": 28
+  },
+  {
+    "checkout_date": "2015-09-16",
+    "return_date": "",
+    "movie_title": "Wait Until Dark",
+    "customer_id": 9
+  },
+  {
+    "checkout_date": "2015-01-16",
+    "return_date": "",
+    "movie_title": "The Bridge on the River Kwai",
+    "customer_id": 42
+  },
+  {
+    "checkout_date": "2015-06-16",
+    "return_date": "",
+    "movie_title": "The Treasure of the Sierra Madre",
+    "customer_id": 66
+  },
+  {
+    "checkout_date": "2014-04-16",
+    "return_date": "2014-04-18",
+    "movie_title": "Butch Cassidy and the Sundance Kid",
+    "customer_id": 95
+  },
+  {
+    "checkout_date": "2015-09-17",
+    "return_date": "",
+    "movie_title": "The Magnificent Seven",
+    "customer_id": 56
+  },
+  {
+    "checkout_date": "2015-05-16",
+    "return_date": "2015-05-20",
+    "movie_title": "12 Angry Men",
+    "customer_id": 104
+  }
+]

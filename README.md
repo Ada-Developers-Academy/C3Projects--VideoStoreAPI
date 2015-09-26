@@ -92,3 +92,5 @@ The API you build should have the following capabilities. The schema of your dat
 - We will use [Mocha](https://mochajs.org/) for tests.
 - There isn't a coverage requirement for this project, beyond demonstrating that every endpoint is covered by some manner of tests.
 
+#### Run once prior to running tests
+`DB=test npm run db:schema`
