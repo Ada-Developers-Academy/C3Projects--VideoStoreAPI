@@ -11,7 +11,7 @@ GET '/customers'
         - `name`
         - `registered_at`
         - `postal_code`
-GET 'customers/:id/movies'
+GET 'customers/:id/rentals'
   - Given a customers `id`...
     - List the movies they _currently_ have checked out
       + include rental id

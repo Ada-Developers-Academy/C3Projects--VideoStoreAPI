@@ -13,6 +13,24 @@ var Controller = {
     }
   },
 
+  rentals: function(req, res, next) {
+    new Customer().rentals(req.params.id, Controller.formatRentalsSendJON.bind(res));
+  },
+
+  formatRentalsSendJON: function(err, res) {
+    var results = { current: [], past: [] };
+
+    for (var i = 0; i < res.length; i++) {
+      if (res[i].return_date) {
+        results.past.push(res[i]);
+      } else {
+        results.current.push(res[i]);
+      }
+    }
+
+    Controller.sendJSON.call(this, err, results);
+  },
+
   sendJSON: function(err, res) {
     if (err) {
       var status = err.status == 400 ? 400 : 500;
