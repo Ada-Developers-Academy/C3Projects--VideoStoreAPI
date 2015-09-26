@@ -47,24 +47,6 @@ exports.moviesController = {
       console.log(result);
       res.status(200).json(result);
     });
-
-    // dbMovie.find_by("title", title, function getMovieId(error, result) {
-    //   var movieId = result[0].id;
-    //   console.log(result);
-    //   dbRental.current_checkout_rentals("movie_id", movieId, function getCustomerId(error, result) {
-    //     var customerId = result[0].customer_id;
-    //     console.log(result)
-    //     dbCustomer.find_by("id", customerId, function getCustomer(error, result) {
-    //       res.status(200).json(result);
-    //     });
-    //   });
-
-    // });
-    //   console.log(result[0].customer_id)
-    // });
-    //   return res.status(200).json(result);
-    // });
-
   },
 
   pastCustomerRentals: function(req, res) {

@@ -68,8 +68,7 @@ module.exports = function(callback) {
     customer_statement.finalize();
 
     db.exec("COMMIT", function(error) {
-      console.log("I'm done setting up the db")
-      callback(error, "Success");
+      callback(error, "I'm done seeding the db");
       db.close();
     });
   })
